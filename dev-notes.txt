@@ -1,0 +1,20 @@
+New consistent dev-env for rematch NER work, without overwriting previous code
+==============================================================================
+Private repo at https://github.com/cbinding/rematch2
+Python 3.8.13 preinstalled in gitpod workspace
+Performing NER using spaCy (https://spacy.io/)
+Creating Python service using either fastAPI or Flask (https://fastapi.tiangolo.com/ or https://flask.palletsprojects.com/en/2.1.x/)
+Javascript client(s) using Vue.js (https://vuejs.org/)
+See https://towardsdatascience.com/building-a-flask-api-to-automatically-extract-named-entities-using-spacy-2fd3f54ebbc6
+And https://juliensalinas.com/en/fastapi-spacy-ner/
+
+
+15/06/2022 initial setup. Not using venv as developing on gitpod
+python --version  
+# Python 3.8.13
+pip --version 
+# pip 22.1 from /home/gitpod/.pyenv/versions/3.8.13/lib/python3.8/site-packages/pip (python 3.8)
+
+pip install "fastapi[all]"
+to start: uvicorn main:app --reload # see https://fastapi.tiangolo.com/tutorial/first-steps/
+to stop: ???
