@@ -19,15 +19,15 @@ import argparse         # for argument parsing
 import json
 import fnmatch
 import os               # for general file/directory functionality
+
 import spacy            # NLP library
 from spacy import displacy
 #from spacy.pipeline import EntityRuler
 
 class TemporalEntityRecognizer:
-    """identities and marks up named entities based on array of patterns"""
-    def __init__(self, lang="en", ent_type="TEMPORAL"):
+    """identifies and marks up temporal entities based on array of patterns"""
+    def __init__(self, lang="en"):
         self._language = lang.strip().lower()
-        self._entity_type = ent_type.strip().upper()
         self._all_token_patterns = TemporalEntityRecognizer.__load_token_patterns_from_directory("../src/patterns")
         #self._nlp = self.__getNLP() # sets up configured nlp pipeline object  
 
@@ -40,25 +40,11 @@ class TemporalEntityRecognizer:
     def language(self, new_value):
         clean_value = new_value.strip().lower()
         if self._language != clean_value:
-            self._language = clean_value
-            #self._nlp = self.__getNLP()
-
-    @property
-    def entity_type(self):
-        """type of entity to find"""
-        return self._entity_type
-
-    @entity_type.setter
-    def entity_type(self, new_value):
-        clean_value = new_value.strip().upper()
-        if self._entity_type != clean_value:
-            self._entity_type = clean_value
-            #self._nlp = self.__getNLP()
-
+            self._language = clean_value            
+    
     @staticmethod
     def __load_token_patterns_from_directory(directory_name):
         """Load token patterns from JSON files situated in the specified directory"""
-        #directory = os.path.join(os.curdir, directory_name)
         file_names = os.listdir(directory_name)
         token_patterns = []
 
@@ -149,7 +135,7 @@ class TemporalEntityRecognizer:
         ruler = nlp.add_pipe("entity_ruler",name="composites", config=ruler_config)
         #nlp.add_pipe("merge_entities")
         #patterns = filter(lambda pattern: pattern["label"] or None in [self.entityType] and pattern["language"] or None == self._language, self._allTokenPatterns) 
-        composite_patterns = [pattern for pattern in self._all_token_patterns if (pattern.get("label") or "").upper() in [self.entity_type.upper()] and (pattern.get("language") or "").lower() == self._language] 
+        composite_patterns = [pattern for pattern in self._all_token_patterns if (pattern.get("label") or "").lower() == "temporal" and (pattern.get("language") or "").lower() == self._language] 
         ruler.add_patterns(composite_patterns)
 
         # normalise white spaces before tokenisation 
@@ -267,13 +253,7 @@ if __name__ == "__main__":
         default="en",
         choices=["en","fr","sv"],
         type=str.lower,
-        help="ISO language (short code). If not provided the default assumed is 'en' (English)")
-    parser.add_argument("-t", "--type",
-        required=False,
-        default="temporal",
-        choices=["temporal"],
-        type=str.lower,
-        help="Type of entities to identify. If not provided the default assumed is 'temporal'")
+        help="ISO language (short code). If not provided the default assumed is 'en' (English)")    
     parser.add_argument("-f", "--format",
         required=False,
         default="json",
@@ -307,7 +287,7 @@ if __name__ == "__main__":
         is_debug = True
 
     # identify named entities in text and output them
-    ner = TemporalEntityRecognizer(language, entity_type)
+    ner = TemporalEntityRecognizer(language)
     entities = ner.get_entities(input_text)
     formatted = TemporalEntityRecognizer.format_entities(input_text, entities, out_format)
     print(formatted)

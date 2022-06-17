@@ -10,3 +10,5 @@ sympy>=1.10.1
 
 # NER ----------------------------
 spacy
+# JSON search
+jmespath
