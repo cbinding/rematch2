@@ -1,0 +1,803 @@
+[
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [{"LOWER": "trias"}]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [{"LOWER": "secondaire"}]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [{"LOWER": "jurassique"}]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [{"LOWER": "crétacé"}]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [{"LOWER": "tertiaire"}]
+    },
+    { 
+        "label": "TEMPORAL",
+        "language": "fr", 
+        "pattern": [{"LOWER": {"REGEX": "^oligoc[eè]ne$"}}]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [{"LOWER": {"REGEX": "^plioc[eè]ne$"}}]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [{"LOWER": "quaternaire"}]
+    },
+    { 
+        "label": "TEMPORAL",
+        "language": "fr", 
+        "pattern": [
+            {"LOWER": {"REGEX": "^pl[eé]istoc[eè]ne$"}},
+            {"OP": "?", "LOWER": {"REGEX": "^(ancien|moyen|sup[eé]rieur)$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [{"LOWER": {"REGEX": "pr[ée]histoire"}}]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER":  {"REGEX": "^pal[eé]olithique$"}},
+            {"OP": "?", "LOWER": {"REGEX": "^(inf[ée]rieur|moyen|sup[eé]rieur)$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER":  "chronologie"},
+            {"OP": "?", "LOWER": {"REGEX": "^am[eé]ricaine$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^b[oö]lling$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^epipal[eé]olithique$"}},
+            {"OP": "?", "POS": "ADJ"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^w[uü]rm$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "dryas"},
+            {"OP": "?", "POS": "ADJ"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^aller[oö]d$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^holoc[eè]ne$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "tardiglaciaire"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^m[eé]solithique$"}},
+            {"OP": "?", "LOWER": {"REGEX": "^(ancien|moyen|final|r[ée]cent)$"}}        
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^n[eé]olithique$"}}, 
+            {"OP": "?", "LOWER": {"REGEX": "^(ancien|moyen|final|r[ée]cent|pr[eé]c[eé]ramique)$"}} 
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^pr[eé]bor[eé]al$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "atlantique"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^sub\\-bor[eé]al$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "egypte"},
+            {"LOWER": "antique"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "chronologie"},
+            {"LOWER": "antillaise"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "chalcolithique"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "protohistoire"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^[aâ]ges?$"}}, 
+            {"LOWER": "des"}, 
+            {"LOWER": {"REGEX": "^métaux$"}}                      
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(l[’'])?[aâ]ge$"}}, 
+            {"LOWER": "du"}, 
+            {"LOWER": "bronze"},
+            {"OP": "?", "LOWER": {"REGEX": "^(ancien|moyen|final)$"}}                  
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "bronze"},
+            {"LOWER": {"REGEX": "^(ancien|moyen|final)$"}}            
+        ] 
+    },
+    { 
+        "label": "TEMPORAL",
+        "language": "fr", 
+        "pattern": [
+            {"LOWER": "bronze"},
+            {"LOWER": {"REGEX": "^r[eé]cent$"}},
+            {"OP": "?", "LOWER": {"REGEX": "^i{1,3}$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^[eé]p(oque)?$"}},   
+            {"LOWER": {"REGEX": "^myc[eé]nienne$"}}            
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "hallstatt"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^[eé]p(oque)?$"}},   
+            {"LOWER": "orientalisante"}            
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^sub\\-atlantique$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "?", "LOWER": {"REGEX": "^(premier|deuxi[eè]me|1er|2e|second)$"}}, 
+            {"LOWER": {"REGEX": "^[aâ]ge$"}}, 
+            {"LOWER": "du"}, 
+            {"LOWER": "fer"}            
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "italie"},   
+            {"LOWER": {"REGEX": "^archa[iï]que$"}}           
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "riss"},
+            {"LOWER": "-"},  
+            {"LOWER": {"REGEX": "^w[uü]rm$"}}         
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^[eé]p(oque)?$"}},
+            {"LOWER": {"REGEX": "^archa[iï]que$"}}           
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "transition"},
+            {"LOWER": "bronze"},
+            {"LOWER": "/"},
+            {"LOWER": "fer"}           
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "antiquit[eé]"}},  
+            {"OP": "?", "LOWER": {"REGEX": "^(grecque|gallo-romaine|gréco-romaine|romaine|tardive)$"}}                      
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(empire|gallo|r[eé]publique|gaule)$"}}, 
+            {"LOWER": {"REGEX": "^romaine?$"}}           
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^[eé]p(oque)?$"}},
+            {"LOWER": {"REGEX": "^pr[eé]\\-classique$"}}           
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^[eé]p(oque)?$"}},
+            {"LOWER":"classique"}           
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^[eé]p(oque)?$"}},
+            {"LOWER": {"REGEX": "^[eé]trusque$"}}           
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "la"}, 
+            {"LOWER":  {"REGEX": "t[eè]ne"}},
+            {"OP": "?", "LOWER": {"REGEX": "^(i{1,3}|finale)$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^[eé]p(oque)?$"}},
+            {"LOWER": {"REGEX": "^hell[eé]nistique$"}}           
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^[eé]p(oque)?$"}},
+            {"LOWER": "tardo"},
+            {"LOWER": "-"},
+            {"LOWER": {"REGEX": "^r[eé]publicaine$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(haut|bas)$"}}, 
+            {"OP": "?", "POS": "PUNCT"},
+            {"LOWER": "empire"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "haut-empire"}            
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "bas-empire"}            
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "empire"},
+            {"LOWER": "d'"}, 
+            {"LOWER": "occident"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^r[eè]gne$"}}, 
+            {"LOWER": "d'"}, 
+            {"LOWER": "auguste"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^[eé]p(oque)?$"}},
+            {"LOWER": "franque"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "empire"},
+            {"LOWER": "byzantin"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^[eé]p(oque)?$"}},
+            {"LOWER": {"REGEX": "^m[eé]rovingienne$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^[eé]p(oque)?$"}},
+            {"LOWER": {"REGEX": "^carolingien(ne)?$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^(haut|bas)$"}},
+            {"LOWER": "moyen"}, 
+            {"LOWER": {"REGEX": "^[aâ]ge$"}}            
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^(haut|bas)$"}}, 
+            {"LOWER": "moyen"}, 
+            {"ORTH": "-"}, 
+            {"LOWER": {"REGEX": "^[aâ]ge$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "moyen"}, 
+            {"LOWER": {"REGEX": "^[aâ]ge$"}},
+            {"LOWER": "classique"}            
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^[eé]p(oque)?$"}},
+            {"LOWER": {"REGEX": "m[eé]di[eé]vaux"}}
+        ] 
+    },  
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^[eé]p(oque)?$"}},
+            {"LOWER": "islamique"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "umayyades"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "abbassides"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "empire"},
+            {"LOWER": "ottoman"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "temps"},
+            {"LOWER": "modernes"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL",
+        "language": "fr", 
+        "pattern": [
+            {"LOWER": {"REGEX": "^p[eé]riode$"}},
+            {"LOWER": "moderne"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "renaissance"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL",
+        "language": "fr", 
+        "pattern": [
+            {"LOWER": {"REGEX": "^r[eé]volution$"}},
+            {"LOWER": {"REGEX": "^fran[cç]aise$"}}
+        ] 
+    },     
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},   
+            {"LOWER": "contemporaine"}            
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^si[eè]cles$"}},
+            {"LOWER": "des"},    
+            {"LOWER": " l'Industrie"}            
+        ] 
+    },
+
+
+
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            { "LOWER": { "IN": [
+                "turonien",
+                "gallo-romaine", 
+                "gallo-romaines"            
+            ]}}
+        ] 
+    },    
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}}, 
+            {"POS": "ADJ"}
+        ]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": "du"},  
+            {"POS": "PROPN"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"LOWER": "protohistorique"},
+            {"OP": "?", "POS": "ADJ"}   
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"LOWER": {"REGEX": "^tib[eè]re$"}}
+        ] 
+    },    
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"LOWER": "antonins"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"LOWER": {"REGEX": "s[eé]v[eè]res"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"LOWER": {"REGEX": "^(julio|tibero)$"}},
+            {"OP": "?", "POS": "PUNCT"},
+            {"LOWER": "claudiens"}
+        ] 
+    },    
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": {"REGEX": "^m[eé]rovingienne$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": {"REGEX": "^carolingien(ne)?$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": {"REGEX": "^archa[iï]que$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": "georgienne"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": "victorienne"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": {"REGEX": "^hell[eé]nistique$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": {"REGEX": "^august[eé]enne$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": {"REGEX": "^tib[eé]rienne$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": "claudienne"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": {"REGEX": "^n[eé]ronienne$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": "flavienne"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": "de"},
+            {"LOWER": "vespasien"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": "de"},
+            {"LOWER": "domitien"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": "de"},
+            {"LOWER": "trajan"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": "d'hadrien"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": "antonine"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": {"REGEX": "aur[eé]lienne"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": {"REGEX": "s[eé]v[eé]rienne"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": "de"},
+            {"LOWER": "gallein"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": "des"},
+            {"LOWER": "t[eé]trarques"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": "constantinienne"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
+            {"LOWER": "byzantine"}
+        ] 
+    },   
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"LOWER": {"REGEX": "^si[eè]cle$"}}, 
+            {"LOWER": "des"}, 
+            {"LOWER": {"REGEX": "^lumi[eè]res$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"LOWER": "minoen"}, 
+            {"OP": "?", "LOWER": {"REGEX": "^(ancien|moyen|r[eé]cent)$"}}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"LOWER": "subminoen"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "pattern": [
+            {"LOWER": "corinthien"}, 
+            {"OP": "?", "LOWER": {"REGEX": "^(ancien|moyen|r[eé]cent)$"}}
+        ] 
+    }   
+]     

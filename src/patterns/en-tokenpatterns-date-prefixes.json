@@ -1,0 +1,54 @@
+[
+    { 
+        "label": "DATEPREFIX", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(c\\.|circa)$"}}            
+        ]
+    },
+    { 
+        "label": "DATEPREFIX", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(beginning|start|middle|end)$"}},
+            {"LOWER": "of"},
+            {"OP": "?", "LOWER":"the"}
+        ]
+    },    
+    { 
+        "label": "DATEPREFIX",
+        "language": "en", 
+        "pattern": [
+            {"LOWER": {"REGEX": "^(first|second|1st|2nd)$"}},
+            {"LOWER": "half"},
+            {"LOWER": "of"},
+            {"OP": "?", "LOWER": "the"}
+        ]
+    },
+    { 
+        "label": "DATEPREFIX", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(first|second|third|fourth|last|1st|2nd|3rd|4th|final)$"}},
+            {"LOWER": "quarter"},
+            {"LOWER": "of"},
+            {"OP": "?", "LOWER": "the"}
+        ]
+    },
+    { 
+        "label": "DATEPREFIX", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": "during"},
+            {"LOWER": "the"}
+        ]
+    },
+    {
+        "label": "DATEPREFIX",
+        "comment": "early|earlier|lower|mid|middle|upper|late|later",
+        "language": "en", 
+        "pattern": [
+            {"LOWER": {"REGEX": "^(earl(y|ier)|lower|mid(dle)?|upper|later?)$"}}
+        ]
+    }
+]

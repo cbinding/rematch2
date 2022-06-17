@@ -1,0 +1,86 @@
+[
+    { 
+        "label": "MONTHNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(jan(uary|\\.)?)$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(feb(ruary|\\.)?)$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(mar(ch|\\.)?)$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(apr(il|\\.)?)$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^may$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(jun(e|\\.)?)$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(jul(y|\\.)?)$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(aug(ust|\\.)?)$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(sep(t\\.?|tember|\\.)?)$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(oct(ober|\\.)?)$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(nov(ember|\\.)?)$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(dec(ember|\\.)?)$"}}            
+        ]
+    }
+]

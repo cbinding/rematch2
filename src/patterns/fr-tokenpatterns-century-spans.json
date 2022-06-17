@@ -1,0 +1,85 @@
+[
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"LOWER": {"IN": [
+                "premier",
+                "deuxième",
+                "second",
+                "troisième",
+                "quatrième",
+                "cinquième",
+                "sixième",
+                "septième",
+                "huitième",
+                "neuvième",
+                "dixième",
+                "onzième",
+                "douzième",
+                "treizième",
+                "quatorzième",
+                "quinzième",
+                "seizième",
+                "dix-septième",
+                "dix-huitième",
+                "dix-neuvième",
+                "vingtième" 
+            ]}},
+            {"LOWER": {"REGEX": "^s(\\.|iècle)?$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+        ]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"LOWER": {"REGEX": "^([mdclxvi]+|\\d+)(er?|[eè]me)$"}},
+            {"LOWER": {"REGEX": "^mill[eé]naire$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+        ]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"LOWER": {"REGEX": "^([mdclxvi]+|\\d+)(er?|[eè]me)$"}},
+            {"LOWER": {"REGEX": "^s(\\.|iècle)?$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+        ]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"LOWER": {"REGEX": "^([mdclxvi]+|\\d+)(er?|[eè]me)$"}},
+            {"OP": "?", "LOWER": {"REGEX": "^s(\\.|iècle)?$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}, 
+            {"LOWER": "et"},
+            {"OP": "?", "LOWER": "le"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"LOWER": {"REGEX": "^([mdclxvi]+|\\d+)(er?|[eè]me)$"}},
+            {"OP": "?", "LOWER":  {"REGEX": "^s(\\.|iècles?)?$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
+        ]
+    },
+    { 
+        "label": "TEMPORAL",
+        "language": "fr", 
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"LOWER": {"REGEX": "^([mdclxvi]+|\\d+)(er?|[eè]me)$"}},
+            {"OP": "?", "LOWER": {"REGEX": "^s(\\.|iècle)?$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"LOWER": {"REGEX": "^(au|[–-])$"}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"LOWER": {"REGEX": "^([mdclxvi]+|\\d+)(er?|[eè]me)$"}},
+            {"OP": "?", "LOWER": {"REGEX": "^s(\\.|iècles?)?$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
+        ]
+    }
+]

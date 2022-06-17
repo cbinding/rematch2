@@ -1,0 +1,62 @@
+[    
+    { 
+        "label": "TEMPORAL", 
+        "language": "no",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ORTH": {"REGEX": "^\\d+$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"LOWER": {"REGEX": "^(?:[\\–\\-/]|til|og|och|eller)$"}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ORTH": {"REGEX": "^\\d+$"}},   
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}         
+        ] 
+    },    
+    { 
+        "label": "TEMPORAL", 
+        "language": "no",
+        "pattern": [
+            {"ORTH": {"REGEX": "^\\d+$"}},
+            {"ORTH": {"REGEX": "^\\\\p{pD}$"}},
+            {"ORTH": {"REGEX": "^\\d+$"}}            
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "no",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ORTH": {"REGEX": "^\\d+±\\d+$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"LOWER": {"REGEX": "^(?:[\\–\\-/]|til|og|och|eller)$"}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ORTH": {"REGEX": "^\\d+±\\d+$"}},   
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}         
+        ] 
+    },   
+    { 
+        "label": "TEMPORAL", 
+        "language": "no",
+        "pattern": [
+            {"LOWER": {"REGEX": "^\\d+±\\d+$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}                  
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "no",
+        "pattern": [
+            {"LOWER": {"REGEX": "^\\d+$"}},
+            {"LOWER": {"REGEX": "^(bp)?±\\d+$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}                  
+        ] 
+    },    
+    { 
+        "label": "TEMPORAL", 
+        "language": "no",
+        "pattern": [
+            {"ORTH": {"REGEX": "^\\d+$"}},
+            {"OP": "+", "ENT_TYPE": "DATESUFFIX"}                  
+        ] 
+    }
+]

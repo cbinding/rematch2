@@ -1,0 +1,29 @@
+[
+    { 
+        "label": "TEMPORAL", 
+        "language": "en",
+        "comment": "e.g. beginning of the fifth century AD",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "ORDINAL"},
+            {"LOWER": {"REGEX": "^(century|millennium)$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+        ]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "en",
+        "comment": "e.g. start of the first to end of the 2nd century AD",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "ORDINAL"},
+            {"OP": "?", "LOWER": {"REGEX": "^(century|millennium)$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"LOWER": {"REGEX": "^(?:[–-]|to)$"}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "ORDINAL"},
+            {"LOWER": {"REGEX": "^(century|millennium)$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+        ]
+    }
+]

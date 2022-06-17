@@ -1,0 +1,18 @@
+[ 
+    { 
+        "label": "TEMPORAL", 
+        "language": "sv",
+        "pattern": [
+            {"LOWER": {"REGEX": "^\\d+0$"}} ,
+            {"ORTH": "-"},   
+            {"LOWER": "talet"}        
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "sv",
+        "pattern": [
+           {"ORTH": "**See https://stackoverflow.com/questions/57477852/spacy-matcher-with-entities-spanning-more-than-a-single-token  retokenizing with custom entity types.."}
+        ]
+    }
+]

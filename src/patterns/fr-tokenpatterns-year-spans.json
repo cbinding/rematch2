@@ -1,0 +1,30 @@
+[        
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [ 
+            {"OP": "?", "LOWER": "entre"}, 
+            {"LOWER": {"REGEX": "^\\d{4}$"}}, 
+            {"LOWER": "et"}, 
+            {"LOWER": {"REGEX": "^\\d{4}$"}} 
+        ]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [ 
+            {"OP": "?", "LOWER": {"REGEX": "^ann[eé]es?$"}},
+            {"LOWER": {"REGEX": "^\\d{1,4}$"}}, 
+            {"LOWER": {"REGEX": "^[à–-]$"}}, 
+            {"LOWER": {"REGEX": "^\\d{1,4}$"}} 
+        ]
+    },    
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [ 
+            {"LOWER": {"REGEX": "^(ann[eé]es?|en)$"}},
+            {"LOWER": {"REGEX": "^\\d{1,4}$"}}
+        ]
+    }
+]

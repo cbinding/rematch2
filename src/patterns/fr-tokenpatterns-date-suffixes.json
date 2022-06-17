@@ -1,0 +1,82 @@
+[
+    { 
+        "label": "DATESUFFIX", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(ad|bc|bp|a\\.d\\.|b\\.c\\.|b\\.p\\.)$"}}              
+        ]
+    },
+    { 
+        "label": "DATESUFFIX", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(av|apr?|avant|apres)$"}},
+            {"OP": "?", "TEXT": "."},
+            {"LOWER":  {"REGEX": "^j\\.$"}} ,
+            {"LOWER":  {"REGEX": "^-?c\\.$"}}            
+        ]
+    }, 
+    { 
+        "label": "DATESUFFIX", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(av|apr?|avant|apres)$"}},
+            {"OP": "?", "TEXT": "."},
+            {"LOWER":  {"REGEX": "^j\\.-C$"}}           
+        ]
+    }, 
+    { 
+        "label": "DATESUFFIX", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(av\\.?|apr?\\.?|avant|apres)$"}},
+            {"LOWER":  {"REGEX": "^j\\.?$"}},
+            {"OP": "?", "TEXT":  "-"},
+            {"LOWER":  {"REGEX": "^c\\.?$"}}            
+        ]
+    }, 
+    { 
+        "label": "DATESUFFIX", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(av\\.?|apr?\\.?|avant|apres)$"}},
+            {"LOWER": {"REGEX": "^j\\.$"}},
+            {"LOWER": {"REGEX": "^-?c\\.$"}}            
+        ]
+    }, 
+    { 
+        "label": "DATESUFFIX", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(av\\.?|apr?\\.?|avant|apres|de)$"}},
+            {"LOWER": {"REGEX": "^n(\\.|otre)$"}},
+            {"LOWER":  {"REGEX": "^[eè]re$"}}            
+        ]
+    },
+    { 
+        "label": "DATESUFFIX", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(av\\.?|apr?\\.?|avant|apres)$"}},
+            {"LOWER": {"REGEX": "^n\\.[eè]$"}}               
+        ]
+    },  
+    { 
+        "label": "DATESUFFIX", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(av\\.?|apr?\\.?|avant|apres)$"}},
+            {"LOWER": {"REGEX": "^n\\.$"}} ,
+            {"LOWER": {"REGEX": "^è$"}}               
+        ]
+    },
+    { 
+        "label": "DATESUFFIX", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": "cal"},
+            {"OP": "?", "LOWER": "."},
+            {"LOWER": {"REGEX": "^b[cp]$"}}                        
+        ]
+    }    
+]
