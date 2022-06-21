@@ -62,7 +62,8 @@ medieval	ADJ	period
 period	NOUN	through
 until	SCONJ	began
 the	DET	century
-mid-19th	ADJ	century
+mid	ADJ	century
+19th	ADJ	century
 century	NOUN	began
 ,	PUNCT	century
 when	SCONJ	accelerated

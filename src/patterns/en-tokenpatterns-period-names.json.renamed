@@ -1,0 +1,275 @@
+[
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/PA",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "palaeolithic"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/MPA",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "middle"},
+			{"LOWER": "palaeolithic"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/EPR",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "early"},
+			{"LOWER": "prehistoric"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/LPR",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "later"},
+			{"LOWER": "prehistoric"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/UPA",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "upper"},
+			{"LOWER": "palaeolithic"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/UP",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "prehistoric"},
+			{"LOWER": "or"},
+			{"LOWER": "roman"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/ME",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "mesolithic"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/PR",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "prehistoric"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/EME",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "early"},
+			{"LOWER": "mesolithic"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/LME",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "late"},
+			{"LOWER": "mesolithic"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/ENE",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "early"},
+			{"LOWER": "neolithic"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/MNE",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "middle"},
+			{"LOWER": "neolithic"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/EBA",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "early"},
+			{"LOWER": "bronze"},
+			{"LOWER": "age"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/BA",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "bronze"},
+			{"LOWER": "age"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/NE",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "neolithic"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/IA",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "iron"},
+			{"LOWER": "age"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/EIA",
+        "label": "TEMPORAL",
+		"language": "en", 
+        "pattern": [
+			{"LOWER": "early"},
+			{"LOWER": "iron"},
+			{"LOWER": "age"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/MBA",
+        "label": "TEMPORAL",
+		"language": "en", 
+        "pattern": [
+			{"LOWER": "middle"},
+			{"LOWER": "bronze"},
+			{"LOWER": "age"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/LNE",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "late"},
+			{"LOWER": "neolithic"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/LBA",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "late"},
+			{"LOWER": "bronze"},
+			{"LOWER": "age"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/MIA",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "middle"},
+			{"LOWER": "iron"},
+			{"LOWER": "age"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/RO",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "roman"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/PM",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "post"},
+			{"OP": "?", "ORTH": "-"},
+			{"LOWER": "medieval"}
+		] 
+    },	
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/EM",
+        "label": "TEMPORAL",
+		"language": "en", 
+        "pattern": [
+			{"LOWER": "early"},
+			{"LOWER": "medieval"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/UN",
+        "label": "TEMPORAL",
+		"language": "en", 
+        "pattern": [
+			{"LOWER": "uncertain"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/MD",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "medieval"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/UM",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "early"},
+			{"LOWER": "med."},
+			{"LOWER": "or"},
+			{"LOWER": "later"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/MO",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "modern"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/LIA",
+        "label": "TEMPORAL",
+		"language": "en", 
+        "pattern": [
+			{"LOWER": "late"},
+			{"LOWER": "iron"},
+			{"LOWER": "age"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/LPA",
+        "label": "TEMPORAL", 
+		"language": "en",
+        "pattern": [
+			{"LOWER": "lower"},
+			{"LOWER": "paleolithic"}
+		] 
+    }
+
+]

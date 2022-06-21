@@ -156,9 +156,9 @@ class TemporalEntityRecognizer:
             #for ent in doc.ents:
                #retokenizer.merge(doc[ent.start:ent.end])
 
-        # create and return array of entities (restrict to the entity types we are interested in)
+        # create and return array of entities
         results = []
-        for entity in [e for e in doc.ents if e.label_ == self._entity_type]:
+        for entity in [e for e in doc.ents if e.label_ == "TEMPORAL"]:
             results.append({
                 "id": entity.ent_id_,
                 "text": entity.text,
@@ -270,15 +270,12 @@ if __name__ == "__main__":
 
     # get cleaned named arguments
     input_text = ""
-    entity_type = ""
     language = ""
     out_format = "json"
     is_debug = False
 
     if args.input:
         input_text = args.input.strip()
-    if args.type:
-        entity_type = args.type.strip().upper()
     if args.format:
         out_format = args.format.strip().lower()
     if args.language:

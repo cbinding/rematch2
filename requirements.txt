@@ -7,8 +7,9 @@ opencv-python>=4.1.2
 matplotlib>=3.2.2
 ipyleaflet>=0.14.0
 sympy>=1.10.1
+ipywidgets>=7.7.0
 
-# NER ----------------------------
-spacy
-# JSON search
-jmespath
+# additional
+spacy>=3.3.1  # for NER
+jmespath>=1.0.1  # for JSON search
+
