@@ -101,6 +101,7 @@ class PeriodoData:
         #return json.dumps(result) # to return JSON string, not python object
         return result 
     
+
     # specialised properties based on .find
     # returns list of authority as [{id, label}]
     def get_authority_list(self, sorted=True):
@@ -110,29 +111,29 @@ class PeriodoData:
             lst.sort(key=lambda item: item["label"].lower())
         return lst
     
+
     # returns list of period as [{id, label}]
     def get_period_list(self, authorityID="*"):
         return self.find(f"authorities.{ authorityID }.periods.*.{{id: id, label: label}}") 
-
-    # convert periods list into spaCy patterns
-    @staticmethod
-    def _period_to_pattern(period_string):
-        words = period_string.split()
-        pattern = list(map(lambda word:  {"LOWER": word }, words)) 
-
+   
 
     @staticmethod
-    def _periods_to_patterns(data, file_name):
+    def _periods_to_patterns(data):
         patterns = list(map(lambda item: { 
             "id": item["id"],            
             "label": "TEMPORAL", 
             "language": "en", 
             "pattern": list(map(lambda word:  { "LOWER": word.lower() }, item["label"].split()))           
         }, data)) 
+        return patterns
 
+
+    @staticmethod
+    def _periods_to_pattern_file(data, file_name):
+        patterns = PeriodoData._periods_to_patterns(data)
         with open(file_name, "w") as f:
             json.dump(patterns, f, indent=3) 
- 
+
 
 # This class may be tested as a standalone script using the parameters below
 #  e.g. python PeriodoData.py
@@ -153,10 +154,10 @@ if __name__ == "__main__":
     # print(pd.find("authorities.*.{key: id, lbl: @.source.title}"))
     #print(pd.find("authorities.* | [?source.title != null].{key: id, lbl: @.source.title}"))
     lst1 = pd.get_authority_list()
-    lst2 = pd.get_period_list("p0kh9ds") # HeritageData 
+    lst2 = pd.get_period_list("p0kh9ds") # "p0kh9ds" = HeritageData 
 
     #lst = pd.get_period_list("p0h9ttq")
     print(lst1)
     print(lst2)
-    PeriodoData._periods_to_patterns(lst2, "en-periodo-data.json")
+    PeriodoData._periods_to_pattern_file(lst2, "en-periodo-data.json")
     #print(pd.find("authorities.*.[@.source.title, id]"))

@@ -1,0 +1,15 @@
+﻿the	DET	pot
+pot	NOUN	was
+was	AUX	was
+roman	ADJ	was
+or	CCONJ	roman
+1385	NUM	roman
+-	SYM	1420
+1420	NUM	1385
+or	CCONJ	1420
+possibly	ADV	medieval
+medieval	ADJ	roman
+or	CCONJ	medieval
+middle	ADJ	bronze
+bronze	NOUN	medieval
+age	NOUN	was
