@@ -27,11 +27,59 @@ from spacy import displacy
 from PeriodoData import PeriodoData
 
 class Recognizer:
-    """identifies and marks up temporal entities based on array of patterns"""
-    def __init__(self, lang="en"):
+    """identifies temporal entities in text based on array of predefined patterns"""
+    def __init__(self, lang="en", auth=""):
         self._language = lang.strip().lower()
-        self._all_token_patterns = Recognizer.__load_token_patterns_from_directory("../src/patterns")
-        #self._nlp = self.__getNLP() # sets up configured nlp pipeline object  
+
+        # load language-specific pre-defined token patterns 
+        patterns = Recognizer.__load_token_patterns_from_directory("../src/patterns")
+        self._token_patterns = [pattern for pattern in patterns if (pattern.get("language") or "").lower() == self._language]
+        
+        # prepare and configure language-specific spaCy trained pipeline      
+        self._nlp = None
+      
+        if(self._language == "fr"):
+            self._nlp = spacy.load("fr_core_news_sm", disable = ['ner'])   # French
+        elif(self._language == "it"):
+            self._nlp = spacy.load("it_core_news_sm", disable = ['ner'])   # Italian
+        elif(self._language == "no"):
+            self._nlp = spacy.load("nb_core_news_sm", disable = ['ner'])   # Norwegian Bokmal
+        elif(self._language == "sv"):
+            self._nlp = spacy.load("sv_core_news_sm", disable = ['ner'])   # Swedish          
+        else:
+            self._nlp = spacy.load("en_core_web_sm", disable = ['ner'])    # English (default)        
+
+        # TODO: don't recall why this was set - find out.. 
+        self._nlp.max_length = 2000000
+
+        # configuration for a spaCy entityRuler
+        ruler_config = {
+            "phrase_matcher_attr": "LOWER",
+            "validate": True,
+            "overwrite_ents": True, # overwrites overlapping entities
+            "ent_id_sep": "||"
+        }
+
+        # add 'atomic' entityRuler patterns (date prefixes, suffixes etc.)
+        ruler = self._nlp.add_pipe("entity_ruler", name="atomics", before="ner", config=ruler_config)
+        atomic_entities = ["DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "ORDINAL", "MONTHNAME", "SEASONNAME"]
+        atomic_patterns = [pattern for pattern in self._token_patterns if (pattern.get("label") or "").upper() in atomic_entities]
+        with self._nlp.select_pipes(enable="tagger"):
+            ruler.add_patterns(atomic_patterns)
+
+        # add 'composite' entityRuler patterns (year spans, century spans etc.)
+        # The composite patterns can refer to the atomic patterns
+        ruler = self._nlp.add_pipe("entity_ruler", name="composites", config=ruler_config)        
+        composite_entities = ["TEMPORAL", "CENTURYSPAN", "YEARSPAN", "NAMEDPERIOD"] # TODO: revert to having these different categories
+        composite_patterns = [pattern for pattern in self._token_patterns if (pattern.get("label") or "").upper() in composite_entities]
+        ruler.add_patterns(composite_patterns)
+
+        # add terms from selected Perio.do authority as patterns
+        pd = PeriodoData() # new instance, don't refresh cached data
+        periods = pd.get_period_list(auth) # periods for authority id
+        periodo_patterns = PeriodoData._periods_to_patterns(periods) # convert to spaCy pattern format
+        ruler.add_patterns(periodo_patterns)
+         
 
     @property
     def language(self):
@@ -42,8 +90,8 @@ class Recognizer:
     def language(self, new_value):
         clean_value = new_value.strip().lower()
         if self._language != clean_value:
-            self._language = clean_value            
-    
+            self._language = clean_value  
+                   
     @staticmethod
     def __load_token_patterns_from_directory(directory_name):
         """Load token patterns from JSON files situated in the specified directory"""
@@ -106,55 +154,14 @@ class Recognizer:
         #return nlp    
     
     def get_entities(self, text):
-        """locate named entities in text based on token patterns"""
-        # prepare language-specific spaCy NLP object        
-        nlp = None        
-        if(self._language == "fr"):
-            nlp = spacy.load("fr_core_news_sm")
-        elif(self._language == "no"):
-            nlp = spacy.load("nb_core_news_sm")
-        else:
-            nlp = spacy.load("en_core_web_sm", disable = ['ner'])            
-
-        # dont recall why.. TODO: find out.. 
-        nlp.max_length = 2000000
-
-        # configuration for spaCy entityRuler
-        ruler_config = {
-            "phrase_matcher_attr": "LOWER",
-            "validate": True,
-            "overwrite_ents": True, # overwrites overlapping entities
-            "ent_id_sep": "||"
-        }
-
-        # pipeline component adding (language specific) 'atomic' entityRuler patterns (date prefixes, suffixes etc.)
-        ruler = nlp.add_pipe("entity_ruler", name="atomics", before="ner", config=ruler_config)
-        atomic_entities = ["DATEPREFIX", "DATESUFFIX", "ORDINAL", "MONTHNAME", "SEASONNAME"]
-        atomic_patterns = [pattern for pattern in self._all_token_patterns if (pattern.get("label") or "").upper() in atomic_entities and (pattern.get("language") or "").lower() == self._language]
-        with nlp.select_pipes(enable="tagger"):
-            ruler.add_patterns(atomic_patterns)
-
-        # pipeline component adding (language specific) 'composite' entityRuler patterns (year spans, century spans etc.)
-        # The composite pattermns can refer to artomic patterns
-        ruler = nlp.add_pipe("entity_ruler", name="composites", config=ruler_config)        
-        #nlp.add_pipe("merge_entities")
-        #patterns = filter(lambda pattern: pattern["label"] or None in [self.entityType] and pattern["language"] or None == self._language, self._allTokenPatterns) 
-        composite_patterns = [pattern for pattern in self._all_token_patterns if (pattern.get("label") or "").lower() == "temporal" and (pattern.get("language") or "").lower() == self._language] 
-        ruler.add_patterns(composite_patterns)
-
-        # add selected Perio.do terms as patterns
-        authority_id = "p0kh9ds" # temp hardcoded (HeritageData)
-        pd = PeriodoData(False) # creating new instance, don't refresh cache
-        periods = pd.get_period_list(authority_id)
-        periodo_patterns = PeriodoData._periods_to_patterns(periods)
-        ruler.add_patterns(periodo_patterns)
+        """locate named entities in text based on token patterns"""        
 
         # normalise white spaces before tokenisation 
         # (extra spaces frustrate pattern matching)
         clean_input = " ".join(text.split())
         
         # find entities matching the token patterns         
-        doc = nlp(clean_input)
+        doc = self._nlp(clean_input)
                 
         # temp - write current tokens to file, to aid debugging
         txt = ""
@@ -176,7 +183,9 @@ class Recognizer:
                 "start_char": entity.start_char,
                 "end_char": entity.end_char,
                 "type": entity.label_
-            })       
+            }) 
+        # temp - describe current pipeline
+        #print(self._nlp.pipe_names)      
         return results
 
     @staticmethod
@@ -200,11 +209,13 @@ class Recognizer:
         # displacy requires this format as input     
         def formatter(e):
             return { "start": e["start_char"], "end": e["end_char"], "label": e["type"] }   
+        
         data = {
             "text": text,
             "ents": list(map(formatter, ents))
         }  
-        # get html rendering of input text with entities highlighted  
+
+        # return HTML rendering of input text with entities highlighted  
         options = {
             "ents": ["TEMPORAL"],
             "colors": {"TEMPORAL": "lightgreen"}
@@ -263,7 +274,7 @@ if __name__ == "__main__":
     parser.add_argument("-l", "--language",
         required=False,
         default="en",
-        choices=["en","fr","sv"],
+        choices=["en","fr","it","sv", "no"],
         type=str.lower,
         help="ISO language (short code). If not provided the default assumed is 'en' (English)") 
     parser.add_argument("-p", "--periodo",
@@ -286,10 +297,10 @@ if __name__ == "__main__":
 
     # get cleaned named arguments
     input_text = ""
-    language = ""
+    language = "en"
     out_format = "json"
     is_debug = False
-    periodo = None
+    periodo_id = "p0kh9ds" # temp default - HeritageData
 
     if args.input:
         input_text = args.input.strip()
@@ -303,8 +314,26 @@ if __name__ == "__main__":
         is_debug = True
 
     # identify named entities in text and output them
-    # TODO: use periodo_id here..
-    ner = Recognizer(language)
+    # periodo_id examples: 
+    # "p0kh9ds" - HeritageData (en)
+    # "p02chr4" - PACTOLS chronology used in DOLIA data (fr)
+    # "p0qhb66" - ARIADNE original collection (includes it)
+    # "p0vn2fr" - Sök i samlingarna (sv)
+    # "p04h98q" - Norsk arkeologisk leksikon (no)
+
+    # text examples:
+    # "The pot was medieval or mid bronze age or 1257 to 1575" (en)
+    # "Le pot est jurassique ou trias ou 1257 a 1575" (fr)
+    # "Potten var middelaldersk eller middels bronsealder eller 1257 til 1575" (no)
+
+    # commands:
+    # python Recognizer.py -l="en" -p="p0kh9ds" -f="tsv" -i="The pot was medieval or mid bronze age or 1257 to 1575" 
+    # python Recognizer.py -l="fr" -p="p02chr4" -f="tsv" -i="Le pot est jurassique ou trias ou 1257 - 1575" 
+    # python Recognizer.py -l="it" -p="p0qhb66" -f="tsv" -i="Il vaso era medievale o medio dell'età del bronzo o dal 1257 al 1575" 
+    # python Recognizer.py -l="sv" -p="p0vn2fr" -f="tsv" -i="Krukan var medeltid eller mellan bronsålder eller 1257 till 1575" 
+    # python Recognizer.py -l="no" -p="p04h98q" -f="tsv" -i="Potten var middelaldersk eller middels bronsealder eller 1257 til 1575" 
+
+    ner = Recognizer(language, periodo_id)
     entities = ner.get_entities(input_text)
     formatted = Recognizer.format_entities(input_text, entities, out_format)
     print(formatted)

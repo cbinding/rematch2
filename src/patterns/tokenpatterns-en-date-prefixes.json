@@ -3,10 +3,10 @@
         "label": "DATEPREFIX", 
         "language": "en",
         "pattern": [
-            {"LOWER": {"REGEX": "^(c\\.|circa)$"}}            
+            {"LOWER": {"REGEX": "^(c\\.|circa|around|approximately)$"}}            
         ]
     },
-    { 
+    {
         "label": "DATEPREFIX", 
         "language": "en",
         "pattern": [

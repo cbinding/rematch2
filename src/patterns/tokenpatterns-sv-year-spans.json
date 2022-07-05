@@ -1,0 +1,73 @@
+[ 
+    { 
+        "label": "TEMPORAL", 
+        "language": "sv",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"LOWER": {"REGEX": "^\\d+0\\-talet$"}}             
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "sv",
+        "comment": "",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "MONTHNAME"},
+            {"ORTH": {"REGEX": "^\\d+$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+        ]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "sv",
+        "comment": "",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "SEASONNAME"},
+            {"ORTH": {"REGEX": "^\\d+$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+        ]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "sv",
+        "comment": "",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ORTH": {"REGEX": "^\\d+$"}},
+            {"OP": "+", "ENT_TYPE": "DATESUFFIX"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "sv",
+        "comment": "",
+        "pattern": [
+            {"ORTH": {"REGEX": "^\\d+[\\–\\-]\\d+$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "sv",
+        "comment": "",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ORTH": {"REGEX": "^\\d+$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}, 
+            {"ENT_TYPE": "DATESEPARATOR"}, 
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ORTH": {"REGEX": "^\\d+$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL",
+        "comment": "**See https://stackoverflow.com/questions/57477852/spacy-matcher-with-entities-spanning-more-than-a-single-token  retokenizing with custom entity types..",
+        "language": "sv",
+        "pattern": [
+           {"ORTH": "xxxxxxxxx"}
+        ]
+    }
+]

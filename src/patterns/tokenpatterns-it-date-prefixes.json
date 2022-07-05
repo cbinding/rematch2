@@ -1,0 +1,66 @@
+[
+    { 
+        "label": "DATEPREFIX", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(c\\.|circa)$"}},
+            {"OP": "?", "LOWER": {"REGEX": "^(al|ca.?)$"}}           
+        ]
+    },
+    { 
+        "label": "DATEPREFIX", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(intorno|fino)$"}},
+            {"LOWER": {"REGEX": "^a(l'?)?$"}}           
+        ]
+    },
+    { 
+        "label": "DATEPREFIX", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(inizio|fine)$"}},
+            {"LOWER": {"REGEX": "^del(l'?)?$"}}           
+        ]
+    },
+    { 
+        "label": "DATEPREFIX", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(prima|tarda)$"}},
+            {"LOWER": "età"}          
+        ]
+    },
+    { 
+        "label": "DATEPREFIX", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(prim[io]|medio|mezzo)$"}} 
+        ]
+    },
+    { 
+        "label": "DATEPREFIX", 
+        "language": "it",
+        "pattern": [
+            {"OP": "?", "ENT_TYPE": "ORDINAL"}, 
+            {"LOWER": "metà"},
+            {"LOWER": "del"}
+        ]
+    },
+    { 
+        "label": "DATEPREFIX", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(medio|mezzo)$"}} 
+        ]
+    },
+    { 
+        "label": "DATEPREFIX", 
+        "language": "it",
+        "pattern": [
+            {"ENT_TYPE": "ORDINAL"}, 
+            {"LOWER": {"REGEX": "^(quarto|trimestre)$"}}, 
+            {"OP": "?", "LOWER": "del"}
+        ]
+    }
+]

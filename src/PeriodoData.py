@@ -28,19 +28,24 @@ class PeriodoData:
     CACHE_FILE_NAME = "periodo-cache.json"
 
 
-    def __init__(self, refresh_cache=False):
+    def __init__(self, from_cache=True):
         self.jsondata = None
-        self.load(refresh_cache)
+        self.load(from_cache)
 
 
-    def load(self, refresh_cache=False):
+    def load(self, from_cache=True):
         """load data from cache or from url"""
+
         # checking if cache file exists first
         file_name = PeriodoData.CACHE_FILE_NAME
         cache_file_exists = exists(file_name)
 
-        if cache_file_exists == False or refresh_cache == True:
-            PeriodoData._cache_from_url(PeriodoData.PERIODO_URI)
+        # if cache not present or we want to force a refresh, 
+        # get Perio.do data from URI and store to local file
+        if(cache_file_exists == False or from_cache == False):
+            PeriodoData._cache_from_url(PeriodoData.PERIODO_URI)        
+
+        # either way, now get Perio.do data from the cache file    
         self.jsondata = PeriodoData._json_from_file(file_name) 
 
 
@@ -124,7 +129,7 @@ class PeriodoData:
             "label": "TEMPORAL", 
             "language": "en", 
             "pattern": list(map(lambda word:  { "LOWER": word.lower() }, item["label"].split()))           
-        }, data)) 
+        }, data or [])) 
         return patterns
 
 
@@ -138,7 +143,7 @@ class PeriodoData:
 # This class may be tested as a standalone script using the parameters below
 #  e.g. python PeriodoData.py
 if __name__ == "__main__":
-    pd = PeriodoData(False)
+    pd = PeriodoData()
     #pd.load()
     #print(pd.authorities) # all authorities
     #print(pd.data) # this specific authority

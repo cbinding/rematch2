@@ -1,0 +1,42 @@
+[
+    { 
+        "label": "DATESUFFIX", 
+        "language": "sv",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(efter|enligt|före)$"}},
+            {"LOWER": "vår"},
+            {"LOWER": "tideräkning"}
+        ]
+    },  
+    { 
+        "label": "DATESUFFIX", 
+        "language": "sv",
+        "pattern": [
+            {"LOWER": {"REGEX": "^[ef]\\.?v\\.?t\\.?$"}}            
+        ]
+    },  
+    { 
+        "label": "DATESUFFIX", 
+        "language": "sv",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(efter|e\\.?|före|f\\.?)$"}},
+            {"LOWER": {"REGEX": "^(kristus|kr\\.?|k\\.?)$"}}
+        ]
+    },  
+    { 
+        "label": "DATESUFFIX", 
+        "language": "sv",
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "^cal\\.?$"}},
+            {"LOWER": {"REGEX": "^(a\\.?c\\.?|b\\.?p\\.?|b\\.?c\\.?(e\\.?)?)$"}}
+        ]
+    },
+    { 
+        "label": "DATESUFFIX", 
+        "language": "sv",
+        "pattern": [
+            {"LOWER": "före"},
+            {"LOWER": "nutid"}
+        ]
+    }
+]

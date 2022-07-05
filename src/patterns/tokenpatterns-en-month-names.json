@@ -31,7 +31,7 @@
         "label": "MONTHNAME", 
         "language": "en",
         "pattern": [
-            {"LOWER": {"REGEX": "^may$"}}            
+            {"LOWER": "may"}            
         ]
     },
     { 

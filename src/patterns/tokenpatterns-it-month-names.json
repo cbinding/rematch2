@@ -1,0 +1,86 @@
+[
+    { 
+        "label": "MONTHNAME", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^genn(?:\\.|aio)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^febbr(?:\\.|aio)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^mar(?:\\.|zo)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^apr(?:\\.|ile)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^magg(?:\\.|io)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^giu(?:\\.|gno)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^lug(?:\\.|lio)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^ag(?:\\.|osto)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^sett(?:\\.|embre)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^ott(?:\\.|obre)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^nov(?:\\.|embre)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^dic(?:\\.|embre)$"}}            
+        ]
+    }
+]

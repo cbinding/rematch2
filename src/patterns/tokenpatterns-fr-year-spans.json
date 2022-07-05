@@ -1,0 +1,75 @@
+[        
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "comment": "",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "MONTHNAME"},
+            {"ORTH": {"REGEX": "^\\d+$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+        ]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "comment": "",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "SEASONNAME"},
+            {"ORTH": {"REGEX": "^\\d+$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+        ]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "comment": "",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ORTH": {"REGEX": "^\\d+$"}},
+            {"OP": "+", "ENT_TYPE": "DATESUFFIX"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "comment": "",
+        "pattern": [
+            {"ORTH": {"REGEX": "^\\d+(?:[–-]|au)\\d+$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "comment": "",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ORTH": {"REGEX": "^\\d+$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}, 
+            {"ENT_TYPE": "DATESEPARATOR"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ORTH": {"REGEX": "^\\d+$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
+        ] 
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [ 
+            {"OP": "?", "LOWER": {"REGEX": "^ann[eé]es?$"}},
+            {"LOWER": {"REGEX": "^\\d{1,4}$"}}, 
+            {"ENT_TYPE": "DATESEPARATOR"},
+            {"LOWER": {"REGEX": "^\\d{1,4}$"}} 
+        ]
+    },    
+    { 
+        "label": "TEMPORAL", 
+        "language": "fr",
+        "pattern": [ 
+            {"LOWER": {"REGEX": "^(ann[eé]es?|en)$"}},
+            {"LOWER": {"REGEX": "^\\d{1,4}$"}}
+        ]
+    }
+]

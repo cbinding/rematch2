@@ -48,7 +48,7 @@
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ORTH": {"REGEX": "^\\d+$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"}, 
-            {"ORTH": {"REGEX": "^(?:[–-]|to)$"}},
+            {"ENT_TYPE": "DATESEPARATOR"}, 
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ORTH": {"REGEX": "^\\d+$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"}

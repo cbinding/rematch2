@@ -1,0 +1,21 @@
+[
+    { 
+        "label": "ORDINAL", 
+        "language": "fr",
+        "pattern": [
+            { "LOWER": { "IN": [
+                "premier", "deuxième", "second", "troisième", "quatrième", "cinquième",
+                "sixième", "septième", "huitième", "neuvième", "dixième", "onzième",
+                "douzième", "treizième", "quatorzième", "quinzième", "seizième",
+                "dix-septième", "dix-huitième", "dix-neuvième", "vingtième" 
+            ]}}            
+        ]
+    },
+    { 
+        "label": "ORDINAL", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^([mdclxvi]+|\\d+)(er?|[eè]me)$"}}            
+        ] 
+    }
+]

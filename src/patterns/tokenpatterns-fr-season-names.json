@@ -1,0 +1,9 @@
+[
+    { 
+        "label": "SEASONNAME", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(printemps|été|automne|hiver)$"}}            
+        ]
+    }
+]

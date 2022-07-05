@@ -6,7 +6,7 @@
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": "^\\d+$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
-            {"LOWER": {"REGEX": "^(?:[\\–\\-/]|til|og|och|eller)$"}},
+            {"ENT_TYPE": "DATESEPARATOR"},
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": "^\\d+$"}},   
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"}         
@@ -28,7 +28,7 @@
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": "^\\d+±\\d+$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
-            {"LOWER": {"REGEX": "^(?:[\\–\\-/]|til|og|och|eller)$"}},
+            {"ENT_TYPE": "DATESEPARATOR"},
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": "^\\d+±\\d+$"}},   
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"}         

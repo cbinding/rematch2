@@ -7,7 +7,7 @@
             {"LOWER": {"REGEX": "^\\d$"}},
             {"OP": "?", "LOWER": {"REGEX": "^(?:århundre|årtusen)$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
-            {"ORTH": {"REGEX": "^(?:[\\–\\-/]|til|og|och|eller)$"}},
+            {"ENT_TYPE": "DATESEPARATOR"},
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": "^\\d$"}},
             {"LOWER": {"REGEX": "^(?:århundre|årtusen)$"}},
@@ -19,12 +19,12 @@
         "language": "no",
         "pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
-            {"LOWER": {"REGEX": "^(?:f?ørste?|an(?:nen|na|net|dre)|tredje|fjerde|femte|sjette|syvende|sjuende|åttende|niende|tiende|ellevte|tolvte|trettende|fjortende|femtende|sekstende|syttende|attende|nittende|tyvende|tjuende|tjueførste?|tjuesekund|tjuetredje|tjuefjerde|tjuefemte|tjuesjette|tjuesyvende|tjueåtte|tjueniende|tretti|trettiførste?)$"}},
+            {"ENT_TYPE": "ORDINAL"},
             {"OP": "?", "LOWER": {"REGEX": "^(?:århundre|årtusen)$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
-            {"ORTH": {"REGEX": "^(?:[\\–\\-/]|til|og|och|eller)$"}},
+            {"ENT_TYPE": "DATESEPARATOR"},
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
-            {"LOWER": {"REGEX": "^(?:f?ørste?|an(?:nen|na|net|dre)|tredje|fjerde|femte|sjette|syvende|sjuende|åttende|niende|tiende|ellevte|tolvte|trettende|fjortende|femtende|sekstende|syttende|attende|nittende|tyvende|tjuende|tjueførste?|tjuesekund|tjuetredje|tjuefjerde|tjuefemte|tjuesjette|tjuesyvende|tjueåtte|tjueniende|tretti|trettiførste?)$"}},
+            {"ENT_TYPE": "ORDINAL"},
             {"LOWER": {"REGEX": "^(?:århundre|årtusen)$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]

@@ -1,0 +1,9 @@
+[
+    { 
+        "label": "DATESEPARATOR", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(?:[/\\–\\-a]|al|all[a'])$"}}            
+        ]
+    }
+]

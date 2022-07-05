@@ -1,0 +1,23 @@
+[
+    { 
+        "label": "DATESUFFIX", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(?:d\\.?c\\.?|c\\.?e\\.?)$"}}
+        ]
+    },
+    { 
+        "label": "DATESUFFIX", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(?:a\\.?c\\.?|(?:cal\\.?\\s)?b\\.?c\\.?(?:e\\.?)?)$"}}
+        ]
+    },
+    { 
+        "label": "DATESUFFIX", 
+        "language": "it",
+        "pattern": [
+            {"LOWER": {"REGEX": "^b\\.?p\\.?$"}}
+        ]
+    }
+]

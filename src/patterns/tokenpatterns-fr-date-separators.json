@@ -1,0 +1,9 @@
+[
+    { 
+        "label": "DATESEPARATOR", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(?:[–-]|au)$"}}            
+        ]
+    }
+]

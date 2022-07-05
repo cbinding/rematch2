@@ -1,0 +1,32 @@
+[
+    { 
+        "label": "DATEPREFIX", 
+        "language": "nl",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(ca\\.?|ongeveer)$"}}            
+        ]
+    },
+    {
+        "label": "DATEPREFIX", 
+        "language": "nl",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(vroege?|begin|midden|eind|laat|late)$"}}            
+        ]
+    },    
+    { 
+        "label": "DATEPREFIX",
+        "language": "nl", 
+        "pattern": [
+            {"LOWER": {"REGEX": "^(eerste|tweede)$"}},
+            {"LOWER": "helft"}
+        ]
+    },
+    { 
+        "label": "DATEPREFIX", 
+        "language": "nl",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(eerste|tweede|derde|vierde)$"}},
+            {"LOWER": "kwart(ier|aal)?"}           
+        ]
+    }    
+]
