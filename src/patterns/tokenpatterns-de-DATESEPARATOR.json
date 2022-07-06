@@ -1,0 +1,9 @@
+[
+    { 
+        "label": "DATESEPARATOR", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(?:[\\–\\-]|bi[st]|und|oder|p{Pd})$"}}            
+        ]
+    }
+]

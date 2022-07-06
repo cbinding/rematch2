@@ -1,0 +1,51 @@
+[
+    { 
+        "label": "DAYNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^mon(\\.|day)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^tues(\\.|day)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^wed(\\.|nesday)?$"}}           
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^thu(r?\\.?|rsday)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^fri(\\.|day)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^sat(\\.|urday)?$"}}           
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "en",
+        "pattern": [
+            {"LOWER": {"REGEX": "^sun(\\.|day)$"}}            
+        ]
+    }
+]

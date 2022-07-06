@@ -1,0 +1,51 @@
+[
+    { 
+        "label": "DAYNAME", 
+        "language": "es",
+        "pattern": [
+            {"LOWER": {"REGEX": "^lun(es)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "es",
+        "pattern": [
+            {"LOWER": {"REGEX": "^mar(tes)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "es",
+        "pattern": [
+            {"LOWER": {"REGEX": "^mi[eé](rcoles)?$"}}           
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "es",
+        "pattern": [
+            {"LOWER": {"REGEX": "^jue(ves)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "es",
+        "pattern": [
+            {"LOWER": {"REGEX": "^vie(rnes)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "es",
+        "pattern": [
+            {"LOWER": {"REGEX": "^sáb(ado)?$"}}           
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "es",
+        "pattern": [
+            {"LOWER": {"REGEX": "^dom(ingo)?$"}}            
+        ]
+    }
+]

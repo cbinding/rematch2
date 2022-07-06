@@ -1,0 +1,86 @@
+[
+    { 
+        "label": "MONTHNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": {"REGEX": "^j[aä]n(\\.|uar)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": {"REGEX": "^feb(\\.|ruar)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER":"märz"}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": {"REGEX": "^apr(\\.|il)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": "mai"}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": "juni"}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": "juli"}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": {"REGEX": "^aug(\\.|ust)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": {"REGEX": "^sept(\\.|ember)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": {"REGEX": "^okt(\\.|ober)?$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": {"REGEX": "^nov(\\.|ember)$"}}            
+        ]
+    },
+    { 
+        "label": "MONTHNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": {"REGEX": "^dez(\\.|ember)?$"}}            
+        ]
+    }
+]

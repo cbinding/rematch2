@@ -1,0 +1,21 @@
+[
+    { 
+        "label": "DATESUFFIX",
+        "comment": "ad | bc | bce | bp | ce | a.d. | b.c. | b.c.e. | b.p. | c.e.",
+        "language": "es",
+        "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "cal\\.?"}},
+            {"LOWER": {"REGEX": "^(ad|bce?|bp|ce|a\\.d\\.|b\\.c\\.(e\\.)?|b\\.p\\.|c\\.e\\.)$"}}
+        ]
+    },
+    { 
+        "label": "DATESUFFIX",
+        "comment": "de cristo | antes de cristo",
+        "language": "es",
+        "pattern": [
+            {"OP": "?", "LOWER": "antes"},
+            {"LOWER": "de"},
+            {"LOWER": "cristo"}
+        ]
+    }
+]

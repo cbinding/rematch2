@@ -1,0 +1,51 @@
+[
+    { 
+        "label": "DAYNAME", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^lun(\\.|di)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^mar(\\.|di)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^mer(\\.|credi)?$"}}           
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^jeu(\\.|di)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^ven(\\.|dredi)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^sam(\\.|edi)?$"}}           
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "fr",
+        "pattern": [
+            {"LOWER": {"REGEX": "^dim(\\.|anche)?$"}}            
+        ]
+    }
+]

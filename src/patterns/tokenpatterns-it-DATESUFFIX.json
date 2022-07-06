@@ -2,7 +2,7 @@
     { 
         "label": "DATESUFFIX", 
         "language": "it",
-        "pattern": [
+        "pattern": [            
             {"LOWER": {"REGEX": "^(?:d\\.?c\\.?|c\\.?e\\.?)$"}}
         ]
     },

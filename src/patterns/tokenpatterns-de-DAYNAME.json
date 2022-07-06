@@ -1,0 +1,51 @@
+[
+    { 
+        "label": "DAYNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": {"REGEX": "^mo(\\.|ntag)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": {"REGEX": "^di(\\.|enstag)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": {"REGEX": "^mi(\\.|ttwoch)?$"}}           
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": {"REGEX": "^do(\\.|nnerstag)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": {"REGEX": "^fr(\\.|eitag)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": {"REGEX": "^sa(\\.|mstag)?$"}}           
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "de",
+        "pattern": [
+            {"LOWER": {"REGEX": "^so(\\.|nntag)$"}}            
+        ]
+    }
+]

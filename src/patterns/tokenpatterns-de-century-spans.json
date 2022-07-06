@@ -1,0 +1,29 @@
+[
+    { 
+        "label": "TEMPORAL", 
+        "language": "de",
+        "comment": "",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "ORDINAL"},
+            {"LOWER": {"REGEX": "^(jahrhunderts?|jhs?\\.?|jahrtausends?)$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+        ]
+    },
+    { 
+        "label": "TEMPORAL", 
+        "language": "de",
+        "comment": "",
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "ORDINAL"},
+            {"OP": "?", "LOWER": {"REGEX": "^(jahrhunderts?|jhs?\\.?|jahrtausends?)$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "ORDINAL"},
+            {"LOWER": {"REGEX": "^(jahrhunderts?|jhs?\\.?|jahrtausends?)$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+        ]
+    }
+]

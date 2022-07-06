@@ -1,0 +1,43 @@
+[
+    { 
+        "label": "DATEPREFIX", 
+        "language": "es",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(hacia|aprox(\\.|imadamente)?)$"}}
+        ]
+    },
+    {
+        "label": "DATEPREFIX", 
+        "language": "es",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(principios|inicio|mediales|finales)$"}}, 
+            {"LOWER": {"REGEX": "^del?"}}             
+        ]
+    },        
+    { 
+        "label": "DATEPREFIX",
+        "language": "es", 
+        "pattern": [
+            {"LOWER": {"REGEX": "^(primera|segunda)$"}},
+            {"LOWER": "mitad"},
+            {"LOWER": {"REGEX": "^del?"}}        
+        ]
+    },
+    { 
+        "label": "DATEPREFIX", 
+        "language": "es",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(primer|segundo|tercer|cuarto)$"}},
+            {"LOWER": "cuarto"},
+            {"LOWER": {"REGEX": "^del?"}} 
+        ]
+    },
+    { 
+        "label": "DATEPREFIX", 
+        "language": "es",
+        "pattern": [
+            {"LOWER": {"REGEX": "^(de|antes|durante|post|después|hasta|para)$"}},
+            {"OP": "?", "LOWER": {"REGEX": "^del?"}} 
+        ]
+    }
+]

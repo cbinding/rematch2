@@ -59,7 +59,7 @@ testData = [
 
 
 if __name__ == "__main__":
-    language = "fr"
+    language = "en"
     out_format = "tsv"
     for testItem in testData:
         if testItem["language"] == language:              

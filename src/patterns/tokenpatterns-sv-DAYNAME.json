@@ -1,0 +1,51 @@
+[
+    { 
+        "label": "DAYNAME", 
+        "language": "sv",
+        "pattern": [
+            {"LOWER": {"REGEX": "^mån(\\.|dag)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "sv",
+        "pattern": [
+            {"LOWER": {"REGEX": "^tis(\\.|dag)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "sv",
+        "pattern": [
+            {"LOWER": {"REGEX": "^ons(\\.|dag)?$"}}           
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "sv",
+        "pattern": [
+            {"LOWER": {"REGEX": "^tors(dag)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "sv",
+        "pattern": [
+            {"LOWER": {"REGEX": "^fre(dag)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "sv",
+        "pattern": [
+            {"LOWER": {"REGEX": "^lör(\\.|dag)?$"}}           
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "sv",
+        "pattern": [
+            {"LOWER": {"REGEX": "^sön(\\.|dag)?$"}}            
+        ]
+    }
+]

@@ -128,7 +128,7 @@ class PeriodoData:
             "id": item["id"],            
             "label": "TEMPORAL", 
             "language": "en", 
-            "pattern": list(map(lambda word:  { "LOWER": word.lower() }, item["label"].split()))           
+            "pattern": list(map(lambda word: { "LOWER": word.lower() }, item["label"].split()))           
         }, data or [])) 
         return patterns
 

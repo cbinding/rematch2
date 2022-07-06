@@ -3,6 +3,7 @@
         "label": "DATESUFFIX", 
         "language": "nl",
         "pattern": [
+            {"OP": "?", "LOWER": {"REGEX": "cal\\.?"}},
             {"LOWER": {"REGEX": "^(ad|bce?|bp|a\\.d\\.|b\\.c\\.|b\\.c\\.e\\.|b\\.p\\.)$"}}
         ]
     },

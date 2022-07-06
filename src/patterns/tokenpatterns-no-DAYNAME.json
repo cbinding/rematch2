@@ -1,0 +1,51 @@
+[
+    { 
+        "label": "DAYNAME", 
+        "language": "no",
+        "pattern": [
+            {"LOWER": {"REGEX": "^m(å|aa?)n(dag)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "no",
+        "pattern": [
+            {"LOWER": {"REGEX": "^t(y|ir)s(dag)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "no",
+        "pattern": [
+            {"LOWER": {"REGEX": "^ons(dag)?$"}}           
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "no",
+        "pattern": [
+            {"LOWER": {"REGEX": "^tors(dag)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "no",
+        "pattern": [
+            {"LOWER": {"REGEX": "^fre(dag)?$"}}            
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "no",
+        "pattern": [
+            {"LOWER": {"REGEX": "^l(au|ø)(r|dag)?$"}}           
+        ]
+    },
+    { 
+        "label": "DAYNAME", 
+        "language": "no",
+        "pattern": [
+            {"LOWER": {"REGEX": "^søn(dag)?$"}}            
+        ]
+    }
+]
