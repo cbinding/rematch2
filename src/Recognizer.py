@@ -33,7 +33,7 @@ class Recognizer:
     """identifies temporal entities in text based on array of predefined patterns"""
     def __init__(self, language="en", auth=""):
         
-        self._language = language
+        self.language = language
 
         # load language-specific pre-defined token patterns 
         #patterns = Recognizer.__load_token_patterns_from_directory("../src/patterns")
@@ -42,19 +42,19 @@ class Recognizer:
 
         # prepare and configure language-specific spaCy pipeline  
         pipeline_name = ""
-        if(self._language == "de"):
+        if(self.language == "de"):
             pipeline_name = "de_core_news_sm"   # German
-        elif(self._language == "es"):
+        elif(self.language == "es"):
             pipeline_name = "es_core_news_sm"   # Spanish
-        elif(self._language == "fr"):
+        elif(self.language == "fr"):
             pipeline_name = "fr_core_news_sm"   # French
-        elif(self._language == "it"):
+        elif(self.language == "it"):
             pipeline_name = "it_core_news_sm"   # Italian
-        elif(self._language == "nl"):
+        elif(self.language == "nl"):
             pipeline_name = "nl_core_news_sm"   # Dutch
-        elif(self._language == "no"):
+        elif(self.language == "no"):
             pipeline_name = "nb_core_news_sm"   # Norwegian Bokmal
-        elif(self._language == "sv"):
+        elif(self.language == "sv"):
             pipeline_name = "sv_core_news_sm"   # Swedish 
         else:
             pipeline_name = "en_core_web_sm"    # English (default)
@@ -82,9 +82,9 @@ class Recognizer:
         # add 'composite' entityRuler patterns (year spans, century spans etc.)
         # composite patterns can refer to atomic patterns
         ruler = self._nlp.add_pipe("entity_ruler", name="composites", config=ruler_config)        
-        composite_entities = ["TEMPORAL", "CENTURYSPAN", "YEARSPAN", "NAMEDPERIOD"] # TODO: revert to having these different categories
+        composite_entities = ["TEMPORAL", "CENTURYSPAN", "YEARSPAN", "NAMEDPERIOD", "MONUMENT"] # TODO: revert to having these different categories
         #composite_patterns = [pattern for pattern in self._token_patterns if (pattern.get("label") or "").upper() in composite_entities]
-        composite_patterns = tp.get(self._language, composite_entities)
+        composite_patterns = tp.get(self.language, composite_entities)
         ruler.add_patterns(composite_patterns)
 
         # add terms from selected Perio.do authority as patterns
@@ -130,7 +130,7 @@ class Recognizer:
 
         # create and return array of entities
         results = []
-        for entity in [e for e in doc.ents if e.label_ == "TEMPORAL"]:
+        for entity in [e for e in doc.ents if e.label_ in ["TEMPORAL", "MONUMENT"]]:
             results.append({
                 "id": entity.ent_id_,
                 "text": entity.text,
@@ -173,8 +173,8 @@ class Recognizer:
 
         # return HTML rendering of input text with entities highlighted  
         options = {
-            "ents": ["TEMPORAL"],
-            "colors": {"TEMPORAL": "lightgreen"}
+            "ents": ["TEMPORAL", "MONUMENT"],
+            "colors": {"TEMPORAL": "lightgreen", "MONUMENT": "lightblue"}
         }
         html = displacy.render(data, style="ent", manual=True, page=False, minify=True, options=options)
         return html
@@ -234,7 +234,7 @@ if __name__ == "__main__":
     parser.add_argument("-l", "--language",
         required=False,
         default="en",
-        choices=["en","fr","it","sv", "no"],
+        choices=["de", "en", "es", "fr", "it", "nl", "no", "sv"],
         type=str.lower,
         help="ISO language (short code). If not provided the default assumed is 'en' (English)") 
     parser.add_argument("-p", "--periodo",

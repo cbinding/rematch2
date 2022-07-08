@@ -14,7 +14,7 @@
         "comment": "summer", 
         "language": "no",
         "pattern": [
-            {"LOWER": "på"},   
+            {"OP": "?", "LOWER": "på"},   
             {"LOWER": {"REGEX": "^sommer(en)?$"}}             
         ]
     },
@@ -23,7 +23,7 @@
         "comment": "autumn",
         "language": "no",
         "pattern": [
-            {"LOWER": "på"},   
+            {"OP": "?", "LOWER": "på"},   
             {"LOWER": {"REGEX": "^høst(en)?$"}}             
         ]
     },
@@ -32,7 +32,7 @@
         "comment": "winter",
         "language": "no",
         "pattern": [
-            {"LOWER": "på"},   
+            {"OP": "?", "LOWER": "på"},   
             {"LOWER": {"REGEX": "^vinter(en)?$"}}             
         ]
     },
@@ -49,7 +49,7 @@
         "comment": "winter half",
         "language": "no",
         "pattern": [
-            {"LOWER": "på"},   
+            {"OP": "?", "LOWER": "på"},   
             {"LOWER": "vinterhalvåret"}             
         ]
     },
@@ -58,7 +58,7 @@
         "comment": "summer half", 
         "language": "no",
         "pattern": [
-            {"LOWER": "på"},   
+            {"OP": "?", "LOWER": "på"},   
             {"LOWER": "sommerhalvåret"}             
         ]
     }
