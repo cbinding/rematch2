@@ -17,6 +17,9 @@
 # =============================================================================
 import json
 import jmespath
+
+#from jsonpath_rw import jsonpath
+
 from os.path import exists
 from urllib.request import urlopen
 
@@ -103,23 +106,35 @@ class PeriodoData:
     def find(self, pattern):
         """find data by pattern, return JSON"""
         result = jmespath.search(pattern, self.jsondata)
+        #result = jsonpath.match(pattern, self.jsondata)
         #return json.dumps(result) # to return JSON string, not python object
         return result 
-    
+
+
+    def count(self, pattern):
+        """get number of items matching the search pattern"""
+        return length(self.find(pattern))
+
 
     # specialised properties based on .find
     # returns list of authority as [{id, label}]
-    def get_authority_list(self, sorted=True):
-        #return self.find("keys(authorities)") 
+    def get_authority_list(self, sorted=True):        
+        # using jmespath:
         lst = self.find("authorities.* | [?source.title != null].{id: id, label: @.source.title}")
+        
         if(sorted):
             lst.sort(key=lambda item: item["label"].lower())
         return lst
     
 
-    # returns list of period as [{id, label}]
+    # returns list of period labels as [{id, label, language}]
     def get_period_list(self, authorityID="*"):
-        return self.find(f"authorities.{ authorityID }.periods.*.{{id: id, label: label}}") 
+        preferredLabels = self.find(f"authorities.{ authorityID }.periods.*.{{id: id, label: label, language: languageTag}}")
+        #localisedLabels = self.find(f"authorities.{ authorityID }.periods.*.localisedLabels.*.{{id: id, label: label, language: languageTag}}")
+        
+        #return(preferredLabels + localisedLabels)
+        return(preferredLabels)
+        #return self.find(f"authorities.{ authorityID }.periods.*.{{id: id, label: label, language: languageTag}}") 
    
 
     @staticmethod
@@ -143,7 +158,7 @@ class PeriodoData:
 # This class may be tested as a standalone script using the parameters below
 #  e.g. python PeriodoData.py
 if __name__ == "__main__":
-    pd = PeriodoData()
+    pd = PeriodoData(False)
     #pd.load()
     #print(pd.authorities) # all authorities
     #print(pd.data) # this specific authority
@@ -162,7 +177,10 @@ if __name__ == "__main__":
     lst2 = pd.get_period_list("p0kh9ds") # "p0kh9ds" = HeritageData 
 
     #lst = pd.get_period_list("p0h9ttq")
-    print(lst1)
-    print(lst2)
+    print(lst1[0:2])
+    #print(lst2)
     PeriodoData._periods_to_pattern_file(lst2, "en-periodo-data.json")
     #print(pd.find("authorities.*.[@.source.title, id]"))
+
+    #authority="p0qwjcd"
+    #print(pd.find("authorities.{auth}.periods.*.{{id: id, label: label, language: languageTag}}".format(auth="p0kh9ds")))

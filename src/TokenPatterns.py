@@ -66,7 +66,7 @@ class TokenPatterns:
 # test code for this class
 if __name__ == "__main__":
     language = "de"
-    entities = ["MONTHNAME", "DATESUFFIX"]
+    entities = ["MONTHNAME", "DATESUFFIX", "MONUMENT"]
     tp = TokenPatterns()
 
     count = tp.count(language, entities)

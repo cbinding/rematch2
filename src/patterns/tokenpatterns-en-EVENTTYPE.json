@@ -1,0 +1,1442 @@
+[
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145108",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "aerial"},
+			{"LOWER": "reconnaissance"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146342",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "laser"},
+			{"LOWER": "scanning"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170111",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "airborne"},
+			{"LOWER": "laser"},
+			{"LOWER": "scanning"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145142",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "lidar"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145155",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "rectified"},
+			{"LOWER": "photographic"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145153",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "photogrammetric"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145154",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "photographic"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147299",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "assessment"},
+			{"LOWER": "and"},
+			{"LOWER": "analysis"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/168103",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "post"},
+			{"LOWER": "excavation"},
+			{"LOWER": "assessment"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145152",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "phosphate"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145133",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "geochemical"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146353",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "geotechnical"},
+			{"LOWER": "test"},
+			{"LOWER": "pit"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147259",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "geotechnical"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170652",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "observation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170653",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "diver"},
+			{"LOWER": "inspection"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145121",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "core"},
+			{"LOWER": "sampling"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147312",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "gravity"},
+			{"LOWER": "core"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147323",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "electromagnetic"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145158",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "earth"},
+			{"LOWER": "resistance"},
+			{"LOWER": "resistivity"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145134",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "geophysical"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145122",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "dendrochronological"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145126",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "environmental"},
+			{"LOWER": "intervention"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145173",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "timber"},
+			{"LOWER": "sampling"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145131",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147244",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "analytical"},
+			{"LOWER": "earthwork"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145174",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "topographic"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170657",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "buildings"},
+			{"LOWER": "recording"},
+			{"LOWER": "and"},
+			{"LOWER": "investigation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170668",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "visual"},
+			{"LOWER": "buildings"},
+			{"LOWER": "record"},
+			{"LOWER": "level"},
+			{"LOWER": "1"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170660",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "analytical"},
+			{"LOWER": "buildings"},
+			{"LOWER": "record"},
+			{"LOWER": "level"},
+			{"LOWER": "3"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170659",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "descriptive"},
+			{"LOWER": "buildings"},
+			{"LOWER": "record"},
+			{"LOWER": "level"},
+			{"LOWER": "2"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170656",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "buildings"},
+			{"LOWER": "investigation"},
+			{"LOWER": "england"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170661",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "comprehensive"},
+			{"LOWER": "analytical"},
+			{"LOWER": "buildings"},
+			{"LOWER": "record"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145175",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "trial"},
+			{"LOWER": "trench"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145128",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "evaluation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/163243",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "underwater"},
+			{"LOWER": "evaluation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145109",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "archaeological"},
+			{"LOWER": "intervention"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145172",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "test"},
+			{"LOWER": "pit"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145125",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "environmental"},
+			{"LOWER": "impact"},
+			{"LOWER": "assessment"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145132",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "systematic"},
+			{"LOWER": "fieldwalking"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145176",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "unsystematic"},
+			{"LOWER": "fieldwalking"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/152410",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "fieldwalking"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145168",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "sub"},
+			{"LOWER": "bottom"},
+			{"LOWER": "profiling"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147324",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "3d"},
+			{"LOWER": "seismic"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145139",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "infrared"},
+			{"LOWER": "aerial"},
+			{"LOWER": "photography"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145149",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "multi"},
+			{"LOWER": "spectral"},
+			{"LOWER": "aerial"},
+			{"LOWER": "photography"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145141",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "infrared"},
+			{"LOWER": "thermography"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147265",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "sonar"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147319",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "multi"},
+			{"LOWER": "beam"},
+			{"LOWER": "echo"},
+			{"LOWER": "sounder"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147326",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "thematic"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146337",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "seismic"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145151",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "open"},
+			{"LOWER": "area"},
+			{"LOWER": "excavation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145129",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "excavation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147313",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "vibro"},
+			{"LOWER": "core"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145111",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "auger"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145112",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "borehole"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145150",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "non"},
+			{"LOWER": "archaeological"},
+			{"LOWER": "intervention"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/168104",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "archaeomagnetic"},
+			{"LOWER": "sampling"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145127",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "environmental"},
+			{"LOWER": "sampling"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147322",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "walkover"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145146",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "measured"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145110",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "architectural"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145118",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "building"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146339",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "microgravity"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147297",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "intrusive"},
+			{"LOWER": "event"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170662",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "buildings"},
+			{"LOWER": "investigation"},
+			{"LOWER": "scotland"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170665",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "enhanced"},
+			{"LOWER": "building"},
+			{"LOWER": "survey"},
+			{"LOWER": "level"},
+			{"LOWER": "2"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147311",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "remote"},
+			{"LOWER": "operated"},
+			{"LOWER": "vehicle"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145156",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "remote"},
+			{"LOWER": "sensing"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145135",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "ground"},
+			{"LOWER": "penetrating"},
+			{"LOWER": "radar"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145167",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "strip"},
+			{"LOWER": "map"},
+			{"LOWER": "and"},
+			{"LOWER": "sample"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147317",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "field"},
+			{"LOWER": "observation"},
+			{"LOWER": "visual"},
+			{"LOWER": "assessment"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147242",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "historic"},
+			{"LOWER": "landscape"},
+			{"LOWER": "characterisation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147243",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "historic"},
+			{"LOWER": "seascape"},
+			{"LOWER": "characterisation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170650",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "heritage"},
+			{"LOWER": "assessment"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170649",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "building"},
+			{"LOWER": "fabric"},
+			{"LOWER": "analysis"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147321",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "acoustic"},
+			{"LOWER": "ground"},
+			{"LOWER": "discriminating"},
+			{"LOWER": "system"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170648",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "documentary"},
+			{"LOWER": "research"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/160152",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "conservation"},
+			{"LOWER": "area"},
+			{"LOWER": "appraisal"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147306",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "hedgerow"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147268",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "bathymetric"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145157",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "rescue"},
+			{"LOWER": "excavation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170651",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "historic"},
+			{"LOWER": "urban"},
+			{"LOWER": "characterisation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170663",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "buildings"},
+			{"LOWER": "appraisal"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/167599",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "x"},
+			{"LOWER": "ray"},
+			{"LOWER": "fluorescence"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145177",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "watching"},
+			{"LOWER": "brief"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145160",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "salvage"},
+			{"LOWER": "recording"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145123",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "desk"},
+			{"LOWER": "based"},
+			{"LOWER": "assessment"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146340",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "antiquarian"},
+			{"LOWER": "observation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145144",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "magnetometry"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145145",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "management"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170654",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "field"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146346",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "field"},
+			{"LOWER": "visit"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170647",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "condition"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146334",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "side"},
+			{"LOWER": "scan"},
+			{"LOWER": "sonar"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146345",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "photographic"},
+			{"LOWER": "recording"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145130",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "field"},
+			{"LOWER": "observation"},
+			{"LOWER": "monitoring"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146344",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "casual"},
+			{"LOWER": "observation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145114",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "box"},
+			{"LOWER": "trenching"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145164",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "monolith"},
+			{"LOWER": "sampling"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145148",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "metal"},
+			{"LOWER": "detecting"},
+			{"LOWER": "use"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145147",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "metal"},
+			{"LOWER": "detecting"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146341",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "geomorphological"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/163244",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "underwater"},
+			{"LOWER": "excavation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145107",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "aerial"},
+			{"LOWER": "photography"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145120",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "conventional"},
+			{"LOWER": "aerial"},
+			{"LOWER": "photography"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147310",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "grab"},
+			{"LOWER": "sampling"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145124",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "dowsing"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147266",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "single"},
+			{"LOWER": "beam"},
+			{"LOWER": "echo"},
+			{"LOWER": "sounder"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145113",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "bosing"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170667",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "comprehensive"},
+			{"LOWER": "building"},
+			{"LOWER": "survey"},
+			{"LOWER": "level"},
+			{"LOWER": "4"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170666",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "detailed"},
+			{"LOWER": "building"},
+			{"LOWER": "survey"},
+			{"LOWER": "level"},
+			{"LOWER": "3"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147552",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "aerial"},
+			{"LOWER": "photograph"},
+			{"LOWER": "interpretation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145143",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "magnetic"},
+			{"LOWER": "susceptibility"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147305",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "research"},
+			{"LOWER": "excavation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147325",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "historic"},
+			{"LOWER": "area"},
+			{"LOWER": "assessment"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147298",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "non"},
+			{"LOWER": "intrusive"},
+			{"LOWER": "event"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170664",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "basic"},
+			{"LOWER": "building"},
+			{"LOWER": "survey"},
+			{"LOWER": "level"},
+			{"LOWER": "1"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/163245",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "underwater"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145140",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "infrared"},
+			{"LOWER": "line"},
+			{"LOWER": "scan"},
+			{"LOWER": "aerial"},
+			{"LOWER": "photography"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170645",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "graveyard"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146347",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "electrical"},
+			{"LOWER": "resistivity"},
+			{"LOWER": "tomography"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145162",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "satellite"},
+			{"LOWER": "imaging"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145142",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "airborne"},
+			{"LOWER": "laser"},
+			{"LOWER": "scanning"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145142",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "airborne"},
+			{"LOWER": "lidar"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145153",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "photogrammetry"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146353",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "subsoil"},
+			{"LOWER": "test"},
+			{"LOWER": "pit"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145158",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "electrical"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145158",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "resistivity"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145158",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "earth"},
+			{"LOWER": "resistance"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145158",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "geophysical"},
+			{"LOWER": "resistivity"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145174",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "contour"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145175",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "targeted"},
+			{"LOWER": "trenches"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145175",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "sample"},
+			{"LOWER": "trenches"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145172",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "test"},
+			{"LOWER": "pits"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145172",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "test"},
+			{"LOWER": "pit"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145172",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "sondage"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145132",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "fieldwalking"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145132",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "topsoil"},
+			{"LOWER": "artefact"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145132",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "surface"},
+			{"LOWER": "collection"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145176",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "surface"},
+			{"LOWER": "collection"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145176",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "fieldwalking"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145176",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "topsoil"},
+			{"LOWER": "artefact"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145139",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "infra"},
+			{"LOWER": "red"},
+			{"LOWER": "aerial"},
+			{"LOWER": "photography"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145141",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "infra"},
+			{"LOWER": "red"},
+			{"LOWER": "thermography"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146337",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "seismograph"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145118",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "building"},
+			{"LOWER": "recording"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145118",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "cross"},
+			{"LOWER": "sectional"},
+			{"LOWER": "building"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145118",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "building"},
+			{"LOWER": "elevation"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145118",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "building"},
+			{"LOWER": "plan"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145135",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "ground"},
+			{"LOWER": "penetrating"},
+			{"LOWER": "radar"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145167",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "strip"},
+			{"LOWER": "and"},
+			{"LOWER": "record"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147317",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "visual"},
+			{"LOWER": "inspection"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145157",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "salvage"},
+			{"LOWER": "excavation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145144",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "geophysical"},
+			{"LOWER": "magnetometer"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146334",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "side"},
+			{"LOWER": "scanning"},
+			{"LOWER": "sonar"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146334",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "bottom"},
+			{"LOWER": "classification"},
+			{"LOWER": "sonar"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146334",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "side"},
+			{"LOWER": "looking"},
+			{"LOWER": "sonar"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145114",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "grid"},
+			{"LOWER": "excavation"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145147",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "metal"},
+			{"LOWER": "detectors"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145147",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "systematic"},
+			{"LOWER": "metal"},
+			{"LOWER": "detector"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147310",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "grab"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145143",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "geophysical"},
+			{"LOWER": "magnetic"},
+			{"LOWER": "susceptibility"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145140",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "infra"},
+			{"LOWER": "red"},
+			{"LOWER": "line"},
+			{"LOWER": "scan"},
+			{"LOWER": "aerial"},
+			{"LOWER": "photography"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170645",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "burial"},
+			{"LOWER": "ground"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146347",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "electrical"},
+			{"LOWER": "resistivity"},
+			{"LOWER": "imaging"},
+			{"LOWER": "survey"}
+		] 
+    },
+	{
+		"id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146347",
+        "language": "en", "label": "EVENTTYPE", 
+        "pattern": [
+			{"LOWER": "resistivity"},
+			{"LOWER": "profile"}
+		] 
+    }
+
+]

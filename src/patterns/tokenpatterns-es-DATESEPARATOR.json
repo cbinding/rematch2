@@ -3,7 +3,7 @@
         "label": "DATESEPARATOR", 
         "language": "es",
         "pattern": [
-            {"LOWER": {"REGEX": "^(?:[\\–\\-]|\\p{Pd}|hasta|y|o)$"}}            
+            {"LOWER": {"REGEX": "^(?:[\\–\\-]|\\\\p{Pd}|hasta|y|o)$"}}            
         ]
     }
 ]

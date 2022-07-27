@@ -6,7 +6,7 @@
         "pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "ORDINAL"},
-            {"LOWER": {"REGEX": "^(century|millennium)$"}},
+            {"LOWER": {"REGEX": "^(century|centuries|millennium)$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
         ]
     },
@@ -17,12 +17,12 @@
         "pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "ORDINAL"},
-            {"OP": "?", "LOWER": {"REGEX": "^(century|millennium)$"}},
+            {"OP": "?", "LOWER": {"REGEX": "^(century|centuries|millennium)$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
             {"ENT_TYPE": "DATESEPARATOR"},
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "ORDINAL"},
-            {"LOWER": {"REGEX": "^(century|millennium)$"}},
+            {"LOWER": {"REGEX": "^(century|centuries|millennium)$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
         ]
     }

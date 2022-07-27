@@ -213,7 +213,7 @@
         "label": "ORDINAL", 
         "language": "de",
         "pattern": [
-            {"LOWER": {"REGEX": "^(31\\.$"}}
+            {"LOWER": {"REGEX": "^(31\\.|einunddreißig)$"}}
         ]
     },
     { 
