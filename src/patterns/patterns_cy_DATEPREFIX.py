@@ -1,9 +1,9 @@
-[
+patterns_cy_DATEPREFIX = [
     { 
         "label": "DATEPREFIX", 
         "language": "cy",
         "pattern": [
-            {"LOWER": {"REGEX": "^(ca?\\.?|circa|oddeuta|tua\\'r)$"}}            
+            {"LOWER": {"REGEX": r"^(ca?\.?|circa|oddeuta|tua\'r)$"}}            
         ]
     },
     { 

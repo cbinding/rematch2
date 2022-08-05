@@ -1,20 +1,22 @@
-# =============================================================================
-# Package   : rematch2
-# Module    : TemporalRecognizer.py
-# Version   : 20220427
-# Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
-# Contact   : ceri.binding@southwales.ac.uk
-# Project   : ARIADNEplus
-# Summary   : TemporalRecognizer class
-# Imports   : json, spacy, os, fnmatch, argparse
-# Example   : tr = TemporalRecognizer("en");
-#             entities = tr.get_entities(input);
-# License   : https://creativecommons.org/licenses/by/4.0/ [CC-BY]
-# =============================================================================
-# History
-# 28/10/2021 CFB Initially created script
-# 27/04/2022 CFB Added atomic entity types - ordinals, month names, season names
-# =============================================================================
+"""
+=============================================================================
+Package : rematch2
+Module  : TemporalRecognizer.py
+Version : 20220427
+Creator : Ceri Binding, University of South Wales / Prifysgol de Cymru
+Contact : ceri.binding@southwales.ac.uk
+Project : ARIADNEplus
+Summary : TemporalRecognizer class
+Imports : json, spacy, os, fnmatch, argparse
+Example : tr = TemporalRecognizer("en");
+          entities = tr.get_entities(input);
+License : https://creativecommons.org/licenses/by/4.0/ [CC-BY]
+=============================================================================
+History
+28/10/2021 CFB Initially created script
+27/04/2022 CFB Added atomic entity types - ordinals, month names, season names
+=============================================================================
+"""
 import argparse         # for argument parsing
 import json
 import fnmatch
@@ -83,7 +85,7 @@ class TemporalRecognizer:
 
         # add 'composite' entityRuler patterns (year spans, century spans etc.)
         # composite patterns can refer to atomic patterns as entity types
-        ruler = self._nlp.add_pipe("entity_ruler", name="composites", config=ruler_config)        
+        ruler = self._nlp.add_pipe("entity_ruler", name="composites", config=ruler_config)
         composite_entities = ["TEMPORAL", "CENTURYSPAN", "YEARSPAN", "NAMEDPERIOD", "MONUMENT", "ARCHSCIENCE", "MATERIAL", "EVENTTYPE"] # TODO: revert to having these different categories
         #composite_patterns = [pattern for pattern in self._token_patterns if (pattern.get("label") or "").upper() in composite_entities]
         composite_patterns = tp.get(self.language, composite_entities)
@@ -122,7 +124,7 @@ class TemporalRecognizer:
         # temp - write current tokens to file, to aid debugging
         txt = ""
         for token in doc:
-            txt += f"{token.text}\t{token.pos_}\t{token.head.text}\n"
+            txt += f"{token.pos_}\t{token.text}\t{token.lemma_}\n"
         with open("tokens.txt", 'w', encoding='utf-8-sig') as f:
             f.write(txt)
 

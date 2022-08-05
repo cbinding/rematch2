@@ -1,0 +1,13 @@
+from .patterns_cy_DAYNAME import patterns_cy_DAYNAME
+from .patterns_de_DAYNAME import patterns_de_DAYNAME
+from .patterns_en_DAYNAME import patterns_en_DAYNAME
+from .patterns_es_DAYNAME import patterns_es_DAYNAME
+from .patterns_fr_DAYNAME import patterns_fr_DAYNAME
+from .patterns_it_DAYNAME import patterns_it_DAYNAME
+from .patterns_nl_DAYNAME import patterns_nl_DAYNAME
+from .patterns_no_DAYNAME import patterns_no_DAYNAME
+from .patterns_sv_DAYNAME import patterns_sv_DAYNAME
+
+from .patterns_en_ARCHSCIENCE import patterns_en_ARCHSCIENCE
+from .patterns_en_MATERIAL import patterns_en_MATERIAL
+from .patterns_en_MONUMENT import patterns_en_MONUMENT
