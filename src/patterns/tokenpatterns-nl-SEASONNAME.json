@@ -1,9 +1,0 @@
-[
-    { 
-        "label": "SEASONNAME", 
-        "language": "nl",
-        "pattern": [
-            {"LOWER": {"REGEX": "^(lente|zomer|herfst|winter)$"}}            
-        ]
-    }
-]

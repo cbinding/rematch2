@@ -8,6 +8,85 @@ from .patterns_nl_DAYNAME import patterns_nl_DAYNAME
 from .patterns_no_DAYNAME import patterns_no_DAYNAME
 from .patterns_sv_DAYNAME import patterns_sv_DAYNAME
 
+from .patterns_de_MONTHNAME import patterns_de_MONTHNAME
+from .patterns_en_MONTHNAME import patterns_en_MONTHNAME
+from .patterns_es_MONTHNAME import patterns_es_MONTHNAME
+from .patterns_fr_MONTHNAME import patterns_fr_MONTHNAME
+from .patterns_it_MONTHNAME import patterns_it_MONTHNAME
+from .patterns_nl_MONTHNAME import patterns_nl_MONTHNAME
+from .patterns_no_MONTHNAME import patterns_no_MONTHNAME
+from .patterns_sv_MONTHNAME import patterns_sv_MONTHNAME
+
+from .patterns_de_SEASONNAME import patterns_de_SEASONNAME
+from .patterns_en_SEASONNAME import patterns_en_SEASONNAME
+from .patterns_es_SEASONNAME import patterns_es_SEASONNAME
+from .patterns_fr_SEASONNAME import patterns_fr_SEASONNAME
+from .patterns_it_SEASONNAME import patterns_it_SEASONNAME
+from .patterns_nl_SEASONNAME import patterns_nl_SEASONNAME
+from .patterns_no_SEASONNAME import patterns_no_SEASONNAME
+from .patterns_sv_SEASONNAME import patterns_sv_SEASONNAME
+
+from .patterns_de_ORDINAL import patterns_de_ORDINAL
+from .patterns_en_ORDINAL import patterns_en_ORDINAL
+from .patterns_es_ORDINAL import patterns_es_ORDINAL
+from .patterns_fr_ORDINAL import patterns_fr_ORDINAL
+from .patterns_it_ORDINAL import patterns_it_ORDINAL
+from .patterns_nl_ORDINAL import patterns_nl_ORDINAL
+from .patterns_no_ORDINAL import patterns_no_ORDINAL
+from .patterns_sv_ORDINAL import patterns_sv_ORDINAL
+
+from .patterns_de_CENTURY import patterns_de_CENTURY
+from .patterns_en_CENTURY import patterns_en_CENTURY
+from .patterns_es_CENTURY import patterns_es_CENTURY
+from .patterns_fr_CENTURY import patterns_fr_CENTURY
+from .patterns_it_CENTURY import patterns_it_CENTURY
+from .patterns_nl_CENTURY import patterns_nl_CENTURY
+from .patterns_no_CENTURY import patterns_no_CENTURY
+from .patterns_sv_CENTURY import patterns_sv_CENTURY
+
+from .patterns_de_DATEPREFIX import patterns_de_DATEPREFIX
+from .patterns_en_DATEPREFIX import patterns_en_DATEPREFIX
+from .patterns_es_DATEPREFIX import patterns_es_DATEPREFIX
+from .patterns_fr_DATEPREFIX import patterns_fr_DATEPREFIX
+from .patterns_it_DATEPREFIX import patterns_it_DATEPREFIX
+from .patterns_nl_DATEPREFIX import patterns_nl_DATEPREFIX
+from .patterns_no_DATEPREFIX import patterns_no_DATEPREFIX
+from .patterns_sv_DATEPREFIX import patterns_sv_DATEPREFIX
+
+from .patterns_de_DATESUFFIX import patterns_de_DATESUFFIX
+from .patterns_en_DATESUFFIX import patterns_en_DATESUFFIX
+from .patterns_es_DATESUFFIX import patterns_es_DATESUFFIX
+from .patterns_fr_DATESUFFIX import patterns_fr_DATESUFFIX
+from .patterns_it_DATESUFFIX import patterns_it_DATESUFFIX
+from .patterns_nl_DATESUFFIX import patterns_nl_DATESUFFIX
+from .patterns_no_DATESUFFIX import patterns_no_DATESUFFIX
+from .patterns_sv_DATESUFFIX import patterns_sv_DATESUFFIX
+
+from .patterns_de_DATESEPARATOR import patterns_de_DATESEPARATOR
+from .patterns_en_DATESEPARATOR import patterns_en_DATESEPARATOR
+from .patterns_es_DATESEPARATOR import patterns_es_DATESEPARATOR
+from .patterns_fr_DATESEPARATOR import patterns_fr_DATESEPARATOR
+from .patterns_it_DATESEPARATOR import patterns_it_DATESEPARATOR
+from .patterns_nl_DATESEPARATOR import patterns_nl_DATESEPARATOR
+from .patterns_no_DATESEPARATOR import patterns_no_DATESEPARATOR
+from .patterns_sv_DATESEPARATOR import patterns_sv_DATESEPARATOR
+
+from .patterns_de_YEARSPAN import patterns_de_YEARSPAN
+from .patterns_en_YEARSPAN import patterns_en_YEARSPAN
+from .patterns_es_YEARSPAN import patterns_es_YEARSPAN
+from .patterns_fr_YEARSPAN import patterns_fr_YEARSPAN
+from .patterns_it_YEARSPAN import patterns_it_YEARSPAN
+from .patterns_nl_YEARSPAN import patterns_nl_YEARSPAN
+from .patterns_no_YEARSPAN import patterns_no_YEARSPAN
+from .patterns_sv_YEARSPAN import patterns_sv_YEARSPAN
+
+# superseded by Periodo / NmedPeriodRuler but left here anyway
+from .patterns_en_NAMEDPERIOD import patterns_en_NAMEDPERIOD
+from .patterns_fr_NAMEDPERIOD import patterns_fr_NAMEDPERIOD
+from .patterns_no_NAMEDPERIOD import patterns_no_NAMEDPERIOD
+from .patterns_sv_NAMEDPERIOD import patterns_sv_NAMEDPERIOD
+
+# experimental - patterns generated from FISH vocabularies
 from .patterns_en_ARCHSCIENCE import patterns_en_ARCHSCIENCE
 from .patterns_en_MATERIAL import patterns_en_MATERIAL
 from .patterns_en_MONUMENT import patterns_en_MONUMENT

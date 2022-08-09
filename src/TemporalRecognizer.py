@@ -24,24 +24,17 @@ import os               # for general file/directory functionality
 
 import spacy            # NLP library
 from spacy import displacy
-#from spacy.pipeline import EntityRuler
 
-#from LanguageEnum import LanguageEnum
-from PeriodoData import PeriodoData
-from TokenPatterns import TokenPatterns
-
+from NamedPeriodRuler import NamedPeriodRuler
+from CenturyRuler import CenturyRuler
+from YearSpanRuler import YearSpanRuler
 
 class TemporalRecognizer:
 
     """identifies temporal entities in text based on array of predefined patterns"""
-    def __init__(self, language="en", authority="", entity_types=[]):
+    def __init__(self, language="en", authority=""):
         
-        self._language = language
-
-        # load language-specific pre-defined token patterns 
-        #patterns = Recognizer.__load_token_patterns_from_directory("../src/patterns")
-        #self._token_patterns = [pattern for pattern in patterns if (pattern.get("language") or "").lower() == self._language]
-        tp = TokenPatterns()
+        self._language = language        
 
         # prepare and configure language-specific spaCy pipeline 
         # TODO: if language property changes, this doesn't - maybe only allow language to be specified during init? 
@@ -65,37 +58,12 @@ class TemporalRecognizer:
 
         self._nlp = spacy.load(pipeline_name, disable = ['ner']) 
         self._nlp.max_length = 2000000  # TODO: don't recall why..         
-
-        # configuration for spaCy entityRuler
-        ruler_config = {
-            "phrase_matcher_attr": "LOWER",
-            "validate": True,
-            "overwrite_ents": True, # overwrites overlapping entities
-            "ent_id_sep": "||"
-        }
-
-        # add 'atomic' entityRuler patterns (date prefixes, suffixes etc.)
-        ruler = self._nlp.add_pipe("entity_ruler", name="atomics", before="ner", config=ruler_config)
-        atomic_entities = ["DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "ORDINAL", "MONTHNAME", "SEASONNAME"]
-        #atomic_patterns = [pattern for pattern in self._token_patterns if (pattern.get("label") or "").upper() in atomic_entities]
-        atomic_patterns = tp.get(self._language, atomic_entities)
-
-        with self._nlp.select_pipes(enable="tagger"):
-            ruler.add_patterns(atomic_patterns)
-
+        
         # add 'composite' entityRuler patterns (year spans, century spans etc.)
         # composite patterns can refer to atomic patterns as entity types
-        ruler = self._nlp.add_pipe("entity_ruler", name="composites", config=ruler_config)
-        composite_entities = ["TEMPORAL", "CENTURYSPAN", "YEARSPAN", "NAMEDPERIOD", "MONUMENT", "ARCHSCIENCE", "MATERIAL", "EVENTTYPE"] # TODO: revert to having these different categories
-        #composite_patterns = [pattern for pattern in self._token_patterns if (pattern.get("label") or "").upper() in composite_entities]
-        composite_patterns = tp.get(self.language, composite_entities)
-        ruler.add_patterns(composite_patterns)
-
-        # add terms from selected Perio.do authority as patterns
-        pd = PeriodoData() # new instance, don't refresh cached data
-        periods = pd.get_period_list(authority) # periods for authority id
-        periodo_patterns = PeriodoData._periods_to_patterns(periods) # convert to spaCy pattern format
-        ruler.add_patterns(periodo_patterns)
+        self._nlp.add_pipe("namedperiod_ruler", config={"periodo_authority_id": authority})
+        self._nlp.add_pipe("century_ruler")
+        self._nlp.add_pipe("yearspan_ruler")
          
 
     @property
@@ -134,7 +102,8 @@ class TemporalRecognizer:
 
         # create and return array of entities
         results = []
-        for entity in [e for e in doc.ents if e.label_ in ["TEMPORAL", "MONUMENT", "ARCHSCIENCE", "MATERIAL", "EVENTTYPE"]]:
+        #for entity in [e for e in doc.ents if e.label_ in ["TEMPORAL", "MONUMENT", "ARCHSCIENCE", "MATERIAL", "EVENTTYPE"]]:
+        for entity in [ent for ent in doc.ents]:
             results.append({
                 "id": entity.ent_id_,
                 "text": entity.text,
@@ -183,9 +152,11 @@ class TemporalRecognizer:
 
         # return HTML rendering of input text with entities highlighted  
         options = {
-            "ents": ["TEMPORAL", "MONUMENT", "EVENTTYPE", "MATERIAL", "ARCHSCIENCE"], #ents": ["TEMPORAL", "MONUMENT"],
+            "ents": ["YEARSPAN", "CENTURY", "NAMEDPERIOD", "MONUMENT", "EVENTTYPE", "MATERIAL", "ARCHSCIENCE"], 
             "colors": {
-                "TEMPORAL": "lightgreen", 
+                "YEARSPAN": "lightgreen", 
+                "CENTURY": "lightgreen",
+                "NAMEDPERIOD": "lightgreen",
                 "MONUMENT": "lightblue",
                 "EVENTTYPE": "lightgray",
                 "MATERIAL": "steelblue",

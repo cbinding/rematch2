@@ -1,9 +1,0 @@
-[
-    { 
-        "label": "DATESEPARATOR", 
-        "language": "nl",
-        "pattern": [
-            {"LOWER": {"REGEX": "^(?:[\\–\\-]|/|tot|en|of)$"}}            
-        ]
-    }
-]

@@ -30,67 +30,44 @@ from spacy.tokens import Doc
 #from patterns import patterns_de_MONUMENT
 from patterns import patterns_en_MONUMENT
 #from patterns import patterns_fr_MONUMENT
-
+from PatternRuler import PatternRuler
 
 module_path = os.path.abspath(os.path.join('..', 'src'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
-
 @Language.factory("monument_ruler")
-def create_monument_ruler(nlp, name, patterns):   
-    return MonumentRuler(nlp, name, patterns)      
-    
+def create_monument_ruler(nlp, name="minument_ruler", patterns=[]):   
+    return PatternRuler(nlp, name, patterns) 
 
 @English.factory("monument_ruler")
-def create_monument_ruler_en(nlp, name):
-    ruler = create_monument_ruler(nlp, name, patterns_en_MONUMENT)
-    return ruler
-
-
+def create_monument_ruler_en(nlp, name="monument_ruler_en"):
+    return create_monument_ruler(nlp, name, patterns_en_MONUMENT)
+   
 @French.factory("monument_ruler")
-def create_monument_ruler_fr(nlp, name):
-    ruler = create_monument_ruler(nlp, name, patterns_en_MONUMENT) # TODO - use INRAP/PACTOLS patterns here...
-    return ruler
-
-
-"""
-@German.factory("monument_ruler")
-def create_monument_ruler_de(nlp, name):
-    patterns = patterns_de_MONUMENT
-    return MonumentRuler(nlp, name, patterns)
-"""
-
-# MonumentRuler is a specialized EntityRuler
-class MonumentRuler(EntityRuler): 
-    def __init__(self, nlp: Language, name: str, patterns=[]) -> None:
-        EntityRuler.__init__(
-            self, 
-            nlp=nlp, 
-            name=name,
-            phrase_matcher_attr="LOWER",
-            validate=True,
-            overwrite_ents=True,
-            ent_id_sep="||",
-            patterns = patterns
-        )    
-
-    # in this instance we just call the parent function, 
-    # but could do more doc processing here
-    def __call__(self, doc: Doc) -> Doc:
-        EntityRuler.__call__(self, doc)
-        return doc
-
-
+def create_monument_ruler_fr(nlp, name="monument_ruler_fr"):
+    return create_monument_ruler(nlp, name, patterns_en_MONUMENT) # TODO - use INRAP/PACTOLS patterns here instead...    
+ 
 # test the monument_ruler pipeline component
 if __name__ == "__main__":
-    nlp = spacy.load("en_core_web_sm", disable = ['ner']) 
-    nlp.add_pipe("monument_ruler", last=True)  
-    print(nlp.pipe_names) 
-    text = "Underlying the modern made ground on the site was a layer covering the entire shaft area. This has been dated to c.1480-1800/1900 and interpreted as a post-medieval cultivation soil. Historic mapping illustrates that the site remained undeveloped through the post medieval period until the mid-19th century, when urban development around the site accelerated and construction of railways in this part of London began. On Gascoigne's 1703 map the site was open ground, the later maps of Rocque in 1746 and Horwood in 1799 show the area was in use as fields and Stanford's map of 1862 depicts the area surrounding Eleanor Street comprising of market gardens. These are all consistent with the archaeological evidence. Underlying the layer were natural terrace gravels. The archaeological fieldwork has demonstrated that remains relating to the Prehistoric, Roman or medieval period have not survived to the modern era, if they were once present on site."
-    doc = nlp(text)
-    for ent in doc.ents:
-        print (ent.ent_id_, ent.text, ent.label_)
+    import json
+    test_file_name = "test-examples.json"
+    tests = [] 
+    with open(test_file_name, "r") as f:  # what if file doesn't exist?            
+        tests = json.load(f)
+
+    for test in tests:
+        print(f"-------------\nlanguage = {test['language']}")
+        
+        nlp = spacy.load(test["pipe"], disable = ['ner']) 
+        #nlp.max_length = 2000000
+
+        nlp.add_pipe("monument_ruler", last=True) 
+        print(nlp.pipe_names) 
+        doc = nlp(test["text"])
+        
+        for ent in doc.ents:
+            print (ent.ent_id_, ent.text, ent.label_)
     
 
 

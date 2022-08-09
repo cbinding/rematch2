@@ -52,7 +52,7 @@ patterns_en_DAYNAME = [
         "label": "DAYNAME", 
         "language": "en",
         "pattern": [
-            {"LOWER": {"REGEX": r"^sun(\.|day)$"}}            
+            {"LOWER": {"REGEX": r"^sun(\.|day)?$"}}            
         ]
     }
 ]

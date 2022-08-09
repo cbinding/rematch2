@@ -18,8 +18,6 @@
 import json
 import jmespath
 
-#from jsonpath_rw import jsonpath
-
 from os.path import exists
 from urllib.request import urlopen
 
@@ -119,11 +117,13 @@ class PeriodoData:
     # specialised properties based on .find
     # returns list of authority as [{id, label}]
     def get_authority_list(self, sorted=True):        
-        # using jmespath:
+        # get list of authorities using jmespath:
         lst = self.find("authorities.* | [?source.title != null].{id: id, label: @.source.title}")
-        
+
+        # sort list if required
         if(sorted):
             lst.sort(key=lambda item: item["label"].lower())
+
         return lst
     
 
@@ -136,24 +136,6 @@ class PeriodoData:
         return(preferredLabels)
         #return self.find(f"authorities.{ authorityID }.periods.*.{{id: id, label: label, language: languageTag}}") 
    
-
-    @staticmethod
-    def _periods_to_patterns(data):
-        patterns = list(map(lambda item: { 
-            "id": item["id"],            
-            "label": "TEMPORAL", 
-            "language": "en", 
-            "pattern": list(map(lambda word: { "LOWER": word.lower() }, item["label"].split()))           
-        }, data or [])) 
-        return patterns
-
-
-    @staticmethod
-    def _periods_to_pattern_file(data, file_name):
-        patterns = PeriodoData._periods_to_patterns(data)
-        with open(file_name, "w") as f:
-            json.dump(patterns, f, indent=3) 
-
 
 # This class may be tested as a standalone script using the parameters below
 #  e.g. python PeriodoData.py
@@ -178,8 +160,8 @@ if __name__ == "__main__":
 
     #lst = pd.get_period_list("p0h9ttq")
     print(lst1[0:2])
-    #print(lst2)
-    PeriodoData._periods_to_pattern_file(lst2, "en-periodo-data.json")
+    print(lst2)
+    #PeriodoData._periods_to_pattern_file(lst2, "en-periodo-data.json")
     #print(pd.find("authorities.*.[@.source.title, id]"))
 
     #authority="p0qwjcd"

@@ -1,9 +1,0 @@
-[
-    { 
-        "label": "DATESEPARATOR", 
-        "language": "sv",
-        "pattern": [
-            {"LOWER": {"REGEX": "^([e\\–\\-/]|till|och)$"}}            
-        ]
-    }
-]

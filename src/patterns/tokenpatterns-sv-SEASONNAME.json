@@ -1,9 +1,0 @@
-[
-    { 
-        "label": "SEASONNAME", 
-        "language": "sv",
-        "pattern": [
-            {"LOWER": {"REGEX": "^(vår|sommar|höst|vintern?|vinterhalvåret|sommarhalvåret)$"}}            
-        ]
-    }
-]

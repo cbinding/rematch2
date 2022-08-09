@@ -20,9 +20,6 @@ import sys
 import spacy            # NLP library
 
 from spacy.language import Language
-from spacy.pipeline import EntityRuler
-from spacy.tokens import Doc
-
 from spacy.lang.de import German
 from spacy.lang.en import English
 from spacy.lang.es import Spanish
@@ -42,83 +39,53 @@ from patterns import \
     patterns_no_DAYNAME, \
     patterns_sv_DAYNAME
 
+from PatternRuler import PatternRuler
 
 module_path = os.path.abspath(os.path.join('..', 'src'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
 @Language.factory("dayname_ruler")
-def create_dayname_ruler(nlp, name, patterns):
-    ruler = DayNameRuler(nlp, name, patterns)
-    return ruler
+def create_dayname_ruler(nlp, name="dayname_ruler", patterns=[]):
+    return PatternRuler(nlp, name, patterns)   
 
 @German.factory("dayname_ruler")
-def create_dayname_ruler_de(nlp, name):
-    patterns = patterns_de_DAYNAME
-    return DayNameRuler(nlp, name, patterns)
+def create_dayname_ruler_de(nlp, name="dayname_ruler_de"):
+    return create_dayname_ruler(nlp, name, patterns_de_DAYNAME)
 
 @English.factory("dayname_ruler")
-def create_dayname_ruler_en(nlp, name):
-    patterns = patterns_en_DAYNAME
-    return DayNameRuler(nlp, name, patterns)
+def create_dayname_ruler_en(nlp, name="dayname_ruler_en"):
+    return create_dayname_ruler(nlp, name, patterns_en_DAYNAME)
 
 @Spanish.factory("dayname_ruler")
-def create_dayname_ruler_es(nlp, name):
-    patterns = patterns_es_DAYNAME
-    return DayNameRuler(nlp, name, patterns)
+def create_dayname_ruler_es(nlp, name="dayname_ruler_es"):
+    return create_dayname_ruler(nlp, name, patterns_es_DAYNAME)
 
 @French.factory("dayname_ruler")
-def create_dayname_ruler_fr(nlp, name):
-    patterns = patterns_fr_DAYNAME
-    return DayNameRuler(nlp, name, patterns)
+def create_dayname_ruler_fr(nlp, name="dayname_ruler_fr"):
+    return create_dayname_ruler(nlp, name, patterns_fr_DAYNAME)
 
 @Italian.factory("dayname_ruler")
-def create_dayname_ruler_it(nlp, name):
-    patterns = patterns_it_DAYNAME
-    return DayNameRuler(nlp, name, patterns)
+def create_dayname_ruler_it(nlp, name="dayname_ruler_it"):
+    return create_dayname_ruler(nlp, name, patterns_it_DAYNAME)
 
 @Dutch.factory("dayname_ruler")
-def create_dayname_ruler_nl(nlp, name):
-    patterns = patterns_nl_DAYNAME
-    return DayNameRuler(nlp, name, patterns)
+def create_dayname_ruler_nl(nlp, name="dayname_ruler_nl"):
+    return create_dayname_ruler(nlp, name, patterns_nl_DAYNAME)
 
 @Norwegian.factory("dayname_ruler")
-def create_dayname_ruler_no(nlp, name):
-    patterns = patterns_no_DAYNAME
-    return DayNameRuler(nlp, name, patterns)
+def create_dayname_ruler_no(nlp, name="dayname_ruler_no"):
+    return create_dayname_ruler(nlp, name, patterns_no_DAYNAME)
 
 @Swedish.factory("dayname_ruler")
-def create_dayname_ruler_sv(nlp, name):
-    patterns = patterns_sv_DAYNAME
-    return DayNameRuler(nlp, name, patterns)
-
-
-# DayNameRuler is a specialized EntityRuler
-class DayNameRuler(EntityRuler):        
-   
-    def __init__(self, nlp: Language, name: str, patterns=[]) -> None:
-        EntityRuler.__init__(
-            self, 
-            nlp=nlp, 
-            name=name,
-            phrase_matcher_attr="LOWER",
-            validate=True,
-            overwrite_ents=True,
-            ent_id_sep="||",
-            patterns = patterns
-        )         
-
-
-    def __call__(self, doc: Doc) -> Doc:
-        EntityRuler.__call__(self, doc)
-        return doc
+def create_dayname_ruler_sv(nlp, name="dayname_ruler_sv"):
+    return create_dayname_ruler(nlp, name, patterns_sv_DAYNAME)
 
 
 # test the DayNameRuler class
 if __name__ == "__main__":    
     
     tests = [
-        { "lang": "cy", "pipe": "en_core_web_sm", "text": "Ar ddydd Llun neu ddydd Mawrth neu efallai hyd yn oed ar ddydd Mercher" },
         { "lang": "de", "pipe": "de_core_news_sm", "text": "Am Montag oder Dienstag oder vielleicht sogar am Mittwoch" },
         { "lang": "en", "pipe": "en_core_web_sm", "text": "On Monday or Tuesday or maybe even on Wednesday" },
         { "lang": "es", "pipe": "es_core_news_sm", "text": "El lunes o el martes o tal vez incluso el miércoles" },
