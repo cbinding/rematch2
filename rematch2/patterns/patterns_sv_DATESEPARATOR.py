@@ -1,8 +1,7 @@
 patterns_sv_DATESEPARATOR = [
     { 
-        "label": "DATESEPARATOR", 
-        "language": "sv",
-        "pattern": [
+        "label": "DATESEPARATOR",
+		"pattern": [
             {"LOWER": {"REGEX": r"^([e\–\-/]|till|och)$"}}            
         ]
     }

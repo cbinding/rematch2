@@ -1,8 +1,7 @@
 patterns_no_ORDINAL = [
     { 
-        "label": "ORDINAL", 
-        "language": "no",
-        "pattern": [
+        "label": "ORDINAL",
+		"pattern": [
             {"LOWER": {"IN": [
                 "første", "annen", "anna", "annet", "andre", "tredje", "fjerde", 
                 "femte", "sjette", "syvende", "sjuende", "åttende", "niende", "tiende",
@@ -14,10 +13,9 @@ patterns_no_ORDINAL = [
         ]
     },
     { 
-        "label": "ORDINAL", 
-        "language": "no",
-        "pattern": [
-            {"LOWER": {"REGEX": r"^\d{1,2}$"}}            
+        "label": "ORDINAL",
+		"pattern": [
+            {"LOWER": {"REGEX": r"^\d+\.$"}}            
         ] 
     }
 ]

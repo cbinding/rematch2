@@ -1,9 +1,9 @@
 patterns_nl_CENTURY = [
     { 
         "label": "CENTURY", 
-        "language": "nl",
+        
         "comment": "e.g. vijfde eeuw na Christus",
-        "pattern": [
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "ORDINAL"},
             {"LOWER": {"REGEX": r"^(eeuw|millennium)$"}},
@@ -12,9 +12,9 @@ patterns_nl_CENTURY = [
     },
     { 
         "label": "CENTURY", 
-        "language": "nl",
+        
         "comment": "e.g. 14e - 15e eeuw",
-        "pattern": [
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "ORDINAL"},
             {"OP": "?", "LOWER": {"REGEX": r"^(eeuw|millennium)$"}},

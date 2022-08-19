@@ -66,8 +66,8 @@ class NamedPeriodRuler(EntityRuler):
         patterns = list(map(lambda item: { 
             "id": item["id"],            
             "language": item["language"],
-            "label": "NAMEDPERIOD",             
-            "pattern": list(map(lambda word: { "LOWER": word.lower() }, item["label"].split()))           
+            "label": "NAMEDPERIOD",
+		"pattern": list(map(lambda word: { "LOWER": word.lower() }, item["label"].split()))           
         }, data or [])) 
         return patterns
 

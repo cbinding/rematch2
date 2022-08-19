@@ -1,8 +1,7 @@
 patterns_sv_ORDINAL = [
     { 
-        "label": "ORDINAL", 
-        "language": "sv",
-        "pattern": [
+        "label": "ORDINAL",
+		"pattern": [
            {"LOWER": {"IN": [
                 "första", "andra", "tredje", "fjärde", "femte",
                 "sjätte", "sjunde", "åttonde", "nionde", "tionde",
@@ -15,9 +14,8 @@ patterns_sv_ORDINAL = [
         ]
     },
     { 
-        "label": "ORDINAL", 
-        "language": "sv",
-        "pattern": [
+        "label": "ORDINAL",
+		"pattern": [
             {"LOWER": {"REGEX": r"^\d+[ae]$"}}            
         ] 
     }

@@ -9,15 +9,15 @@ Project :   ARIADNEplus
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
             Language-sensitive component to identify and tag ordinal centuries
             in free text. Entity type added will be "YEARSPAN"
-Imports :   os, sys, spacy, Language, EntityRuler, Doc
+Imports :   Language, EntityRuler, Doc
 Example :   nlp.add_pipe("yearspan_ruler", last=True)           
 License :   https://creativecommons.org/licenses/by/4.0/ [CC-BY]
 History :   03/08/2022 CFB Initially created script
 =============================================================================
 """ 
-import os
-import sys
-import spacy            # NLP library
+#import os
+#import sys
+#import spacy            # NLP library
 
 from spacy.language import Language
 from spacy.pipeline import EntityRuler
@@ -47,27 +47,27 @@ from .SeasonNameRuler import *
 
 @Language.factory("yearspan_ruler")
 def create_yearspan_ruler(nlp, name="yearspan_ruler", patterns=[]):
-    return YearSpanRuler(nlp, name, patterns)    
+    return YearSpanRuler(nlp, name, patterns)
 
 @German.factory("yearspan_ruler")
 def create_yearspan_ruler_de(nlp, name="yearspan_ruler_de"):
-    return create_yearspan_ruler(nlp, name, patterns_de_YEARSPAN)    
+    return create_yearspan_ruler(nlp, name, patterns_de_YEARSPAN)
 
 @English.factory("yearspan_ruler")
 def create_yearspan_ruler_en(nlp, name="yearspan_ruler_en"):
-    return create_yearspan_ruler(nlp, name, patterns_en_YEARSPAN)    
+    return create_yearspan_ruler(nlp, name, patterns_en_YEARSPAN)
 
 @Spanish.factory("yearspan_ruler")
 def create_yearspan_ruler_es(nlp, name="yearspan_ruler_es"):
-    return create_yearspan_ruler(nlp, name, patterns_es_YEARSPAN)   
+    return create_yearspan_ruler(nlp, name, patterns_es_YEARSPAN)
 
 @French.factory("yearspan_ruler")
 def create_yearspan_ruler_fr(nlp, name="yearspan_ruler_fr"):
-    return create_yearspan_ruler(nlp, name, patterns_fr_YEARSPAN)    
+    return create_yearspan_ruler(nlp, name, patterns_fr_YEARSPAN)
 
 @Italian.factory("yearspan_ruler")
 def create_yearspan_ruler_it(nlp, name="yearspan_ruler_it"):
-    return create_yearspan_ruler(nlp, name, patterns_it_YEARSPAN)    
+    return create_yearspan_ruler(nlp, name, patterns_it_YEARSPAN)
 
 @Dutch.factory("yearspan_ruler")
 def create_yearspan_ruler_nl(nlp, name="yearspan_ruler_nl"):
@@ -86,6 +86,7 @@ def create_yearspan_ruler_sv(nlp, name="yearspan_ruler_sv"):
 class YearSpanRuler(EntityRuler):        
    
     def __init__(self, nlp: Language, name: str, patterns=[]) -> None:
+        
         EntityRuler.__init__(
             self, 
             nlp=nlp, 
@@ -95,6 +96,7 @@ class YearSpanRuler(EntityRuler):
             overwrite_ents=True,
             ent_id_sep="||"
         )
+
         atomic_pipe_names = [
             "dateprefix_ruler", 
             "datesuffix_ruler", 
@@ -103,40 +105,52 @@ class YearSpanRuler(EntityRuler):
             "monthname_ruler", 
             "seasonname_ruler"
         ] 
-        for name in atomic_pipe_names:
-            if not name in nlp.pipe_names:       
-                nlp.add_pipe(name, last=True)       
+       
+        for n in atomic_pipe_names:
+            if not n in nlp.pipe_names: 
+                nlp.add_pipe(n, last=True)
 
-        # add yearspan patterns to this pipeline component
-        self.add_patterns(patterns)           
+        # add patterns to this pipeline component
+        self.add_patterns(patterns)          
 
 
     def __call__(self, doc: Doc) -> Doc:
-        EntityRuler.__call__(self, doc)
+
+        doc = EntityRuler.__call__(self, doc)        
+
         filtered = [ent for ent in doc.ents if ent.label_ not in ["ORDINAL", "DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "MONTHNAME", "SEASONNAME"]]
         doc.ents = filtered
         return doc
 
 
 # test the YearSpanRuler class
-if __name__ == "__main__":    
-    
-    import json
-    test_file_name = "test-examples.json"
-    tests = [] 
-    with open(test_file_name, "r") as f:  # what if file doesn't exist?            
-        tests = json.load(f)
+if __name__ == "__main__": 
 
+    tests = [
+        { "lang": "de", "pipe": "de_core_news_sm", "text": "Das Artefakt wurde von 1650 bis 1800 n. Chr. datiert und war korrodiert" },
+        { "lang": "en", "pipe": "en_core_web_sm", "text": "The artefact was dated from 1650 to 1800 AD and was corroded" },
+        { "lang": "es", "pipe": "es_core_news_sm", "text": "El artefacto estaba fechado entre 1650 y 1800 d. C. y estaba corroído." },
+        { "lang": "fr", "pipe": "fr_core_news_sm", "text": "L'artefact était daté de 1650 à 1800 après JC et a été corrodé" },
+        { "lang": "it", "pipe": "it_core_news_sm", "text": "Il manufatto fu datato dal 1650 al 1800 d.C. e fu corroso" },
+        { "lang": "nl", "pipe": "nl_core_news_sm", "text": "Het artefact dateerde van 1650 tot 1800 na Christus en was gecorrodeerd" },
+        { "lang": "no", "pipe": "nb_core_news_sm", "text": "Gjenstanden ble datert fra 1650 til 1800 e.Kr. og var korrodert" },
+        { "lang": "sv", "pipe": "sv_core_news_sm", "text": "Artefakten daterades från 1650 till 1800 e.Kr. och var korroderad" }
+    ]
     for test in tests:
-        print(f"-------------\nlanguage = {test['language']}")
-        
+        # print header
+        print(f"-------------\nlanguage = {test['lang']}")
+        # load language-specific pre-built pipeline
         nlp = spacy.load(test["pipe"], disable = ['ner']) 
-        #nlp.max_length = 2000000
-
+        # add custom component at the end of the pipeline
         nlp.add_pipe("yearspan_ruler", last=True) 
+        # run text through the pipeline
+        doc = nlp(test["text"]) 
+        # display the current pipeline components        
         print(nlp.pipe_names) 
-        doc = nlp(test["text"])
-        
+
+        #for token in doc:
+            #print(f"{token.pos_}\t{token.text}\n")
+        # print the doc entities             
         for ent in doc.ents:
             print (ent.ent_id_, ent.text, ent.label_)
         

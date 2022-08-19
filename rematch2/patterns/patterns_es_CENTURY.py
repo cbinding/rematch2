@@ -1,9 +1,16 @@
 patterns_es_CENTURY = [
     { 
-        "label": "CENTURY", 
-        "language": "es",
+        "label": "CENTURY",
+		"pattern": [
+            {"LOWER": {"REGEX": r"^(siglos?|milenios?)$"}},
+            {"TEXT": {"REGEX": r"[MCDLXVI]+\-[MCDLXVI]+"}}, 
+            {"OP": "?", "ENT_TYPE": "DATESUFFIX"} 
+        ]
+    },
+    { 
+        "label": "CENTURY",         
         "comment": "",
-        "pattern": [
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"LOWER": {"REGEX": r"^(siglo|milenio)$"}},
             {"ENT_TYPE": "ORDINAL"},            
@@ -11,17 +18,29 @@ patterns_es_CENTURY = [
         ]
     },
     { 
-        "label": "CENTURY", 
-        "language": "es",
-        "comment": "",
-        "pattern": [
+        "label": "CENTURY",
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
-            {"OP": "?", "LOWER": {"REGEX": r"^(siglo|milenio)$"}},
+            {"LOWER": {"REGEX": r"^(siglos|milenio)$"}},
             {"ENT_TYPE": "ORDINAL"},            
             {"OP": "?", "ENT_TYPE": "DATESUFFIX"},
             {"ENT_TYPE": "DATESEPARATOR"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"OP": "?", "LOWER": {"REGEX": r"^(siglos|milenio)$"}}, 
+            {"ENT_TYPE": "ORDINAL"},            
+            {"OP": "?", "ENT_TYPE": "DATESUFFIX"} 
+        ]
+    },
+    { 
+        "label": "CENTURY",
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
-            {"LOWER": {"REGEX": r"^(siglo|milenio)$"}},
+            {"OP": "?", "LOWER": {"REGEX": r"^(siglos?|milenio)$"}},
+            {"ENT_TYPE": "ORDINAL"},            
+            {"OP": "?", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"LOWER": {"REGEX": r"^(siglo|milenio)$"}}, 
             {"ENT_TYPE": "ORDINAL"},            
             {"OP": "?", "ENT_TYPE": "DATESUFFIX"} 
         ]

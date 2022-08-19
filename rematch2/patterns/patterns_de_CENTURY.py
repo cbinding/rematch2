@@ -1,8 +1,7 @@
 patterns_de_CENTURY = [
     { 
-        "label": "CENTURY", 
-        "language": "de",
-        "pattern": [
+        "label": "CENTURY",
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "ORDINAL"},
             {"LOWER": {"REGEX": r"^(jahrhunderts?|jhs?\.?|jahrtausends?)$"}},
@@ -10,9 +9,8 @@ patterns_de_CENTURY = [
         ]
     },
     { 
-        "label": "CENTURY", 
-        "language": "de",
-        "pattern": [
+        "label": "CENTURY",
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "ORDINAL"},
             {"OP": "?", "LOWER": {"REGEX": r"^(jahrhunderts?|jhs?\.?|jahrtausends?)$"}},

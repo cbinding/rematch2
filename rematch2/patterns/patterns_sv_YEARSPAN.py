@@ -1,17 +1,16 @@
 patterns_sv_YEARSPAN = [ 
-    { 
-        "label": "YEARSPAN", 
-        "language": "sv",
-        "pattern": [
+        { 
+        "label": "YEARSPAN",
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"LOWER": {"REGEX": r"^\d+0\-talet$"}}             
         ] 
     },
     { 
         "label": "YEARSPAN", 
-        "language": "sv",
+        
         "comment": "",
-        "pattern": [
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "MONTHNAME"},
             {"ORTH": {"REGEX": r"^\d+$"}},
@@ -20,9 +19,9 @@ patterns_sv_YEARSPAN = [
     },
     { 
         "label": "YEARSPAN", 
-        "language": "sv",
+        
         "comment": "",
-        "pattern": [
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "SEASONNAME"},
             {"ORTH": {"REGEX": r"^\d+$"}},
@@ -31,9 +30,9 @@ patterns_sv_YEARSPAN = [
     },
     { 
         "label": "YEARSPAN", 
-        "language": "sv",
+        
         "comment": "",
-        "pattern": [
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d+$"}},
             {"OP": "+", "ENT_TYPE": "DATESUFFIX"}
@@ -41,18 +40,18 @@ patterns_sv_YEARSPAN = [
     },
     { 
         "label": "YEARSPAN", 
-        "language": "sv",
+        
         "comment": "",
-        "pattern": [
+		"pattern": [
             {"ORTH": {"REGEX": r"^\d+[\–\-]\d+$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ] 
     },
     { 
         "label": "YEARSPAN", 
-        "language": "sv",
+        
         "comment": "",
-        "pattern": [
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ORTH": {"REGEX": r"^\d+$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"}, 
@@ -65,8 +64,7 @@ patterns_sv_YEARSPAN = [
     { 
         "label": "YEARSPAN",
         "comment": "**See https://stackoverflow.com/questions/57477852/spacy-matcher-with-entities-spanning-more-than-a-single-token  retokenizing with custom entity types..",
-        "language": "sv",
-        "pattern": [
+		"pattern": [
            {"ORTH": "xxxxxxxxx"}
         ]
     }

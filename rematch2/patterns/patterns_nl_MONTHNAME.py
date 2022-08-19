@@ -2,92 +2,80 @@ patterns_nl_MONTHNAME = [
     { 
         "label": "MONTHNAME", 
         "comment": "jan | jan. | januari",
-        "language": "nl",
-        "pattern": [
+		"pattern": [
             {"LOWER": {"REGEX": r"^jan(\.|uari)?$"}}            
         ]
     },
     { 
         "label": "MONTHNAME", 
         "comment": "feb | feb. | februari",
-        "language": "nl",
-        "pattern": [
+		"pattern": [
             {"LOWER": {"REGEX": r"^feb(\.|ruari)?$"}}            
         ]
     },
     { 
-        "label": "MONTHNAME", 
-        "language": "nl",
-        "pattern": [
+        "label": "MONTHNAME",
+		"pattern": [
             {"LOWER": "maart"}            
         ]
     },
     { 
         "label": "MONTHNAME",
         "comment": "apr | apr. | april",
-        "language": "nl",
-        "pattern": [
+		"pattern": [
             {"LOWER": {"REGEX": r"^apr(\.|il)?$"}}            
         ]
     },
     { 
-        "label": "MONTHNAME", 
-        "language": "nl",
-        "pattern": [
+        "label": "MONTHNAME",
+		"pattern": [
             {"LOWER": "mei"}            
         ]
     },
     { 
-        "label": "MONTHNAME", 
-        "language": "nl",
-        "pattern": [
+        "label": "MONTHNAME",
+		"pattern": [
             {"LOWER": "juni"}            
         ]
     },
     { 
-        "label": "MONTHNAME", 
-        "language": "nl",
-        "pattern": [
+        "label": "MONTHNAME",
+		"pattern": [
             {"LOWER": "juli"}            
         ]
     },
     { 
         "label": "MONTHNAME",
         "comment": "aug | aug. | augustus",
-        "language": "nl",
-        "pattern": [
+		"pattern": [
             {"LOWER": {"REGEX": r"^aug(\.|ustus)?$"}}            
         ]
     },
     { 
         "label": "MONTHNAME", 
         "comment": "sept | sept. | september",
-        "language": "nl",
-        "pattern": [
+		"pattern": [
             {"LOWER": {"REGEX": r"^sept(\.|ember)?$"}}            
         ]
     },
     { 
         "label": "MONTHNAME",
         "comment": "oct | oct. | okt | okt. |october | oktober",
-        "language": "nl",
-        "pattern": [
+		"pattern": [
             {"LOWER": {"REGEX": r"^o[kc]t(\.|ober)?$"}}            
         ]
     },
     { 
         "label": "MONTHNAME",
         "comment": "nov | nov. | november",
-        "language": "nl",
-        "pattern": [
+		"pattern": [
             {"LOWER": {"REGEX": r"^nov(\.|ember)?$"}}            
         ]
     },
     { 
         "label": "MONTHNAME", 
         "comment": "dec | dec. | december",
-        "language": "nl",
-        "pattern": [
+		"pattern": [
             {"LOWER": {"REGEX": r"^dec(\.|ember)?$"}}            
         ]
     }

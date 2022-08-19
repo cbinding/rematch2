@@ -93,6 +93,10 @@ if __name__ == "__main__":
         nlp = spacy.load(test["pipe"], disable = ['ner']) 
         nlp.add_pipe("ordinal_ruler", last=True) 
         doc = nlp(test["text"])
+
+        #for token in doc:
+            #print(f"{token.pos_}\t{token.text}\n")
+        
         for ent in doc.ents:
             print (ent.ent_id_, ent.text, ent.label_)
      

@@ -20,7 +20,6 @@ import spacy            # NLP library
 
 from spacy.language import Language
 #from spacy.lang.de import German
-from spacy.lang.en import English
 from spacy.lang.fr import French
 
 from spacy.pipeline import EntityRuler
@@ -40,10 +39,6 @@ from .PatternRuler import PatternRuler
 @Language.factory("monument_ruler")
 def create_monument_ruler(nlp, name="minument_ruler", patterns=patterns_en_MONUMENT):   
     return PatternRuler(nlp, name, patterns) 
-
-@English.factory("monument_ruler")
-def create_monument_ruler_en(nlp, name="monument_ruler_en"):
-    return create_monument_ruler(nlp, name, patterns_en_MONUMENT)
    
 @French.factory("monument_ruler")
 def create_monument_ruler_fr(nlp, name="monument_ruler_fr"):

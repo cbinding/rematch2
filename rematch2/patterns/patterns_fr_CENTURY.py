@@ -1,8 +1,7 @@
 patterns_fr_CENTURY = [
     { 
-        "label": "CENTURY", 
-        "language": "fr",
-        "pattern": [
+        "label": "CENTURY",
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "ORDINAL"},
             {"LOWER": {"REGEX": r"^s((\.|i[eè]cle)?|mill[eé]naire)$"}},
@@ -10,12 +9,11 @@ patterns_fr_CENTURY = [
         ]
     },
     { 
-        "label": "CENTURY", 
-        "language": "fr",
-        "pattern": [
+        "label": "CENTURY",
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "ORDINAL"},
-            {"LOWER": {"REGEX": r"^s((\.|i[eè]cle)?|mill[eé]naire)$"}},
+            {"OP": "?", "LOWER": {"REGEX": r"^s((\.|i[eè]cle)?|mill[eé]naire)$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
             {"ENT_TYPE": "DATESEPARATOR"},
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
@@ -23,5 +21,19 @@ patterns_fr_CENTURY = [
             {"LOWER": {"REGEX": r"^s((\.|i[eè]cle)?|mill[eé]naire)$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
         ]
-    }
+    },
+    { 
+        "label": "CENTURY",
+		"pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "ORDINAL"},
+            {"LOWER": {"REGEX": r"^s((\.|i[eè]cle)?|mill[eé]naire)$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "ORDINAL"},
+            {"OP": "?", "LOWER": {"REGEX": r"^s((\.|i[eè]cle)?|mill[eé]naire)$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+        ]
+    }    
 ]

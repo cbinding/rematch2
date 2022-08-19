@@ -1,8 +1,7 @@
 patterns_en_ORDINAL = [
     { 
-        "label": "ORDINAL", 
-        "language": "en",
-        "pattern": [
+        "label": "ORDINAL",
+		"pattern": [
            {"LOWER": {"IN": [
                 "first","second","third","fourth","fifth",
                 "sixth","seventh","eighth","ninth","tenth",
@@ -12,9 +11,8 @@ patterns_en_ORDINAL = [
         ]
     },
     { 
-        "label": "ORDINAL", 
-        "language": "en",
-        "pattern": [
+        "label": "ORDINAL",
+		"pattern": [
             {"LOWER": {"REGEX": r"^\d+(st|nd|rd|th)$"}}            
         ] 
     }

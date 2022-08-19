@@ -1,8 +1,7 @@
 patterns_nl_ORDINAL = [
     { 
-        "label": "ORDINAL", 
-        "language": "nl",
-        "pattern": [
+        "label": "ORDINAL",
+		"pattern": [
            {"LOWER": {"IN": [
                 "eerste", "tweede", "derde", "vierde", "vijfe",
                 "zesde", "zevende", "achtse", "negende", "tiende",
@@ -15,9 +14,8 @@ patterns_nl_ORDINAL = [
         ]
     },
     { 
-        "label": "ORDINAL", 
-        "language": "nl",
-        "pattern": [
+        "label": "ORDINAL",
+		"pattern": [
             {"LOWER": {"REGEX": r"^\d+e$"}}            
         ] 
     }

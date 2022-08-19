@@ -1,4 +1,4 @@
-[    
+test_examples = [    
 	{
 		"language": "de",
 		"pipe": "de_core_news_sm", 

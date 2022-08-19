@@ -1,2 +1,4 @@
 # Checkpoints will not be pushed.
 .ipynb_checkpoints
+# python cache files
+*.pyc

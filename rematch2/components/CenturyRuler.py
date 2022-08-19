@@ -107,37 +107,52 @@ class CenturyRuler(EntityRuler):
                 nlp.add_pipe(name, last=True)       
 
          # add century patterns to this pipeline component
-        self.add_patterns(patterns)           
+        self.add_patterns(patterns)    
+
+
+    """
+    Note see https://github.com/explosion/spaCy/discussions/6309
+    "The EntityRuler is a wrapper around the Matcher and PhraseMatcher, so if you need more control of how overlapping matches are managed, 
+    you may want to use the Matcher directly instead of using the EntityRuler. 
+    As a starting point, you could have a look at EntityRuler.__call__ to see how entities are matched and filtered."
+    []...] If you need to store overlapping spans, you can use custom Doc or Token extensions, see: https://spacy.io/usage/processing-pipelines#custom-components-attributes
+    """       
 
 
     def __call__(self, doc: Doc) -> Doc:
         EntityRuler.__call__(self, doc)
         filtered = [ent for ent in doc.ents if ent.label_ not in ["ORDINAL", "DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "MONTHNAME", "SEASONNAME"]]
-        doc.ents = filtered
+        #doc.ents = filtered
         return doc
 
 
 # test the pipeline component
-if __name__ == "__main__":    
-    import json
+if __name__ == "__main__": 
 
-    test_file_name = "test-examples.json"
-    tests = [] 
-    with open(test_file_name, "r") as f:  # what if file doesn't exist?            
-        tests = json.load(f)
-    
+    tests = [
+        { "lang": "de", "pipe": "de_core_news_sm", "text": "Das Artefakt stammt aus dem 7. bis 6. Jahrhundert v. Chr., Kann aber älter sein" },
+        { "lang": "en", "pipe": "en_core_web_sm", "text": "the artefact dates from the 7th to 6th century BC but may be older" },
+        { "lang": "es", "pipe": "es_core_news_sm", "text": "el artefacto data del siglo VII al VI a. C. pero puede ser más antiguo" },
+        { "lang": "fr", "pipe": "fr_core_news_sm", "text": "l'artefact date du 7ème au 6ème siècle avant JC mais peut être plus ancien" },
+        { "lang": "it", "pipe": "it_core_news_sm", "text": "il manufatto risale al VII-VI secolo aC ma potrebbe essere più antico" },
+        { "lang": "nl", "pipe": "nl_core_news_sm", "text": "het artefact dateert uit de 7e tot 6e eeuw voor Christus, maar kan ouder zijn" },
+        { "lang": "no", "pipe": "nb_core_news_sm", "text": "gjenstanden stammer fra det 7. til 6. århundre f.Kr., men kan være eldre" },
+        { "lang": "sv", "pipe": "sv_core_news_sm", "text": "artefakten är från 700- till 600-talet f.Kr. men kan vara äldre" }
+    ]
     for test in tests:
-        print(f"-------------\nlanguage = {test['language']}")
-        
+        # print header
+        print(f"-------------\nlanguage = {test['lang']}")
+        # load language-specific pre-built pipeline
         nlp = spacy.load(test["pipe"], disable = ['ner']) 
-        #nlp.max_length = 2000000
-
+        # add custom component at the end of the pipeline
         nlp.add_pipe("century_ruler", last=True) 
+        # run text through the pipeline
+        doc = nlp(test["text"]) 
+        # display the current pipeline components        
         print(nlp.pipe_names) 
-        doc = nlp(test["text"])
-        #if(test["language"]=="no"):
-            #for token in doc:
-                #print(f"{token.pos_}\t{token.text}\t{token.lemma_}\n")
-            
+
+        for token in doc:
+            print(f"{token.pos_}\t{token.text}\n")
+        # print the doc entities             
         for ent in doc.ents:
             print (ent.ent_id_, ent.text, ent.label_)

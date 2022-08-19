@@ -3,7 +3,7 @@
       "id": "p0kh9dsxp46",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "victorian"
          }
@@ -13,7 +13,7 @@
       "id": "p0kh9ds6t9k",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "early"
          },
@@ -26,7 +26,7 @@
       "id": "p0kh9ds785r",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "later"
          },
@@ -39,7 +39,7 @@
       "id": "p0kh9dsw3zv",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "edwardian"
          }
@@ -49,7 +49,7 @@
       "id": "p0kh9dsj33x",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "iron"
          },
@@ -62,7 +62,7 @@
       "id": "p0kh9dsmf3f",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "early"
          },
@@ -75,7 +75,7 @@
       "id": "p0kh9ds3whd",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "jacobean"
          }
@@ -85,7 +85,7 @@
       "id": "p0kh9dsctsj",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "post"
          },
@@ -98,7 +98,7 @@
       "id": "p0kh9dsk4zt",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "mid"
          },
@@ -114,7 +114,7 @@
       "id": "p0kh9dstffb",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "early"
          },
@@ -130,7 +130,7 @@
       "id": "p0kh9dsnrhc",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "middle"
          },
@@ -143,7 +143,7 @@
       "id": "p0kh9dszskn",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "early"
          },
@@ -159,7 +159,7 @@
       "id": "p0kh9dst3vc",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "georgian"
          }
@@ -169,7 +169,7 @@
       "id": "p0kh9dscbkd",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "medieval"
          }
@@ -179,7 +179,7 @@
       "id": "p0kh9ds7q8m",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "bronze"
          },
@@ -192,7 +192,7 @@
       "id": "p0kh9dstr3n",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "elizabethan"
          }
@@ -202,7 +202,7 @@
       "id": "p0kh9dsbd33",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "cold"
          },
@@ -215,7 +215,7 @@
       "id": "p0kh9ds2pnp",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "late"
          },
@@ -231,7 +231,7 @@
       "id": "p0kh9dsqpzm",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "middle"
          },
@@ -247,7 +247,7 @@
       "id": "p0kh9dskb4m",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "mesolithic"
          }
@@ -257,7 +257,7 @@
       "id": "p0kh9dszj78",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "21st"
          },
@@ -270,7 +270,7 @@
       "id": "p0kh9dsqkbq",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "late"
          },
@@ -286,7 +286,7 @@
       "id": "p0kh9ds6f4n",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "stuart"
          }
@@ -296,7 +296,7 @@
       "id": "p0kh9dsts5m",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "upper"
          },
@@ -309,7 +309,7 @@
       "id": "p0kh9dsbnzg",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "early"
          },
@@ -322,7 +322,7 @@
       "id": "p0kh9dsbz2g",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "neolithic"
          }
@@ -332,7 +332,7 @@
       "id": "p0kh9dsqx6c",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "middle"
          },
@@ -348,7 +348,7 @@
       "id": "p0kh9dsdf5j",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "early"
          },
@@ -361,7 +361,7 @@
       "id": "p0kh9ds4hjq",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "late"
          },
@@ -374,7 +374,7 @@
       "id": "p0kh9dsbm2h",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "middle"
          },
@@ -387,7 +387,7 @@
       "id": "p0kh9ds3566",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "first"
          },
@@ -403,7 +403,7 @@
       "id": "p0kh9ds9nsj",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "roman"
          }
@@ -413,7 +413,7 @@
       "id": "p0kh9dst7t7",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "prehistoric"
          }
@@ -423,7 +423,7 @@
       "id": "p0kh9dscmjf",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "late"
          },
@@ -436,7 +436,7 @@
       "id": "p0kh9dsvcdn",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "hanoverian"
          }
@@ -446,7 +446,7 @@
       "id": "p0kh9dshs59",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "early"
          },
@@ -462,7 +462,7 @@
       "id": "p0kh9dstmtg",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "lower"
          },
@@ -475,7 +475,7 @@
       "id": "p0kh9ds7jvs",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "tudor"
          }
@@ -485,7 +485,7 @@
       "id": "p0kh9dsqfgv",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "palaeolithic"
          }
@@ -495,7 +495,7 @@
       "id": "p0kh9dstg2x",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "20th"
          },
@@ -508,7 +508,7 @@
       "id": "p0kh9ds5x8v",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "second"
          },
@@ -524,7 +524,7 @@
       "id": "p0kh9ds8p8k",
       "label": "TEMPORAL",
       "language": "en",
-      "pattern": [
+		"pattern": [
          {
             "LOWER": "late"
          },

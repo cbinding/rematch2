@@ -1,8 +1,7 @@
 patterns_no_DATESEPARATOR = [
     { 
-        "label": "DATESEPARATOR", 
-        "language": "en",
-        "pattern": [
+        "label": "DATESEPARATOR",
+		"pattern": [
             {"LOWER": {"REGEX": r"^(?:[\–\-/]|til|og|och|eller)$"}}            
         ]
     }

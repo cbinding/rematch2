@@ -1,9 +1,9 @@
 patterns_nl_YEARSPAN = [
     { 
         "label": "YEARSPAN", 
-        "language": "nl",
+        
         "comment": "",
-        "pattern": [
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "MONTHNAME"},
             {"ORTH": {"REGEX": r"^\d+$"}},
@@ -12,9 +12,9 @@ patterns_nl_YEARSPAN = [
     },
     { 
         "label": "YEARSPAN", 
-        "language": "nl",
+        
         "comment": "",
-        "pattern": [
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "SEASONNAME"},
             {"ORTH": {"REGEX": r"^\d+$"}},
@@ -23,9 +23,9 @@ patterns_nl_YEARSPAN = [
     },
     { 
         "label": "YEARSPAN", 
-        "language": "nl",
+        
         "comment": "",
-        "pattern": [
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d+$"}},
             {"OP": "+", "ENT_TYPE": "DATESUFFIX"}
@@ -33,18 +33,18 @@ patterns_nl_YEARSPAN = [
     },
     { 
         "label": "YEARSPAN", 
-        "language": "nl",
+        
         "comment": "",
-        "pattern": [
+		"pattern": [
             {"LOWER": {"REGEX": r"^\d+[\–\-/]\d+$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ] 
     },
     { 
         "label": "YEARSPAN", 
-        "language": "nl",
+        
         "comment": "",
-        "pattern": [
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ORTH": {"REGEX": r"^\d+$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"}, 

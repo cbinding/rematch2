@@ -2,16 +2,14 @@ patterns_sv_DATEPREFIX = [
     { 
         "label": "DATEPREFIX",
         "comment": "circa | ungefär | runt | tidigt",
-        "language": "sv", 
-        "pattern": [
+		"pattern": [
             {"LOWER": {"REGEX": r"^(?:circa|ungefär|runt|tidigt)$"}}
         ] 
     }, 
     { 
         "label": "DATEPREFIX",
         "comment": "början av | början av det | mitten av | mitten av det | slutet av | slutet av det",
-        "language": "sv", 
-        "pattern": [
+		"pattern": [
             {"LOWER": {"REGEX": r"^(?:början|mitten|slutet)$"}},
             {"LOWER": "av"},
             {"OP": "?", "LOWER": "det"}
@@ -20,16 +18,14 @@ patterns_sv_DATEPREFIX = [
     { 
         "label": "DATEPREFIX",
         "comment": "sen | sent | sena | sentida",
-        "language": "sv", 
-        "pattern": [
+		"pattern": [
             {"LOWER": {"REGEX": r"^(sen[ta]?|sentida)$"}}
         ] 
     }, 
     { 
         "label": "DATEPREFIX",
         "comment": "första hälften | första hälften av | första hälften av det",
-        "language": "sv", 
-        "pattern": [
+		"pattern": [
             {"LOWER": "första"},
             {"LOWER": "hälften"},
             {"OP": "?", "LOWER": "av"},
@@ -39,8 +35,7 @@ patterns_sv_DATEPREFIX = [
     { 
         "label": "DATEPREFIX",
         "comment": "andra halvan | andra halvan av | första hälften av det",
-        "language": "sv", 
-        "pattern": [
+		"pattern": [
             {"LOWER": "andra"},
             {"LOWER": "halvan"},
             {"OP": "?", "LOWER": "av"},
@@ -48,9 +43,8 @@ patterns_sv_DATEPREFIX = [
         ] 
     },    
     { 
-        "label": "DATEPREFIX", 
-        "language": "sv",
-        "pattern": [
+        "label": "DATEPREFIX",
+		"pattern": [
             {"LOWER": {"REGEX": r"^(första|andra|tredje|fjärde$)"}},
             {"LOWER": "kvartalet"},
             {"OP": "?", "LOWER": "av"},

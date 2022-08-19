@@ -1,9 +1,19 @@
 patterns_sv_CENTURY = [
     { 
+        "label": "CENTURY",
+		"pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"LOWER": {"REGEX": r"^\d+00\-(talet)?$"}},  
+            {"ENT_TYPE": "DATESEPARATOR"}, 
+            {"LOWER": {"REGEX": r"^\d+00\-(talet)?$"}},    
+            {"OP": "?", "ENT_TYPE": "DATESUFFIX"}      
+        ] 
+    },
+    { 
         "label": "CENTURY", 
-        "language": "sv",
+        
         "comment": "",
-        "pattern": [
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "ORDINAL"},
             {"LOWER": {"REGEX": r"^(århundradet|årtusendet)$"}},
@@ -12,9 +22,9 @@ patterns_sv_CENTURY = [
     },
     { 
         "label": "CENTURY", 
-        "language": "sv",
+        
         "comment": "",
-        "pattern": [
+		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "ORDINAL"},
             {"OP": "?", "LOWER": {"REGEX": r"^(århundradet|årtusendet)$"}},
