@@ -1,8 +1,6 @@
 patterns_nl_YEARSPAN = [
     { 
-        "label": "YEARSPAN", 
-        
-        "comment": "",
+        "label": "YEARSPAN",
 		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "MONTHNAME"},
@@ -12,8 +10,6 @@ patterns_nl_YEARSPAN = [
     },
     { 
         "label": "YEARSPAN", 
-        
-        "comment": "",
 		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "SEASONNAME"},
@@ -22,36 +18,43 @@ patterns_nl_YEARSPAN = [
         ]
     },
     { 
-        "label": "YEARSPAN", 
-        
-        "comment": "",
+        "label": "YEARSPAN",
 		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "+", "ENT_TYPE": "DATESUFFIX"}
+            {"ENT_TYPE": "DATESUFFIX"}
         ] 
     },
     { 
         "label": "YEARSPAN", 
-        
-        "comment": "",
 		"pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": r"^\d+[\–\-/]\d+$"}},
-            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
+            {"ENT_TYPE": "DATESUFFIX"}
         ] 
     },
     { 
         "label": "YEARSPAN", 
-        
-        "comment": "",
 		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}, 
+            {"OP": "?", "ENT_TYPE": "DATESUFFIX"}, 
             {"ENT_TYPE": "DATESEPARATOR"}, 
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
+            {"ENT_TYPE": "DATESUFFIX"}
+        ] 
+    },
+    { 
+        "label": "YEARSPAN", 
+		"pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ORTH": {"REGEX": r"^\d+$"}},
+            {"ENT_TYPE": "DATESUFFIX"}, 
+            {"ENT_TYPE": "DATESEPARATOR"}, 
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ORTH": {"REGEX": r"^\d+$"}},
+            {"OP": "?", "ENT_TYPE": "DATESUFFIX"}
         ] 
     }
 ]
