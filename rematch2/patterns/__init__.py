@@ -82,7 +82,7 @@ from .patterns_sv_YEARSPAN import patterns_sv_YEARSPAN
 
 # superseded by Periodo / NmedPeriodRuler but left here anyway
 from .patterns_en_NAMEDPERIOD import patterns_en_NAMEDPERIOD
-from .patterns_fr_NAMEDPERIOD import patterns_fr_NAMEDPERIOD
+#from .patterns_fr_NAMEDPERIOD import patterns_fr_NAMEDPERIOD
 from .patterns_no_NAMEDPERIOD import patterns_no_NAMEDPERIOD
 from .patterns_sv_NAMEDPERIOD import patterns_sv_NAMEDPERIOD
 

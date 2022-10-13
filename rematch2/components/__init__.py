@@ -1,5 +1,5 @@
-#from .PeriodoData import PeriodoData
 #from .PatternRuler import PatternRuler
+from . import PeriodoData
 from .OrdinalRuler import create_ordinal_ruler
 from .DayNameRuler import create_dayname_ruler
 from .MonthNameRuler import create_monthname_ruler

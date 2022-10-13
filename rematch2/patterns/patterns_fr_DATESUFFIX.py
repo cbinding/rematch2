@@ -1,87 +1,65 @@
+avant_apres = r"^(av(\.|ant)?|ap(\.|r\.?|r[eè]s)?|de)$"
+
 patterns_fr_DATESUFFIX = [
-    { 
+    {
         "label": "DATESUFFIX",
-		"pattern": [
+        "pattern": [
             {"OP": "?", "LOWER": {"REGEX": r"cal\.?"}},
-            {"LOWER": {"REGEX": r"^(ad|bc|bp|a\.d\.|b\.c\.|b\.p\.)$"}}              
+            {"LOWER": {"REGEX": r"^(ad|bc|bp|a\.d\.|b\.c\.|b\.p\.)$"}}
         ]
     },
-    { 
+    {
         "label": "DATESUFFIX",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(av(\.|ant)?|ap(r\.?|r[eè]s)?)$"}},
-            {"LOWER":  {"REGEX": r"^j\.?$"}} ,
-            {"LOWER":  {"REGEX": r"^\-?c\.?$"}}            
+        "pattern": [
+            {"LOWER": {"REGEX": avant_apres}},
+            {"LOWER":  {"REGEX": r"^j\.?$"}},
+            {"LOWER":  {"REGEX": r"^\-?c\.?$"}}
         ]
-    },     
-    { 
+    },
+    {
         "label": "DATESUFFIX",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(av(\.|ant)?|ap(r?\.?|r[eè]s)?)$"}},
-            {"LOWER":  "jc"}                
+        "pattern": [
+            {"LOWER": {"REGEX": avant_apres}},
+            {"LOWER":  "jc"}
         ]
-    }, 
-    { 
+    },
+    {
         "label": "DATESUFFIX",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(av(\.|ant)?|ap(r\.?|r[eè]s)?)$"}},
-            {"LOWER":  {"REGEX": r"^j\.-C$"}}           
+        "pattern": [
+            {"LOWER": {"REGEX": avant_apres}},
+            {"LOWER":  {"REGEX": r"^j\.-c\.?$"}}
         ]
-    }, 
-    { 
+    },
+    {
         "label": "DATESUFFIX",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(av(\.|ant)?|ap(r\.?|r[eè]s)?)$"}},
+        "pattern": [
+            {"LOWER": {"REGEX": avant_apres}},
             {"LOWER":  {"REGEX": r"^j\.?$"}},
             {"OP": "?", "TEXT":  "-"},
-            {"LOWER":  {"REGEX": r"^c\.?$"}}            
-        ]
-    }, 
-    { 
-        "label": "DATESUFFIX",
-		"pattern": [
-            {"LOWER": {"REGEX":  r"^(av(\.|ant)?|ap(r\.?|r[eè]s)?)$"}},
-            {"LOWER": {"REGEX": r"^j\.$"}},
-            {"LOWER": {"REGEX": r"^-?c\.$"}}            
-        ]
-    }, 
-    { 
-        "label": "DATESUFFIX",
-		"pattern": [
-            { "LOWER": "de" },
-            { "LOWER": "notre" },
-            { "LOWER":  { "REGEX": r"^[eè]re$" }}            
+            {"LOWER":  {"REGEX": r"^c\.?$"}}
         ]
     },
-    { 
+    {
         "label": "DATESUFFIX",
-		"pattern": [
-            {"LOWER": {"REGEX":  r"^(av(\.|ant)?|ap(r\.?|r[eè]s)?)$"}},
+        "pattern": [
+            {"LOWER": {"REGEX": avant_apres}},
             {"LOWER": {"REGEX": r"^n(\.|otre)$"}},
-            {"LOWER":  {"REGEX": r"^[eè]re$"}}            
+            {"LOWER":  {"REGEX": r"^[eè]re$"}}
         ]
     },
-    { 
+    {
         "label": "DATESUFFIX",
-		"pattern": [
-            {"LOWER": {"REGEX":  r"^(av(\.|ant)?|ap(r\.?|r[eè]s)?)$"}},
-            {"LOWER": {"REGEX": r"^n\.[eè]$"}}               
-        ]
-    },  
-    { 
-        "label": "DATESUFFIX",
-		"pattern": [
-            {"LOWER": {"REGEX":  r"^(av(\.|ant)?|ap(r\.?|r[eè]s)?)$"}},
-            {"LOWER": {"REGEX": r"^n\.$"}} ,
-            {"LOWER": {"REGEX": "^è$"}}               
+        "pattern": [
+            {"LOWER": {"REGEX": avant_apres}},
+            {"LOWER": {"REGEX": r"^n\.[eè]$"}}
         ]
     },
-    { 
+    {
         "label": "DATESUFFIX",
-		"pattern": [
-            {"LOWER": "cal"},
-            {"OP": "?", "LOWER": "."},
-            {"LOWER": {"REGEX": r"^b[cp]$"}}                        
+        "pattern": [
+            {"LOWER": {"REGEX": avant_apres}},
+            {"LOWER": {"REGEX": r"^n\.$"}},
+            {"LOWER": {"REGEX": "^è$"}}
         ]
-    }    
+    }
 ]

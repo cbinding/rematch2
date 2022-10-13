@@ -2,3 +2,5 @@
 .ipynb_checkpoints
 # python cache files
 *.pyc
+# output of French XML processing
+ner-fr/fromxml/*

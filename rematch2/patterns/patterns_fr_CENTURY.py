@@ -1,39 +1,41 @@
+siecle_millenaire = r"^s((\.|i[eè]cles?)?|mill[eé]naires?)$"
+
 patterns_fr_CENTURY = [
-    { 
+    {
         "label": "CENTURY",
-		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ENT_TYPE": "ORDINAL"},
-            {"LOWER": {"REGEX": r"^s((\.|i[eè]cle)?|mill[eé]naire)$"}},
-            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+            {"LOWER": {"REGEX": siecle_millenaire}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
-    { 
+    {
         "label": "CENTURY",
-		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ENT_TYPE": "ORDINAL"},
-            {"OP": "?", "LOWER": {"REGEX": r"^s((\.|i[eè]cle)?|mill[eé]naire)$"}},
+            {"OP": "?", "LOWER": {"REGEX": siecle_millenaire}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
             {"ENT_TYPE": "DATESEPARATOR"},
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ENT_TYPE": "ORDINAL"},
-            {"LOWER": {"REGEX": r"^s((\.|i[eè]cle)?|mill[eé]naire)$"}},
-            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+            {"LOWER": {"REGEX": siecle_millenaire}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
-    { 
+    {
         "label": "CENTURY",
-		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+        "pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ENT_TYPE": "ORDINAL"},
-            {"LOWER": {"REGEX": r"^s((\.|i[eè]cle)?|mill[eé]naire)$"}},
+            {"LOWER": {"REGEX": siecle_millenaire}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
             {"ENT_TYPE": "DATESEPARATOR"},
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ENT_TYPE": "ORDINAL"},
-            {"OP": "?", "LOWER": {"REGEX": r"^s((\.|i[eè]cle)?|mill[eé]naire)$"}},
-            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+            {"OP": "?", "LOWER": {"REGEX": siecle_millenaire}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
-    }    
+    }
 ]

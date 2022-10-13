@@ -7,7 +7,7 @@ Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
 Project   : ARIADNEplus
 Summary   : PeriodoData class
-Imports   : json, os, urllib, jmespath
+Imports   : json, os, urllib, jsonpath
 Example   : pd = PeriodoData();
             pd.load();
             authorities = pd.get_authority_list();
@@ -19,7 +19,9 @@ History
 =============================================================================
 """
 import json
-import jmespath
+
+from jsonpath_ng import jsonpath
+from jsonpath_ng.ext import parse
 
 from os.path import exists
 from urllib.request import urlopen
@@ -106,8 +108,9 @@ class PeriodoData:
 
     def find(self, pattern):
         """find data by pattern, return JSON"""
-        result = jmespath.search(pattern, self.jsondata)
-        #result = jsonpath.match(pattern, self.jsondata)
+        #result = jmespath.search(pattern, self.jsondata)   
+        jsonpath_expression = parse(pattern)     
+        result = jsonpath_expression.find(self.jsondata)
         #return json.dumps(result) # to return JSON string, not python object
         return result 
 
@@ -121,8 +124,14 @@ class PeriodoData:
     # returns list of authority as [{id, label}]
     def get_authority_list(self, sorted=True):        
         # get list of authorities using jmespath:
-        lst = self.find("authorities.* | [?source.title != null].{id: id, label: @.source.title}")
-
+        #lst = self.find("authorities.* | [?source.title != null].{id: id, label: @.source.title}")
+        authorities = self.find("$.authorities.*.source[?(@.title != null)]")
+        #print(authorities)
+        lst = list(map(lambda item: { 
+                "id": item.value.get("id", ""), 
+                "label": item.value.get("title", "") 
+            }, authorities))
+        #print(lst)
         # sort list if required
         if(sorted):
             lst.sort(key=lambda item: item["label"].lower())
@@ -130,13 +139,49 @@ class PeriodoData:
         return lst
     
 
-    # returns list of period labels as [{id, label, language}]
+    # returns list of period labels as [{id: "123", label: "Iron Age", language: "en"}]
     def get_period_list(self, authorityID="*"):
-        preferredLabels = self.find(f"authorities.{ authorityID }.periods.*.{{id: id, label: label, language: languageTag}}")
-        #localisedLabels = self.find(f"authorities.{ authorityID }.periods.*.localisedLabels.*.{{id: id, label: label, language: languageTag}}")
+        #labels = self.find(f"authorities.{ authorityID }.periods.*.{{id: id, label: label, language: languageTag, local: localizedLabels.* | []}}")
+        periods = self.find(f"$.authorities.{ authorityID }.periods.*")
         
-        #return(preferredLabels + localisedLabels)
-        return(preferredLabels)
+        '''
+        lst = list(map(lambda item: { 
+            "id": item.value.get("id", ""), 
+            "label": item.value.get("label", ""),
+            "language":  item.value.get("languageTag", ""),
+            "local": item.value.get("localizedLabels", [])
+        }, periods))
+        '''
+
+        lst = []
+        for period in periods:
+            id = period.value.get("id", "") 
+            label = period.value.get("label", "")          
+            language = period.value.get("language", "")
+            localized = period.value.get("localizedLabels", {}).items()  
+
+            lst.append({
+                "id": id, 
+                "label": label,          
+                "language": language       
+            })           
+                 
+            for localizedLanguage, localizedLabels in localized: 
+                for localizedLabel in localizedLabels:
+                    if(localizedLabel != label):
+                        lst.append({
+                            "id": id,  
+                            "label": localizedLabel,          
+                            "language": localizedLanguage                              
+                        })      
+        
+
+        #localizedLabels = self.find(f"authorities.{ authorityID }.periods.*.localizedLabels.*.{{id: id, label: label, language: languageTag}}")
+        # array of all localized labels in authority:
+        # JMES: authorities.p0f65r2 | periods.* | [*].localizedLabels.* | [] | []
+        # authorities.p0f65r2 | periods.*.{ id: id, label: label, local: localizedLabels.* | [] }
+        #return(preferredLabels + localizedLabels)
+        return lst
         #return self.find(f"authorities.{ authorityID }.periods.*.{{id: id, label: label, language: languageTag}}") 
    
 
@@ -159,8 +204,8 @@ if __name__ == "__main__":
     # print(pd.find("authorities.*.{key: id, lbl: @.source.title}"))
     #print(pd.find("authorities.* | [?source.title != null].{key: id, lbl: @.source.title}"))
     lst1 = pd.get_authority_list()
-    lst2 = pd.get_period_list("p0kh9ds") # "p0kh9ds" = HeritageData 
-
+    #lst2 = pd.get_period_list("p0kh9ds") # "p0kh9ds" = HeritageData 
+    lst2 = pd.get_period_list("p02chr4") # PACTOLS chronology periods used in DOLIA data
     #lst = pd.get_period_list("p0h9ttq")
     print(lst1[0:2])
     print(lst2)
