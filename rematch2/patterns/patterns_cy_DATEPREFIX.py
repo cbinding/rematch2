@@ -1,3 +1,18 @@
+"""
+=============================================================================
+Package :   rematch2.patterns
+Module  :   patterns_cy_DATEPREFIX.py
+Version :   20221027
+Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
+Contact :   ceri.binding@southwales.ac.uk
+Project :   ARIADNEplus
+Summary :   spaCy patterns for use with pipeline            
+Imports :   
+Example :           
+License :   https://creativecommons.org/licenses/by/4.0/ [CC-BY]
+History :   27/10/2022 CFB Initially created script
+=============================================================================
+"""
 patterns_cy_DATEPREFIX = [
     { 
         "label": "DATEPREFIX",

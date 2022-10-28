@@ -1,3 +1,5 @@
+__version__ = "0.1.0"
+
 from .patterns_cy_DAYNAME import patterns_cy_DAYNAME
 from .patterns_de_DAYNAME import patterns_de_DAYNAME
 from .patterns_en_DAYNAME import patterns_en_DAYNAME
@@ -87,6 +89,8 @@ from .patterns_no_NAMEDPERIOD import patterns_no_NAMEDPERIOD
 from .patterns_sv_NAMEDPERIOD import patterns_sv_NAMEDPERIOD
 
 # experimental - patterns generated from FISH vocabularies
+from .patterns_en_ARCHOBJECT import patterns_en_ARCHOBJECT
 from .patterns_en_ARCHSCIENCE import patterns_en_ARCHSCIENCE
+from .patterns_en_COMPONENT import patterns_en_COMPONENT
 from .patterns_en_MATERIAL import patterns_en_MATERIAL
 from .patterns_en_MONUMENT import patterns_en_MONUMENT

@@ -1,6 +1,6 @@
 """
 =============================================================================
-Package   : rematch2
+Package   : rematch2.components
 Module    : TokenPatterns.py
 Version   : 0.0.1
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru

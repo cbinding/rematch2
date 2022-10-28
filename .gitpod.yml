@@ -1,3 +1,4 @@
+---
 # Commands to run on initial workspace startup
 tasks:
     - init: 
@@ -24,8 +25,10 @@ tasks:
 #python -m spacy download sv_core_news_sm;      
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 ports:
-    - port: 9000-9099
-      onOpen: ignore
+   - port: 8080
+     onOpen: open-preview
+   - port: 8888
+     onOpen: open-browser
 
 # Install necessary packages
 image:
@@ -33,6 +36,7 @@ image:
 
 vscode:
     extensions:
-        - ms-toolsai.jupyter        
+        - ms-toolsai.jupyter   
+        - ms-python.python     
         - ms-toolsai.jupyter-renderers
         - ms-toolsai.jupyter-keymap

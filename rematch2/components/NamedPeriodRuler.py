@@ -1,6 +1,6 @@
 """
 =============================================================================
-Package :   rematch2
+Package :   rematch2.components
 Module  :   NamedPeriodRuler.py
 Version :   20220803
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
