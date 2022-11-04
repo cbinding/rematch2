@@ -1,17 +1,16 @@
 """
 =============================================================================
 Package :   rematch2.components
-Module  :   ArchObjectRuler.py
+Module  :   ComponentRuler.py
 Version :   20221027
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   ARIADNEplus
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
-            to identify Terms from the MDA Archaeological Objects Thesaurus 
-            and FISH Components thesaurus in free text. 
-            Entity type added will be "OBJECT"
+            to identify Terms from the HE Components Thesaurus in free text. 
+            Entity type added will be "COMPONENT"
 Imports :   os, sys, spacy, Language, PatternRuler
-Example :   nlp.add_pipe("archobject_ruler", last=True)           
+Example :   nlp.add_pipe("component_ruler", last=True)           
 License :   https://creativecommons.org/licenses/by/4.0/ [CC-BY]
 History :   03/08/2022 CFB Initially created script
 =============================================================================
@@ -22,19 +21,19 @@ import spacy            # NLP library
 
 from spacy.language import Language
 
-from ..patterns import patterns_en_ARCHOBJECT
+from ..patterns import patterns_en_COMPONENT
 from .PatternRuler import PatternRuler
 
 
-@Language.factory("archobject_ruler")
-def create_archobject_ruler(nlp, name="archobject_ruler", patterns=patterns_en_ARCHOBJECT):
+@Language.factory("component_ruler")
+def create_component_ruler(nlp, name="component_ruler", patterns=patterns_en_COMPONENT):
     return PatternRuler(nlp, name, patterns)
 
 
 # test the ArchObjectRuler class
 if __name__ == "__main__":
     nlp = spacy.load("en_core_web_sm", disable=['ner'])
-    nlp.add_pipe("archobject_ruler", last=True)
+    nlp.add_pipe("component_ruler", last=True)
     text = '''
     Aside from three residual flints, none closely datable, the earliest remains comprised a small assemblage of Roman pottery \
     and ceramic building material, also residual and most likely derived from a Roman farmstead found immediately to the north \

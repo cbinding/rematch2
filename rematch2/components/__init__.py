@@ -10,8 +10,12 @@ from .DateSeparatorRuler import create_dateseparator_ruler
 from .CenturyRuler import create_century_ruler
 from .YearSpanRuler import create_yearspan_ruler
 from .NamedPeriodRuler import create_namedperiod_ruler
+from .ComponentRuler import create_component_ruler
 from .ArchObjectRuler import create_archobject_ruler
 from .ArchScienceRuler import create_archscience_ruler
+from .EvidenceRuler import create_evidence_ruler
+from .MaritimeRuler import create_maritime_ruler
+from .EventTypeRuler import create_eventtype_ruler
 from .MaterialRuler import create_material_ruler
 from .MonumentRuler import create_monument_ruler
 import sys

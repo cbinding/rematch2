@@ -89,8 +89,12 @@ from .patterns_no_NAMEDPERIOD import patterns_no_NAMEDPERIOD
 from .patterns_sv_NAMEDPERIOD import patterns_sv_NAMEDPERIOD
 
 # experimental - patterns generated from FISH vocabularies
+# for use with VocabularyAnnotator
+from .patterns_en_EVIDENCE import patterns_en_EVIDENCE
 from .patterns_en_ARCHOBJECT import patterns_en_ARCHOBJECT
 from .patterns_en_ARCHSCIENCE import patterns_en_ARCHSCIENCE
+from .patterns_en_EVENTTYPE import patterns_en_EVENTTYPE
+from .patterns_en_MARITIME import patterns_en_MARITIME
 from .patterns_en_COMPONENT import patterns_en_COMPONENT
 from .patterns_en_MATERIAL import patterns_en_MATERIAL
 from .patterns_en_MONUMENT import patterns_en_MONUMENT
