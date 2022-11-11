@@ -9,8 +9,9 @@
 #    Bulk processing script identifies matching token patterns
 #    in French report abstracts in XML metadata file
 # Imports   : spacy
-# Example   : python3 find-tokenpatterns-in-xml-abstracts.py -i "path/to/abstracts/file.xml"
-# License   : http://creativecommons.org/publicdomain/zero/1.0/ [CC0]
+# Example   : 
+#   python3 find-tokenpatterns-in-xml-abstracts.py -i "path/to/abstracts/file.xml"
+# License   : https://creativecommons.org/licenses/by/4.0/ [CC-BY]
 # =============================================================================
 # History
 # 0.0.1 06/08/2021 CFB Initially created script

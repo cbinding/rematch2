@@ -3,5 +3,6 @@
     "workbench.editorAssociations": {
         "*.md": "vscode.markdown.preview.editor",
         "*.html": "default"
-    }
+    },
+    "python.linting.enabled": true
 }

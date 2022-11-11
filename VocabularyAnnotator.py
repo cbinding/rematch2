@@ -10,11 +10,12 @@ Contact   : ceri.binding@southwales.ac.uk
 Summary   : Vocabulary Annotation Tool (VAT) for archaeological texts
 Imports   : os, pandas, spacy, rematch2
 Example   : va = VocabularyAnnotator()
-            output = va.annotateText(inputText="abcde", format="csv")
+            output = va.annotateText(input_text="abcde", format="csv")
 License   : https://creativecommons.org/licenses/by/4.0/ [CC-BY]
 =============================================================================
 History
-1.0.0 31/09/2022 CFB Initially created script
+31/09/2022 CFB Initially created script
+07/11/2022 CFB Extended supported entity types
 =============================================================================
 """
 import os
@@ -25,122 +26,123 @@ from spacy.tokens import Doc
 from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
 from rematch2 import components         # spaCy pipeline components
+from BaseAnnotator import BaseAnnotator
 
+# TODO: formats and entity types as internal enums??
 
-# TODO: formats and entity types as enums??
-class VocabularyAnnotator():
-    def __init__(self, components=["NAMEDPERIOD", "MATERIAL", "MARITIME", "EVIDENCE", "EVENTTYPE", "ARCHSCIENCE", "OBJECT", "COMPONENT", "MONUMENT"]) -> None:
-        # get cleaned unique components list
-        clean_components = list(
-            map(lambda s: (s or "").strip().upper(), components))
+class VocabularyAnnotator(BaseAnnotator):
+    def __init__(self, language="en", entity_types=["NAMEDPERIOD", "MATERIAL", "MARITIME", "EVIDENCE", "EVENTTYPE", "ARCHSCIENCE", "OBJECT", "COMPONENT", "MONUMENT"]) -> None:
+        super().__init__(language=language)
+        # TODO: get cleaned unique entity types list
 
         # using predefined (English language) spaCy pipeline
-        self.__pipeline = spacy.load("en_core_web_sm", disable=['ner'])
+        #self.__pipeline = spacy.load("en_core_web_sm", disable=['ner'])
 
         # conditionally add rematch2 component(s) to the end of the pipeline
         # in order specified in init (allows user-specified order)
-        for component in clean_components:
-            if(component == "NAMEDPERIOD"):
-                self.__pipeline.add_pipe("namedperiod_ruler", last=True, config={
-                                         "periodo_authority_id": "p0kh9ds"})
-            elif(component == "ARCHSCIENCE"):
-                self.__pipeline.add_pipe("archscience_ruler", last=True)
-            elif(component == "EVIDENCE"):
-                self.__pipeline.add_pipe("evidence_ruler", last=True)
-            elif(component == "EVENTTYPE"):
-                self.__pipeline.add_pipe("eventtype_ruler", last=True)
-            elif(component == "MATERIAL"):
-                self.__pipeline.add_pipe("material_ruler", last=True)
-            elif(component == "MARITIME"):
-                self.__pipeline.add_pipe("maritime_ruler", last=True)
-            elif(component == "OBJECT"):
-                self.__pipeline.add_pipe("archobject_ruler", last=True)
-            elif(component == "COMPONENT"):
-                self.__pipeline.add_pipe("component_ruler", last=True)
-            elif(component == "MONUMENT"):
-                self.__pipeline.add_pipe("monument_ruler", last=True)
+        for entity_type in list(map(lambda s: (s or "").strip().upper(), entity_types)):
+            if(entity_type == "NAMEDPERIOD"):
+                self._pipeline.add_pipe("namedperiod_ruler", last=True, config={
+                    "periodo_authority_id": "p0kh9ds"})
+            elif(entity_type == "ARCHSCIENCE"):
+                self._pipeline.add_pipe("archscience_ruler", last=True)
+            elif(entity_type == "EVIDENCE"):
+                self._pipeline.add_pipe("evidence_ruler", last=True)
+            elif(entity_type == "EVENTTYPE"):
+                self._pipeline.add_pipe("eventtype_ruler", last=True)
+            elif(entity_type == "MATERIAL"):
+                self._pipeline.add_pipe("material_ruler", last=True)
+            elif(entity_type == "MARITIME"):
+                self._pipeline.add_pipe("maritime_ruler", last=True)
+            elif(entity_type == "OBJECT"):
+                self._pipeline.add_pipe("archobject_ruler", last=True)
+            elif(entity_type == "COMPONENT"):
+                self._pipeline.add_pipe("component_ruler", last=True)
+            elif(entity_type == "MONUMENT"):
+                self._pipeline.add_pipe("monument_ruler", last=True)
             else:
                 warnings.warn(
-                    f"unknown pipeline component '{component}' in initialisation")
+                    f"unknown entity type '{entity_type}' in initialisation")
 
     # process text using the modified pipeline
-    def __annotate__(self, inputText="") -> Doc:
-        doc = self.__pipeline(inputText)
-        return doc
+    # def __annotate(self, input_text="") -> Doc:
+        #doc = self.__pipeline(input_text)
+        # return doc
 
-    @property
-    def pipe_names(self):
-        return self.__pipeline.pipe_names
+    # @property
+    # def pipe_names(self):
+        # return self.__pipeline.pipe_names
 
     # process text and output results to specified format
-    def annotateText(self, inputText="", format="csv") -> str:
-        output = ""
-        doc = self.__annotate__(inputText)
+    # def annotateText(self, input_text="", format="csv") -> str:
+        #output = ""
+        #doc = self.__annotate(input_text)
 
-        if(format == "html"):
-            output = VocabularyAnnotator.to_html(doc)
-        elif(format == "ttl"):
-            output = VocabularyAnnotator.to_ttl(doc)
-        elif(format == "json"):
-            output = VocabularyAnnotator.to_json(doc)
-        elif(format == "dataframe"):
-            output = VocabularyAnnotator.to_dataframe(doc)
-        else:
-            output = VocabularyAnnotator.to_csv(doc)
+        # if(format == "html"):
+            #output = VocabularyAnnotator._to_html(doc)
+        # elif(format == "ttl"):
+           # output = VocabularyAnnotator.__to_ttl(doc)
+        # elif(format == "json"):
+            #output = VocabularyAnnotator.__to_json(doc)
+        # elif(format == "dataframe"):
+            #output = VocabularyAnnotator.__to_dataframe(doc)
+        # else:
+            #output = VocabularyAnnotator.__to_csv(doc)
 
-        return output
+        # return output
 
     # process single text file
-    def annotateFile(inputFileNameWithPath="", format="csv", encoding="utf-8-sig") -> str:
-        txt = ""
+    # def annotateFile(inputFileNameWithPath="", format="csv", encoding="utf-8-sig") -> str:
+        #txt = ""
 
         # open and read text file
-        with open(inputFileNameWithPath, 'r', encoding=encoding) as f:
-            txt = f.read()
+        # with open(inputFileNameWithPath, 'r', encoding=encoding) as f:
+            #txt = f.read()
 
         # process text file contents
-        output = self.annotateText(txt, format)
-        return output
+        #output = self.annotateText(txt, format)
+        # return output
 
     # convert results to pandas.DataFrame object
-    @staticmethod
-    def to_dataframe(doc) -> pd.DataFrame:
-        data = [[ent.ent_id_, ent.text, ent.label_] for ent in doc.ents]
-        df = pd.DataFrame(data, columns=["id", "text", "type"])
-        return df
+    # @staticmethod
+    # def __to_dataframe(doc) -> pd.DataFrame:
+       # data = [[ent.ent_id_, ent.text, ent.label_] for ent in doc.ents]
+        #df = pd.DataFrame(data, columns=["id", "text", "type"])
+        # return df
 
     # convert results to CSV formatted string,
     # or write to specified CSV file if name supplied
-    @staticmethod
-    def to_csv(doc, fileName=None):
-        df = format_dataframe(doc)
-        return df.to_csv(fileName, index=False)
+    # @staticmethod
+    # def __to_csv(doc, fileName=None):
+        #df = format_dataframe(doc)
+        # return df.to_csv(fileName, index=False)
 
     # convert results to JSON formatted string,
     # or write to specified JSON file if name supplied
-    @staticmethod
-    def to_json(doc, fileName=None):
-        df = format_dataframe(doc)
-        return df.to_json(fileName, orient="records")
+    # @staticmethod
+    # def __to_json(doc, fileName=None):
+        #df = format_dataframe(doc)
+        # return df.to_json(fileName, orient="records")
 
     # convert results to TTL (Turtle RDF) formatted string
-    @staticmethod
-    def to_ttl(doc, id=None):
-        ttl = ""
-        if(id is None):
-            id = "http://tempuri/mydata"
+    # @staticmethod
+    # def __to_ttl(doc, id=None):
+        #ttl = ""
+        # if(id is None):
+            #id = "http://tempuri/mydata"
         # TODO....
-        return ttl
+        # return ttl
 
     # convert results to python dictionary
-    @staticmethod
-    def to_dict(doc):
-        df = format_dataframe(doc)
-        return df.to_dict(orient="records")
+    # @staticmethod
+    # def __to_dict(doc):
+        #df = VocabularyAnnotator.__to_dataframe(doc)
+        # return df.to_dict(orient="records")
 
     # convert results to HTML formatted string
+    # override and call base method
     @staticmethod
-    def to_html(doc):
+    def _to_html(doc):
         # specify colours for HTML output
         options = {
             "ents": [
@@ -166,9 +168,10 @@ class VocabularyAnnotator():
                 "MONUMENT": "salmon"
             }
         }
-
+        output = super()._to_html(doc, options=options)
+        #output = BaseAnnotator()._to_html(doc, options=options)
         # generate and return HTML marked up text
-        output = displacy.render(doc, style="ent", options=options)
+        #output = displacy.render(doc, style="ent", options=options)
         return output
 
 
@@ -214,6 +217,6 @@ if __name__ == "__main__":
     The earliest features, which accounted for the majority of the remains on site, relate to medieval agricultural activity focused within a large enclosure. There was little to suggest domestic occupation within the site: the pottery assemblage was modest and well abraded, whilst charred plant remains were sparse, and, as with some metallurgical residues, point to waste disposal rather than the locations of processing or consumption. A focus of occupation within the Rodley Manor site, on higher ground 160m to the north-west, seems likely, with the currently site having lain beyond this and providing agricultural facilities, most likely corrals and pens for livestock. Animal bone was absent, but the damp, low-lying ground would have been best suited to cattle. An assemblage of medieval coins recovered from the subsoil during a metal detector survey may represent a dispersed hoard.
     """
     va = VocabularyAnnotator()
-    output = va.annotateText(inputText=txt1, format="dataframe")
+    output = va.annotateText(input_text=txt1, format="dataframe")
     print(va.pipe_names)
     print(output)

@@ -5,10 +5,10 @@
 # Version   : 1.0.0
 # Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 # Contact   : ceri.binding@southwales.ac.uk
-# Summary   : COmmon code used in NLP/NER work
+# Summary   : Common code used in NLP/NER work
 # Imports   : spacy
 # Example   :
-# License   : http://creativecommons.org/publicdomain/zero/1.0/ [CC0]
+# License   : https://creativecommons.org/licenses/by/4.0/ [CC-BY]
 # =============================================================================
 # History
 # 1.0.0 29/09/2021 CFB Initially created script
