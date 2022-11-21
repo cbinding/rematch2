@@ -61,26 +61,28 @@ class BaseAnnotator():
         return self._pipeline.pipe_names
 
     # process text and output results to specified format
-    def annotateText(self, input_text="", format="csv") -> str:
+    def annotateText(self, input_text="", format="csv"):
         output = ""
         doc = self.__annotate(input_text)
 
         if(format == "html"):
-            output = BaseAnnotator._to_html(doc)
+            output = self._to_html(doc)
         elif(format == "ttl"):
-            output = BaseAnnotator.__to_ttl(doc)
+            output = self.__to_ttl(doc)
         elif(format == "json"):
-            output = BaseAnnotator.__to_json(doc)
+            output = self.__to_json(doc)
         elif(format == "dataframe"):
-            output = BaseAnnotator.__to_dataframe(doc)
+            output = self.__to_dataframe(doc)
+        elif(format == "csv"):
+            output = self.__to_csv(doc)
         else:
-            output = BaseAnnotator.__to_csv(doc)
+            output = doc  # spaCy doc for further processing
 
         return output
 
     # process single text file
 
-    def annotateFile(inputFileNameWithPath="", format="csv", encoding="utf-8-sig") -> str:
+    def annotateFile(inputFileNameWithPath="", format="csv", encoding="utf-8-sig"):
         txt = ""
 
         # open and read text file
@@ -104,7 +106,7 @@ class BaseAnnotator():
 
     @staticmethod
     def __to_csv(doc, fileName=None):
-        df = format_dataframe(doc)
+        df = BaseAnnotator.__to_dataframe(doc)
         return df.to_csv(fileName, index=False)
 
     # convert results to JSON formatted string,
@@ -112,11 +114,10 @@ class BaseAnnotator():
 
     @staticmethod
     def __to_json(doc, fileName=None):
-        df = format_dataframe(doc)
+        df = BaseAnnotator.__to_dataframe(doc)
         return df.to_json(fileName, orient="records")
 
     # convert results to TTL (Turtle RDF) formatted string
-
     @staticmethod
     def __to_ttl(doc, id=None):
         ttl = ""

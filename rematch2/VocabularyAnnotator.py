@@ -26,9 +26,10 @@ from spacy.tokens import Doc
 from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
 from rematch2 import components         # spaCy pipeline components
-from BaseAnnotator import BaseAnnotator
+from rematch2 import BaseAnnotator
 
 # TODO: formats and entity types as internal enums??
+
 
 class VocabularyAnnotator(BaseAnnotator):
     def __init__(self, language="en", entity_types=["NAMEDPERIOD", "MATERIAL", "MARITIME", "EVIDENCE", "EVENTTYPE", "ARCHSCIENCE", "OBJECT", "COMPONENT", "MONUMENT"]) -> None:
@@ -64,83 +65,8 @@ class VocabularyAnnotator(BaseAnnotator):
                 warnings.warn(
                     f"unknown entity type '{entity_type}' in initialisation")
 
-    # process text using the modified pipeline
-    # def __annotate(self, input_text="") -> Doc:
-        #doc = self.__pipeline(input_text)
-        # return doc
+    # convert results to HTML formatted string (override and call base method)
 
-    # @property
-    # def pipe_names(self):
-        # return self.__pipeline.pipe_names
-
-    # process text and output results to specified format
-    # def annotateText(self, input_text="", format="csv") -> str:
-        #output = ""
-        #doc = self.__annotate(input_text)
-
-        # if(format == "html"):
-            #output = VocabularyAnnotator._to_html(doc)
-        # elif(format == "ttl"):
-           # output = VocabularyAnnotator.__to_ttl(doc)
-        # elif(format == "json"):
-            #output = VocabularyAnnotator.__to_json(doc)
-        # elif(format == "dataframe"):
-            #output = VocabularyAnnotator.__to_dataframe(doc)
-        # else:
-            #output = VocabularyAnnotator.__to_csv(doc)
-
-        # return output
-
-    # process single text file
-    # def annotateFile(inputFileNameWithPath="", format="csv", encoding="utf-8-sig") -> str:
-        #txt = ""
-
-        # open and read text file
-        # with open(inputFileNameWithPath, 'r', encoding=encoding) as f:
-            #txt = f.read()
-
-        # process text file contents
-        #output = self.annotateText(txt, format)
-        # return output
-
-    # convert results to pandas.DataFrame object
-    # @staticmethod
-    # def __to_dataframe(doc) -> pd.DataFrame:
-       # data = [[ent.ent_id_, ent.text, ent.label_] for ent in doc.ents]
-        #df = pd.DataFrame(data, columns=["id", "text", "type"])
-        # return df
-
-    # convert results to CSV formatted string,
-    # or write to specified CSV file if name supplied
-    # @staticmethod
-    # def __to_csv(doc, fileName=None):
-        #df = format_dataframe(doc)
-        # return df.to_csv(fileName, index=False)
-
-    # convert results to JSON formatted string,
-    # or write to specified JSON file if name supplied
-    # @staticmethod
-    # def __to_json(doc, fileName=None):
-        #df = format_dataframe(doc)
-        # return df.to_json(fileName, orient="records")
-
-    # convert results to TTL (Turtle RDF) formatted string
-    # @staticmethod
-    # def __to_ttl(doc, id=None):
-        #ttl = ""
-        # if(id is None):
-            #id = "http://tempuri/mydata"
-        # TODO....
-        # return ttl
-
-    # convert results to python dictionary
-    # @staticmethod
-    # def __to_dict(doc):
-        #df = VocabularyAnnotator.__to_dataframe(doc)
-        # return df.to_dict(orient="records")
-
-    # convert results to HTML formatted string
-    # override and call base method
     @staticmethod
     def _to_html(doc):
         # specify colours for HTML output
@@ -168,7 +94,8 @@ class VocabularyAnnotator(BaseAnnotator):
                 "MONUMENT": "salmon"
             }
         }
-        output = super()._to_html(doc, options=options)
+        output = super(VocabularyAnnotator, VocabularyAnnotator)._to_html(
+            doc, options=options)
         #output = BaseAnnotator()._to_html(doc, options=options)
         # generate and return HTML marked up text
         #output = displacy.render(doc, style="ent", options=options)
@@ -216,7 +143,8 @@ if __name__ == "__main__":
     Aside from three residual flints, none closely datable, the earliest remains comprised a small assemblage of Roman pottery and ceramic building material, also residual and most likely derived from a Roman farmstead found immediately to the north within the Phase II excavation area. A single sherd of Anglo-Saxon grass-tempered pottery was also residual.
     The earliest features, which accounted for the majority of the remains on site, relate to medieval agricultural activity focused within a large enclosure. There was little to suggest domestic occupation within the site: the pottery assemblage was modest and well abraded, whilst charred plant remains were sparse, and, as with some metallurgical residues, point to waste disposal rather than the locations of processing or consumption. A focus of occupation within the Rodley Manor site, on higher ground 160m to the north-west, seems likely, with the currently site having lain beyond this and providing agricultural facilities, most likely corrals and pens for livestock. Animal bone was absent, but the damp, low-lying ground would have been best suited to cattle. An assemblage of medieval coins recovered from the subsoil during a metal detector survey may represent a dispersed hoard.
     """
-    va = VocabularyAnnotator()
-    output = va.annotateText(input_text=txt1, format="dataframe")
-    print(va.pipe_names)
+    anno = VocabularyAnnotator()
+    print(anno.pipe_names)
+
+    output = anno.annotateText(input_text=txt1, format="dataframe")
     print(output)

@@ -1,21 +1,21 @@
 # =============================================================================
 # Project   : ARIADNEplus
 # Package   : NLP
-# Module    : find-tokenpatterns-in-xml-abstracts-fr.py
-# Version   : 2.0.0
+# Module    : find-tokenpatterns-in-french-xml-abstracts.py
 # Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 # Contact   : ceri.binding@southwales.ac.uk
 # Summary   :
 #    Bulk processing script identifies matching token patterns
-#    in French report abstracts in XML metadata file
+#    in French report abstracts contained in XML metadata file
 # Imports   : spacy
-# Example   : 
-#   python3 find-tokenpatterns-in-xml-abstracts.py -i "path/to/abstracts/file.xml"
+# Example   :
+#  python3 find-tokenpatterns-in-french-xml-abstracts.py -i "path/to/abstracts/file.xml"
 # License   : https://creativecommons.org/licenses/by/4.0/ [CC-BY]
 # =============================================================================
 # History
-# 0.0.1 06/08/2021 CFB Initially created script
-# 1.0.0 30/09/2022 CFB recreated to run using rematch2 library (Perio.do periods)
+# 06/08/2021 CFB Initially created script
+# 30/09/2022 CFB recreated to run using rematch2 library (Perio.do periods)
+# 21/11/2022 CFB Using rematch2.TemporalAnnotator object, faster
 # =============================================================================
 import argparse                         # for argument parsing
 import os                               # for general file/directory functionality
@@ -28,15 +28,53 @@ import re
 import json
 from lxml import etree as ET
 from collections import defaultdict
-import cfb_ner_common as ner
+#import cfb_ner_common as ner
 
 # Using a rematch2 component
 import spacy
 from spacy import displacy
-from rematch2 import components
+#from rematch2 import components
+from rematch2 import TemporalAnnotator
+
+
+def writeEntitiesToTsvFile(doc, targetFileNameWithPath="", mode="w"):
+    writeEntitiesToDelimitedFile(doc, targetFileNameWithPath, "\t", mode)
+
+
+def writeEntitiesToDelimitedFile(doc, targetFileNameWithPath="", delimiter="\t", mode="w"):
+    txt = ""
+    for ent in doc.ents:
+        txt += f"{ent.ent_id_}{delimiter}{ent.text}{delimiter}{ent.start_char}{delimiter}{ent.end_char}{delimiter}{ent.label_}\n"
+
+    with open(targetFileNameWithPath, mode, encoding='utf-8-sig') as f:
+        f.write(txt)
+
+
+def writeEntitiesToHtmlFile(doc, targetFileNameWithPath=""):
+    options = {
+        "ents": [
+            "CENTURY",
+            "NAMEDPERIOD",
+            "YEARSPAN"
+        ],
+        "colors": {
+            "CENTURY": "lightgreen",
+            "NAMEDPERIOD": "yellow",
+            "YEARSPAN": "salmon"
+        }
+    }
+    html = displacy.render([doc], style="ent", page=True,
+                           minify=True, options=options)
+
+    with open(targetFileNameWithPath, 'w', encoding='utf-8-sig') as f:
+        #f.write("<head><meta charset='UTF-8' /></head>")
+        f.write(html)
 
 
 def main(sourceFilePath):
+
+    annotator = TemporalAnnotator(
+        language="fr", periodo_authority_id="p02chr4")
 
     results = defaultdict(dict)
     sourceFileDirectory = os.path.dirname(sourceFilePath)
@@ -88,15 +126,17 @@ def main(sourceFilePath):
 
         #print(f"Identifier: {identifier}\nAbstract:\n{abstract}\n*****\n")
 
+        doc = annotator.annotateText(input_text=abstract, format="doc")
+
         # use a predefined spaCy pipeline, disabling the default NER component
-        nlp = spacy.load("fr_core_news_sm", disable=['ner'])
+        #nlp = spacy.load("fr_core_news_sm", disable=['ner'])
         # add rematch2 component(s) to the end of the pipeline
-        nlp.add_pipe("century_ruler", last=True)
-        nlp.add_pipe("yearspan_ruler", last=True)
-        nlp.add_pipe("namedperiod_ruler", last=True, config={
-                     "periodo_authority_id": "p02chr4"})
+        #nlp.add_pipe("century_ruler", last=True)
+        #nlp.add_pipe("yearspan_ruler", last=True)
+        # nlp.add_pipe("namedperiod_ruler", last=True, config={
+        # "periodo_authority_id": "p02chr4"})
         # process example text using the modified pipeline
-        doc = nlp(abstract)
+        #doc = nlp(abstract)
 
         # highlight identified entities in the text
         #displacy.render(doc, style="ent")
@@ -127,47 +167,28 @@ def main(sourceFilePath):
         if currentRecord == 10000:  # premature break during testing
             break
 
-        cleanIdentifier = re.sub(r'[^\w\s]', '', identifier) # remove any non-word or non-space characters from ID
+        # remove any non-word or non-space characters from ID
+        cleanIdentifier = re.sub(r'[^\w\s]', '', identifier)
         print(
             f"processing record { currentRecord } of { totalRecords } [{ identifier }]")
 
         # append data to 'overall' results TSV file
-        tsvOverallFileNameWithPath = os.path.join(tsvDirectory, f"output.fromxml.txt")
-        delimiter="\t"
+        tsvOverallFileNameWithPath = os.path.join(
+            tsvDirectory, f"output.fromxml.txt")
+        delimiter = "\t"
         txt = ""
         for ent in doc.ents:
-            txt += f"{identifier}{delimiter}{ent.ent_id_}{delimiter}{ent.text}{delimiter}{ent.label_}\n"    
+            txt += f"{identifier}{delimiter}{ent.ent_id_}{delimiter}{ent.text}{delimiter}{ent.label_}\n"
         with open(tsvOverallFileNameWithPath, 'a', encoding='utf-8-sig') as f:
             f.write(txt)
-        #ner.writeEntitiesToTsvFile(doc, tsvOverallFileNameWithPath, "a")
 
         tsvFileNameWithPath = os.path.join(
             tsvDirectory, f"{cleanIdentifier}.fromxml.txt")
-        ner.writeEntitiesToTsvFile(doc, tsvFileNameWithPath)
+        writeEntitiesToTsvFile(doc, tsvFileNameWithPath)
+
         htmlFileNameWithPath = os.path.join(
             htmlDirectory, f"{cleanIdentifier}.fromxml.html")
-
-        options = {
-            "ents": [
-                "CENTURY",
-                "CENTURYSPAN",
-                "DATEPREFIX",
-                "DATESUFFIX",
-                "NAMEDPERIOD",
-                "YEAR",
-                "YEARSPAN"
-            ],
-            "colors": {
-                "CENTURY": "lightgreen",
-                "CENTURYSPAN": "lightgreen",
-                "DATEPREFIX": "lightblue",
-                "DATESUFFIX": "lightblue",
-                "NAMEDPERIOD": "yellow",
-                "YEAR": "salmon",
-                "YEARSPAN": "salmon"
-            }
-        }
-        ner.writeEntitiesToHtmlFile(doc, htmlFileNameWithPath, options)
+        writeEntitiesToHtmlFile(doc, htmlFileNameWithPath)
 
     # write results dict to (JSON) file
     jsonFileNameWithPath = f"{sourceFilePath}.json"
@@ -194,4 +215,4 @@ if __name__ == '__main__':
     else:
         sourceFilePath = "ner-fr/UNIMARC.xml"  # temp harcoded test..
 
-    ner.runTimed(main(sourceFilePath))
+    main(sourceFilePath)
