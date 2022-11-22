@@ -1,5 +1,6 @@
-test_examples = [    
+test_examples_multilingual = [    
 	{
+		"id": "test_de",
 		"language": "de",
 		"pipe": "de_core_news_sm", 
 		"periodo_authority_id": "p0qhb66",
@@ -7,6 +8,7 @@ test_examples = [
 		"source": "https://de.wikipedia.org/wiki/Karanowo-Kulturen"
 	},
 	{
+		"id": "test_en",
 		"language": "en",
 		"pipe": "en_core_web_sm", 
         "periodo_authority_id": "p0kh9ds", # HeritageData HE periods list
@@ -14,6 +16,7 @@ test_examples = [
 		"source": "https://archaeologydataservice.ac.uk/archives/view/xtj13_crossrail_2017/"
 	},
 	{ 
+		"id": "test_es",
 		"language": "es",
 		"pipe": "es_core_news_sm", 
         "periodo_authority_id": "p0qhb66",
@@ -21,6 +24,7 @@ test_examples = [
 		"source": "https://es.wikipedia.org/wiki/Edad_del_Bronce"
 	},
 	{ 
+		"id": "test_fr",
 		"language": "fr",
 		"pipe": "fr_core_news_sm", 
         "periodo_authority_id": "p02chr4", # PACTOLS chronology periods used in DOLIA data
@@ -28,6 +32,7 @@ test_examples = [
 		"source": "http://ariadne2.isti.cnr.it/page/25102087"
 	},
 	{ 
+		"id": "test_it",
 		"language": "it",
 		"pipe": "it_core_news_sm", 
         "periodo_authority_id": "p0qhb66",
@@ -35,6 +40,7 @@ test_examples = [
 		"source": "https://it.wikipedia.org/wiki/Storia_antica"
 	},
 	{ 
+		"id": "test_nl",
 		"language": "nl",
 		"pipe": "nl_core_news_sm", 
         "periodo_authority_id": "p0pqptc",
@@ -42,6 +48,7 @@ test_examples = [
 		"source": "http://ariadne2.isti.cnr.it/page/23602798"
 	},
 	{ 
+		"id": "test_no",
 		"language": "no",
 		"pipe": "nb_core_news_sm", 
         "periodo_authority_id": "p04h98q",
@@ -49,6 +56,7 @@ test_examples = [
 		"source": "https://www.duo.uio.no/handle/10852/66013"
 	},
 	{ 
+		"id": "test_sv",
 		"language": "sv",
 		"pipe": "sv_core_news_sm", 
         "periodo_authority_id": "p0vn2fr",

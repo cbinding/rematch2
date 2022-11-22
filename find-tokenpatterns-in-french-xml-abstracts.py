@@ -20,20 +20,13 @@
 import argparse                         # for argument parsing
 import os                               # for general file/directory functionality
 from datetime import datetime as DT     # For timestamps and durations
-# import spacy                           # NLP library
-#from spacy import displacy
-#from spacy.matcher import Matcher, PhraseMatcher
-#from spacy.tokens import Span
+
 import re
 import json
 from lxml import etree as ET
 from collections import defaultdict
-#import cfb_ner_common as ner
-
-# Using a rematch2 component
 import spacy
 from spacy import displacy
-#from rematch2 import components
 from rematch2 import TemporalAnnotator
 
 
@@ -67,7 +60,6 @@ def writeEntitiesToHtmlFile(doc, targetFileNameWithPath=""):
                            minify=True, options=options)
 
     with open(targetFileNameWithPath, 'w', encoding='utf-8-sig') as f:
-        #f.write("<head><meta charset='UTF-8' /></head>")
         f.write(html)
 
 
@@ -128,25 +120,7 @@ def main(sourceFilePath):
 
         doc = annotator.annotateText(input_text=abstract, format="doc")
 
-        # use a predefined spaCy pipeline, disabling the default NER component
-        #nlp = spacy.load("fr_core_news_sm", disable=['ner'])
-        # add rematch2 component(s) to the end of the pipeline
-        #nlp.add_pipe("century_ruler", last=True)
-        #nlp.add_pipe("yearspan_ruler", last=True)
-        # nlp.add_pipe("namedperiod_ruler", last=True, config={
-        # "periodo_authority_id": "p02chr4"})
-        # process example text using the modified pipeline
-        #doc = nlp(abstract)
-
-        # highlight identified entities in the text
-        #displacy.render(doc, style="ent")
-
-       # print(f"{identifier} {abstract}")
-        #nlp = getNLP()
-        #doc = ner.findTokenPatternMatchesInText(nlp, abstract)
-
-        # write results to JSON file. Not filtered yet
-        # so other entities currently being output too
+        # write results to JSON file.
         now = DT.now()
         ents = []
         for ent in doc.ents:
