@@ -10,7 +10,7 @@ Summary   : TokenPatterns class
 Imports   : json, os, fnmatch
 Example   : tp = TokenPatterns();
             patterns = tp.get(language, ['MONTHNAME', 'SEASONNAME']);             
-License   : https://creativecommons.org/licenses/by/4.0/ [CC-BY]
+License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
 0.0.1 05/07/2022 CFB Initially created script
@@ -22,18 +22,19 @@ import fnmatch
 #from os.path import exists
 #from urllib.request import urlopen
 
+
 class TokenPatterns:
     """loads spaCy token patterns from external JSON files"""
 
-    def __init__(self): 
+    def __init__(self):
         self._patterns = []
        # default data sources
         PATTERNS_PATH = "../src/patterns"
 
         # load all pre-defined token patterns from specified directory
-        self._patterns = TokenPatterns.__load_json_from_directory(PATTERNS_PATH)
+        self._patterns = TokenPatterns.__load_json_from_directory(
+            PATTERNS_PATH)
         #self._patterns = [pattern for pattern in patterns if (pattern.get("language") or "").lower() == self._language]
-
 
     @staticmethod
     def __load_json_from_directory(directory_name):
@@ -43,9 +44,9 @@ class TokenPatterns:
 
         for file_name in fnmatch.filter(file_names, "*.json"):
             file_name_with_path = os.path.join(directory_name, file_name)
-            patterns.extend(TokenPatterns.__load_json_from_file(file_name_with_path))
-        return patterns 
-
+            patterns.extend(
+                TokenPatterns.__load_json_from_file(file_name_with_path))
+        return patterns
 
     @staticmethod
     def __load_json_from_file(file_name_with_path):
@@ -55,14 +56,12 @@ class TokenPatterns:
             json_data = json.load(f)
         return json_data
 
-
     def get(self, language=None, entities=[]):
         return [p for p in self._patterns if (p.get("language") or "").lower() == language and (p.get("label") or "").upper() in entities]
 
-
     def count(self, language=None, entities=[]):
         matches = self.get(language, entities)
-        return len(matches)         
+        return len(matches)
 
 
 # test code for this class

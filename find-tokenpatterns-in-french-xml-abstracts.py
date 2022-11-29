@@ -10,7 +10,7 @@
 # Imports   : spacy
 # Example   :
 #  python3 find-tokenpatterns-in-french-xml-abstracts.py -i "path/to/abstracts/file.xml"
-# License   : https://creativecommons.org/licenses/by/4.0/ [CC-BY]
+# License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 # =============================================================================
 # History
 # 06/08/2021 CFB Initially created script

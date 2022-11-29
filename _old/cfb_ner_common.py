@@ -8,7 +8,7 @@
 # Summary   : Common code used in NLP/NER work
 # Imports   : spacy
 # Example   :
-# License   : https://creativecommons.org/licenses/by/4.0/ [CC-BY]
+# License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 # =============================================================================
 # History
 # 1.0.0 29/09/2021 CFB Initially created script

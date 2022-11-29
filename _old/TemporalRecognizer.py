@@ -10,7 +10,7 @@ Summary : TemporalRecognizer class
 Imports : json, spacy, os, fnmatch, argparse
 Example : tr = TemporalRecognizer("en");
           entities = tr.get_entities(input);
-License : https://creativecommons.org/licenses/by/4.0/ [CC-BY]
+License : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
 28/10/2021 CFB Initially created script
@@ -29,15 +29,17 @@ from NamedPeriodRuler import NamedPeriodRuler
 from CenturyRuler import CenturyRuler
 from YearSpanRuler import YearSpanRuler
 
+
 class TemporalRecognizer:
 
     """identifies temporal entities in text based on array of predefined patterns"""
-    def __init__(self, language="en", authority=""):
-        
-        self._language = language        
 
-        # prepare and configure language-specific spaCy pipeline 
-        # TODO: if language property changes, this doesn't - maybe only allow language to be specified during init? 
+    def __init__(self, language="en", authority=""):
+
+        self._language = language
+
+        # prepare and configure language-specific spaCy pipeline
+        # TODO: if language property changes, this doesn't - maybe only allow language to be specified during init?
         pipeline_name = ""
         if(self.language == "de"):
             pipeline_name = "de_core_news_sm"   # German
@@ -52,25 +54,24 @@ class TemporalRecognizer:
         elif(self.language == "no"):
             pipeline_name = "nb_core_news_sm"   # Norwegian Bokmal
         elif(self.language == "sv"):
-            pipeline_name = "sv_core_news_sm"   # Swedish 
+            pipeline_name = "sv_core_news_sm"   # Swedish
         else:
             pipeline_name = "en_core_web_sm"    # English (default)
 
-        self._nlp = spacy.load(pipeline_name, disable = ['ner']) 
-        self._nlp.max_length = 2000000  # TODO: don't recall why..         
-        
+        self._nlp = spacy.load(pipeline_name, disable=['ner'])
+        self._nlp.max_length = 2000000  # TODO: don't recall why..
+
         # add 'composite' entityRuler patterns (year spans, century spans etc.)
         # composite patterns can refer to atomic patterns as entity types
-        self._nlp.add_pipe("namedperiod_ruler", config={"periodo_authority_id": authority})
+        self._nlp.add_pipe("namedperiod_ruler", config={
+                           "periodo_authority_id": authority})
         self._nlp.add_pipe("century_ruler")
         self._nlp.add_pipe("yearspan_ruler")
-         
 
     @property
     def language(self):
         """language property used for entity recognition"""
         return self._language
-
 
     @language.setter
     def language(self, new_value):
@@ -78,17 +79,16 @@ class TemporalRecognizer:
         if self._language != clean_value:
             self._language = clean_value
 
-    
     def get_entities(self, text, format):
-        """locate named entities in text based on token patterns"""        
+        """locate named entities in text based on token patterns"""
 
-        # normalise white spaces before tokenisation 
+        # normalise white spaces before tokenisation
         # (extra spaces frustrate pattern matching)
         clean_input = " ".join(text.split())
-        
-        # find entities matching the token patterns         
+
+        # find entities matching the token patterns
         doc = self._nlp(clean_input)
-                
+
         # temp - write current tokens to file, to aid debugging
         txt = ""
         for token in doc:
@@ -96,13 +96,13 @@ class TemporalRecognizer:
         with open("tokens.txt", 'w', encoding='utf-8-sig') as f:
             f.write(txt)
 
-        #with doc.retokenize() as retokenizer:
-            #for ent in doc.ents:
-               #retokenizer.merge(doc[ent.start:ent.end])
+        # with doc.retokenize() as retokenizer:
+            # for ent in doc.ents:
+            # retokenizer.merge(doc[ent.start:ent.end])
 
         # create and return array of entities
         results = []
-        #for entity in [e for e in doc.ents if e.label_ in ["TEMPORAL", "MONUMENT", "ARCHSCIENCE", "MATERIAL", "EVENTTYPE"]]:
+        # for entity in [e for e in doc.ents if e.label_ in ["TEMPORAL", "MONUMENT", "ARCHSCIENCE", "MATERIAL", "EVENTTYPE"]]:
         for entity in [ent for ent in doc.ents]:
             results.append({
                 "id": entity.ent_id_,
@@ -110,13 +110,13 @@ class TemporalRecognizer:
                 "start_char": entity.start_char,
                 "end_char": entity.end_char,
                 "type": entity.label_
-            }) 
+            })
         # temp - describe current pipeline
-        #print(self._nlp.pipe_names)
-        #return results
-        formatted = TemporalRecognizer.format_entities(clean_input, results, format)     
+        # print(self._nlp.pipe_names)
+        # return results
+        formatted = TemporalRecognizer.format_entities(
+            clean_input, results, format)
         return formatted
-
 
     @staticmethod
     def format_entities(text, ents, accept_format="application/json"):
@@ -129,32 +129,31 @@ class TemporalRecognizer:
             formatted = TemporalRecognizer.__renderTSV(ents)
         elif accept_format.endswith("csv"):
             formatted = TemporalRecognizer.__renderCSV(ents)
-        else: # default application/json
+        else:  # default application/json
             formatted = TemporalRecognizer.__renderJSON(ents)
-        
+
         return formatted
 
-
     @staticmethod
-    def __renderHTML(text, ents):    
-        # displacy requires this format as input     
+    def __renderHTML(text, ents):
+        # displacy requires this format as input
         def formatter(ent):
-            return { 
-                "start": ent["start_char"], 
-                "end": ent["end_char"], 
-                "label": ent["type"] 
-            }   
-        
+            return {
+                "start": ent["start_char"],
+                "end": ent["end_char"],
+                "label": ent["type"]
+            }
+
         data = {
             "text": text,
             "ents": list(map(formatter, ents))
-        }  
+        }
 
-        # return HTML rendering of input text with entities highlighted  
+        # return HTML rendering of input text with entities highlighted
         options = {
-            "ents": ["YEARSPAN", "CENTURY", "NAMEDPERIOD", "MONUMENT", "EVENTTYPE", "MATERIAL", "ARCHSCIENCE"], 
+            "ents": ["YEARSPAN", "CENTURY", "NAMEDPERIOD", "MONUMENT", "EVENTTYPE", "MATERIAL", "ARCHSCIENCE"],
             "colors": {
-                "YEARSPAN": "lightgreen", 
+                "YEARSPAN": "lightgreen",
                 "CENTURY": "lightgreen",
                 "NAMEDPERIOD": "lightgreen",
                 "MONUMENT": "lightblue",
@@ -163,24 +162,21 @@ class TemporalRecognizer:
                 "ARCHSCIENCE": "orange"
             }
         }
-        html = displacy.render(data, style="ent", manual=True, page=False, minify=True, options=options)
+        html = displacy.render(
+            data, style="ent", manual=True, page=False, minify=True, options=options)
         return html
-
 
     @staticmethod
     def __renderJSON(ents):
         return json.dumps(ents)
 
-
     @staticmethod
-    def __renderTSV(ents):         	
+    def __renderTSV(ents):
         return TemporalRecognizer.__renderDelimited(ents)
-
 
     @staticmethod
     def __renderCSV(ents):
         return TemporalRecognizer.__renderDelimited(ents, ",")
-
 
     @staticmethod
     def __renderDelimited(ents, delimiter="\t"):
@@ -190,10 +186,10 @@ class TemporalRecognizer:
 
         lines = []
         for entity in ents:
-            # create tab delimited line       
+            # create tab delimited line
             line = "{id}{delim}{txt}{delim}{start}{delim}{end}{delim}{type}".format(
                 delim=delimiter,
-                id=escape_delimited(entity["id"]), 
+                id=escape_delimited(entity["id"]),
                 txt=escape_delimited(entity["text"]),
                 start=escape_delimited(entity["start_char"]),
                 end=escape_delimited(entity["end_char"]),
@@ -203,7 +199,7 @@ class TemporalRecognizer:
             # add line to results
             lines.append(line)
 
-        # return newline delimited lines	
+        # return newline delimited lines
         return "\n".join(lines)
 
 
@@ -211,36 +207,37 @@ class TemporalRecognizer:
 #  e.g. python TemporalEntityRecognizer.py -i="the artefact was medieval or 1250-1275 or maybe post medieval"
 if __name__ == "__main__":
     # initiate the input arguments parser
-    parser = argparse.ArgumentParser(prog=__file__, 
-        description='Identify named entities in free text')
+    parser = argparse.ArgumentParser(prog=__file__,
+                                     description='Identify named entities in free text')
 
     # add long and short argument descriptions
     parser.add_argument("-i", "--input",
-        required=False, 
-        default="",
-        help="Input text extract to process")
+                        required=False,
+                        default="",
+                        help="Input text extract to process")
     parser.add_argument("-l", "--language",
-        required=False,
-        default="en",
-        choices=["de", "en", "es", "fr", "it", "nl", "no", "sv"],
-        type=str.lower,
-        help="ISO language (short code). If not provided the default assumed is 'en' (English)") 
+                        required=False,
+                        default="en",
+                        choices=["de", "en", "es", "fr",
+                                 "it", "nl", "no", "sv"],
+                        type=str.lower,
+                        help="ISO language (short code). If not provided the default assumed is 'en' (English)")
     parser.add_argument("-p", "--periodo",
-        required=False,
-        default=None,
-        type=str,
-        help="Perio.do ID. If not provided Perio.do named periods will not be used")       
+                        required=False,
+                        default=None,
+                        type=str,
+                        help="Perio.do ID. If not provided Perio.do named periods will not be used")
     parser.add_argument("-f", "--format",
-        required=False,
-        default="json",
-        choices=["json","csv","tsv","html"],
-        type=str.lower,
-        help="Required output format. If not provided the default assumed is 'json'")
+                        required=False,
+                        default="json",
+                        choices=["json", "csv", "tsv", "html"],
+                        type=str.lower,
+                        help="Required output format. If not provided the default assumed is 'json'")
     parser.add_argument("-d", "--debug",
-        required=False,
-        default=False,
-        help="Produces additional debugging info if true, for internal testing purposes")
-    
+                        required=False,
+                        default=False,
+                        help="Produces additional debugging info if true, for internal testing purposes")
+
     # parse and return args from command line
     args = parser.parse_args()
 
@@ -249,7 +246,7 @@ if __name__ == "__main__":
     language = "en"
     out_format = "json"
     is_debug = False
-    periodo_id = "p0kh9ds" # temp default - HeritageData
+    periodo_id = "p0kh9ds"  # temp default - HeritageData
 
     if args.input:
         input_text = args.input.strip()
@@ -263,7 +260,7 @@ if __name__ == "__main__":
         is_debug = True
 
     # identify named entities in text and output them
-    # periodo_id examples: 
+    # periodo_id examples:
     # "p0kh9ds" - HeritageData (en)
     # "p02chr4" - PACTOLS chronology used in DOLIA data (fr)
     # "p0qhb66" - ARIADNE original collection (includes it)
@@ -272,14 +269,14 @@ if __name__ == "__main__":
 
     # example commands:
     # python3 TemporalRecognizer.py -l="de" -p="p0qhb66" -f="tsv" -i="Der Topf war mittelalterliche oder mittlere Bronzezeit oder 1257 bis 1575"
-    # python3 TemporalRecognizer.py -l="en" -p="p0kh9ds" -f="tsv" -i="The pot was medieval or mid bronze age or 1257 to 1575" 
-    # python3 TemporalRecognizer.py -l="es" -p="p0qhb66" -f="tsv" -i="La olla era medieval o de mediados de la edad de bronce o de 1257 a 1575." 
-    # python3 TemporalRecognizer.py -l="fr" -p="p02chr4" -f="tsv" -i="Le pot est jurassique ou trias ou 1257 - 1575" 
-    # python3 TemporalRecognizer.py -l="it" -p="p0qhb66" -f="tsv" -i="Il vaso era medievale o medio dell'età del bronzo o dal 1257 al 1575" 
-    # python3 TemporalRecognizer.py -l="nl" -p="p0pqptc" -f="tsv" -i="De pot was middeleeuws of midden bronstijd of 1257 tot 1575" 
-    # python3 TemporalRecognizer.py -l="no" -p="p04h98q" -f="tsv" -i="Potten var middelaldersk eller middels bronsealder eller 1257 til 1575" 
-    # python3 TemporalRecognizer.py -l="sv" -p="p0vn2fr" -f="tsv" -i="Krukan var medeltid eller mellan bronsålder eller 1257 till 1575" 
-    
+    # python3 TemporalRecognizer.py -l="en" -p="p0kh9ds" -f="tsv" -i="The pot was medieval or mid bronze age or 1257 to 1575"
+    # python3 TemporalRecognizer.py -l="es" -p="p0qhb66" -f="tsv" -i="La olla era medieval o de mediados de la edad de bronce o de 1257 a 1575."
+    # python3 TemporalRecognizer.py -l="fr" -p="p02chr4" -f="tsv" -i="Le pot est jurassique ou trias ou 1257 - 1575"
+    # python3 TemporalRecognizer.py -l="it" -p="p0qhb66" -f="tsv" -i="Il vaso era medievale o medio dell'età del bronzo o dal 1257 al 1575"
+    # python3 TemporalRecognizer.py -l="nl" -p="p0pqptc" -f="tsv" -i="De pot was middeleeuws of midden bronstijd of 1257 tot 1575"
+    # python3 TemporalRecognizer.py -l="no" -p="p04h98q" -f="tsv" -i="Potten var middelaldersk eller middels bronsealder eller 1257 til 1575"
+    # python3 TemporalRecognizer.py -l="sv" -p="p0vn2fr" -f="tsv" -i="Krukan var medeltid eller mellan bronsålder eller 1257 till 1575"
+
     tr = TemporalRecognizer(language, periodo_id)
     entities = tr.get_entities(input_text, out_format)
     #formatted = TemporalRecognizer.format_entities(input_text, entities, out_format)

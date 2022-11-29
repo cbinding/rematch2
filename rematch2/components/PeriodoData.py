@@ -12,7 +12,7 @@ Example   : pd = PeriodoData();
             pd.load();
             authorities = pd.get_authority_list();
             periods = pd.get_period_list("p0kh9ds"); # HE Periods
-License   : https://creativecommons.org/licenses/by/4.0/ [CC-BY]
+License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
 0.0.1 17/06/2022 CFB Initially created script

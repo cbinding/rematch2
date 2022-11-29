@@ -10,7 +10,7 @@ Contact   : ceri.binding@southwales.ac.uk
 Summary   : Annotation Tool base class
 Imports   : os, pandas, spacy, rematch2
 Example   : 
-License   : https://creativecommons.org/licenses/by/4.0/ [CC-BY]
+License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
 31/09/2022 CFB Initially created script

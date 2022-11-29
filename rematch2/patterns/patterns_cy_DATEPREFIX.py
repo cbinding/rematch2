@@ -9,37 +9,37 @@ Project :   ARIADNEplus
 Summary :   spaCy patterns for use with pipeline            
 Imports :   
 Example :           
-License :   https://creativecommons.org/licenses/by/4.0/ [CC-BY]
+License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History :   27/10/2022 CFB Initially created script
 =============================================================================
 """
 patterns_cy_DATEPREFIX = [
-    { 
+    {
         "label": "DATEPREFIX",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(ca?\.?|circa|oddeuta|tua\'r)$"}}            
-        ]
-    },
-    { 
-        "label": "DATEPREFIX",
-		"pattern": [
-            {"LOWER": "o"},  
-            {"LOWER": "gwmpas"}          
+        "pattern": [
+            {"LOWER": {"REGEX": r"^(ca?\.?|circa|oddeuta|tua\'r)$"}}
         ]
     },
     {
         "label": "DATEPREFIX",
-		"pattern": [
+        "pattern": [
+            {"LOWER": "o"},
+            {"LOWER": "gwmpas"}
+        ]
+    },
+    {
+        "label": "DATEPREFIX",
+        "pattern": [
             {"LOWER": "hanner"},
             {"LOWER": "cyntaf"},
-            {"OP": "?", "LOWER": "y"}            
+            {"OP": "?", "LOWER": "y"}
         ]
     },
     {
         "label": "DATEPREFIX",
-		"pattern": [
-            {"LOWER": "canol"}, 
-            {"OP": "?", "LOWER": "y"}            
+        "pattern": [
+            {"LOWER": "canol"},
+            {"OP": "?", "LOWER": "y"}
         ]
     }
 ]

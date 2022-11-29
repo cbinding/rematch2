@@ -11,7 +11,7 @@ Summary   : Temporal Annotation Tool (VAT) for archaeological texts
 Imports   : os, pandas, spacy, rematch2
 Example   : ta = TemporalAnnotator("p0kh9ds") # default perio.do authority id
             output = ta.annotateText(input_text="abcde", format="csv")
-License   : https://creativecommons.org/licenses/by/4.0/ [CC-BY]
+License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
 21/11/2022 CFB Initially created script using VocabularyAnnotator as template

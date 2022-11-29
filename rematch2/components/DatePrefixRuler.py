@@ -9,7 +9,7 @@ Project :   ARIADNEplus
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
 Imports :   os, sys, spacy, EntityRuler, Doc, Language
 Example :   nlp.add_pipe("material_ruler", last=True)           
-License :   https://creativecommons.org/licenses/by/4.0/ [CC-BY]
+License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History :   03/08/2022 CFB Initially created script
 =============================================================================
 """
