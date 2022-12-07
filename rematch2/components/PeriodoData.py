@@ -2,20 +2,18 @@
 =============================================================================
 Package   : rematch2.components
 Module    : PeriodoData.py
-Version   : 0.0.1
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
 Project   : ARIADNEplus
 Summary   : PeriodoData class
 Imports   : json, os, urllib, jsonpath
 Example   : pd = PeriodoData();
-            pd.load();
             authorities = pd.get_authority_list();
-            periods = pd.get_period_list("p0kh9ds"); # HE Periods
+            periods = pd.get_period_list("p0kh9ds"); # HE Periods list
 License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
-0.0.1 17/06/2022 CFB Initially created script
+17/06/2022 CFB Initially created script
 =============================================================================
 """
 import json
