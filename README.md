@@ -14,14 +14,13 @@
     - [century_ruler](#century_ruler)
     - [yearspan_ruler](#yearspan_ruler)
     - [namedperiod_ruler](#namedperiod_ruler)
-  - [Supplementary components](#supplementary_components)
+    - [temporal_annotator](#temporal_annotator)  
+  - [Usage](#component_usage)
+  - [Vocabulary-based components](#vocabulary_components)
     - [archscience_ruler](#archscience_ruler)
     - [material_ruler](#material_ruler)
     - [monument_ruler](#monument_ruler)
-  - [Annotators](#annotators)
-    - [temporal_annotator](#temporal_annotator)
-    - [vocabulary_annotator](#vocabulary_annotator)
-  - [Usage](#component_usage)
+    - [vocabulary_annotator](#vocabulary_annotator)  
 
 ## Introduction <a class="anchor" id="introduction"></a>
 
@@ -98,15 +97,64 @@ Identifies typical expressions of years or spans of years in text. Utilises othe
 
 The namedperiod*ruler component utilises the [Perio.do](https://perio.do/) dataset. When configured with a valid Perio.do authority identifier e.g. `'p0xxt6t'` [Scottish Archaeological Periods & Ages (ScAPA)](http://n2t.net/ark:/99152/p0xxt6t), the component will match against the labels of periods contained within the specified authority. e.g. \_Chalcolithic*, _Early Bronze Age_, _Antonine_
 
-These components are pulled together in the TemporalAnnotator class, which facilitates annotation of text using specified combinations of the components. Practical interactive examples of usage are found in the accompanying Python notebooks.
+## Usage <a class="anchor" id="component_usage"></a>
 
-### Supplementary Components <a class="anchor" id="supplementary_components"></a>
+Example Python script to perform NER using a `rematch2` pipeline component:
+
+```python
+import spacy
+import rematch2.components
+
+# use a predefined pipeline, disabling the default NER component
+nlp = spacy.load("en_core_web_sm", disable=["ner"])
+# add required pipeline component(s) to the end of the pipeline
+nlp.add_pipe("century_ruler", last=True)
+# process some example text using the modified pipeline
+doc = nlp("A late twelfth century AD or early 13th century weapon.")
+# display the entities located in the text
+for ent in doc.ents:
+  print(ent.text)
+
+# results:
+# late twelfth century AD
+# early 13th century
+```
+
+## Temporal Annotator <a class="anchor" id="temporal_annotator"></a>
+
+The temporal annotation components are pulled together by the TemporalAnnotator class, which facilitates annotation of text using specified combinations of the components.
+Example Python script to perform NER using the TemporalAnnotator class:
+
+```python
+from rematch2.TemporalAnnotator import TemporalAnnotator
+
+# example test input text copied from https://doi.org/10.5284/1100092
+test_text = "This collection comprises site data(reports, images, GIS data and a project database) from an archaeological excavation at Lydney B Phase II, Archers Walk, Lydney, Gloucestershire undertaken by Cotswold Archaeology between February and May 2018. An area of 1.47ha was excavated within this part of a wider development area. The earliest remains comprised three broadly datable flints, all found as residual finds. An Early Bronze Age collared urn within a small pit may be the remains of a grave, although no human remains were found. The first evidence for occupation is from the Roman period, with finds spanning the 1st to 3rd centuries AD, with a clear focus within the 2nd to 3rd centuries. Two phases of Roman activity were identified, the first comprising cereal-processing ovens and two crescent-shaped ditches, one associated with metalworking debris. The later phase comprised stone founded buildings associated with wells, enclosures, trackways and a single cremation deposit. These seem to indicate a Romanised farm below the status of a villa. Little animal bone survived, but the enclosures are suggestive of livestock farming. Occupation seems to have ended in the mid 3rd century, although the reasons for this are not apparent. Further use of the site dates to the medieval period, between the late 12th and 15th centuries, when an agricultural building was constructed, probably an outlier of a manorial farm previously excavated to the west."
+
+# required output format options: html|csv|json|dataframe|doc
+# 'html' returns inline markup for visualising annotations in context
+# 'dataframe' useful for visualising tabular data in python notebook
+# 'csv' and 'json' are useful textual interchange formats
+# 'doc' returns the spaCy document object for further processing
+output_format = "html"  # options: html|csv|json|dataframe|doc
+
+# if not specified, default ISO639-1 two character language code is "en"
+# if not specified, default periodo id is "p0kh9ds" (Historic England periods list)
+annotator = TemporalAnnotator(language="en", periodo_authority_id="p0kh9ds")
+
+# process example text and display the results in required output format
+results = annotator.annotateText(input_text=test_text, format=output_format)
+return results
+```
+
+Other practical (interactive) examples of usage are found in the accompanying Python notebooks.
+
+### Vocabulary-based Components <a class="anchor" id="vocabulary_components"></a>
 
 In addition to temporal entities, `rematch2` also contains vocabulary-based pipeline components for matching on archaeological vocabulary terms. Note these pipeline components are based on monolingual (English) thesauri so they can only (currently) be used to identify English language terms:
 
-| Component Name | Entity Type | Description | Examples |
-| -------------- | ----------- | ----------- | -------- |
-
+| Component Name | Entity Type | Description | Examples  |
+| -------------- | ----------- | ----------- | --------: |
 | [namedperiod_ruler](#namedperiod_ruler) | NAMEDPERIOD | Terms from Perio.do [Historic England Periods Authority File](http://n2t.net/ark:/99152/p0kh9ds) | _Medieval, Bronze Age_ |
 | [archobject_ruler](#archobject_ruler) | OBJECT | Terms from the [FISH Archaeological Objects Thesaurus](http://purl.org/heritagedata/schemes/mda_obj) | _axe, sherds, ring_ |
 | [archscience_ruler](#archscience_ruler) | ARCHSCIENCE | Terms from the [FISH Archaeological Sciences Thesaurus](http://purl.org/heritagedata/schemes/560) | _lead isotope dating, palynology_ |
@@ -148,60 +196,6 @@ Identifies maritime craft type terms in free text
 ### monument_ruler <a class="anchor" id="monument_ruler"></a>
 
 Identifies monument type terms in free text
-
-## Usage <a class="anchor" id="component_usage"></a>
-
-Example Python script to perform NER using a `rematch2` pipeline component:
-
-```python
-import spacy
-import rematch2.components
-
-# use a predefined pipeline, disabling the default NER component
-nlp = spacy.load("en_core_web_sm", disable=["ner"])
-# add required pipeline component(s) to the end of the pipeline
-nlp.add_pipe("century_ruler", last=True)
-# process some example text using the modified pipeline
-doc = nlp("A late twelfth century AD or early 13th century weapon.")
-# display the entities located in the text
-for ent in doc.ents:
-  print(ent.text)
-
-# results:
-# late twelfth century AD
-# early 13th century
-```
-
-## Annotators <a class="anchor" id="annotators"></a>
-
-## Temporal Annotator <a class="anchor" id="temporal_annotator"></a>
-
-The temporal annotation components are pulled together by the TemporalAnnotator class, which facilitates annotation of text using specified combinations of the components.
-Example Python script to perform NER using the TemporalAnnotator class:
-
-```python
-from rematch2.TemporalAnnotator import TemporalAnnotator
-
-# example test input text copied from https://doi.org/10.5284/1100092
-test_text = "This collection comprises site data(reports, images, GIS data and a project database) from an archaeological excavation at Lydney B Phase II, Archers Walk, Lydney, Gloucestershire undertaken by Cotswold Archaeology between February and May 2018. An area of 1.47ha was excavated within this part of a wider development area. The earliest remains comprised three broadly datable flints, all found as residual finds. An Early Bronze Age collared urn within a small pit may be the remains of a grave, although no human remains were found. The first evidence for occupation is from the Roman period, with finds spanning the 1st to 3rd centuries AD, with a clear focus within the 2nd to 3rd centuries. Two phases of Roman activity were identified, the first comprising cereal-processing ovens and two crescent-shaped ditches, one associated with metalworking debris. The later phase comprised stone founded buildings associated with wells, enclosures, trackways and a single cremation deposit. These seem to indicate a Romanised farm below the status of a villa. Little animal bone survived, but the enclosures are suggestive of livestock farming. Occupation seems to have ended in the mid 3rd century, although the reasons for this are not apparent. Further use of the site dates to the medieval period, between the late 12th and 15th centuries, when an agricultural building was constructed, probably an outlier of a manorial farm previously excavated to the west."
-
-# required output format options: html|csv|json|dataframe|doc
-# 'html' returns inline markup for visualising annotations in context
-# 'dataframe' useful for visualising tabular data in python notebook
-# 'csv' and 'json' are useful textual interchange formats
-# 'doc' returns the spaCy document object for further processing
-output_format = "html"  # options: html|csv|json|dataframe|doc
-
-# if not specified, default ISO639-1 two character language code is "en"
-# if not specified, default periodo id is "p0kh9ds" (Historic England periods list)
-annotator = TemporalAnnotator(language="en", periodo_authority_id="p0kh9ds")
-
-# process example text and display the results in required output format
-results = annotator.annotateText(input_text=test_text, format=output_format)
-return results
-```
-
-Other practical (interactive) examples of usage are found in the accompanying Python notebooks.
 
 ## Vocabulary Annotator <a class="anchor" id="vocabulary_annotator"></a>
 
