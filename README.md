@@ -40,7 +40,7 @@ The pipeline components are located in the *components* directory. The component
 
 ## Components <a class="anchor" id="components"></a>
 ### Temporal Components <a class="anchor" id="temporal_components"></a>
-``rematch2`` performs specialised NER focussed on temporal entities, and implements spaCy pipeline components to identify the following entity types in free text:
+``rematch2`` performs specialised NER focussed on temporal entities, and implements specialised spaCy pipeline components to identify the following entity types in free text:
 
 | Component Name        | Entity Type | Description | Examples |
 | ----------------------|-------------|-------------| --------:|
@@ -81,8 +81,10 @@ Identifies typical expressions of years or spans of years in text. Utilises othe
 ### namedperiod_ruler <a class="anchor" id="namedperiod_ruler"></a>
 The namedperiod_ruler component utilises the [Perio.do](https://perio.do/) dataset. When configured with a valid Perio.do authority identifier e.g. `'p0xxt6t'` [Scottish Archaeological Periods & Ages (ScAPA)](http://n2t.net/ark:/99152/p0xxt6t), the component will match against the labels of periods contained within the specified authority. e.g. *Chalcolithic*, *Early Bronze Age*, *Antonine*
 
+These components are pulled together in the TemporalAnnotator class, which facilitates annotation of text using specified combinations of the components. Practical interactive examples of usage are found in the accompanying Python notebooks. 
+
 ### Supplementary Components <a class="anchor" id="supplementary_components"></a>
-In addition to temporal entities, ``rematch2`` also contains some more experimental vocabulary-based pipeline components for matching on archaeological vocabulary terms. Note these pipeline components are based on monolingual (English) thesauri so they can only (currently) be used to identify English language terms:
+In addition to temporal entities, ``rematch2`` also contains vocabulary-based pipeline components for matching on archaeological vocabulary terms. Note these pipeline components are based on monolingual (English) thesauri so they can only (currently) be used to identify English language terms:
 
 | Component Name     | Entity Type   | Description   | Examples  |
 |--------------------|---------------|---------------| ----------|
@@ -121,4 +123,4 @@ for ent in doc.ents:
 # early 13th century
 ```
 
-See the accompanying Python notebook (rematch2_components.ipynb) for live code examples you can run and experiment with.
+These components are pulled together in the VocabularyAnnotator class, which facilitates annotation of text using specified combinations of the components. Practical interactive examples of usage are found in the accompanying Python notebooks. 
