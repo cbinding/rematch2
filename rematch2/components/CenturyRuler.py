@@ -21,7 +21,7 @@ from .DateSeparatorRuler import *
 from .DateSuffixRuler import *
 from .DatePrefixRuler import *
 from .OrdinalRuler import *
-from ..patterns import *
+from ..spacypatterns import *
 from spacy.lang.sv import Swedish
 from spacy.lang.nb import Norwegian
 from spacy.lang.nl import Dutch

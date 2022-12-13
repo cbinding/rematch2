@@ -21,7 +21,7 @@ import spacy            # NLP library
 
 from spacy.language import Language
 
-from ..patterns import patterns_en_COMPONENT
+from ..spacypatterns import patterns_en_COMPONENT
 from .PatternRuler import PatternRuler
 
 

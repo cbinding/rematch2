@@ -29,7 +29,7 @@ from spacy.lang.nl import Dutch
 from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 
-from ..patterns import \
+from ..spacypatterns import \
     patterns_de_DAYNAME, \
     patterns_en_DAYNAME, \
     patterns_es_DAYNAME, \

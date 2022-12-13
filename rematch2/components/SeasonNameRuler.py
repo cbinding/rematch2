@@ -29,9 +29,9 @@ from spacy.lang.nl import Dutch
 from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 
-import rematch2.patterns
+import rematch2.spacypatterns
 
-from ..patterns import \
+from ..spacypatterns import \
     patterns_de_SEASONNAME, \
     patterns_en_SEASONNAME, \
     patterns_es_SEASONNAME, \

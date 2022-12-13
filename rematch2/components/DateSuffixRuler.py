@@ -31,7 +31,7 @@ from spacy.lang.sv import Swedish
 # if module_path not in sys.path:
 # sys.path.append(module_path)
 
-from ..patterns import \
+from ..spacypatterns import \
     patterns_de_DATESUFFIX, \
     patterns_en_DATESUFFIX, \
     patterns_es_DATESUFFIX, \

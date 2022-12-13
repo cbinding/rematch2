@@ -21,7 +21,7 @@ import spacy            # NLP library
 
 from spacy.language import Language
 
-from ..patterns import patterns_en_MATERIAL
+from ..spacypatterns import patterns_en_MATERIAL
 from .PatternRuler import PatternRuler
 
 #module_path = os.path.abspath(os.path.join('..', 'src'))

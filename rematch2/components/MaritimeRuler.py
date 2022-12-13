@@ -20,7 +20,7 @@ import sys
 import spacy            # NLP library
 
 from spacy.language import Language
-from ..patterns import patterns_en_MARITIME
+from ..spacypatterns import patterns_en_MARITIME
 
 from .PatternRuler import PatternRuler
 

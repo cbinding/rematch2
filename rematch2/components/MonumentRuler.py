@@ -27,7 +27,7 @@ from spacy.tokens import Doc
 
 #from collections import Counter
 #from patterns import patterns_de_MONUMENT
-from ..patterns import patterns_en_MONUMENT
+from ..spacypatterns import patterns_en_MONUMENT
 #from patterns import patterns_fr_MONUMENT
 from .PatternRuler import PatternRuler
 
@@ -39,7 +39,7 @@ from .PatternRuler import PatternRuler
 
 
 @Language.factory("monument_ruler")
-def create_monument_ruler(nlp, name="minument_ruler", patterns=patterns_en_MONUMENT):
+def create_monument_ruler(nlp, name="monument_ruler", patterns=patterns_en_MONUMENT):
     return PatternRuler(nlp, name, patterns)
 
 

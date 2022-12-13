@@ -27,7 +27,7 @@ from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 
 # Local application imports
-from ..patterns import \
+from ..spacypatterns import \
     patterns_de_ORDINAL, \
     patterns_en_ORDINAL, \
     patterns_es_ORDINAL, \

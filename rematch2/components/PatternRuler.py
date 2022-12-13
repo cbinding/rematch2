@@ -20,7 +20,7 @@ from spacy.language import Language
 
 # PatternRuler is a specialized EntityRuler (at the moment it's not very specialized)
 class PatternRuler(EntityRuler):
-    def __init__(self, nlp: Language, name: str = "pattern_ruler", patterns=None) -> None:
+    def __init__(self, nlp: Language, name="pattern_ruler", patterns=None) -> None:
         EntityRuler.__init__(
             self,
             nlp=nlp,
