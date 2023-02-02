@@ -15,6 +15,7 @@ License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
 21/11/2022 CFB Initially created script using VocabularyAnnotator as template
+02/02/2023 CFB Support for supplementary patterns passed to base initialisation
 =============================================================================
 """
 import os
@@ -33,8 +34,8 @@ from rematch2 import BaseAnnotator
 
 
 class TemporalAnnotator(BaseAnnotator):
-    def __init__(self, language="en", periodo_authority_id="p0kh9ds") -> None:
-        super().__init__(language=language)
+    def __init__(self, language="en", periodo_authority_id="p0kh9ds", patterns=[]) -> None:
+        super().__init__(language=language, patterns=patterns)
 
         # TODO: get cleaned unique entity types list
         self._pipeline.add_pipe("century_ruler", last=True)

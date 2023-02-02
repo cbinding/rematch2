@@ -14,6 +14,7 @@ License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
 31/09/2022 CFB Initially created script
+02/02/2023 CFB use of supplementary patterns passed in during init
 =============================================================================
 """
 import os
@@ -28,27 +29,31 @@ from rematch2 import components         # spaCy pipeline components
 
 # base class for VocabularyAnnotator and TemporalAnnotator
 class BaseAnnotator():
-    def __init__(self, language="en") -> None:
+    def __init__(self, language="en", patterns=[]) -> None:
         # start with predefined language-specific spaCy pipeline
         pipeline_name = ""
-        if(language == "de"):
+        if (language == "de"):
             pipeline_name = "de_core_news_sm"   # German
-        elif(language == "es"):
+        elif (language == "es"):
             pipeline_name = "es_core_news_sm"   # Spanish
-        elif(language == "fr"):
+        elif (language == "fr"):
             pipeline_name = "fr_core_news_sm"   # French
-        elif(language == "it"):
+        elif (language == "it"):
             pipeline_name = "it_core_news_sm"   # Italian
-        elif(language == "nl"):
+        elif (language == "nl"):
             pipeline_name = "nl_core_news_sm"   # Dutch
-        elif(language == "no"):
+        elif (language == "no"):
             pipeline_name = "nb_core_news_sm"   # Norwegian Bokmal
-        elif(language == "sv"):
+        elif (language == "sv"):
             pipeline_name = "sv_core_news_sm"   # Swedish
         else:
             pipeline_name = "en_core_web_sm"    # English (default)
         # create the pipeline
         self._pipeline = spacy.load(pipeline_name, disable=['ner'])
+
+        # append any additional patterns passed in (for local customisation)
+        self._pipeline.add_pipe(
+            "pattern_ruler", last=True, config={"patterns": patterns})
 
     # process text using the modified pipeline
 
@@ -65,15 +70,15 @@ class BaseAnnotator():
         output = ""
         doc = self.__annotate(input_text)
 
-        if(format == "html"):
+        if (format == "html"):
             output = self._to_html(doc)
-        elif(format == "ttl"):
+        elif (format == "ttl"):
             output = self.__to_ttl(doc)
-        elif(format == "json"):
+        elif (format == "json"):
             output = self.__to_json(doc)
-        elif(format == "dataframe"):
+        elif (format == "dataframe"):
             output = self.__to_dataframe(doc)
-        elif(format == "csv"):
+        elif (format == "csv"):
             output = self.__to_csv(doc)
         else:
             output = doc  # spaCy doc for further processing
@@ -121,7 +126,7 @@ class BaseAnnotator():
     @staticmethod
     def __to_ttl(doc, id=None):
         ttl = ""
-        if(id is None):
+        if (id is None):
             id = "http://tempuri/mydata"
         # TODO....
         return ttl

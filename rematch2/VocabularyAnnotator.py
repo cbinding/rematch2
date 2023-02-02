@@ -16,6 +16,7 @@ License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History
 31/09/2022 CFB Initially created script
 07/11/2022 CFB Extended supported entity types
+02/02/2023 CFB Support for supplementary patterns passed to base initialisation
 =============================================================================
 """
 import os
@@ -32,43 +33,48 @@ from rematch2 import BaseAnnotator
 
 
 class VocabularyAnnotator(BaseAnnotator):
-    def __init__(self, language="en", entity_types=["NAMEDPERIOD", "MATERIAL", "MARITIME", "EVIDENCE", "EVENTTYPE", "ARCHSCIENCE", "OBJECT", "COMPONENT", "MONUMENT"]) -> None:
-        super().__init__(language=language)
+    def __init__(self,
+                language="en",
+                entity_types=["NAMEDPERIOD", "MATERIAL", "MARITIME", "EVIDENCE",
+                               "EVENTTYPE", "ARCHSCIENCE", "OBJECT", "COMPONENT", "MONUMENT"], 
+                patterns=[]) -> None:
+
+        super().__init__(language=language, patterns=patterns)
         # TODO: get cleaned unique entity types list
 
         # using predefined (English language) spaCy pipeline
-        #self.__pipeline = spacy.load("en_core_web_sm", disable=['ner'])
+        # self.__pipeline = spacy.load("en_core_web_sm", disable=['ner'])
 
         # conditionally add rematch2 component(s) to the end of the pipeline
         # in order specified in init (allows user-specified order)
         for entity_type in list(map(lambda s: (s or "").strip().upper(), entity_types)):
-            if(entity_type == "NAMEDPERIOD"):
+            if (entity_type == "NAMEDPERIOD"):
                 self._pipeline.add_pipe("namedperiod_ruler", last=True, config={
                     "periodo_authority_id": "p0kh9ds"})
-            elif(entity_type == "ARCHSCIENCE"):
+            elif (entity_type == "ARCHSCIENCE"):
                 self._pipeline.add_pipe("archscience_ruler", last=True)
-            elif(entity_type == "EVIDENCE"):
+            elif (entity_type == "EVIDENCE"):
                 self._pipeline.add_pipe("evidence_ruler", last=True)
-            elif(entity_type == "EVENTTYPE"):
+            elif (entity_type == "EVENTTYPE"):
                 self._pipeline.add_pipe("eventtype_ruler", last=True)
-            elif(entity_type == "MATERIAL"):
+            elif (entity_type == "MATERIAL"):
                 self._pipeline.add_pipe("material_ruler", last=True)
-            elif(entity_type == "MARITIME"):
+            elif (entity_type == "MARITIME"):
                 self._pipeline.add_pipe("maritime_ruler", last=True)
-            elif(entity_type == "OBJECT"):
+            elif (entity_type == "OBJECT"):
                 self._pipeline.add_pipe("archobject_ruler", last=True)
-            elif(entity_type == "COMPONENT"):
+            elif (entity_type == "COMPONENT"):
                 self._pipeline.add_pipe("component_ruler", last=True)
-            elif(entity_type == "MONUMENT"):
+            elif (entity_type == "MONUMENT"):
                 self._pipeline.add_pipe("monument_ruler", last=True)
             else:
                 warnings.warn(
                     f"unknown entity type '{entity_type}' in initialisation")
 
-    # convert results to HTML formatted string (override and call base method)
-
     @staticmethod
     def _to_html(doc):
+        # convert results to HTML formatted string (override and call base method)
+
         # specify colours for HTML output
         options = {
             "ents": [
@@ -96,9 +102,9 @@ class VocabularyAnnotator(BaseAnnotator):
         }
         output = super(VocabularyAnnotator, VocabularyAnnotator)._to_html(
             doc, options=options)
-        #output = BaseAnnotator()._to_html(doc, options=options)
+        # output = BaseAnnotator()._to_html(doc, options=options)
         # generate and return HTML marked up text
-        #output = displacy.render(doc, style="ent", options=options)
+        # output = displacy.render(doc, style="ent", options=options)
         return output
 
 

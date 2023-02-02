@@ -10,7 +10,9 @@ Summary :   spaCy custom pipeline component (specialized EntityRuler)
 Imports :   os, sys, spacy, EntityRuler, Doc, Language
 Example :   N/A - only used as superclass for more specialized components    
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
-History :   03/08/2022 CFB Initially created script
+History :   
+03/08/2022 CFB Initially created script
+02/02/2023 CFB Added language factory function
 =============================================================================
 """
 from spacy.pipeline import EntityRuler
@@ -18,7 +20,13 @@ from spacy.tokens import Doc
 from spacy.language import Language
 
 
+@Language.factory("pattern_ruler")
+def create_pattern_ruler(nlp, name="pattern_ruler", patterns=[]):
+    return PatternRuler(nlp, name, patterns)
+
 # PatternRuler is a specialized EntityRuler (at the moment it's not very specialized)
+
+
 class PatternRuler(EntityRuler):
     def __init__(self, nlp: Language, name="pattern_ruler", patterns=None) -> None:
         EntityRuler.__init__(
