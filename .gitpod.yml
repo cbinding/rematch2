@@ -25,14 +25,13 @@ tasks:
 #python -m spacy download sv_core_news_sm;      
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 ports:
-   - port: 8080
-#     onOpen: open-preview
-   - port: 8888
-#     onOpen: open-browser
+   - name: Preview
+     port: 8000
+     onOpen: open-preview   
 
 # Install necessary packages
-image:
-    file: .gitpod.dockerfile
+#image:
+    #file: .gitpod.dockerfile
 
 vscode:
     extensions:
