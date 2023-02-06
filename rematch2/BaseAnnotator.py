@@ -52,8 +52,9 @@ class BaseAnnotator():
         self._pipeline = spacy.load(pipeline_name, disable=['ner'])
 
         # append any additional patterns passed in (for local customisation)
-        self._pipeline.add_pipe(
-            "pattern_ruler", last=True, config={"patterns": patterns})
+        if(len(patterns or []) > 0):
+            self._pipeline.add_pipe(
+                "pattern_ruler", last=True, config={"patterns": patterns})
 
     # process text using the modified pipeline
 
@@ -68,8 +69,14 @@ class BaseAnnotator():
     # process text and output results to specified format
     def annotateText(self, input_text="", format="csv"):
         output = ""
-        doc = self.__annotate(input_text)
+        # normalise white spaces before annotation
+        # (extra spaces frustrate pattern matching)
+        clean_input = " ".join(input_text.split())
 
+        # perform the annotation
+        doc = self.__annotate(clean_input)
+
+        # convert the rersults to the required format
         if (format == "html"):
             output = self._to_html(doc)
         elif (format == "ttl"):

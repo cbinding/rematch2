@@ -3,4 +3,6 @@
 # python cache files
 *.pyc
 # output of French XML processing
-ner-fr/fromxml/*
+ner-fr/*
+# output of English XML processing
+ner-en/*

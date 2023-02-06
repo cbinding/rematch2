@@ -37,6 +37,7 @@ class VocabularyAnnotator(BaseAnnotator):
                 language="en",
                 entity_types=["NAMEDPERIOD", "MATERIAL", "MARITIME", "EVIDENCE",
                                "EVENTTYPE", "ARCHSCIENCE", "OBJECT", "COMPONENT", "MONUMENT"], 
+                periodo_authority_id="p0kh9ds",
                 patterns=[]) -> None:
 
         super().__init__(language=language, patterns=patterns)
@@ -50,7 +51,7 @@ class VocabularyAnnotator(BaseAnnotator):
         for entity_type in list(map(lambda s: (s or "").strip().upper(), entity_types)):
             if (entity_type == "NAMEDPERIOD"):
                 self._pipeline.add_pipe("namedperiod_ruler", last=True, config={
-                    "periodo_authority_id": "p0kh9ds"})
+                    "periodo_authority_id": periodo_authority_id})
             elif (entity_type == "ARCHSCIENCE"):
                 self._pipeline.add_pipe("archscience_ruler", last=True)
             elif (entity_type == "EVIDENCE"):
