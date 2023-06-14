@@ -52,7 +52,7 @@ class BaseAnnotator():
         self._pipeline = spacy.load(pipeline_name, disable=['ner'])
 
         # append any additional patterns passed in (for local customisation)
-        if(len(patterns or []) > 0):
+        if (len(patterns or []) > 0):
             self._pipeline.add_pipe(
                 "pattern_ruler", last=True, config={"patterns": patterns})
 
@@ -69,12 +69,21 @@ class BaseAnnotator():
     # process text and output results to specified format
     def annotateText(self, input_text="", format="csv"):
         output = ""
-        # normalise white spaces before annotation
+
+        # data cleansing stages on input text
+        # cleaned = input_text.strip()
+        # remove any punctuation before annotation DOESNT WORK for unicode punctuation though, only ASCII
+        # cleaned = cleaned.translate(str.maketrans("", "", string.punctuation))
+        # this does handle unicode
+        # cleaned = regex.sub('[\p{P}\p{Sm}]+', '', cleaned)
+        # problem though - if we strip punctuation here we lose full stops before the NER...
+
+        # normalise white space before annotation
         # (extra spaces frustrate pattern matching)
-        clean_input = " ".join(input_text.split())
+        cleaned = " ".join(input_text.strip().split())
 
         # perform the annotation
-        doc = self.__annotate(clean_input)
+        doc = self.__annotate(cleaned)
 
         # convert the rersults to the required format
         if (format == "html"):
