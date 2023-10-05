@@ -1,0 +1,43 @@
+"""
+=============================================================================
+Package :   rematch2.components
+Module  :   FISH_EventTypeRuler.py
+Version :   20220803
+Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
+Contact :   ceri.binding@southwales.ac.uk
+Project :   ARIADNEplus
+Summary :   spaCy custom pipeline component (specialized EntityRuler)
+            to identify Terms from the FISH Event Types Thesaurus 
+            in free text. Entity type added will be "EVENTTYPE"
+Imports :   os, sys, spacy, Language, PatternRuler
+Example :   nlp.add_pipe("fish_eventtype_ruler", last=True)           
+License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
+History :   03/08/2022 CFB Initially created script
+=============================================================================
+"""
+import os
+import sys
+import spacy            # NLP library
+
+from spacy.language import Language
+from ..spacypatterns import patterns_en_FISH_EVENTTYPE
+
+from .PatternRuler import PatternRuler
+
+# defaults to English patterns if no language-specific factory exists
+
+
+@Language.factory("fish_eventtype_ruler")
+def create_fish_eventtype_ruler(nlp, name="fish_eventtype_ruler", patterns=patterns_en_FISH_EVENTTYPE):
+    return PatternRuler(nlp, name, patterns)
+
+
+# test the FISH_EventTypeRuler class
+if __name__ == "__main__":
+    nlp = spacy.load("en_core_web_sm", disable=['ner'])
+    nlp.add_pipe("fish_eventtype_ruler", last=True)
+    print(nlp.pipe_names)
+    text = "Undertook some excavation on the site, then some aerial reconnaissance, followed by a laser scanning survey."
+    doc = nlp(text)
+    for ent in doc.ents:
+        print(ent.ent_id_, ent.text, ent.label_)

@@ -85,7 +85,7 @@ class BaseAnnotator():
         # perform the annotation
         doc = self.__annotate(cleaned)
 
-        # convert the rersults to the required format
+        # convert the results to the required format
         if (format == "html"):
             output = self._to_html(doc)
         elif (format == "ttl"):
@@ -102,7 +102,6 @@ class BaseAnnotator():
         return output
 
     # process single text file
-
     def annotateFile(inputFileNameWithPath="", format="csv", encoding="utf-8-sig"):
         txt = ""
 

@@ -1,7 +1,8 @@
 #from .PatternRuler import PatternRuler
 from .BaseAnnotator import BaseAnnotator
 from .TemporalAnnotator import TemporalAnnotator
-from .VocabularyAnnotator import VocabularyAnnotator
+from .AatVocabularyAnnotator import AatVocabularyAnnotator
+from .FishVocabularyAnnotator import FishVocabularyAnnotator
 
 __version__ = "0.1.0"
 #from . import components, patterns
