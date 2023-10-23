@@ -19,6 +19,8 @@ import os
 import sys
 import spacy            # NLP library
 
+from spacy.pipeline import EntityRuler
+
 from spacy.language import Language
 from spacy.lang.de import German
 from spacy.lang.en import English
@@ -39,7 +41,7 @@ from ..spacypatterns import \
     patterns_no_DATESEPARATOR, \
     patterns_sv_DATESEPARATOR
 
-from .PatternRuler import PatternRuler
+#from .PatternRuler import PatternRuler
 
 #module_path = os.path.abspath(os.path.join('..', 'src'))
 # if module_path not in sys.path:
@@ -48,7 +50,15 @@ from .PatternRuler import PatternRuler
 
 @Language.factory("dateseparator_ruler")
 def create_dateseparator_ruler(nlp, name="dateseparator_ruler", patterns=[]):
-    return PatternRuler(nlp, name, patterns)
+   return EntityRuler(
+       nlp=nlp,
+       name=name,
+       phrase_matcher_attr="LOWER",
+       validate=True,
+       overwrite_ents=True,
+       ent_id_sep="||",
+       patterns=patterns
+   )   
 
 
 @German.factory("dateseparator_ruler")

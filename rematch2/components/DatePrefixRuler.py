@@ -13,10 +13,12 @@ License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History :   03/08/2022 CFB Initially created script
 =============================================================================
 """
-from . import PatternRuler
+# from . import PatternRuler
 import os
 import sys
 import spacy            # NLP library
+
+from spacy.pipeline import EntityRuler
 
 # Language-specific pipelines
 from spacy.language import Language
@@ -29,7 +31,7 @@ from spacy.lang.nl import Dutch
 from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 
-#module_path = os.path.abspath(os.path.join('..', 'src'))
+# module_path = os.path.abspath(os.path.join('..', 'src'))
 # if module_path not in sys.path:
 # sys.path.append(module_path)
 
@@ -46,8 +48,16 @@ from ..spacypatterns import \
 
 @Language.factory("dateprefix_ruler")
 def create_dateprefix_ruler(nlp, name="dateprefix_ruler", patterns=[]):
-    return PatternRuler(nlp, name, patterns)
-
+    # return PatternRuler(nlp, name, patterns)
+    return EntityRuler(
+        nlp=nlp,
+        name=name,
+        phrase_matcher_attr="LOWER",
+        validate=True,
+        overwrite_ents=True,
+        ent_id_sep="||",
+        patterns=patterns
+    )
 
 @German.factory("dateprefix_ruler")
 def create_dateprefix_ruler_de(nlp, name="dateprefix_ruler_de"):

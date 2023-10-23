@@ -17,6 +17,8 @@ import os
 import sys
 import spacy            # NLP library
 
+from spacy.pipeline import EntityRuler
+
 from spacy.language import Language
 from spacy.lang.de import German
 from spacy.lang.en import English
@@ -41,12 +43,20 @@ from ..spacypatterns import \
     patterns_no_DATESUFFIX, \
     patterns_sv_DATESUFFIX
 
-from .PatternRuler import PatternRuler
+#from .PatternRuler import PatternRuler
 
 
 @Language.factory("datesuffix_ruler")
 def create_datesuffix_ruler(nlp, name="datesuffix_ruler", patterns=[]):
-    return PatternRuler(nlp, name, patterns)
+    return EntityRuler(
+        nlp=nlp,
+        name=name,
+        phrase_matcher_attr="LOWER",
+        validate=True,
+        overwrite_ents=True,
+        ent_id_sep="||",
+        patterns=patterns
+    )
 
 
 @German.factory("datesuffix_ruler")
