@@ -93,12 +93,15 @@ class VocabularyRuler(EntityRuler):
                 continue
 
             # add cleaned values to new pattern object
+            pattern = VocabularyRuler._term_to_pattern(
+                nlp, clean_term, lemmatize, min_lemmatize_length, pos)
+
             patterns.append({
                 "id": clean_id,
                 "label": clean_label,
                 "language": clean_language,
                 "term": clean_term,
-                "pattern":  VocabularyRuler._term_to_pattern(nlp, clean_term, lemmatize, min_lemmatize_length, pos)
+                "pattern":  pattern
             })
         # pprint(patterns)
         self.add_patterns(patterns)
@@ -167,39 +170,20 @@ if __name__ == "__main__":
         160m to the north-west, seems likely, with the currently site having lain beyond this and providing agricultural facilities, \
         most likely corrals and pens for livestock. Animal bone was absent, but the damp, low-lying ground would have been best suited \
         to cattle. An assemblage of medieval coins recovered from the subsoil during a metal detector survey may represent a dispersed hoard.
-        '''
-
-    '''vocab = [
-        {"id": "123", "term": "flints"},
-        {"id": "234", "term": "pottery"},
-        {"id": "345", "term": "coins"},
-        {"id": "456", "term": "enclosures"},
-        {"id": "567", "term": "pens"},
-        {"id": "678", "term": "farmsteads"},
-        {"id": "789", "term": "metal detectors"},
-        {"id": "901", "term": "recovering", "label": "ACTIVITY"}
-    ]'''
+        '''    
 
     # reading vocab from JSON file instead. This WORKS...
     # no need for python modules for what should be JSON input
-    # and don't need lots of specialised pipelines, only vocabulary_ruler
-    # TODO: put FISH and AAT vocabs back to JSON files then try to
-    # optimise, as OBJECTS taking a long time to respond..
-    # add timing code to test here to measure improvements
-    # for testing - from /workspace/rematch2
-    # type python  ./rematch2/components/VocabularyRuler.py
-    # parent_dir = Path(__file__).parent.parent
-    vocab_dir = (Path(__file__).parent.parent / "vocabularies").resolve()
-    # file_path = os.path.join(vocab_dir, "vocab_en_AAT_ACTIVITIES.json")
-    #file_path = os.path.join(vocab_dir, "vocab_en_AAT_OBJECTS.json")
-    file_path = os.path.join(vocab_dir, "vocab_en_AAT_ACTIVITIES_20231018.json")
-    # file_path = (vocab_dir / "vocab_en_AAT_ACTIVITIES.json").resolve()
-    # file_path = "rematch2/spacypatterns/vocab_en_AAT_ACTIVITIES.json"
-    # file_path = "../spacypatterns/vocab_en_AAT_ACTIVITIES.json"
+    # and don't need specialised pipelines, only vocabulary_ruler
+    vocab = []
+    vocab_dir = (Path(__file__).parent / "vocabularies").resolve()
+    file_path = os.path.join(
+        vocab_dir, "vocab_en_AAT_ACTIVITIES_20231018.json")
     # print(file_path)
-    with open(file_path, "r") as f:  # what if file doesn't exist?
+
+    with open(file_path, "r") as f:  
         # print(f)
-        vocab2 = json.load(f)
+        vocab = json.load(f)
 
     nlp = spacy.load("en_core_web_sm", disable=['ner'])
 
@@ -207,11 +191,11 @@ if __name__ == "__main__":
         "min_lemmatize_length": 4,
         "min_term_length": 3,
         "lemmatize": True,
-        #"pos": ["NOUN"],
+        # "pos": ["NOUN"],
         # "pos": ["VERB"],
         "default_label": "OBJECT",
         "default_language": "en",
-        "vocab": vocab2
+        "vocab": vocab
     })
 
     doc = nlp(test_text)
@@ -219,5 +203,5 @@ if __name__ == "__main__":
     for ent in doc.ents:
         print(ent.ent_id_, ent.text, ent.label_)
 
-    for tok in doc:
-        print(tok.text, tok.pos_, tok.lemma_)
+    # for tok in doc:
+        # print(tok.text, tok.pos_, tok.lemma_)

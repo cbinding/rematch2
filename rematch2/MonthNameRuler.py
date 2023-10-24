@@ -31,21 +31,12 @@ from spacy.lang.nl import Dutch
 from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 
-from ..spacypatterns import \
-    patterns_de_MONTHNAME, \
-    patterns_en_MONTHNAME, \
-    patterns_es_MONTHNAME, \
-    patterns_fr_MONTHNAME, \
-    patterns_it_MONTHNAME, \
-    patterns_nl_MONTHNAME, \
-    patterns_no_MONTHNAME, \
-    patterns_sv_MONTHNAME
-
-#from .PatternRuler import PatternRuler
-
-#module_path = os.path.abspath(os.path.join('..', 'src'))
-# if module_path not in sys.path:
-# sys.path.append(module_path)
+if __package__ is None or __package__ == '':
+    # uses current directory visibility
+    from spacypatterns import *
+else:
+    # uses current package visibility
+    from .spacypatterns import *
 
 
 @Language.factory("monthname_ruler")

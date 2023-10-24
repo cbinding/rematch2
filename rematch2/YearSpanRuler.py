@@ -15,10 +15,7 @@ License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History :   03/08/2022 CFB Initially created script
 =============================================================================
 """
-#import os
-#import sys
-# import spacy            # NLP library
-
+import spacy
 from spacy.language import Language
 from spacy.pipeline import EntityRuler
 from spacy.tokens import Doc
@@ -32,18 +29,24 @@ from spacy.lang.nl import Dutch
 from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 
-from ..spacypatterns import *
-
-from .OrdinalRuler import *
-from .DatePrefixRuler import *
-from .DateSuffixRuler import *
-from .DateSeparatorRuler import *
-from .MonthNameRuler import *
-from .SeasonNameRuler import *
-
-#module_path = os.path.abspath(os.path.join('..', 'src'))
-# if module_path not in sys.path:
-# sys.path.append(module_path)
+if __package__ is None or __package__ == '':
+    # uses current directory visibility
+    from spacypatterns import *
+    from OrdinalRuler import create_ordinal_ruler
+    from DatePrefixRuler import create_dateprefix_ruler
+    from DateSuffixRuler import create_datesuffix_ruler
+    from DateSeparatorRuler import create_dateseparator_ruler
+    from MonthNameRuler import create_monthname_ruler
+    from SeasonNameRuler import create_seasonname_ruler
+else:
+    # uses current package visibility
+    from .spacypatterns import *
+    from .OrdinalRuler import create_ordinal_ruler
+    from .DatePrefixRuler import create_dateprefix_ruler
+    from .DateSuffixRuler import create_datesuffix_ruler
+    from .DateSeparatorRuler import create_dateseparator_ruler
+    from .MonthNameRuler import create_monthname_ruler
+    from .SeasonNameRuler import create_seasonname_ruler
 
 
 @Language.factory("yearspan_ruler")

@@ -27,7 +27,7 @@ from lxml import etree as ET
 from collections import defaultdict
 import spacy
 from spacy import displacy
-from rematch2 import TemporalAnnotator
+from rematch2.TemporalAnnotator import TemporalAnnotator
 
 
 def writeEntitiesToTsvFile(doc, targetFileNameWithPath="", mode="w"):

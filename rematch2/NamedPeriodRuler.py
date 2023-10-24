@@ -29,12 +29,6 @@ if __package__ is None or __package__ == '':
 else:
     # uses current package visibility
     from .PeriodoData import PeriodoData
-# from .PeriodoData import PeriodoData
-
-# module_path = os.path.abspath(os.path.join('..', 'src'))
-# if module_path not in sys.path:
-    # sys.path.append(module_path)
-
 
 @Language.factory(name="namedperiod_ruler", default_config={"periodo_authority_id": None})
 def create_namedperiod_ruler(nlp, name, periodo_authority_id: str):
@@ -42,8 +36,6 @@ def create_namedperiod_ruler(nlp, name, periodo_authority_id: str):
     return ruler
 
 # NamedPeriodRuler is a specialized EntityRuler
-
-
 class NamedPeriodRuler(EntityRuler):
 
     def __init__(self, nlp: Language, name: str, periodo_authority_id=None) -> None:

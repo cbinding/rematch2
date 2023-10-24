@@ -31,23 +31,14 @@ from spacy.lang.nl import Dutch
 from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 
-import rematch2.spacypatterns
+#import rematch2.spacypatterns
 
-from ..spacypatterns import \
-    patterns_de_SEASONNAME, \
-    patterns_en_SEASONNAME, \
-    patterns_es_SEASONNAME, \
-    patterns_fr_SEASONNAME, \
-    patterns_it_SEASONNAME, \
-    patterns_nl_SEASONNAME, \
-    patterns_no_SEASONNAME, \
-    patterns_sv_SEASONNAME
-
-#from .PatternRuler import PatternRuler
-
-#module_path = os.path.abspath(os.path.join('..', 'src'))
-# if module_path not in sys.path:
-# sys.path.append(module_path)
+if __package__ is None or __package__ == '':
+    # uses current directory visibility
+    from spacypatterns import *
+else:
+    # uses current package visibility
+    from .spacypatterns import *
 
 
 @Language.factory("seasonname_ruler")

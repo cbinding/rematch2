@@ -91,14 +91,14 @@ from .patterns_sv_NAMEDPERIOD import patterns_sv_NAMEDPERIOD
 
 # experimental - patterns generated from FISH vocabularies
 # for use with FishVocabularyAnnotator
-from .patterns_en_FISH_EVIDENCE import patterns_en_FISH_EVIDENCE
-from .patterns_en_FISH_ARCHOBJECT import patterns_en_FISH_ARCHOBJECT
-from .patterns_en_FISH_ARCHSCIENCE import patterns_en_FISH_ARCHSCIENCE
-from .patterns_en_FISH_EVENTTYPE import patterns_en_FISH_EVENTTYPE
-from .patterns_en_FISH_MARITIME import patterns_en_FISH_MARITIME
-from .patterns_en_FISH_COMPONENT import patterns_en_FISH_COMPONENT
-from .patterns_en_FISH_MATERIAL import patterns_en_FISH_MATERIAL
-from .patterns_en_FISH_MONUMENT import patterns_en_FISH_MONUMENT
+#from .patterns_en_FISH_EVIDENCE import patterns_en_FISH_EVIDENCE
+#from .patterns_en_FISH_ARCHOBJECT import patterns_en_FISH_ARCHOBJECT
+#from .patterns_en_FISH_ARCHSCIENCE import patterns_en_FISH_ARCHSCIENCE
+#from .patterns_en_FISH_EVENTTYPE import patterns_en_FISH_EVENTTYPE
+#from .patterns_en_FISH_MARITIME import patterns_en_FISH_MARITIME
+#from .patterns_en_FISH_COMPONENT import patterns_en_FISH_COMPONENT
+#from .patterns_en_FISH_MATERIAL import patterns_en_FISH_MATERIAL
+#from .patterns_en_FISH_MONUMENT import patterns_en_FISH_MONUMENT
 
 # experimental - patterns generated from AAT data
 # for use with AatVocabularyAnnotator

@@ -31,24 +31,15 @@ from spacy.lang.nl import Dutch
 from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 
-# module_path = os.path.abspath(os.path.join('..', 'src'))
-# if module_path not in sys.path:
-# sys.path.append(module_path)
-
-from ..spacypatterns import \
-    patterns_de_DATEPREFIX, \
-    patterns_en_DATEPREFIX, \
-    patterns_es_DATEPREFIX, \
-    patterns_fr_DATEPREFIX, \
-    patterns_it_DATEPREFIX, \
-    patterns_nl_DATEPREFIX, \
-    patterns_no_DATEPREFIX, \
-    patterns_sv_DATEPREFIX
-
+if __package__ is None or __package__ == '':
+    # uses current directory visibility
+    from spacypatterns import *
+else:
+    # uses current package visibility
+    from .spacypatterns import *
 
 @Language.factory("dateprefix_ruler")
 def create_dateprefix_ruler(nlp, name="dateprefix_ruler", patterns=[]):
-    # return PatternRuler(nlp, name, patterns)
     return EntityRuler(
         nlp=nlp,
         name=name,

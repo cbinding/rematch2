@@ -25,10 +25,19 @@ import spacy
 from spacy.tokens import Doc
 from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
-from rematch2 import components         # spaCy pipeline components
-from rematch2 import BaseAnnotator
 
-# TODO: formats and entity types as internal enums??
+if __package__ is None or __package__ == '':
+    # uses current directory visibility
+    from BaseAnnotator import BaseAnnotator
+    from CenturyRuler import create_century_ruler
+    from YearSpanRuler import create_yearspan_ruler
+    from NamedPeriodRuler import create_namedperiod_ruler
+else:
+    # uses current package visibility
+    from .BaseAnnotator import BaseAnnotator
+    from .CenturyRuler import create_century_ruler
+    from .YearSpanRuler import create_yearspan_ruler
+    from .NamedPeriodRuler import create_namedperiod_ruler
 
 # default Perio.do authority ("p0kh9ds") is Historic England periods list..
 

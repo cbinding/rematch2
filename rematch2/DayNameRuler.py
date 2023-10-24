@@ -31,21 +31,12 @@ from spacy.lang.nl import Dutch
 from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 
-from ..spacypatterns import \
-    patterns_de_DAYNAME, \
-    patterns_en_DAYNAME, \
-    patterns_es_DAYNAME, \
-    patterns_fr_DAYNAME, \
-    patterns_it_DAYNAME, \
-    patterns_nl_DAYNAME, \
-    patterns_no_DAYNAME, \
-    patterns_sv_DAYNAME
-
-#from .PatternRuler import PatternRuler
-
-#module_path = os.path.abspath(os.path.join('..', 'src'))
-# if module_path not in sys.path:
-# sys.path.append(module_path)
+if __package__ is None or __package__ == '':
+    # uses current directory visibility
+    from spacypatterns import *
+else:
+    # uses current package visibility
+    from .spacypatterns import *
 
 
 @Language.factory("dayname_ruler")

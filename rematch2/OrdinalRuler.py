@@ -29,18 +29,12 @@ from spacy.lang.nl import Dutch
 from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 
-# Local application imports
-from ..spacypatterns import \
-    patterns_de_ORDINAL, \
-    patterns_en_ORDINAL, \
-    patterns_es_ORDINAL, \
-    patterns_fr_ORDINAL, \
-    patterns_it_ORDINAL, \
-    patterns_nl_ORDINAL, \
-    patterns_no_ORDINAL, \
-    patterns_sv_ORDINAL
-
-#from .PatternRuler import PatternRuler
+if __package__ is None or __package__ == '':
+    # uses current directory visibility
+    from spacypatterns import *
+else:
+    # uses current package visibility
+    from .spacypatterns import *
 
 
 @Language.factory("ordinal_ruler")

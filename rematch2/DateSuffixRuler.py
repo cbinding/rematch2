@@ -29,19 +29,13 @@ from spacy.lang.nl import Dutch
 from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 
-#module_path = os.path.abspath(os.path.join('..', 'src'))
-# if module_path not in sys.path:
-# sys.path.append(module_path)
 
-from ..spacypatterns import \
-    patterns_de_DATESUFFIX, \
-    patterns_en_DATESUFFIX, \
-    patterns_es_DATESUFFIX, \
-    patterns_fr_DATESUFFIX, \
-    patterns_it_DATESUFFIX, \
-    patterns_nl_DATESUFFIX, \
-    patterns_no_DATESUFFIX, \
-    patterns_sv_DATESUFFIX
+if __package__ is None or __package__ == '':
+    # uses current directory visibility
+    from spacypatterns import *
+else:
+    # uses current package visibility
+    from .spacypatterns import *
 
 #from .PatternRuler import PatternRuler
 

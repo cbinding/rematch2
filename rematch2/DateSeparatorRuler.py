@@ -31,21 +31,12 @@ from spacy.lang.nl import Dutch
 from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 
-from ..spacypatterns import \
-    patterns_de_DATESEPARATOR, \
-    patterns_en_DATESEPARATOR, \
-    patterns_es_DATESEPARATOR, \
-    patterns_fr_DATESEPARATOR, \
-    patterns_it_DATESEPARATOR, \
-    patterns_nl_DATESEPARATOR, \
-    patterns_no_DATESEPARATOR, \
-    patterns_sv_DATESEPARATOR
-
-#from .PatternRuler import PatternRuler
-
-#module_path = os.path.abspath(os.path.join('..', 'src'))
-# if module_path not in sys.path:
-# sys.path.append(module_path)
+if __package__ is None or __package__ == '':
+    # uses current directory visibility
+    from spacypatterns import *
+else:
+    # uses current package visibility
+    from .spacypatterns import *
 
 
 @Language.factory("dateseparator_ruler")

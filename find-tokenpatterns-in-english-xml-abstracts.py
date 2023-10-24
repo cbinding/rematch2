@@ -23,7 +23,7 @@ from lxml import etree as ET
 from collections import defaultdict
 import spacy
 from spacy import displacy
-from rematch2.FishVocabularyAnnotator import FishVocabularyAnnotator
+from rematch2.VocabularyAnnotator import VocabularyAnnotator
 
 
 def writeEntitiesToTsvFile(doc, targetFileNameWithPath="", mode="w"):
@@ -73,7 +73,7 @@ def writeEntitiesToHtmlFile(doc, targetFileNameWithPath=""):
 
 def main(sourceFilePath):
     print(f"running main({sourceFilePath})")
-    annotator = FishVocabularyAnnotator(
+    annotator = VocabularyAnnotator(
         language="en", periodo_authority_id="p0kh9ds", entity_types=["OBJECT", "MONUMENT", "NAMEDPERIOD"])
 
     results = defaultdict(dict)

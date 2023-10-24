@@ -20,13 +20,25 @@ History
 """
 import os
 from os.path import exists
+import json
 import pandas as pd                     # for DataFrame output
 import spacy
 from spacy.tokens import Doc
 from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
-from rematch2 import components         # spaCy pipeline components
-from rematch2 import BaseAnnotator
+# from rematch2 import components         # spaCy pipeline components
+# from rematch2 import BaseAnnotator
+#from components import BaseAnnotator
+
+#from .BaseAnnotator import BaseAnnotator
+if __package__ is None or __package__ == '':
+    # uses current directory visibility
+    from BaseAnnotator import BaseAnnotator
+    from VocabularyRuler import create_vocabulary_ruler
+else:
+    # uses current package visibility
+    from .BaseAnnotator import BaseAnnotator
+    from .VocabularyRuler import create_vocabulary_ruler
 
 # TODO: formats and entity types as internal enums??
 
@@ -39,6 +51,7 @@ class VocabularyAnnotator(BaseAnnotator):
                  lemmatize=True,
                  pos=[],
                  default_label="OBJECT",
+                 default_language="en",
                  vocab=[],
                  patterns=[]) -> None:
 
@@ -52,7 +65,7 @@ class VocabularyAnnotator(BaseAnnotator):
             "lemmatize": lemmatize,
             "pos": pos,
             "default_label": default_label,
-            "default_language": language,
+            "default_language": default_language,
             "vocab": vocab})
 
     @staticmethod
@@ -148,22 +161,21 @@ if __name__ == "__main__":
     The earliest features, which accounted for the majority of the remains on site, relate to medieval agricultural activity focused within a large enclosure. There was little to suggest domestic occupation within the site: the pottery assemblage was modest and well abraded, whilst charred plant remains were sparse, and, as with some metallurgical residues, point to waste disposal rather than the locations of processing or consumption. A focus of occupation within the Rodley Manor site, on higher ground 160m to the north-west, seems likely, with the currently site having lain beyond this and providing agricultural facilities, most likely corrals and pens for livestock. Animal bone was absent, but the damp, low-lying ground would have been best suited to cattle. An assemblage of medieval coins recovered from the subsoil during a metal detector survey may represent a dispersed hoard.
     """
 
+    vocab = []
     vocab_dir = os.path.join(os.path.abspath(""), "rematch2/vocabularies")
-    # vocab_dir = "../rematch2/vocabularies"
-    # vocab_dir = (Path(__file__).parent / "rematch2/vocabularies").resolve()
-    file_path = os.path.join(vocab_dir, "vocab_en_AAT_ACTIVITIES.json")
-    with open(file_path, "r") as f:  # what if file doesn't exist?
-        vocab = json.load(f)      
+    file_path = os.path.join(vocab_dir, "vocab_en_AAT_ACTIVITIES_20231018.json")
+    with open(file_path, "r") as f:
+        vocab = json.load(f)
 
-    anno = VocabularyAnnotator(min_lemmatize_length=4,
-                               min_term_length=3,
-                               lemmatize=True,
-                               pos=["NOUN"],
-                               # "pos": ["VERB"],
-                               default_label="OBJECT",
-                               default_language="en",
-                               vocab=vocab)
-    #print(anno.pipe_names)
+    annotator = VocabularyAnnotator(min_lemmatize_length=4,
+                                    min_term_length=3,
+                                    lemmatize=True,
+                                    pos=["NOUN"],
+                                    # "pos": ["NOUN", "VERB"],
+                                    default_label="OBJECT",
+                                    default_language="en",
+                                    vocab=vocab)
 
-    output = anno.annotateText(input_text=txt1, format="dataframe")
+    # print(annotator.pipe_names)
+    output = annotator.annotateText(input_text=txt1, format="dataframe")
     print(output)

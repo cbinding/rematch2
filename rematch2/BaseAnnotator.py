@@ -7,8 +7,8 @@ Classes   : Annotator
 Version   : 1.0.0
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
-Summary   : Annotation Tool base class
-Imports   : os, pandas, spacy, rematch2
+Summary   : base class used for VocabularyAnnotator and TemporalAnnotator
+Imports   : os, pandas, spacy, argparse
 Example   : 
 License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
@@ -24,10 +24,9 @@ import spacy
 from spacy.tokens import Doc
 from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
-from rematch2 import components         # spaCy pipeline components
 
 
-# base class for VocabularyAnnotator and TemporalAnnotator
+# base class used for VocabularyAnnotator and TemporalAnnotator
 class BaseAnnotator():
     def __init__(self, language="en", patterns=[]) -> None:
         # start with predefined language-specific spaCy pipeline
@@ -86,15 +85,16 @@ class BaseAnnotator():
         doc = self.__annotate(cleaned)
 
         # convert the results to the required format
-        if (format == "html"):
+        clean_format = format.strip().lower()
+        if (clean_format == "html"):
             output = self._to_html(doc)
-        elif (format == "ttl"):
+        elif (clean_format == "ttl"):
             output = self.__to_ttl(doc)
-        elif (format == "json"):
+        elif (clean_format == "json"):
             output = self.__to_json(doc)
-        elif (format == "dataframe"):
+        elif (clean_format == "dataframe"):
             output = self.__to_dataframe(doc)
-        elif (format == "csv"):
+        elif (clean_format == "csv"):
             output = self.__to_csv(doc)
         else:
             output = doc  # spaCy doc for further processing
