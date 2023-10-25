@@ -52,7 +52,7 @@ class VocabularyAnnotator(BaseAnnotator):
                  pos=[],
                  default_label="OBJECT",
                  default_language="en",
-                 vocab=[],
+                 vocabulary=[],
                  patterns=[]) -> None:
 
         super().__init__(language=language, patterns=patterns)
@@ -66,7 +66,7 @@ class VocabularyAnnotator(BaseAnnotator):
             "pos": pos,
             "default_label": default_label,
             "default_language": default_language,
-            "vocab": vocab})
+            "vocabulary": vocabulary})
 
     @staticmethod
     def _load_vocab_from_json_file(file_path):
@@ -161,20 +161,19 @@ if __name__ == "__main__":
     The earliest features, which accounted for the majority of the remains on site, relate to medieval agricultural activity focused within a large enclosure. There was little to suggest domestic occupation within the site: the pottery assemblage was modest and well abraded, whilst charred plant remains were sparse, and, as with some metallurgical residues, point to waste disposal rather than the locations of processing or consumption. A focus of occupation within the Rodley Manor site, on higher ground 160m to the north-west, seems likely, with the currently site having lain beyond this and providing agricultural facilities, most likely corrals and pens for livestock. Animal bone was absent, but the damp, low-lying ground would have been best suited to cattle. An assemblage of medieval coins recovered from the subsoil during a metal detector survey may represent a dispersed hoard.
     """
 
-    vocab = []
+    vocabulary = []
     vocab_dir = os.path.join(os.path.abspath(""), "rematch2/vocabularies")
     file_path = os.path.join(vocab_dir, "vocab_en_AAT_ACTIVITIES_20231018.json")
     with open(file_path, "r") as f:
-        vocab = json.load(f)
+        vocabulary = json.load(f)
 
     annotator = VocabularyAnnotator(min_lemmatize_length=4,
                                     min_term_length=3,
                                     lemmatize=True,
                                     pos=["NOUN"],
-                                    # "pos": ["NOUN", "VERB"],
                                     default_label="OBJECT",
                                     default_language="en",
-                                    vocab=vocab)
+                                    vocabulary=vocabulary)
 
     # print(annotator.pipe_names)
     output = annotator.annotateText(input_text=txt1, format="dataframe")

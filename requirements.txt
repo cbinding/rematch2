@@ -10,7 +10,7 @@ sympy>=1.10.1
 ipywidgets>=7.7.0
 
 # additional
-spacy>=3.3.1  # for NER
+spacy>=3.7.2  # for NER
 #jmespath>=1.0.1  # for JSON search
 jsonpath-ng>=1.5.3 # for JSON search (used in PeriodoData.py)
 lxml>=4.9.1 # only used for processing French XML abstracts

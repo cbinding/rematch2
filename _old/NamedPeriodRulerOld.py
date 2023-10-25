@@ -19,7 +19,7 @@ import os
 import sys
 import spacy            # NLP library
 
-# from spacy.pipeline import EntityRuler
+from spacy.pipeline import EntityRuler
 from spacy.tokens import Doc
 from spacy.language import Language
 
@@ -32,38 +32,63 @@ else:
     from .PeriodoData import PeriodoData
     from .VocabularyRuler import VocabularyRuler
 
-
 @Language.factory(name="namedperiod_ruler", default_config={"periodo_authority_id": None})
-def create_namedperiod_ruler(nlp, name: str, periodo_authority_id: str):
-    # get terms from selected Perio.do authority as vocab
-    # get as new instance, don't refresh cached data
-    pd = PeriodoData(from_cache=True) #tmp...
+def create_namedperiod_ruler(nlp, name:str, periodo_authority_id: str):
+    ruler = NamedPeriodRuler(nlp, name, periodo_authority_id)
+    return ruler
 
-    # get periods for authority id
-    periods = pd.get_period_list(periodo_authority_id)
+# NamedPeriodRuler is a specialized EntityRuler
+class NamedPeriodRuler(EntityRuler):
 
-    # convert to vocabulary for use by VocabularyRuler
-    vocabulary = list(map(lambda item: {
-        "id": item.get("uri", ""),
-        "language": item.get("language", ""),
-        "label": "NAMEDPERIOD",
-        "term": item.get("label", "")
-    }, periods or []))
+    def __init__(self, nlp: Language, name: str, periodo_authority_id=None) -> None:
+        EntityRuler.__init__(
+            self,
+            nlp=nlp,
+            name=name,
+            phrase_matcher_attr="LOWER",
+            validate=True,
+            overwrite_ents=True,
+            ent_id_sep="||"
+        )
+        # add terms from selected Perio.do authority as patterns
+        pd = PeriodoData()  # new instance, don't refresh cached data
+        periodo_periods = pd.get_period_list(
+            periodo_authority_id)  # periods for authority id
+        periodo_patterns = NamedPeriodRuler._periods_to_patterns(
+            periodo_periods, nlp)  # convert to spaCy pattern format
+        self.add_patterns(periodo_patterns)
 
-    #print(vocabulary)
+    def __call__(self, doc: Doc) -> Doc:
+        EntityRuler.__call__(self, doc)
+        return doc
 
-    # create and return vocabulary ruler instance
-    return VocabularyRuler(
-        nlp=nlp,
-        name=name,
-        lemmatize=False,
-        pos=["ADJ"],
-        default_label="PERIOD",
-        default_language="en",
-        min_term_length=3,
-        min_lemmatize_length=4,
-        vocabulary=vocabulary
-    )
+    # lemmatize each word in phrase for better chance of free-text match
+    # using SAME nlp pipeline for patterns and terms being compared,
+    # rather than separate independent tokenisation..
+    @staticmethod
+    def _period_to_pattern(period, nlp):
+        # normalise whitespace and force lowercase
+        # (lemmatization won't work if capitalised)
+        clean = ' '.join(period.strip().lower().split())
+        doc = nlp(clean)
+
+        # lemmatize the words in the period
+        pat = [{"LEMMA": tok.lemma_} for tok in doc]
+        return pat
+
+    # Convert Periodo period records to list of spaCy patterns
+    # input: [{id, language, label}, {id, language, label}]
+    # output: [{id, language, label, pattern}, {id, language, label, pattern}]
+    @staticmethod
+    def _periods_to_patterns(data, nlp):
+        patterns = list(map(lambda item: {
+            "id": item.get("uri", ""),
+            "language": item.get("language", ""),
+            "label": "NAMEDPERIOD",
+            "pattern": NamedPeriodRuler._period_to_pattern(item.get("label", ""), nlp)
+            # "pattern": list(map(lambda word: {"LOWER": word.lower()}, item.get("label", "").split()))
+        }, data or []))
+        return patterns
 
 
 # test the NamedPeriodRuler class

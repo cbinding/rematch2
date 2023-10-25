@@ -30,8 +30,7 @@ ports:
 
 # Install necessary packages
 #image:
-    #file: .gitpod.dockerfile
-
+#file: .gitpod.dockerfile
 vscode:
     extensions:
         - ms-toolsai.jupyter   
@@ -39,3 +38,6 @@ vscode:
         - ms-toolsai.jupyter-renderers
         - ms-toolsai.jupyter-keymap
 
+
+        - ms-toolsai.vscode-jupyter-cell-tags
+        - ms-toolsai.vscode-jupyter-slideshow

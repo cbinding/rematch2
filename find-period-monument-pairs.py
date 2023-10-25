@@ -2,8 +2,8 @@
 # e.g. medieval furrow, iron age barrow etc.
 import spacy
 from spacy import displacy
-from rematch2 import components
-# import pprint as pp
+from rematch2 import NamedPeriodRuler
+from rematch2.VocabularyRulers import create_fish_monument_types_ruler
 
 
 def main(periodo_authority_id="", input_text=""):
@@ -14,7 +14,7 @@ def main(periodo_authority_id="", input_text=""):
     # add rematch2 component(s) to the end of the pipeline
     nlp.add_pipe("namedperiod_ruler", last=True, config={
         "periodo_authority_id": periodo_authority_id})
-    nlp.add_pipe("monument_ruler", last=True)
+    nlp.add_pipe("fish_monument_types_ruler", last=True)
     # nlp.add_pipe("archobject_ruler", last=True)
 
     # normalise white space before annotation
@@ -29,6 +29,10 @@ def main(periodo_authority_id="", input_text=""):
         # if (ent[0].ent_type_ == "NAMEDPERIOD" and ent[0].head.ent_type_ == "MONUMENT"):
         print(
             f"{ent.start} {ent.text} {ent[0].ent_type_} -> (head: {ent[0].head.i} {ent[0].head} {ent[0].head.ent_type_})")
+
+    for chunk in doc.noun_chunks:
+        print(chunk.text, chunk.root.text, chunk.root.dep_,
+            chunk.root.head.text)
 
    # for token in doc:
         # print(token.text, token.lemma_, token.pos_, token.tag_, token.dep_,

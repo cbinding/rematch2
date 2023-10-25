@@ -1,30 +1,36 @@
 """
 =============================================================================
-Package :   rematch2.components
-Module  :   VocabularyRuler.py
-Version :   20231010
+Package :   rematch2
+Module  :   VocabularyRulers.py
+Version :   20231025
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   ARIADNEplus
-Summary :   spaCy custom pipeline component (specialized EntityRuler)
-Imports :   EntityRuler, Language
-Example :   N/A - superclass for more specialized components    
+Project :   
+Summary :   spaCy custom pipeline component (specialized VocabularyRuler)
+Imports :   os, sys, spacy, EntityRuler, Doc, Language
+Example :   nlp.add_pipe("aat_objects_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
-History :   
-10/10/2023 CFB Added language factory function
+History :   25/10/2023 CFB Initially created script
 =============================================================================
 """
-import json
+# from . import PatternRuler
 import os
 import sys
-from pathlib import Path
-import spacy
-from spacy.pipeline import EntityRuler
-from spacy.tokens import Doc
-from spacy.language import Language
-from pprint import pprint
+import spacy            # NLP library
+import json
 from enum import Enum
+from pathlib import Path
 import pandas as pd
+
+# Language-specific pipelines
+from spacy.language import Language
+
+if __package__ is None or __package__ == '':
+    # uses current directory visibility
+    from VocabularyRuler import create_vocabulary_ruler
+else:
+    # uses current package visibility
+    from .VocabularyRuler import create_vocabulary_ruler
 
 
 class VocabularyEnum(Enum):
@@ -297,146 +303,41 @@ def create_fish_periods_ruler(nlp, name="fish_periods_ruler"):
         vocabulary=_get_vocabulary(VocabularyEnum.FISH_PERIODS)
     )
 
-@Language.factory("vocabulary_ruler", default_config={
-    "lemmatize": True,         # whether to lemmatize vocabulary terms
-    "pos": [],                  # POS to include in pattern
-    "min_term_length": 3,       # min term length to make a pattern for
-    "min_lemmatize_length": 4,  # min term length to lemmatize
-    "default_label": "UNKNOWN",  # label to tag identified terms
-    "default_language": "en",   # language of term
-    "vocabulary": []})               # vocabulary terms - expects [{"id": "123", "term": "xyz"}, {"id": "234", "term": "abc"}]
-def create_vocabulary_ruler(nlp,
-                            name: str,
-                            lemmatize: bool,
-                            pos,
-                            min_term_length: int,
-                            min_lemmatize_length: int,
-                            default_label: str,
-                            default_language: str,
-                            vocabulary):
 
-    return VocabularyRuler(nlp,
-                           name=name,
-                           lemmatize=lemmatize,
-                           pos=pos,
-                           min_term_length=min_term_length,
-                           min_lemmatize_length=min_lemmatize_length,
-                           default_label=default_label,
-                           default_language=default_language,
-                           vocabulary=vocabulary)
-
-
-class VocabularyRuler(EntityRuler):
-
-    def __init__(self,
-                 nlp: Language,
-                 name: str,
-                 lemmatize: bool,
-                 pos,
-                 min_term_length: int,
-                 min_lemmatize_length: int,
-                 default_label: str,
-                 default_language: str,
-                 vocabulary) -> None:
-
-        EntityRuler.__init__(
-            self,
-            nlp=nlp,
-            name=name,
-            phrase_matcher_attr="LOWER",
-            validate=False,
-            overwrite_ents=True,
-            ent_id_sep="||"
-        )
-
-        # add terms from vocabulary as generated patterns
-        # vocabulary: [{id, term}, {id, term}]
-        # patterns: [{id, label, language, term, pattern}, {id, label, language, term, pattern}]
-        patterns = []
-        for item in vocabulary:
-            # clean input values before using
-            clean_id = item.get("id", "").strip()
-            clean_label = item.get("label", default_label).strip()
-            clean_language = item.get("language", default_language).strip()
-            clean_term = item.get("term", "").strip()
-
-            # don't use if term length < min_term_length
-            if (len(clean_term) < min_term_length):
-                continue
-
-            # add cleaned values to new pattern object
-            pattern = VocabularyRuler._term_to_pattern(
-                nlp, clean_term, lemmatize, min_lemmatize_length, pos)
-
-            patterns.append({
-                "id": clean_id,
-                "label": clean_label,
-                "language": clean_language,
-                "term": clean_term,
-                "pattern":  pattern
-            })
-        # pprint(patterns)
-        self.add_patterns(patterns)
-
-    def __call__(self, doc: Doc) -> Doc:
-        EntityRuler.__call__(self, doc)
-        return doc
-
-    # (optionally) lemmatize each word in phrase for better chance of free-text match
-    # using SAME nlp pipeline for patterns and terms being compared,
-    @staticmethod
-    def _term_to_pattern(nlp, term="", lemmatize=False, min_lemmatize_length=4, pos=[]):
-        # normalise whitespace and force lowercase
-        # (whitespace could frustrate matching and
-        # lemmatization won't work if capitalised)
-        clean_term = ' '.join(term.strip().lower().split())
-        doc = nlp(clean_term)
-        # lem = ' '.join(tok.lemma_ for tok in doc)
-        pattern = []
-        phrase_length = len(doc)
-        term_length = len(clean_term)
-
-        for n, tok in enumerate(doc, 1):
-            pat = {}
-
-            # lemmatize term if required (and if term long enough)
-            # e.g. "skirting boards":
-            # { "LEMMA": "skirt" }, { "LEMMA": "board" } or
-            # { "LOWER": "skirt" }, { "LOWER": "board" }
-            if (lemmatize and term_length >= min_lemmatize_length):
-                pat["LEMMA"] = tok.lemma_
-            else:
-                pat["LOWER"] = tok.text
-
-            # add any required pos tags if passed in
-            # note POS only applied to LAST term if multi-word phrase
-            # e.g. { "LEMMA": "board", "POS": { "IN": ["NOUN"] }}
-            if (len(pos) > 0 and n == phrase_length):
-                pat["POS"] = { "IN": pos }
-            
-            pattern.append(pat)
-
-        # pat = [{"LEMMA": tok.lemma_} for tok in doc]
-        # e.g. {"LEMMA": "tools", "POS": "NOUN"}
-        return pattern
-
-
-# test the VocabularyRuler class
+# test the component
 if __name__ == "__main__":
-
-    # sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-    # from rematch2.components.spacypatterns import vocab_en_AAT_OBJECTS
-    # from ..spacypatterns import vocab_en_AAT_OBJECTS
 
     test_text = '''Aside from three residual flints, none closely datable, the earliest remains comprised a small assemblage of Roman pottery and ceramic building material, also residual and most likely derived from a Roman farmstead found immediately to the north within the Phase II excavation area. A single sherd of Anglo-Saxon grass-tempered pottery was also residual. The earliest features, which accounted for the majority of the remains on site, relate to medieval agricultural activity focused within a large enclosure. There was little to suggest domestic occupation within the site: the pottery assemblage was modest and well abraded, whilst charred plant remains were sparse, and, as with some metallurgical residues, point to waste disposal rather than the locations of processing or consumption. A focus of occupation within the Rodley Manor site, on higher ground 160m to the north-west, seems likely, with the currently site having lain beyond this and providing agricultural facilities, most likely corrals and pens for livestock. Animal bone was absent, but the damp, low-lying ground would have been best suited to cattle. An assemblage of medieval coins recovered from the subsoil during a metal detector survey may represent a dispersed hoard.'''
 
     nlp = spacy.load("en_core_web_sm", disable=['ner'])
     nlp.add_pipe("aat_activities_ruler", last=True)
-
+    #nlp.add_pipe("aat_agents_ruler", last=True)
+    #nlp.add_pipe("aat_associated_concepts_ruler", last=True)
+    #nlp.add_pipe("aat_materials_ruler", last=True)
+    #nlp.add_pipe("aat_objects_ruler", last=True)
+    #nlp.add_pipe("aat_physical_attributes_ruler", last=True)
+    #nlp.add_pipe("aat_styleperiods_ruler", last=True)
+    #nlp.add_pipe("fish_archobjects_ruler", last=True)
+    #nlp.add_pipe("fish_archsciences_ruler", last=True)
+    #nlp.add_pipe("fish_building_materials_ruler", last=True)
+    #nlp.add_pipe("fish_components_ruler", last=True)
+    #nlp.add_pipe("fish_event_types_ruler", last=True)
+    #nlp.add_pipe("fish_evidence_ruler", last=True)
+    #nlp.add_pipe("fish_maritime_craft_ruler", last=True)
+    #nlp.add_pipe("fish_monument_types_ruler", last=True)
+    #nlp.add_pipe("fish_periods_ruler", last=True)
     doc = nlp(test_text)
 
-    for ent in doc.ents:
-        print(ent.ent_id_, ent.text, ent.label_)
+    #for ent in doc.ents:
+        #print(ent.start_char, ent.end_char - 1, ent.ent_id_, ent.text, ent.label_)
 
-    # for tok in doc:
-        # print(tok.text, tok.pos_, tok.lemma_)
+    results = [{
+        "from": ent.start_char, 
+        "to": ent.end_char - 1, 
+        "id": ent.ent_id_, 
+        "text": ent.text, 
+        "type": ent.label_
+        } for ent in doc.ents]
+    # load data into a DataFrame object:
+    df = pd.DataFrame(results)
+    print(df)

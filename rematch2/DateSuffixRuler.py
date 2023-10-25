@@ -37,8 +37,6 @@ else:
     # uses current package visibility
     from .spacypatterns import *
 
-#from .PatternRuler import PatternRuler
-
 
 @Language.factory("datesuffix_ruler")
 def create_datesuffix_ruler(nlp, name="datesuffix_ruler", patterns=[]):

@@ -14,13 +14,9 @@
     - [century_ruler](#century_ruler)
     - [yearspan_ruler](#yearspan_ruler)
     - [namedperiod_ruler](#namedperiod_ruler)
-    - [temporal_annotator](#temporal_annotator)  
-  - [Usage](#component_usage)
-  - [Vocabulary-based components](#vocabulary_components)
-    - [archscience_ruler](#archscience_ruler)
-    - [material_ruler](#material_ruler)
-    - [monument_ruler](#monument_ruler)
-    - [vocabulary_annotator](#vocabulary_annotator)  
+    - [temporal_annotator](#temporal_annotator)
+  - [Temporal component usage](#component_usage)
+  - [vocabulary_annotator](#vocabulary_annotator)
 
 ## Introduction <a class="anchor" id="introduction"></a>
 
@@ -41,7 +37,7 @@ The languages (currently) supported by the `rematch2` pipeline components are:
 
 ## Patterns <a class="anchor" id="patterns"></a>
 
-The pipeline components are located in the _components_ directory. The components utilise spaCy _patterns_ located in the _patterns_ directory, these are python modules using the naming convention `patterns_{language}_{ENTITYTYPE}.py` e.g. `patterns_en_YEARSPAN.py`. For further details on the syntax of patterns see [spaCy rule-based matching](https://spacy.io/usage/rule-based-matching).
+The pipeline components utilise spaCy _patterns_ located in the _spacypatterns_ directory, these are python modules using the naming convention `patterns_{language}_{ENTITYTYPE}.py` e.g. `patterns_en_YEARSPAN.py`. For further details on the syntax of patterns see [spaCy rule-based matching](https://spacy.io/usage/rule-based-matching).
 
 ## Components <a class="anchor" id="components"></a>
 
@@ -95,7 +91,7 @@ Identifies typical expressions of years or spans of years in text. Utilises othe
 
 ### namedperiod_ruler <a class="anchor" id="namedperiod_ruler"></a>
 
-The namedperiod*ruler component utilises the [Perio.do](https://perio.do/) dataset. When configured with a valid Perio.do authority identifier e.g. `'p0xxt6t'` [Scottish Archaeological Periods & Ages (ScAPA)](http://n2t.net/ark:/99152/p0xxt6t), the component will match against the labels of periods contained within the specified authority. e.g. \_Chalcolithic*, _Early Bronze Age_, _Antonine_
+The namedperiod ruler component utilises the [Perio.do](https://perio.do/) dataset. When configured with a valid Perio.do authority identifier e.g. `'p0xxt6t'` [Scottish Archaeological Periods & Ages (ScAPA)](http://n2t.net/ark:/99152/p0xxt6t), the component will match against the labels of periods contained within the specified authority. e.g. _Chalcolithic, \_Early Bronze Age_, _Antonine_
 
 ## Usage <a class="anchor" id="component_usage"></a>
 
@@ -103,7 +99,7 @@ Example Python script to perform NER using a `rematch2` pipeline component:
 
 ```python
 import spacy
-import rematch2.components
+from rematch2 import create_century_ruler
 
 # use a predefined pipeline, disabling the default NER component
 nlp = spacy.load("en_core_web_sm", disable=["ner"])
@@ -122,8 +118,7 @@ for ent in doc.ents:
 
 ## Temporal Annotator <a class="anchor" id="temporal_annotator"></a>
 
-The temporal annotation components are pulled together by the TemporalAnnotator class, which facilitates annotation of text using specified combinations of the components.
-Example Python script to perform NER using the TemporalAnnotator class:
+The temporal annotation components described above are used by the TemporalAnnotator class, which facilitates annotation of text using specified combinations of the components. Example Python script to perform NER using the TemporalAnnotator class:
 
 ```python
 from rematch2.TemporalAnnotator import TemporalAnnotator
@@ -149,58 +144,9 @@ return results
 
 Other practical (interactive) examples of usage are found in the accompanying Python notebooks.
 
-### Vocabulary-based Components <a class="anchor" id="vocabulary_components"></a>
-
-In addition to temporal entities, `rematch2` also contains vocabulary-based pipeline components for matching on archaeological vocabulary terms. Note these pipeline components are based on monolingual (English) thesauri so they can only (currently) be used to identify English language terms:
-
-| Component Name | Entity Type | Description | Examples  |
-| -------------- | ----------- | ----------- | --------: |
-| [namedperiod_ruler](#namedperiod_ruler) | NAMEDPERIOD | Terms from Perio.do [Historic England Periods Authority File](http://n2t.net/ark:/99152/p0kh9ds) | _Medieval, Bronze Age_ |
-| [archobject_ruler](#archobject_ruler) | OBJECT | Terms from the [FISH Archaeological Objects Thesaurus](http://purl.org/heritagedata/schemes/mda_obj) | _axe, sherds, ring_ |
-| [archscience_ruler](#archscience_ruler) | ARCHSCIENCE | Terms from the [FISH Archaeological Sciences Thesaurus](http://purl.org/heritagedata/schemes/560) | _lead isotope dating, palynology_ |
-| [component_ruler](#component_ruler) | COMPONENT | Terms from the [HE Components Thesaurus](http://purl.org/heritagedata/schemes/eh_com) | _rafter, truss, flue_ |
-| [evidence_ruler](#evidence_ruler) | EVIDENCE | Terms from the [HE Evidence Thesaurus](http://purl.org/heritagedata/schemes/eh_evd) | _cropmark, artefact scatter_ |
-| [eventtype_ruler](#eventtype_ruler) | EVENTTYPE | Terms from the [FISH Event Types Thesaurus](http://purl.org/heritagedata/schemes/agl_et) | _core sampling, geophysical survey, evaluation_ |
-| [material_ruler](#material_ruler) | MATERIAL | Terms from the [FISH Building Materials Thesaurus](http://purl.org/heritagedata/schemes/eh_tbm) | _brass, quartz, pine, bone, leather_ |
-| [maritime_ruler](#maritime_ruler) | MARITIME | Terms from the [FISH Maritime Craft Types Thesaurus](http://purl.org/heritagedata/schemes/eh_tmc) | _galley, salvage tug, dredger_ |
-| [monument_ruler](#monument_ruler) | MONUMENT | Terms from the [FISH Thesaurus of Monument Types](http://purl.org/heritagedata/schemes/eh_tmt2) | _midden, weighbridge, kiln_ |
-
-### archobject_ruler <a class="anchor" id="archobject_ruler"></a>
-
-Identifies types of archaeological objects (i.e. finds) in text
-
-### archscience_ruler <a class="anchor" id="archscience_ruler"></a>
-
-Identifies archaeological science terms in free text
-
-### component_ruler <a class="anchor" id="component_ruler"></a>
-
-Identifies building component terms in free text
-
-### evidence_ruler <a class="anchor" id="evidence_ruler"></a>
-
-Identifies evidence terms in free text
-
-### eventtype_ruler <a class="anchor" id="eventtype_ruler"></a>
-
-Identifies archaeological event type terms in free text
-
-### material_ruler <a class="anchor" id="material_ruler"></a>
-
-Identifies building material terms in free text
-
-### maritime_ruler <a class="anchor" id="maritime_ruler"></a>
-
-Identifies maritime craft type terms in free text
-
-### monument_ruler <a class="anchor" id="monument_ruler"></a>
-
-Identifies monument type terms in free text
-
 ## Vocabulary Annotator <a class="anchor" id="vocabulary_annotator"></a>
 
-The vocabulary-based annotation components are pulled together by the VocabularyAnnotator class, which facilitates annotation of text using specified combinations of the components.
-Example Python script to perform NER using the VocabularyAnnotator class:
+The VocabularyAnnotator class facilitates annotation of text using a specified vocabulary of terms. Example Python script to perform NER using the VocabularyAnnotator class:
 
 ```python
 # simple example using VocabularyAnnotator on a passage of text
@@ -219,13 +165,22 @@ The earliest features, which accounted for the majority of the remains on site, 
 # 'doc' returns the spaCy document object for further processing
 output_format = "html"
 
-# entity types may be selectively included/excluded and reordered
-# e.g. ["OBJECT", "MONUMENT", "MATERIAL"]
-annotator = VocabularyAnnotator(entity_types=[
-    "MONUMENT", "EVIDENCE", "MATERIAL",
-    "MARITIME", "EVENTTYPE", "ARCHSCIENCE",
-    "OBJECT", "COMPONENT", "NAMEDPERIOD"
-])
+# load one of the example vocabularies
+vocabulary = []
+vocab_dir = os.path.join(os.path.abspath(""), "rematch2/vocabularies")
+file_path = os.path.join(vocab_dir, "vocab_en_FISH_ARCHOBJECTS_20210921.json")
+with open(file_path, "r") as f:  # what if file doesn't exist?
+    vocabulary = json.load(f)
+
+# create and configure the annotator
+annotator = VocabularyAnnotator(
+    min_lemmatize_length=4,     # minimum length of term to apply lemmatization
+    min_term_length=3,          # minimum length of vocabulary term to consider matching on
+    lemmatize=True,             # whether to apply lemmatisation to the vocabulary terms
+    pos=["NOUN"],               # optional part of speech for matching vocabulary terms
+    default_label="OBJECT",     # default label to apply to matches, if not included in the vocabulary
+    vocabulary=vocabulary       # imported vocabulary of terms/phrases to match on)
+)
 
 # process example text and display the results in required output format
 results = annotator.annotateText(input_text=test_text, format=output_format)

@@ -53,7 +53,7 @@ class BaseAnnotator():
         # append any additional patterns passed in (for local customisation)
         if (len(patterns or []) > 0):
             self._pipeline.add_pipe(
-                "pattern_ruler", last=True, config={"patterns": patterns})
+                "entity_ruler", last=True, config={"patterns": patterns})
 
     # process text using the modified pipeline
 
@@ -156,7 +156,7 @@ class BaseAnnotator():
     # convert results to HTML formatted string
 
     @staticmethod
-    def _to_html(doc, options={}):
+    def _to_html(doc, options={}) -> str:
         # options passed in specify colours for HTML output
         # generate and return HTML marked up text
         output = displacy.render(doc, style="ent", options=options)

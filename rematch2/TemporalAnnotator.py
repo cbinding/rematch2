@@ -119,7 +119,7 @@ if __name__ == "__main__":
     """
 
     # perio.do authority ID passed in (default is "p02chr4")
-    annotator = TemporalAnnotator("p02chr4")
+    annotator = TemporalAnnotator(periodo_authority_id="p02chr4")
     print(annotator.pipe_names)
 
     output = annotator.annotateText(input_text=txt1, format=outputFormat)
