@@ -1,11 +1,11 @@
 """
 =============================================================================
-Package :   rematch2.components
+Package :   rematch2
 Module  :   AAT_ActivityRuler.py
 Version :   20231004
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   ARIADNEplus
+Project :   
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
             to identify Terms from the Getty AAT Activities Facet in free text. 
             Entity type added will be "ACTIVITY"
@@ -23,7 +23,7 @@ from spacy.language import Language
 
 # from ..spacypatterns import patterns_en_AAT_ACTIVITIES
 from ..spacypatterns import vocab_en_AAT_ACTIVITIES
-#from .PatternRuler import PatternRuler
+# from .PatternRuler import PatternRuler
 from .VocabularyRuler import create_vocabulary_ruler
 
 # @Language.factory("aat_activity_ruler")
@@ -32,7 +32,7 @@ from .VocabularyRuler import create_vocabulary_ruler
 
 
 @Language.factory("aat_activity_ruler")
-def create_aat_activity_ruler(nlp, name="aat_activity_ruler"):    
+def create_aat_activity_ruler(nlp, name="aat_activity_ruler"):
     return create_vocabulary_ruler(nlp, name=name, label="ACTIVITY", language="en", vocab=vocab_en_AAT_ACTIVITIES)
 
 

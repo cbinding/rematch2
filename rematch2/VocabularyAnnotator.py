@@ -1,10 +1,10 @@
 """
 =============================================================================
-Project   : ARIADNEplus
 Package   : rematch2
 Module    : VocabularyAnnotator.py
 Classes   : VocabularyAnnotator
 Version   : 1.0.0
+Project   : 
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
 Summary   : Vocabulary Annotation Tool for archaeological texts
@@ -23,14 +23,15 @@ from os.path import exists
 import json
 import pandas as pd                     # for DataFrame output
 import spacy
+from collections.abc import MutableSequence
 from spacy.tokens import Doc
 from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
 # from rematch2 import components         # spaCy pipeline components
 # from rematch2 import BaseAnnotator
-#from components import BaseAnnotator
+# from components import BaseAnnotator
 
-#from .BaseAnnotator import BaseAnnotator
+# from .BaseAnnotator import BaseAnnotator
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from BaseAnnotator import BaseAnnotator
@@ -40,20 +41,21 @@ else:
     from .BaseAnnotator import BaseAnnotator
     from .VocabularyRuler import create_vocabulary_ruler
 
-# TODO: formats and entity types as internal enums??
+# TODO: formats and vocabularies as enums??
 
 
 class VocabularyAnnotator(BaseAnnotator):
-    def __init__(self,
-                 language="en",
-                 min_lemmatize_length=4,
-                 min_term_length=3,
-                 lemmatize=True,
-                 pos=[],
-                 default_label="OBJECT",
-                 default_language="en",
-                 vocabulary=[],
-                 patterns=[]) -> None:
+    def __init__(
+            self,
+            language: str = "en",
+            min_lemmatize_length: int = 4,
+            min_term_length: int = 3,
+            lemmatize: bool = True,
+            pos: MutableSequence = [],
+            default_label: str = "OBJECT",
+            default_language: str = "en",
+            vocabulary: MutableSequence = [],
+            patterns: MutableSequence = []) -> None:
 
         super().__init__(language=language, patterns=patterns)
 
@@ -163,17 +165,20 @@ if __name__ == "__main__":
 
     vocabulary = []
     vocab_dir = os.path.join(os.path.abspath(""), "rematch2/vocabularies")
-    file_path = os.path.join(vocab_dir, "vocab_en_AAT_ACTIVITIES_20231018.json")
+    file_path = os.path.join(
+        vocab_dir, "vocab_en_AAT_ACTIVITIES_20231018.json")
     with open(file_path, "r") as f:
         vocabulary = json.load(f)
 
-    annotator = VocabularyAnnotator(min_lemmatize_length=4,
-                                    min_term_length=3,
-                                    lemmatize=True,
-                                    pos=["NOUN"],
-                                    default_label="OBJECT",
-                                    default_language="en",
-                                    vocabulary=vocabulary)
+    annotator = VocabularyAnnotator(
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=["NOUN"],
+        default_label="OBJECT",
+        default_language="en",
+        vocabulary=vocabulary
+    )
 
     # print(annotator.pipe_names)
     output = annotator.annotateText(input_text=txt1, format="dataframe")

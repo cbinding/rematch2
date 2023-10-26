@@ -5,8 +5,8 @@ Module  :   patterns_cy_DATEPREFIX.py
 Version :   20221027
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   ARIADNEplus
-Summary :   spaCy patterns for use with pipeline            
+Project :   
+Summary :   spaCy patterns for use with EntityRuler pipeline components            
 Imports :   
 Example :           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt

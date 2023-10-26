@@ -1,10 +1,10 @@
 """
 =============================================================================
-Project   : ARIADNEplus
 Package   : rematch2
 Module    : TemporalAnnotator.py
 Classes   : TemporalAnnotator
 Version   : 1.0.0
+Project   : 
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
 Summary   : Temporal Annotation Tool (VAT) for archaeological texts
@@ -26,6 +26,7 @@ from spacy.tokens import Doc
 from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
 
+# this resolves the relative imports issue
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from BaseAnnotator import BaseAnnotator
@@ -40,17 +41,20 @@ else:
     from .NamedPeriodRuler import create_namedperiod_ruler
 
 # default Perio.do authority ("p0kh9ds") is Historic England periods list..
-
-
 class TemporalAnnotator(BaseAnnotator):
-    def __init__(self, language="en", periodo_authority_id="p0kh9ds", patterns=[]) -> None:
+    def __init__(
+        self, language="en", 
+        periodo_authority_id="p0kh9ds", 
+        patterns=[]) -> None:
+
+        # call the superclass initialisation function
         super().__init__(language=language, patterns=patterns)
 
-        # TODO: get cleaned unique entity types list
         self._pipeline.add_pipe("century_ruler", last=True)
         self._pipeline.add_pipe("yearspan_ruler", last=True)
         self._pipeline.add_pipe("namedperiod_ruler", last=True, config={
             "periodo_authority_id": periodo_authority_id})
+
 
     # convert results to HTML formatted string
     # override and call base method

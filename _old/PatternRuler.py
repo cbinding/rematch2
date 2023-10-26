@@ -5,7 +5,7 @@ Module  :   PatternRuler.py
 Version :   20220803
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   ARIADNEplus
+Project :   
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
 Imports :   os, sys, spacy, EntityRuler, Doc, Language
 Example :   N/A - only used as superclass for more specialized components    

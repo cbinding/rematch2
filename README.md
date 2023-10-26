@@ -15,8 +15,28 @@
     - [yearspan_ruler](#yearspan_ruler)
     - [namedperiod_ruler](#namedperiod_ruler)
     - [temporal_annotator](#temporal_annotator)
-  - [Temporal component usage](#component_usage)
-  - [vocabulary_annotator](#vocabulary_annotator)
+    - [Temporal component usage](#component_usage)
+  - [Vocabulary components](#vocabulary_components)
+    - [AAT vocabulary components](#aat_vocabulary_components)
+      - [aat_activities_ruler](#aat_activities_ruler)
+      - [aat_agents_ruler](#aat_agents_ruler)
+      - [aat_associated_concepts_ruler](#aat_associated_concepts_ruler)
+      - [aat_materials_ruler](#aat_materials_ruler)
+      - [aat_objects_ruler](#aat_objects_ruler)
+      - [aat_physical_attributes_ruler](#aat_physical_attributes_ruler)
+      - [aat_styleperiods_ruler](#aat_styleperiods_ruler)
+    - [FISH vocabulary components](#fish_vocabulary_components)
+      - [fish_archobjects_ruler](#fish_archobjects_ruler)
+      - [fish_archsciences_ruler](#fish_archsciences_ruler)
+      - [fish_building_materials_ruler](#fish_building_materials_ruler)
+      - [fish_components_ruler](#fish_components_ruler)
+      - [fish_event_types_ruler](#fish_event_types_ruler)
+      - [fish_evidence_ruler](#fish_evidence_ruler)
+      - [fish_maritime_craft_ruler](#fish_maritime_craft_ruler)
+      - [fish_monument_types_ruler](#fish_monument_types_ruler)
+      - [fish_periods_ruler](#fish_periods_ruler)
+    - [vocabulary_annotator](#vocabulary_annotator)
+    - [Vocabulary Annotator usage](#vocabulary_annotator_usage)
 
 ## Introduction <a class="anchor" id="introduction"></a>
 
@@ -144,9 +164,15 @@ return results
 
 Other practical (interactive) examples of usage are found in the accompanying Python notebooks.
 
-## Vocabulary Annotator <a class="anchor" id="vocabulary_annotator"></a>
+### Vocabulary Components <a class="anchor" id="vocabulary_components"></a>
 
-The VocabularyAnnotator class facilitates annotation of text using a specified vocabulary of terms. Example Python script to perform NER using the VocabularyAnnotator class:
+### Vocabulary Annotator <a class="anchor" id="vocabulary_annotator"></a>
+
+The VocabularyAnnotator class facilitates annotation of text using a specified vocabulary of terms.
+
+### Usage <a class="anchor" id="vocabulary_annotator_usage"></a>
+
+Example Python script to perform NER using the VocabularyAnnotator class:
 
 ```python
 # simple example using VocabularyAnnotator on a passage of text
@@ -185,6 +211,151 @@ annotator = VocabularyAnnotator(
 # process example text and display the results in required output format
 results = annotator.annotateText(input_text=test_text, format=output_format)
 return results
+```
+
+`rematch2` also implements specialised spaCy pipeline components to identify terms from the following pre-defined vocabularies in free text:
+
+| Component Name                                                  | Entity Type        | Description | Examples |
+| --------------------------------------------------------------- | ------------------ | ----------- | -------: |
+| [aat_activities_ruler](#aat_activities_ruler)                   | ACTIVITY           |             |          |
+| [aat_agents_ruler](#aat_agents_ruler)                           | AGENT              |             |          |
+| [aat_associated_concepts_ruler](#aat_associated_concepts_ruler) | ASSOCIATED_CONCEPT |             |          |
+| [aat_materials_ruler](#aat_materials_ruler)                     | MATERIAL           |             |          |
+| [aat_objects_ruler](#aat_objects_ruler)                         | OBJECT             |             |          |
+| [aat_physical_attributes_ruler](#aat_physical_attributes_ruler) | PHYSICAL_ATTRIBUTE |             |          |
+| [aat_styleperiods_ruler](#aat_styleperiods_ruler)               | STYLEPERIOD        |             |          |
+| [fish_archobjects_ruler](#fish_archobjects_ruler)               | OBJECT             |             |          |
+| [fish_archsciences_ruler](#fish_archsciences_ruler)             | ARCHSCIENCE        |             |          |
+| [fish_building_materials_ruler](#fish_building_materials_ruler) | MATERIAL           |             |          |
+| [fish_components_ruler](#fish_components_ruler)                 | OBJECT             |             |          |
+| [fish_event_types_ruler](#fish_event_types_ruler)               | EVENT              |             |          |
+| [fish_evidence_ruler](#fish_evidence_ruler)                     | ARCHSCIENCE        |             |          |
+| [fish_maritime_craft_ruler](#fish_maritime_craft_ruler)         | OBJECT             |             |          |
+| [fish_monument_types_ruler](#fish_monument_types_ruler)         | OBJECT             |             |          |
+| [fish_periods_ruler](#fish_periods_ruler)                       | PERIOD             |             |          |
+
+## Getty Art &amp; Architecture Thesaurus (AAT) vocabulary components <a class="anchor" id="aat_vocabulary_components"></a>
+
+Components to identify terms originating from the [Getty Art &amp; Architecture Thesaurus (AAT)](https://www.getty.edu/research/tools/vocabularies/aat/)
+
+### aat_activities_ruler <a class="anchor" id="aat_activities_ruler"></a>
+
+Identifies terms from the [AAT 'Activities' facet](http://vocab.getty.edu/aat/300264090)
+
+### aat_agents_ruler <a class="anchor" id="aat_agents_ruler"></a>
+
+Identifies terms from the [AAT 'Agents' facet](http://vocab.getty.edu/aat/300264089)
+
+### aat_associated_concepts_ruler <a class="anchor" id="aat_associated_concepts_ruler"></a>
+
+Identifies terms from the [AAT 'Associated Concepts' facet](http://vocab.getty.edu/aat/300264086)
+
+### aat_materials_ruler <a class="anchor" id="aat_materials_ruler"></a>
+
+Identifies terms from the [AAT 'Materials' facet](http://vocab.getty.edu/aat/300264091)
+
+### aat_objects_ruler <a class="anchor" id="aat_objects_ruler"></a>
+
+Identifies terms from the [AAT 'Objects' facet](http://vocab.getty.edu/aat/300264092)
+
+### aat_physical_attributes_ruler <a class="anchor" id="aat_physical_attributes_ruler"></a>
+
+Identifies terms from the [AAT 'Physical Attributes' facet](http://vocab.getty.edu/aat/300264087)
+
+### aat_styleperiods_ruler <a class="anchor" id="aat_styleperiods_ruler"></a>
+
+Identifies terms from the [AAT 'Styles &amp; Periods' facet](http://vocab.getty.edu/aat/300264088)
+
+## Forum on Information Standards in Heritage (FISH) vocabulary components <a class="anchor" id="fish_vocabulary_components"></a>
+
+Components to identify terms originating from [Forum on Information Standards in Heritage](https://www.heritage-standards.org.uk/) (FISH) vocabularies
+
+### fish_archobjects_ruler <a class="anchor" id="fish_archobjects_ruler"></a>
+
+Identifies terms from the [FISH 'Archaeological Objects' thesaurus](http://purl.org/heritagedata/schemes/mda_obj)
+
+### fish_archsciences_ruler <a class="anchor" id="fish_archsciences_ruler"></a>
+
+Identifies terms from the [FISH 'Archaeological Sciences' thesaurus](http://purl.org/heritagedata/schemes/560)
+
+### fish_building_materials_ruler <a class="anchor" id="fish_building-materials_ruler"></a>
+
+Identifies terms from the [FISH 'Building Materials' thesaurus](http://purl.org/heritagedata/schemes/eh_tbm)
+
+### fish_components_ruler <a class="anchor" id="fish_components_ruler"></a>
+
+Identifies terms from the [FISH 'Components' thesaurus](http://purl.org/heritagedata/schemes/eh_com)
+
+### fish_event_types_ruler <a class="anchor" id="fish_event_types_ruler"></a>
+
+Identifies terms from the [FISH 'Event Types' thesaurus](http://purl.org/heritagedata/schemes/agl_et)
+
+### fish_evidence_ruler <a class="anchor" id="fish_evidence_ruler"></a>
+
+Identifies terms from the [FISH 'Evidence' thesaurus](http://purl.org/heritagedata/schemes/eh_evd)
+
+### fish_maritime_craft_ruler <a class="anchor" id="fish_maritime_craft_ruler"></a>
+
+Identifies terms from the [FISH 'Maritime Craft Types' thesaurus](http://purl.org/heritagedata/schemes/eh_tmc)
+
+### fish_monument_types_ruler <a class="anchor" id="fish_monument_types_ruler"></a>
+
+Identifies terms from the [FISH 'Monument Types' thesaurus](http://purl.org/heritagedata/schemes/eh_tmt2)
+
+### fish_periods_ruler <a class="anchor" id="fish_periods_ruler"></a>
+
+Identifies terms from the [FISH 'Historic England Periods' thesaurus](http://purl.org/heritagedata/schemes/eh_period)
+
+## Usage <a class="anchor" id="vocabulary_component_usage"></a>
+
+Example Python script to perform NER using the vocabulary ruler components:
+
+```python
+# Using specialised VocabularyRuler pipeline components
+import spacy
+from spacy import displacy
+from rematch2.VocabularyRuler import *
+
+test_text = """
+This collection comprises site data (images, a report, a project database and GIS data) from an archaeological excavation undertaken by Cotswold Archaeology between January and February 2020 at Lydney B Phase III, Archers Walk, Lydney, Gloucestershire. An area of 0.6ha was excavated within this phase (Phase III) of a wider development area.
+Aside from three residual flints, none closely datable, the earliest remains comprised a small assemblage of Roman pottery and ceramic building material, also residual and most likely derived from a Roman farmstead found immediately to the north within the Phase II excavation area. A single sherd of Anglo-Saxon grass-tempered pottery was also residual.
+The earliest features, which accounted for the majority of the remains on site, relate to medieval agricultural activity focused within a large enclosure. There was little to suggest domestic occupation within the site: the pottery assemblage was modest and well abraded, whilst charred plant remains were sparse, and, as with some metallurgical residues, point to waste disposal rather than the locations of processing or consumption. A focus of occupation within the Rodley Manor site, on higher ground 160m to the north-west, seems likely, with the currently site having lain beyond this and providing agricultural facilities, most likely corrals and pens for livestock. Animal bone was absent, but the damp, low-lying ground would have been best suited to cattle. An assemblage of medieval coins recovered from the subsoil during a metal detector survey may represent a dispersed hoard.
+"""
+
+# create pipeline and add one or more custom pipeline components
+nlp = spacy.load("en_core_web_sm", disable=['ner'])
+# AAT vocabulary pipeline components
+nlp.add_pipe("aat_activities_ruler", last=True)
+# nlp.add_pipe("aat_agents_ruler", last=True)
+# nlp.add_pipe("aat_associated_concepts_ruler", last=True)
+# nlp.add_pipe("aat_materials_ruler", last=True)
+# nlp.add_pipe("aat_objects_ruler", last=True)
+# nlp.add_pipe("aat_physical_attributes_ruler", last=True)
+# nlp.add_pipe("aat_styleperiods_ruler", last=True)
+# FISH vocabulary pipeline components
+# nlp.add_pipe("fish_archobjects_ruler", last=True)
+# nlp.add_pipe("fish_archsciences_ruler", last=True)
+# nlp.add_pipe("fish_building_materials_ruler", last=True)
+# nlp.add_pipe("fish_components_ruler", last=True)
+# nlp.add_pipe("fish_event_types_ruler", last=True)
+# nlp.add_pipe("fish_evidence_ruler", last=True)
+# nlp.add_pipe("fish_maritime_craft_ruler", last=True)
+nlp.add_pipe("fish_monument_types_ruler", last=True)
+# nlp.add_pipe("fish_periods_ruler", last=True)
+
+doc = nlp(test_text)
+
+results = [{
+  "from": ent.start_char,
+  "to": ent.end_char - 1,
+  "id": ent.ent_id_,
+  "text": ent.text,
+  "type": ent.label_
+} for ent in doc.ents]
+
+# load results into a DataFrame object:
+df = pd.DataFrame(results)
+print(df)
 ```
 
 Other practical (interactive) examples of usage are found in the accompanying Python notebooks.

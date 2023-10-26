@@ -1,11 +1,11 @@
 """
 =============================================================================
-Package :   rematch2.components
+Package :   rematch2
 Module  :   AAT_StylePeriodRuler.py
 Version :   20231004
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   ARIADNEplus
+Project :   
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
             to identify Terms from the Getty AAT StylePeriods Facet in free text. 
             Entity type added will be "STYLEPERIOD"
@@ -22,13 +22,14 @@ import spacy            # NLP library
 from spacy.language import Language
 
 from ..spacypatterns import patterns_en_AAT_STYLEPERIODS
-#from .PatternRuler import PatternRuler
+# from .PatternRuler import PatternRuler
 from .VocabularyRuler import create_vocabulary_ruler
 
 
 @Language.factory("aat_styleperiod_ruler")
 def create_aat_styleperiod_ruler(nlp, name="aat_styleperiod_ruler"):
     return create_vocabulary_ruler(nlp, name=name, label="STYLEPERIOD", language="en", vocab=vocab_en_AAT_STYLEPERIODS)
+
 
 # test the AAT_StylePeriodRuler class
 if __name__ == "__main__":

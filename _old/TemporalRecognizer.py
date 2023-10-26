@@ -5,7 +5,7 @@ Module  : TemporalRecognizer.py
 Version : 20220427
 Creator : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact : ceri.binding@southwales.ac.uk
-Project : ARIADNEplus
+Project : 
 Summary : TemporalRecognizer class
 Imports : json, spacy, os, fnmatch, argparse
 Example : tr = TemporalRecognizer("en");

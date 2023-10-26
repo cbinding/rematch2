@@ -1,11 +1,11 @@
 """
 =============================================================================
-Package :   rematch2.components
+Package :   rematch2
 Module  :   FISH_ArchObjectRuler.py
 Version :   20221027
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   ARIADNEplus
+Project :   
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
             to identify Terms from the MDA Archaeological Objects Thesaurus 
             and FISH Components thesaurus in free text. 
@@ -25,6 +25,7 @@ from spacy.language import Language
 from spacy.pipeline import EntityRuler
 
 from ..spacypatterns import patterns_en_FISH_ARCHOBJECT
+
 
 @Language.factory("fish_archobject_ruler")
 def create_fish_archobject_ruler(nlp, name="fish_archobject_ruler", patterns=patterns_en_FISH_ARCHOBJECT):

@@ -1,11 +1,11 @@
 """
 =============================================================================
-Package :   rematch2.components
+Package :   rematch2
 Module  :   AAT_AgentRuler.py
 Version :   20231004
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   ARIADNEplus
+Project :   
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
             to identify Terms from the Getty AAT Agents Facet in free text. 
             Entity type added will be "AGENT"
@@ -22,7 +22,7 @@ import spacy            # NLP library
 from spacy.language import Language
 
 from ..spacypatterns import vocab_en_AAT_AGENTS
-#from .PatternRuler import PatternRuler
+# from .PatternRuler import PatternRuler
 from .VocabularyRuler import create_vocabulary_ruler
 
 

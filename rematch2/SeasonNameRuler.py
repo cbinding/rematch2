@@ -1,11 +1,11 @@
 """
 =============================================================================
-Package :   rematch2.components
+Package :   rematch2
 Module  :   SeasonNameRuler.py
 Version :   20220803
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   ARIADNEplus
+Project :   
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
             Language-sensitive component to identify season names
             in free text. Entity type added will be "SEASONNAME"
@@ -31,7 +31,7 @@ from spacy.lang.nl import Dutch
 from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 
-#import rematch2.spacypatterns
+# import rematch2.spacypatterns
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility

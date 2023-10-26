@@ -1,10 +1,10 @@
 """
 =============================================================================
-Project   : ARIADNEplus
 Package   : rematch2
 Module    : FishVocabularyAnnotator.py
 Classes   : FishVocabularyAnnotator
 Version   : 1.0.0
+Project   : 
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
 Summary   : Vocabulary Annotation Tool (VAT) for archaeological texts

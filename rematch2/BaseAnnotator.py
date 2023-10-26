@@ -1,10 +1,10 @@
 """
 =============================================================================
-Project   : ARIADNEplus
 Package   : rematch2
 Module    : BaseAnnotator.py
 Classes   : Annotator
 Version   : 1.0.0
+Project   : 
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
 Summary   : base class used for VocabularyAnnotator and TemporalAnnotator
@@ -114,11 +114,17 @@ class BaseAnnotator():
         return output
 
     # convert results to pandas.DataFrame object
-
     @staticmethod
     def __to_dataframe(doc) -> pd.DataFrame:
-        data = [[ent.ent_id_, ent.text, ent.label_] for ent in doc.ents]
-        df = pd.DataFrame(data, columns=["id", "text", "type"])
+        data = [{
+            "from": ent.start_char,
+            "to": ent.end_char - 1,
+            "id": ent.ent_id_,
+            "text": ent.text,
+            "type": ent.label_
+        } for ent in doc.ents]
+
+        df = pd.DataFrame(data)
         return df
 
     # convert results to CSV formatted string,
@@ -157,7 +163,7 @@ class BaseAnnotator():
 
     @staticmethod
     def _to_html(doc, options={}) -> str:
-        # options passed in specify colours for HTML output
         # generate and return HTML marked up text
+        # options passed in to specify colours for HTML output
         output = displacy.render(doc, style="ent", options=options)
         return output

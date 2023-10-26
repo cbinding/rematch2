@@ -1,11 +1,11 @@
 """
 =============================================================================
-Package :   rematch2.components
+Package :   rematch2
 Module  :   AAT_MaterialRuler.py
 Version :   20231004
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   ARIADNEplus
+Project :   
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
             to identify Terms from the Getty AAT Materials Facet in free text. 
             Entity type added will be "MATERIAL"
@@ -22,13 +22,14 @@ import spacy            # NLP library
 from spacy.language import Language
 
 from ..spacypatterns import vocab_en_AAT_MATERIALS
-#from .PatternRuler import PatternRuler
+# from .PatternRuler import PatternRuler
 from .VocabularyRuler import create_vocabulary_ruler
 
 
 @Language.factory("aat_material_ruler")
 def create_aat_material_ruler(nlp, name="aat_material_ruler"):
     return create_vocabulary_ruler(nlp, name=name, label="MATERIAL", language="en", vocab=vocab_en_AAT_MATERIALS)
+
 
 # test the AAT_MaterialRuler class
 if __name__ == "__main__":

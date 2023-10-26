@@ -1,11 +1,11 @@
 """
 =============================================================================
-Package   : rematch2.components
+Package   : rematch2
 Module    : TokenPatterns.py
 Version   : 0.0.1
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
-Project   : ARIADNEplus
+Project   : 
 Summary   : TokenPatterns class
 Imports   : json, os, fnmatch
 Example   : tp = TokenPatterns();
@@ -19,8 +19,8 @@ History
 import json
 import os
 import fnmatch
-#from os.path import exists
-#from urllib.request import urlopen
+# from os.path import exists
+# from urllib.request import urlopen
 
 
 class TokenPatterns:
@@ -34,7 +34,7 @@ class TokenPatterns:
         # load all pre-defined token patterns from specified directory
         self._patterns = TokenPatterns.__load_json_from_directory(
             PATTERNS_PATH)
-        #self._patterns = [pattern for pattern in patterns if (pattern.get("language") or "").lower() == self._language]
+        # self._patterns = [pattern for pattern in patterns if (pattern.get("language") or "").lower() == self._language]
 
     @staticmethod
     def __load_json_from_directory(directory_name):

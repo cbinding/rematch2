@@ -1,11 +1,11 @@
 """
 =============================================================================
-Package :   rematch2.components
+Package :   rematch2
 Module  :   DatePrefixRuler.py
 Version :   20220803
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   ARIADNEplus
+Project :   
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
 Imports :   os, sys, spacy, EntityRuler, Doc, Language
 Example :   nlp.add_pipe("material_ruler", last=True)           
@@ -38,6 +38,7 @@ else:
     # uses current package visibility
     from .spacypatterns import *
 
+
 @Language.factory("dateprefix_ruler")
 def create_dateprefix_ruler(nlp, name="dateprefix_ruler", patterns=[]):
     return EntityRuler(
@@ -49,6 +50,7 @@ def create_dateprefix_ruler(nlp, name="dateprefix_ruler", patterns=[]):
         ent_id_sep="||",
         patterns=patterns
     )
+
 
 @German.factory("dateprefix_ruler")
 def create_dateprefix_ruler_de(nlp, name="dateprefix_ruler_de"):

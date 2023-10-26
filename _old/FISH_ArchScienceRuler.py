@@ -1,11 +1,11 @@
 """
 =============================================================================
-Package :   rematch2.components
+Package :   rematch2
 Module  :   FISH_ArchScienceRuler.py
 Version :   20220803
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   ARIADNEplus
+Project :   
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
             to identify Terms from the FISH Archaeological Sciences Thesaurus 
             in free text. Entity type added will be "ARCHSCIENCE"
@@ -24,7 +24,7 @@ from ..spacypatterns import patterns_en_FISH_ARCHSCIENCE
 
 from spacy.pipeline import EntityRuler
 
-#module_path = os.path.abspath(os.path.join('..', 'src'))
+# module_path = os.path.abspath(os.path.join('..', 'src'))
 # if module_path not in sys.path:
 # sys.path.append(module_path)
 

@@ -1,6 +1,6 @@
 """
 =============================================================================
-Package :   rematch2.components
+Package :   rematch2
 Module  :   NamedPeriodRuler.py
 Version :   20220803
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
@@ -32,12 +32,15 @@ else:
     from .PeriodoData import PeriodoData
     from .VocabularyRuler import VocabularyRuler
 
+
 @Language.factory(name="namedperiod_ruler", default_config={"periodo_authority_id": None})
-def create_namedperiod_ruler(nlp, name:str, periodo_authority_id: str):
+def create_namedperiod_ruler(nlp, name: str, periodo_authority_id: str):
     ruler = NamedPeriodRuler(nlp, name, periodo_authority_id)
     return ruler
 
 # NamedPeriodRuler is a specialized EntityRuler
+
+
 class NamedPeriodRuler(EntityRuler):
 
     def __init__(self, nlp: Language, name: str, periodo_authority_id=None) -> None:

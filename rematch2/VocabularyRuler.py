@@ -1,11 +1,11 @@
 """
 =============================================================================
-Package :   rematch2.components
+Package :   rematch2
 Module  :   VocabularyRuler.py
 Version :   20231010
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   ARIADNEplus
+Project :   
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
 Imports :   EntityRuler, Language
 Example :   N/A - superclass for more specialized components    
@@ -18,35 +18,24 @@ import json
 import os
 import sys
 from pathlib import Path
+from collections.abc import MutableSequence
 import spacy
 from spacy.pipeline import EntityRuler
 from spacy.tokens import Doc
 from spacy.language import Language
 from pprint import pprint
-from enum import Enum
+
 import pandas as pd
 
-
-class VocabularyEnum(Enum):
-    AAT_ACTIVITIES = "vocab_en_AAT_ACTIVITIES_20231018.json"
-    AAT_AGENTS = "vocab_en_AAT_AGENTS_20231018.json"
-    AAT_ASSOCIATED_CONCEPTS = "vocab_en_AAT_ASSOCIATED_CONCEPTS_20231018.json"
-    AAT_MATERIALS = "vocab_en_AAT_MATERIALS_20231018.json"
-    AAT_OBJECTS = "vocab_en_AAT_OBJECTS_20231018.json"
-    AAT_PHYSICAL_ATTRIBUTES = "vocab_en_AAT_PHYSICAL_ATTRIBUTES_20231018.json"
-    AAT_STYLEPERIODS = "vocab_en_AAT_STYLEPERIODS_20231018.json"
-    FISH_ARCHOBJECTS = "vocab_en_FISH_ARCHOBJECTS_20210921.json"
-    FISH_ARCHSCIENCES = "vocab_en_FISH_ARCHSCIENCES_20210921.json"
-    FISH_BUILDING_MATERIALS = "vocab_en_FISH_BUILDING_MATERIALS_20210921.json"
-    FISH_COMPONENTS = "vocab_en_FISH_COMPONENTS_20210921.json"
-    FISH_EVENT_TYPES = "vocab_en_FISH_EVENT_TYPES_20210921.json"
-    FISH_EVIDENCE = "vocab_en_FISH_EVIDENCE_20210921.json"
-    FISH_MARITIME_CRAFT = "vocab_en_FISH_MARITIME_CRAFT_20221104.json"
-    FISH_MONUMENT_TYPES = "vocab_en_FISH_MONUMENT_TYPES_20210921.json"
-    FISH_PERIODS = "vocab_en_FISH_PERIODS_20211011.json"
+if __package__ is None or __package__ == '':
+    # uses current directory visibility
+    from VocabularyEnum import VocabularyEnum   
+else:
+    # uses current package visibility
+    from .VocabularyEnum import VocabularyEnum
 
 
-def _get_vocabulary(vocab: VocabularyEnum = VocabularyEnum.AAT_OBJECTS):
+def _get_vocabulary_from_enum(vocab: VocabularyEnum = VocabularyEnum.AAT_OBJECTS):
 
     base_path = (Path(__file__).parent / "vocabularies").resolve()
     file_path = os.path.join(base_path, vocab.value)
@@ -58,286 +47,20 @@ def _get_vocabulary(vocab: VocabularyEnum = VocabularyEnum.AAT_OBJECTS):
     return vocabulary
 
 
-@Language.factory("aat_activities_ruler")
-def create_aatactivities_ruler(nlp, name="aat_activities_ruler"):
-    return create_vocabulary_ruler(
-        nlp=nlp,
-        name=name,
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=["VERB"],
-        default_label="ACTIVITY",
-        default_language="en",
-        vocabulary=_get_vocabulary(VocabularyEnum.AAT_ACTIVITIES)
-    )
-
-
-@Language.factory("aat_agents_ruler")
-def create_aat_agents_ruler(nlp, name="aat_agents_ruler"):
-    return create_vocabulary_ruler(
-        nlp=nlp,
-        name=name,
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=["NOUN"],
-        default_label="AGENT",
-        default_language="en",
-        vocabulary=_get_vocabulary(VocabularyEnum.AAT_AGENTS)
-    )
-
-
-@Language.factory("aat_associated_concepts_ruler")
-def create_aat_associated_concepts_ruler(nlp, name="aat_associated_concepts_ruler"):
-    return create_vocabulary_ruler(
-        nlp=nlp,
-        name=name,
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=[],
-        default_label="ASSOCIATED_CONCEPT",
-        default_language="en",
-        vocabulary=_get_vocabulary(VocabularyEnum.AAT_ASSOCIATED_CONCEPTS)
-    )
-
-
-@Language.factory("aat_materials_ruler")
-def create_aat_materials_ruler(nlp, name="aat_materials_ruler"):
-    return create_vocabulary_ruler(
-        nlp=nlp,
-        name=name,
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=[],
-        default_label="MATERIAL",
-        default_language="en",
-        vocabulary=_get_vocabulary(VocabularyEnum.AAT_MATERIALS)
-    )
-
-
-@Language.factory("aat_objects_ruler")
-def create_aat_objects_ruler(nlp, name="aat_objects_ruler"):
-    return create_vocabulary_ruler(
-        nlp=nlp,
-        name=name,
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=["NOUN"],
-        default_label="OBJECT",
-        default_language="en",
-        vocabulary=_get_vocabulary(VocabularyEnum.AAT_OBJECTS)
-    )
-
-
-@Language.factory("aat_physical_attributes_ruler")
-def create_aat_physical_attributes_ruler(nlp, name="aat_physical_attributes_ruler"):
-    return create_vocabulary_ruler(
-        nlp=nlp,
-        name=name,
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=[],
-        default_label="PHYSICAL_ATTRIBUTE",
-        default_language="en",
-        vocabulary=_get_vocabulary(VocabularyEnum.AAT_PHYSICAL_ATTRIBUTES)
-    )
-
-
-@Language.factory("aat_styleperiods_ruler")
-def create_aat_styleperiods_ruler(nlp, name="aat_styleperiods_ruler"):
-    return create_vocabulary_ruler(
-        nlp=nlp,
-        name=name,
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=[],
-        default_label="STYLEPERIOD",
-        default_language="en",
-        vocabulary=_get_vocabulary(VocabularyEnum.AAT_STYLEPERIODS)
-    )
-
-
-@Language.factory("fish_archobjects_ruler")
-def create_fish_archobjects_ruler(nlp, name="fish_archobjects_ruler"):
-    return create_vocabulary_ruler(
-        nlp=nlp,
-        name=name,
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=["NOUN"],
-        default_label="OBJECT",
-        default_language="en",
-        vocabulary=_get_vocabulary(VocabularyEnum.FISH_ARCHOBJECTS)
-    )
-
-
-@Language.factory("fish_archsciences_ruler")
-def create_fish_archsciences_ruler(nlp, name="fish_archsciences_ruler"):
-    return create_vocabulary_ruler(
-        nlp=nlp,
-        name=name,
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=[],
-        default_label="ARCHSCIENCE",
-        default_language="en",
-        vocabulary=_get_vocabulary(VocabularyEnum.FISH_ARCHSCIENCES)
-    )
-
-
-@Language.factory("fish_building_materials_ruler")
-def create_fish_building_materials_ruler(nlp, name="fish_building_materials_ruler"):
-    return create_vocabulary_ruler(
-        nlp=nlp,
-        name=name,
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=[],
-        default_label="MATERIAL",
-        default_language="en",
-        vocabulary=_get_vocabulary(VocabularyEnum.FISH_BUILDING_MATERIALS)
-    )
-
-
-@Language.factory("fish_components_ruler")
-def create_fish_components_ruler(nlp, name="fish_components_ruler"):
-    return create_vocabulary_ruler(
-        nlp=nlp,
-        name=name,
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=["NOUN"],
-        default_label="OBJECT",
-        default_language="en",
-        vocabulary=_get_vocabulary(VocabularyEnum.FISH_COMPONENTS)
-    )
-
-
-@Language.factory("fish_event_types_ruler")
-def create_fish_event_types_ruler(nlp, name="fish_event_types_ruler"):
-    return create_vocabulary_ruler(
-        nlp=nlp,
-        name=name,
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=[],
-        default_label="EVENT",
-        default_language="en",
-        vocabulary=_get_vocabulary(VocabularyEnum.FISH_EVENT_TYPES)
-    )
-
-
-@Language.factory("fish_evidence_ruler")
-def create_fish_evidence_ruler(nlp, name="fish_evidence_ruler"):
-    return create_vocabulary_ruler(
-        nlp=nlp,
-        name=name,
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=[],
-        default_label="EVIDENCE",
-        default_language="en",
-        vocabulary=_get_vocabulary(VocabularyEnum.FISH_EVIDENCE)
-    )
-
-
-@Language.factory("fish_maritime_craft_ruler")
-def create_fish_maritime_craft_ruler(nlp, name="fish_maritime_craft_ruler"):
-    return create_vocabulary_ruler(
-        nlp=nlp,
-        name=name,
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=["NOUN"],
-        default_label="OBJECT",
-        default_language="en",
-        vocabulary=_get_vocabulary(VocabularyEnum.FISH_MARITIME_CRAFT)
-    )
-
-
-@Language.factory("fish_monument_types_ruler")
-def create_fish_monument_types_ruler(nlp, name="fish_monument_types_ruler"):
-    return create_vocabulary_ruler(
-        nlp=nlp,
-        name=name,
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=["NOUN"],
-        default_label="OBJECT",
-        default_language="en",
-        vocabulary=_get_vocabulary(VocabularyEnum.FISH_MONUMENT_TYPES)
-    )
-
-
-@Language.factory("fish_periods_ruler")
-def create_fish_periods_ruler(nlp, name="fish_periods_ruler"):
-    return create_vocabulary_ruler(
-        nlp=nlp,
-        name=name,
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=[],
-        default_label="NAMEDPERIOD",
-        default_language="en",
-        vocabulary=_get_vocabulary(VocabularyEnum.FISH_PERIODS)
-    )
-
-@Language.factory("vocabulary_ruler", default_config={
-    "lemmatize": True,         # whether to lemmatize vocabulary terms
-    "pos": [],                  # POS to include in pattern
-    "min_term_length": 3,       # min term length to make a pattern for
-    "min_lemmatize_length": 4,  # min term length to lemmatize
-    "default_label": "UNKNOWN",  # label to tag identified terms
-    "default_language": "en",   # language of term
-    "vocabulary": []})               # vocabulary terms - expects [{"id": "123", "term": "xyz"}, {"id": "234", "term": "abc"}]
-def create_vocabulary_ruler(nlp,
-                            name: str,
-                            lemmatize: bool,
-                            pos,
-                            min_term_length: int,
-                            min_lemmatize_length: int,
-                            default_label: str,
-                            default_language: str,
-                            vocabulary):
-
-    return VocabularyRuler(nlp,
-                           name=name,
-                           lemmatize=lemmatize,
-                           pos=pos,
-                           min_term_length=min_term_length,
-                           min_lemmatize_length=min_lemmatize_length,
-                           default_label=default_label,
-                           default_language=default_language,
-                           vocabulary=vocabulary)
-
-
 class VocabularyRuler(EntityRuler):
 
-    def __init__(self,
-                 nlp: Language,
-                 name: str,
-                 lemmatize: bool,
-                 pos,
-                 min_term_length: int,
-                 min_lemmatize_length: int,
-                 default_label: str,
-                 default_language: str,
-                 vocabulary) -> None:
+    def __init__(
+        self,
+        nlp: Language,
+        name: str,
+        lemmatize: bool,
+        pos: MutableSequence,
+        min_term_length: int,
+        min_lemmatize_length: int,
+        default_label: str,
+        default_language: str,
+        vocabulary: MutableSequence
+    ) -> None:
 
         EntityRuler.__init__(
             self,
@@ -348,7 +71,18 @@ class VocabularyRuler(EntityRuler):
             overwrite_ents=True,
             ent_id_sep="||"
         )
-
+        '''
+        # is this the same as saying:
+        super().__init__(
+            self,
+            nlp=nlp,
+            name=name,
+            phrase_matcher_attr="LOWER",
+            validate=False,
+            overwrite_ents=True,
+            ent_id_sep="||"
+        )'''
+        
         # add terms from vocabulary as generated patterns
         # vocabulary: [{id, term}, {id, term}]
         # patterns: [{id, label, language, term, pattern}, {id, label, language, term, pattern}]
@@ -360,14 +94,15 @@ class VocabularyRuler(EntityRuler):
             clean_language = item.get("language", default_language).strip()
             clean_term = item.get("term", "").strip()
 
-            # don't use if term length < min_term_length
+            # don't use if clean term length < min_term_length
             if (len(clean_term) < min_term_length):
                 continue
 
-            # add cleaned values to new pattern object
+            # create new pattern object based on clean term
             pattern = VocabularyRuler._term_to_pattern(
                 nlp, clean_term, lemmatize, min_lemmatize_length, pos)
 
+            # add new pattern to list of patterns
             patterns.append({
                 "id": clean_id,
                 "label": clean_label,
@@ -375,7 +110,8 @@ class VocabularyRuler(EntityRuler):
                 "term": clean_term,
                 "pattern":  pattern
             })
-        # pprint(patterns)
+
+        # add the new patterns to the underlying EntityRuler
         self.add_patterns(patterns)
 
     def __call__(self, doc: Doc) -> Doc:
@@ -383,7 +119,8 @@ class VocabularyRuler(EntityRuler):
         return doc
 
     # (optionally) lemmatize each word in phrase for better chance of free-text match
-    # using SAME nlp pipeline for patterns and terms being compared,
+    # using SAME nlp pipeline for terms being compared and document text being analysed
+
     @staticmethod
     def _term_to_pattern(nlp, term="", lemmatize=False, min_lemmatize_length=4, pos=[]):
         # normalise whitespace and force lowercase
@@ -396,6 +133,7 @@ class VocabularyRuler(EntityRuler):
         phrase_length = len(doc)
         term_length = len(clean_term)
 
+        # for each term in the phrase
         for n, tok in enumerate(doc, 1):
             pat = {}
 
@@ -408,35 +146,341 @@ class VocabularyRuler(EntityRuler):
             else:
                 pat["LOWER"] = tok.text
 
-            # add any required pos tags if passed in
+            # add pos tags if passed in
             # note POS only applied to LAST term if multi-word phrase
             # e.g. { "LEMMA": "board", "POS": { "IN": ["NOUN"] }}
             if (len(pos) > 0 and n == phrase_length):
-                pat["POS"] = { "IN": pos }
-            
+                pat["POS"] = {"IN": pos}
+
             pattern.append(pat)
 
-        # pat = [{"LEMMA": tok.lemma_} for tok in doc]
-        # e.g. {"LEMMA": "tools", "POS": "NOUN"}
         return pattern
+
+
+@Language.factory("aat_activities_ruler")
+def create_aat_activities_ruler(nlp: Language, name: str = "aat_activities_ruler") -> VocabularyRuler:
+    return create_vocabulary_ruler(
+        nlp=nlp,
+        name=name,
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=["VERB"],
+        default_label="ACTIVITY",
+        default_language="en",
+        vocabulary=_get_vocabulary_from_enum(VocabularyEnum.AAT_ACTIVITIES)
+    )
+
+
+@Language.factory("aat_agents_ruler")
+def create_aat_agents_ruler(nlp: Language, name: str = "aat_agents_ruler") -> VocabularyRuler:
+    return create_vocabulary_ruler(
+        nlp=nlp,
+        name=name,
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=["NOUN"],
+        default_label="AGENT",
+        default_language="en",
+        vocabulary=_get_vocabulary_from_enum(VocabularyEnum.AAT_AGENTS)
+    )
+
+
+@Language.factory("aat_associated_concepts_ruler")
+def create_aat_associated_concepts_ruler(nlp: Language, name: str = "aat_associated_concepts_ruler") -> VocabularyRuler:
+    return create_vocabulary_ruler(
+        nlp=nlp,
+        name=name,
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=[],
+        default_label="ASSOCIATED_CONCEPT",
+        default_language="en",
+        vocabulary=_get_vocabulary_from_enum(VocabularyEnum.AAT_ASSOCIATED_CONCEPTS)
+    )
+
+
+@Language.factory("aat_materials_ruler")
+def create_aat_materials_ruler(nlp: Language, name: str = "aat_materials_ruler") -> VocabularyRuler:
+    return create_vocabulary_ruler(
+        nlp=nlp,
+        name=name,
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=[],
+        default_label="MATERIAL",
+        default_language="en",
+        vocabulary=_get_vocabulary_from_enum(VocabularyEnum.AAT_MATERIALS)
+    )
+
+
+@Language.factory("aat_objects_ruler")
+def create_aat_objects_ruler(nlp: Language, name: str = "aat_objects_ruler") -> VocabularyRuler:
+    return create_vocabulary_ruler(
+        nlp=nlp,
+        name=name,
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=["NOUN"],
+        default_label="OBJECT",
+        default_language="en",
+        vocabulary=_get_vocabulary_from_enum(VocabularyEnum.AAT_OBJECTS)
+    )
+
+
+@Language.factory("aat_physical_attributes_ruler")
+def create_aat_physical_attributes_ruler(nlp: Language, name: str = "aat_physical_attributes_ruler") -> VocabularyRuler:
+    return create_vocabulary_ruler(
+        nlp=nlp,
+        name=name,
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=[],
+        default_label="PHYSICAL_ATTRIBUTE",
+        default_language="en",
+        vocabulary=_get_vocabulary_from_enum(VocabularyEnum.AAT_PHYSICAL_ATTRIBUTES)
+    )
+
+
+@Language.factory("aat_styleperiods_ruler")
+def create_aat_styleperiods_ruler(nlp: Language, name: str = "aat_styleperiods_ruler") -> VocabularyRuler:
+    return create_vocabulary_ruler(
+        nlp=nlp,
+        name=name,
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=[],
+        default_label="STYLEPERIOD",
+        default_language="en",
+        vocabulary=_get_vocabulary_from_enum(VocabularyEnum.AAT_STYLEPERIODS)
+    )
+
+
+@Language.factory("fish_archobjects_ruler")
+def create_fish_archobjects_ruler(nlp: Language, name: str = "fish_archobjects_ruler") -> VocabularyRuler:
+    return create_vocabulary_ruler(
+        nlp=nlp,
+        name=name,
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=["NOUN"],
+        default_label="OBJECT",
+        default_language="en",
+        vocabulary=_get_vocabulary_from_enum(VocabularyEnum.FISH_ARCHOBJECTS)
+    )
+
+
+@Language.factory("fish_archsciences_ruler")
+def create_fish_archsciences_ruler(nlp: Language, name: str = "fish_archsciences_ruler") -> VocabularyRuler:
+    return create_vocabulary_ruler(
+        nlp=nlp,
+        name=name,
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=[],
+        default_label="ARCHSCIENCE",
+        default_language="en",
+        vocabulary=_get_vocabulary_from_enum(VocabularyEnum.FISH_ARCHSCIENCES)
+    )
+
+
+@Language.factory("fish_building_materials_ruler")
+def create_fish_building_materials_ruler(nlp: Language, name: str = "fish_building_materials_ruler") -> VocabularyRuler:
+    return create_vocabulary_ruler(
+        nlp=nlp,
+        name=name,
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=[],
+        default_label="MATERIAL",
+        default_language="en",
+        vocabulary=_get_vocabulary_from_enum(VocabularyEnum.FISH_BUILDING_MATERIALS)
+    )
+
+
+@Language.factory("fish_components_ruler")
+def create_fish_components_ruler(nlp: Language, name: str = "fish_components_ruler") -> VocabularyRuler:
+    return create_vocabulary_ruler(
+        nlp=nlp,
+        name=name,
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=["NOUN"],
+        default_label="OBJECT",
+        default_language="en",
+        vocabulary=_get_vocabulary_from_enum(VocabularyEnum.FISH_COMPONENTS)
+    )
+
+
+@Language.factory("fish_event_types_ruler")
+def create_fish_event_types_ruler(nlp: Language, name: str = "fish_event_types_ruler") -> VocabularyRuler:
+    return create_vocabulary_ruler(
+        nlp=nlp,
+        name=name,
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=[],
+        default_label="EVENT",
+        default_language="en",
+        vocabulary=_get_vocabulary_from_enum(VocabularyEnum.FISH_EVENT_TYPES)
+    )
+
+
+@Language.factory("fish_evidence_ruler")
+def create_fish_evidence_ruler(nlp: Language, name: str = "fish_evidence_ruler") -> VocabularyRuler:
+    return create_vocabulary_ruler(
+        nlp=nlp,
+        name=name,
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=[],
+        default_label="EVIDENCE",
+        default_language="en",
+        vocabulary=_get_vocabulary_from_enum(VocabularyEnum.FISH_EVIDENCE)
+    )
+
+
+@Language.factory("fish_maritime_craft_ruler")
+def create_fish_maritime_craft_ruler(nlp: Language, name: str = "fish_maritime_craft_ruler") -> VocabularyRuler:
+    return create_vocabulary_ruler(
+        nlp=nlp,
+        name=name,
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=["NOUN"],
+        default_label="OBJECT",
+        default_language="en",
+        vocabulary=_get_vocabulary_from_enum(VocabularyEnum.FISH_MARITIME_CRAFT)
+    )
+
+
+@Language.factory("fish_monument_types_ruler")
+def create_fish_monument_types_ruler(nlp: Language, name: str = "fish_monument_types_ruler") -> VocabularyRuler:
+    return create_vocabulary_ruler(
+        nlp=nlp,
+        name=name,
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=["NOUN"],
+        default_label="OBJECT",
+        default_language="en",
+        vocabulary=_get_vocabulary_from_enum(VocabularyEnum.FISH_MONUMENT_TYPES)
+    )
+
+
+@Language.factory("fish_periods_ruler")
+def create_fish_periods_ruler(nlp: Language, name: str = "fish_periods_ruler") -> VocabularyRuler:
+    return create_vocabulary_ruler(
+        nlp=nlp,
+        name=name,
+        min_lemmatize_length=4,
+        min_term_length=3,
+        lemmatize=True,
+        pos=[],
+        default_label="NAMEDPERIOD",
+        default_language="en",
+        vocabulary=_get_vocabulary_from_enum(VocabularyEnum.FISH_PERIODS)
+    )
+
+
+@Language.factory(
+    "vocabulary_ruler",
+    default_config={
+        "lemmatize": True,          # whether to lemmatize vocabulary terms
+        "pos": [],                  # optional POS to include in pattern
+        "min_term_length": 3,       # min term length to make a pattern for
+        "min_lemmatize_length": 4,  # min term length to lemmatize
+        "default_label": "UNKNOWN",  # label to tag identified terms
+        "default_language": "en",   # language of term
+        # vocabulary terms - expects [{"id": "123", "term": "xyz"}, {"id": "234", "term": "abc"}]
+        "vocabulary": []
+    }
+)
+def create_vocabulary_ruler(
+    nlp: Language,
+    name: str,
+    lemmatize: bool,
+    pos: MutableSequence,
+    min_term_length: int,
+    min_lemmatize_length: int,
+    default_label: str,
+    default_language: str,
+    vocabulary: MutableSequence
+) -> VocabularyRuler:
+    return VocabularyRuler(
+        nlp=nlp,
+        name=name,
+        lemmatize=lemmatize,
+        pos=pos,
+        min_term_length=min_term_length,
+        min_lemmatize_length=min_lemmatize_length,
+        default_label=default_label,
+        default_language=default_language,
+        vocabulary=vocabulary
+    )
 
 
 # test the VocabularyRuler class
 if __name__ == "__main__":
 
     # sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-    # from rematch2.components.spacypatterns import vocab_en_AAT_OBJECTS
+    # from rematch2.spacypatterns import vocab_en_AAT_OBJECTS
     # from ..spacypatterns import vocab_en_AAT_OBJECTS
 
     test_text = '''Aside from three residual flints, none closely datable, the earliest remains comprised a small assemblage of Roman pottery and ceramic building material, also residual and most likely derived from a Roman farmstead found immediately to the north within the Phase II excavation area. A single sherd of Anglo-Saxon grass-tempered pottery was also residual. The earliest features, which accounted for the majority of the remains on site, relate to medieval agricultural activity focused within a large enclosure. There was little to suggest domestic occupation within the site: the pottery assemblage was modest and well abraded, whilst charred plant remains were sparse, and, as with some metallurgical residues, point to waste disposal rather than the locations of processing or consumption. A focus of occupation within the Rodley Manor site, on higher ground 160m to the north-west, seems likely, with the currently site having lain beyond this and providing agricultural facilities, most likely corrals and pens for livestock. Animal bone was absent, but the damp, low-lying ground would have been best suited to cattle. An assemblage of medieval coins recovered from the subsoil during a metal detector survey may represent a dispersed hoard.'''
 
+    # create pipeline and add one or more custom pipeline components
     nlp = spacy.load("en_core_web_sm", disable=['ner'])
+    # AAT vocabulary pipeline components
     nlp.add_pipe("aat_activities_ruler", last=True)
+    # nlp.add_pipe("aat_agents_ruler", last=True)
+    # nlp.add_pipe("aat_associated_concepts_ruler", last=True)
+    # nlp.add_pipe("aat_materials_ruler", last=True)
+    # nlp.add_pipe("aat_objects_ruler", last=True)
+    # nlp.add_pipe("aat_physical_attributes_ruler", last=True)
+    # nlp.add_pipe("aat_styleperiods_ruler", last=True)
+    # FISH vocabulary pipeline components
+    # nlp.add_pipe("fish_archobjects_ruler", last=True)
+    # nlp.add_pipe("fish_archsciences_ruler", last=True)
+    # nlp.add_pipe("fish_building_materials_ruler", last=True)
+    # nlp.add_pipe("fish_components_ruler", last=True)
+    # nlp.add_pipe("fish_event_types_ruler", last=True)
+    # nlp.add_pipe("fish_evidence_ruler", last=True)
+    # nlp.add_pipe("fish_maritime_craft_ruler", last=True)
+    nlp.add_pipe("fish_monument_types_ruler", last=True)
+    # nlp.add_pipe("fish_periods_ruler", last=True)
 
     doc = nlp(test_text)
 
-    for ent in doc.ents:
-        print(ent.ent_id_, ent.text, ent.label_)
-
+    # quick and dirty examination of results:
+    # for ent in doc.ents:
+    # print(ent.ent_id_, ent.text, ent.label_)
     # for tok in doc:
-        # print(tok.text, tok.pos_, tok.lemma_)
+    # print(tok.text, tok.pos_, tok.lemma_)
+
+    # better...
+    results = [{
+        "from": ent.start_char,
+        "to": ent.end_char - 1,
+        "id": ent.ent_id_,
+        "text": ent.text,
+        "type": ent.label_
+    } for ent in doc.ents]
+
+    # load results into a DataFrame object:
+    df = pd.DataFrame(results)
+    print(df)

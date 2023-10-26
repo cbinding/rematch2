@@ -1,14 +1,14 @@
 """
 =============================================================================
-Package :   rematch2.components
+Package :   rematch2
 Module  :   CenturyRuler.py
 Version :   20220803
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   ARIADNEplus
+Project :   
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
-            Language-sensitive component to identify and tag ordinal centuries
-            in free text. Entity type added will be "CENTURY"
+            Identify and tag ordinal centuries (e.g. "11th Century" in free text. 
+            Entity type added will be "CENTURY"
 Imports :   os, sys, spacy, Language, EntityRuler, Doc
 Example :   nlp.add_pipe("century_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
@@ -135,7 +135,7 @@ class CenturyRuler(EntityRuler):
         EntityRuler.__call__(self, doc)
         filtered = [ent for ent in doc.ents if ent.label_ not in [
             "ORDINAL", "DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "MONTHNAME", "SEASONNAME"]]
-        #doc.ents = filtered
+        # doc.ents = filtered
         return doc
 
 

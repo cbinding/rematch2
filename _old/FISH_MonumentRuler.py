@@ -1,11 +1,11 @@
 """
 =============================================================================
-Package :   rematch2.components
+Package :   rematch2
 Module  :   FISH_MonumentRuler.py
 Version :   20220803
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   ARIADNEplus
+Project :   
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
 Imports :   os, sys, spacy, EntityRuler, Doc, Language
 Example :   nlp.add_pipe("fish_monument_ruler", last=True);
@@ -19,19 +19,19 @@ import sys
 import spacy            # NLP library
 
 from spacy.language import Language
-#from spacy.lang.de import German
-#from spacy.lang.fr import French
+# from spacy.lang.de import German
+# from spacy.lang.fr import French
 
 from spacy.pipeline import EntityRuler
 from spacy.tokens import Doc
 
-#from collections import Counter
-#from patterns import patterns_de_MONUMENT
+# from collections import Counter
+# from patterns import patterns_de_MONUMENT
 from ..spacypatterns import patterns_en_FISH_MONUMENT
-#from patterns import patterns_fr_MONUMENT
+# from patterns import patterns_fr_MONUMENT
 from spacy.pipeline import EntityRuler
 
-#module_path = os.path.abspath(os.path.join('..', 'src'))
+# module_path = os.path.abspath(os.path.join('..', 'src'))
 # if module_path not in sys.path:
 # sys.path.append(module_path)
 
@@ -63,7 +63,7 @@ if __name__ == "__main__":
         print(f"-------------\nlanguage = {test['language']}")
 
         nlp = spacy.load(test["pipe"], disable=['ner'])
-        #nlp.max_length = 2000000
+        # nlp.max_length = 2000000
 
         nlp.add_pipe("fish_monument_ruler", last=True)
         print(nlp.pipe_names)

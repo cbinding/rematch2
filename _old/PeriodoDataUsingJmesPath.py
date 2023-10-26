@@ -1,11 +1,11 @@
 """
 =============================================================================
-Package   : rematch2.components
+Package   : rematch2
 Module    : PeriodoData.py
 Version   : 0.0.1
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
-Project   : ARIADNEplus
+Project   : 
 Summary   : PeriodoData class
 Imports   : json, os, urllib, jmespath
 Example   : pd = PeriodoData();
@@ -45,7 +45,7 @@ class PeriodoData:
 
         # if cache not present or we want to force a refresh,
         # get Perio.do data from URI and store to local file
-        if(cache_file_exists == False or from_cache == False):
+        if (cache_file_exists == False or from_cache == False):
             PeriodoData._cache_from_url(PeriodoData.PERIODO_URI)
 
         # either way, now get Perio.do data from the cache file
@@ -99,7 +99,7 @@ class PeriodoData:
     def find(self, pattern):
         """find data by pattern, return JSON"""
         result = jmespath.search(pattern, self.jsondata)
-        #result = jsonpath.match(pattern, self.jsondata)
+        # result = jsonpath.match(pattern, self.jsondata)
         # return json.dumps(result) # to return JSON string, not python object
         return result
 
@@ -115,7 +115,7 @@ class PeriodoData:
             "authorities.* | [?source.title != null].{id: id, label: @.source.title}")
 
         # sort list if required
-        if(sorted):
+        if (sorted):
             lst.sort(key=lambda item: item["label"].lower())
 
         return lst
@@ -125,12 +125,12 @@ class PeriodoData:
     def get_period_list(self, authorityID="*"):
         labels = self.find(
             f"authorities.{ authorityID }.periods.*.{{id: id, label: label, language: languageTag, local: localizedLabels.* | []}}")
-        #localizedLabels = self.find(f"authorities.{ authorityID }.periods.*.localizedLabels.*.{{id: id, label: label, language: languageTag}}")
+        # localizedLabels = self.find(f"authorities.{ authorityID }.periods.*.localizedLabels.*.{{id: id, label: label, language: languageTag}}")
         # array of all localized labels in authority:
         # JMES: authorities.p0f65r2 | periods.* | [*].localizedLabels.* | [] | []
         # authorities.p0f65r2 | periods.*.{ id: id, label: label, local: localizedLabels.* | [] }
         # return(preferredLabels + localizedLabels)
-        return(labels)
+        return (labels)
         # return self.find(f"authorities.{ authorityID }.periods.*.{{id: id, label: label, language: languageTag}}")
 
 
@@ -145,21 +145,21 @@ if __name__ == "__main__":
     # print(pd.periods("p0qwjcd")) ## all periods for this authority
     # print(pd.find(f"authorities.p0qwjcd")) # free searching data
     # print(pd.period("p0qwjcd", "p0qwjcdnzt9")) # this period in this authority
-    #authorityID = "p0qwjcd"
+    # authorityID = "p0qwjcd"
     # print(pd.find(f"authorities.{ authorityID }.periods")) # free searching data
     # print(pd.find("authorities.p0qwjcd.periods.*.{id: id, lbl: label}")) # free searching data
-    #print(pd.find("authorities.* | source[].title"))
+    # print(pd.find("authorities.* | source[].title"))
     # print(pd.find("authorities.*.id
     # print(pd.find("authorities.*.{key: id, lbl: @.source.title}"))
-    #print(pd.find("authorities.* | [?source.title != null].{key: id, lbl: @.source.title}"))
+    # print(pd.find("authorities.* | [?source.title != null].{key: id, lbl: @.source.title}"))
     lst1 = pd.get_authority_list()
     lst2 = pd.get_period_list("p0kh9ds")  # "p0kh9ds" = HeritageData
 
-    #lst = pd.get_period_list("p0h9ttq")
+    # lst = pd.get_period_list("p0h9ttq")
     print(lst1[0:2])
     print(lst2)
-    #PeriodoData._periods_to_pattern_file(lst2, "en-periodo-data.json")
-    #print(pd.find("authorities.*.[@.source.title, id]"))
+    # PeriodoData._periods_to_pattern_file(lst2, "en-periodo-data.json")
+    # print(pd.find("authorities.*.[@.source.title, id]"))
 
     # authority="p0qwjcd"
-    #print(pd.find("authorities.{auth}.periods.*.{{id: id, label: label, language: languageTag}}".format(auth="p0kh9ds")))
+    # print(pd.find("authorities.{auth}.periods.*.{{id: id, label: label, language: languageTag}}".format(auth="p0kh9ds")))
