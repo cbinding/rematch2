@@ -2,18 +2,22 @@
 =============================================================================
 Package :   rematch2
 Module  :   OrdinalRuler.py
-Version :   20220803
+Version :   20231027
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
 Summary :   spaCy custom pipeline component to identify ordinals in free text 
             Entity type added will be "ORDINAL"
-Imports :   os, sys, spacy, PatternRuler
+Imports :   os, sys, spacy, EntityRuler
 Example :   nlp.add_pipe("ordinal_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
-History :   03/08/2022 CFB Initially created script
+=============================================================================
+History :   
+03/08/2022 CFB Initially created script
+27/10/2023 CFB type hints added for function signatures
 =============================================================================
 """
+from collections.abc import MutableSequence
 # Third party imports
 import spacy
 
@@ -38,7 +42,7 @@ else:
 
 
 @Language.factory("ordinal_ruler")
-def create_ordinal_ruler(nlp, name="ordinal_ruler", patterns=[]):
+def create_ordinal_ruler(nlp: Language, name: str="ordinal_ruler", patterns: MutableSequence=[]) -> EntityRuler:
     return EntityRuler(
         nlp=nlp,
         name=name,
@@ -51,42 +55,42 @@ def create_ordinal_ruler(nlp, name="ordinal_ruler", patterns=[]):
 
 
 @German.factory("ordinal_ruler")
-def create_ordinal_ruler_de(nlp, name="ordinal_ruler_de"):
+def create_ordinal_ruler_de(nlp: Language, name: str = "ordinal_ruler_de") -> EntityRuler:
     return create_ordinal_ruler(nlp, name, patterns_de_ORDINAL)
 
 
 @English.factory("ordinal_ruler")
-def create_ordinal_ruler_en(nlp, name="ordinal_ruler_en"):
+def create_ordinal_ruler_en(nlp: Language, name: str = "ordinal_ruler_en") -> EntityRuler:
     return create_ordinal_ruler(nlp, name, patterns_en_ORDINAL)
 
 
 @Spanish.factory("ordinal_ruler")
-def create_ordinal_ruler_es(nlp, name="ordinal_ruler_es"):
+def create_ordinal_ruler_es(nlp: Language, name: str = "ordinal_ruler_es") -> EntityRuler:
     return create_ordinal_ruler(nlp, name, patterns_es_ORDINAL)
 
 
 @French.factory("ordinal_ruler")
-def create_ordinal_ruler_fr(nlp, name="ordinal_ruler_fr"):
+def create_ordinal_ruler_fr(nlp: Language, name: str = "ordinal_ruler_fr") -> EntityRuler:
     return create_ordinal_ruler(nlp, name, patterns_fr_ORDINAL)
 
 
 @Italian.factory("ordinal_ruler")
-def create_ordinal_ruler_it(nlp, name="ordinal_ruler_it"):
+def create_ordinal_ruler_it(nlp: Language, name: str = "ordinal_ruler_it") -> EntityRuler:
     return create_ordinal_ruler(nlp, name, patterns_it_ORDINAL)
 
 
 @Dutch.factory("ordinal_ruler")
-def create_ordinal_ruler_nl(nlp, name="ordinal_ruler_nl"):
+def create_ordinal_ruler_nl(nlp: Language, name: str = "ordinal_ruler_nl") -> EntityRuler:
     return create_ordinal_ruler(nlp, name, patterns_nl_ORDINAL)
 
 
 @Norwegian.factory("ordinal_ruler")
-def create_ordinal_ruler_no(nlp, name="ordinal_ruler_no"):
+def create_ordinal_ruler_no(nlp: Language, name: str = "ordinal_ruler_no") -> EntityRuler:
     return create_ordinal_ruler(nlp, name, patterns_no_ORDINAL)
 
 
 @Swedish.factory("ordinal_ruler")
-def create_ordinal_ruler_sv(nlp, name="ordinal_ruler_sv"):
+def create_ordinal_ruler_sv(nlp: Language, name: str = "ordinal_ruler_sv") -> EntityRuler:
     return create_ordinal_ruler(nlp, name, patterns_sv_ORDINAL)
 
 

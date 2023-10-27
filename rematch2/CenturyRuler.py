@@ -2,7 +2,8 @@
 =============================================================================
 Package :   rematch2
 Module  :   CenturyRuler.py
-Version :   20220803
+Classes :   CenturyRuler
+Version :   20231027
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
@@ -12,9 +13,14 @@ Summary :   spaCy custom pipeline component (specialized EntityRuler)
 Imports :   os, sys, spacy, Language, EntityRuler, Doc
 Example :   nlp.add_pipe("century_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
-History :   03/08/2022 CFB Initially created script
+=============================================================================
+History :   
+03/08/2022 CFB Initially created script
+27/10/2023 CFB type hints added for function signatures
 =============================================================================
 """
+from collections.abc import MutableSequence
+
 from spacy.lang.sv import Swedish
 from spacy.lang.nb import Norwegian
 from spacy.lang.nl import Dutch
@@ -50,55 +56,10 @@ else:
     from .spacypatterns import *
 
 
-@Language.factory("century_ruler")
-def create_century_ruler(nlp, name="century_ruler", patterns=[]):
-    return CenturyRuler(nlp, name, patterns)
-
-
-@German.factory("century_ruler")
-def create_century_ruler_de(nlp, name="century_ruler_de"):
-    return create_century_ruler(nlp, name, patterns_de_CENTURY)
-
-
-@English.factory("century_ruler")
-def create_century_ruler_en(nlp, name="century_ruler_en"):
-    return create_century_ruler(nlp, name, patterns_en_CENTURY)
-
-
-@Spanish.factory("century_ruler")
-def create_century_ruler_es(nlp, name="century_ruler_es"):
-    return create_century_ruler(nlp, name, patterns_es_CENTURY)
-
-
-@French.factory("century_ruler")
-def create_century_ruler_fr(nlp, name="century_ruler_fr"):
-    return create_century_ruler(nlp, name, patterns_fr_CENTURY)
-
-
-@Italian.factory("century_ruler")
-def create_century_ruler_it(nlp, name="century_ruler_it"):
-    return create_century_ruler(nlp, name, patterns_it_CENTURY)
-
-
-@Dutch.factory("century_ruler")
-def create_century_ruler_nl(nlp, name="century_ruler_nl"):
-    return create_century_ruler(nlp, name, patterns_nl_CENTURY)
-
-
-@Norwegian.factory("century_ruler")
-def create_century_ruler_no(nlp, name="century_ruler_no"):
-    return create_century_ruler(nlp, name, patterns_no_CENTURY)
-
-
-@Swedish.factory("century_ruler")
-def create_century_ruler_sv(nlp, name="century_ruler_sv"):
-    return create_century_ruler(nlp, name, patterns_sv_CENTURY)
-
-
 # CenturyRuler is a specialized EntityRuler
 class CenturyRuler(EntityRuler):
 
-    def __init__(self, nlp: Language, name: str, patterns=[]) -> None:
+    def __init__(self, nlp: Language, name: str="century_ruler", patterns: MutableSequence=[]) -> None:
         EntityRuler.__init__(
             self,
             nlp=nlp,
@@ -137,6 +98,51 @@ class CenturyRuler(EntityRuler):
             "ORDINAL", "DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "MONTHNAME", "SEASONNAME"]]
         # doc.ents = filtered
         return doc
+
+@Language.factory("century_ruler")
+def create_century_ruler(nlp: Language, name: str = "century_ruler", patterns: MutableSequence = []) -> CenturyRuler:
+    return CenturyRuler(nlp, name, patterns)
+
+
+@German.factory("century_ruler")
+def create_century_ruler_de(nlp: Language, name: str = "century_ruler_de") -> CenturyRuler:
+    return create_century_ruler(nlp, name, patterns_de_CENTURY)
+
+
+@English.factory("century_ruler")
+def create_century_ruler_en(nlp: Language, name: str = "century_ruler_en") -> CenturyRuler:
+    return create_century_ruler(nlp, name, patterns_en_CENTURY)
+
+
+@Spanish.factory("century_ruler")
+def create_century_ruler_es(nlp: Language, name: str = "century_ruler_es") -> CenturyRuler:
+    return create_century_ruler(nlp, name, patterns_es_CENTURY)
+
+
+@French.factory("century_ruler")
+def create_century_ruler_fr(nlp: Language, name: str = "century_ruler_fr") -> CenturyRuler:
+    return create_century_ruler(nlp, name, patterns_fr_CENTURY)
+
+
+@Italian.factory("century_ruler")
+def create_century_ruler_it(nlp: Language, name: str = "century_ruler_it") -> CenturyRuler:
+    return create_century_ruler(nlp, name, patterns_it_CENTURY)
+
+
+@Dutch.factory("century_ruler")
+def create_century_ruler_nl(nlp: Language, name: str = "century_ruler_nl") -> CenturyRuler:
+    return create_century_ruler(nlp, name, patterns_nl_CENTURY)
+
+
+@Norwegian.factory("century_ruler")
+def create_century_ruler_no(nlp: Language, name: str = "century_ruler_no") -> CenturyRuler:
+    return create_century_ruler(nlp, name, patterns_no_CENTURY)
+
+
+@Swedish.factory("century_ruler")
+def create_century_ruler_sv(nlp: Language, name: str = "century_ruler_sv") -> CenturyRuler:
+    return create_century_ruler(nlp, name, patterns_sv_CENTURY)
+
 
 
 # test the pipeline component

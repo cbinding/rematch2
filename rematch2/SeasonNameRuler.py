@@ -2,7 +2,7 @@
 =============================================================================
 Package :   rematch2
 Module  :   SeasonNameRuler.py
-Version :   20220803
+Version :   20231027
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
@@ -12,13 +12,16 @@ Summary :   spaCy custom pipeline component (specialized EntityRuler)
 Imports :   os, sys, spacy, Language, EntityRuler, Doc
 Example :   nlp.add_pipe("seasonname_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
-History :   03/08/2022 CFB Initially created script
+=============================================================================
+History :   
+03/08/2022 CFB Initially created script
+27/10/2023 CFB type hints added for function signatures
 =============================================================================
 """
 import os
 import sys
 import spacy            # NLP library
-
+from collections.abc import MutableSequence
 from spacy.pipeline import EntityRuler
 
 from spacy.language import Language
@@ -42,7 +45,7 @@ else:
 
 
 @Language.factory("seasonname_ruler")
-def create_seasonname_ruler(nlp, name="seasonname_ruler", patterns=[]):
+def create_seasonname_ruler(nlp: Language, name: str="seasonname_ruler", patterns: MutableSequence=[]) -> EntityRuler:
     return EntityRuler(
         nlp=nlp,
         name=name,
@@ -55,42 +58,42 @@ def create_seasonname_ruler(nlp, name="seasonname_ruler", patterns=[]):
 
 
 @German.factory("seasonname_ruler")
-def create_seasonname_ruler_de(nlp, name="seasonname_ruler_de"):
+def create_seasonname_ruler_de(nlp: Language, name: str = "seasonname_ruler_de") -> EntityRuler:
     return create_seasonname_ruler(nlp, name, patterns_de_SEASONNAME)
 
 
 @English.factory("seasonname_ruler")
-def create_seasonname_ruler_en(nlp, name="seasonname_ruler_en"):
+def create_seasonname_ruler_en(nlp: Language, name: str = "seasonname_ruler_en") -> EntityRuler:
     return create_seasonname_ruler(nlp, name, patterns_en_SEASONNAME)
 
 
 @Spanish.factory("seasonname_ruler")
-def create_seasonname_ruler_es(nlp, name="seasonname_ruler_es"):
+def create_seasonname_ruler_es(nlp: Language, name: str = "seasonname_ruler_es") -> EntityRuler:
     return create_seasonname_ruler(nlp, name, patterns_es_SEASONNAME)
 
 
 @French.factory("seasonname_ruler")
-def create_seasonname_ruler_fr(nlp, name="seasonname_ruler_fr"):
+def create_seasonname_ruler_fr(nlp: Language, name: str = "seasonname_ruler_fr") -> EntityRuler:
     return create_seasonname_ruler(nlp, name, patterns_fr_SEASONNAME)
 
 
 @Italian.factory("seasonname_ruler")
-def create_seasonname_ruler_it(nlp, name="seasonname_ruler_it"):
+def create_seasonname_ruler_it(nlp: Language, name: str = "seasonname_ruler_it") -> EntityRuler:
     return create_seasonname_ruler(nlp, name, patterns_it_SEASONNAME)
 
 
 @Dutch.factory("seasonname_ruler")
-def create_seasonname_ruler_nl(nlp, name="seasonname_ruler_nl"):
+def create_seasonname_ruler_nl(nlp: Language, name: str = "seasonname_ruler_nl") -> EntityRuler:
     return create_seasonname_ruler(nlp, name, patterns_nl_SEASONNAME)
 
 
 @Norwegian.factory("seasonname_ruler")
-def create_seasonname_ruler_no(nlp, name="seasonname_ruler_no"):
+def create_seasonname_ruler_no(nlp: Language, name: str = "seasonname_ruler_no") -> EntityRuler:
     return create_seasonname_ruler(nlp, name, patterns_no_SEASONNAME)
 
 
 @Swedish.factory("seasonname_ruler")
-def create_seasonname_ruler_sv(nlp, name="seasonname_ruler_sv"):
+def create_seasonname_ruler_sv(nlp: Language, name: str = "seasonname_ruler_sv") -> EntityRuler:
     return create_seasonname_ruler(nlp, name, patterns_sv_SEASONNAME)
 
 

@@ -3,7 +3,7 @@
 Package   : rematch2
 Module    : TemporalAnnotator.py
 Classes   : TemporalAnnotator
-Version   : 1.0.0
+Version   : 20231027
 Project   : 
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
@@ -16,11 +16,13 @@ License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History
 21/11/2022 CFB Initially created script using VocabularyAnnotator as template
 02/02/2023 CFB Support for supplementary patterns passed to base initialisation
+27/10/2023 CFB type hints added for function signatures
 =============================================================================
 """
 import os
 from os.path import exists
 import pandas as pd                     # for DataFrame output
+from collections.abc import MutableSequence
 import spacy
 from spacy.tokens import Doc
 from spacy import displacy              # for HTML formatting results
@@ -43,9 +45,9 @@ else:
 # default Perio.do authority ("p0kh9ds") is Historic England periods list..
 class TemporalAnnotator(BaseAnnotator):
     def __init__(
-        self, language="en", 
-        periodo_authority_id="p0kh9ds", 
-        patterns=[]) -> None:
+        self, language: str="en", 
+        periodo_authority_id: str="p0kh9ds", 
+        patterns: MutableSequence=[]) -> None:
 
         # call the superclass initialisation function
         super().__init__(language=language, patterns=patterns)
@@ -60,7 +62,7 @@ class TemporalAnnotator(BaseAnnotator):
     # override and call base method
 
     @staticmethod
-    def _to_html(doc):
+    def _to_html(doc: Doc) -> str:
         # specify colours for HTML output
         options = {
             "ents": [
@@ -126,5 +128,5 @@ if __name__ == "__main__":
     annotator = TemporalAnnotator(periodo_authority_id="p02chr4")
     print(annotator.pipe_names)
 
-    output = annotator.annotateText(input_text=txt1, format=outputFormat)
+    output = annotator.annotateText(input_text=txt1, output_format=outputFormat)
     print(output)

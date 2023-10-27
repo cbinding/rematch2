@@ -1,8 +1,24 @@
-# Enum for use with VocabularyRuler - 
-# predefined vocabulary resources (JSON) for use with VocabularyRuler
-# usage:
-#   VocabularyEnum.AAT_ACTIVITIES.name  ["AAT_ACTIVITIES"]
-#   VocabularyEnum.AAT_ACTIVITIES.value ["vocab_en_AAT_ACTIVITIES_20231018.json"]
+"""
+=============================================================================
+Package   : rematch2
+Module    : VocabularyEnum.py
+Classes   : VocabularyEnum
+Version   : 20231027
+Project   : 
+Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
+Contact   : ceri.binding@southwales.ac.uk
+Summary   : Enum for use with VocabularyRuler - 
+                predefined (JSON) vocabulary resources
+Imports   : Enum
+Example   : 
+    VocabularyEnum.AAT_ACTIVITIES.name  ["AAT_ACTIVITIES"]
+    VocabularyEnum.AAT_ACTIVITIES.value ["vocab_en_AAT_ACTIVITIES_20231018.json"]
+License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
+=============================================================================
+History
+27/10/2023 CFB Initially created script
+=============================================================================
+"""
 from enum import Enum
 
 class VocabularyEnum(Enum):

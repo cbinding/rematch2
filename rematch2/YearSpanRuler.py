@@ -2,19 +2,23 @@
 =============================================================================
 Package :   rematch2
 Module  :   YearSpanRuler.py
-Version :   20220803
+Version :   20231027
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
             Language-sensitive component to identify and tag ordinal centuries
             in free text. Entity type added will be "YEARSPAN"
-Imports :   Language, EntityRuler, Doc
+Imports :   MutableSequence, Language, Doc
 Example :   nlp.add_pipe("yearspan_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
-History :   03/08/2022 CFB Initially created script
+=============================================================================
+History :   
+03/08/2022 CFB Initially created script
+27/10/2023 CFB type hints added for function signatures
 =============================================================================
 """
+from collections.abc import MutableSequence
 import spacy
 from spacy.language import Language
 from spacy.pipeline import EntityRuler
@@ -47,51 +51,6 @@ else:
     from .DateSeparatorRuler import create_dateseparator_ruler
     from .MonthNameRuler import create_monthname_ruler
     from .SeasonNameRuler import create_seasonname_ruler
-
-
-@Language.factory("yearspan_ruler")
-def create_yearspan_ruler(nlp, name="yearspan_ruler", patterns=[]):
-    return YearSpanRuler(nlp, name, patterns)
-
-
-@German.factory("yearspan_ruler")
-def create_yearspan_ruler_de(nlp, name="yearspan_ruler_de"):
-    return create_yearspan_ruler(nlp, name, patterns_de_YEARSPAN)
-
-
-@English.factory("yearspan_ruler")
-def create_yearspan_ruler_en(nlp, name="yearspan_ruler_en"):
-    return create_yearspan_ruler(nlp, name, patterns_en_YEARSPAN)
-
-
-@Spanish.factory("yearspan_ruler")
-def create_yearspan_ruler_es(nlp, name="yearspan_ruler_es"):
-    return create_yearspan_ruler(nlp, name, patterns_es_YEARSPAN)
-
-
-@French.factory("yearspan_ruler")
-def create_yearspan_ruler_fr(nlp, name="yearspan_ruler_fr"):
-    return create_yearspan_ruler(nlp, name, patterns_fr_YEARSPAN)
-
-
-@Italian.factory("yearspan_ruler")
-def create_yearspan_ruler_it(nlp, name="yearspan_ruler_it"):
-    return create_yearspan_ruler(nlp, name, patterns_it_YEARSPAN)
-
-
-@Dutch.factory("yearspan_ruler")
-def create_yearspan_ruler_nl(nlp, name="yearspan_ruler_nl"):
-    return create_yearspan_ruler(nlp, name, patterns_nl_YEARSPAN)
-
-
-@Norwegian.factory("yearspan_ruler")
-def create_yearspan_ruler_no(nlp, name="yearspan_ruler_no"):
-    return create_yearspan_ruler(nlp, name, patterns_no_YEARSPAN)
-
-
-@Swedish.factory("yearspan_ruler")
-def create_yearspan_ruler_sv(nlp, name="yearspan_ruler_sv"):
-    return create_yearspan_ruler(nlp, name, patterns_sv_YEARSPAN)
 
 
 # YearSpanRuler is a specialized EntityRuler
@@ -135,6 +94,51 @@ class YearSpanRuler(EntityRuler):
         return doc
 
 
+@Language.factory("yearspan_ruler")
+def create_yearspan_ruler(nlp: Language, name: str = "yearspan_ruler", patterns: MutableSequence = []) -> YearSpanRuler:
+    return YearSpanRuler(nlp, name, patterns)
+
+
+@German.factory("yearspan_ruler")
+def create_yearspan_ruler_de(nlp: Language, name: str = "yearspan_ruler_de") -> YearSpanRuler:
+    return create_yearspan_ruler(nlp, name, patterns_de_YEARSPAN)
+
+
+@English.factory("yearspan_ruler")
+def create_yearspan_ruler_en(nlp: Language, name: str = "yearspan_ruler_en") -> YearSpanRuler:
+    return create_yearspan_ruler(nlp, name, patterns_en_YEARSPAN)
+
+
+@Spanish.factory("yearspan_ruler")
+def create_yearspan_ruler_es(nlp: Language, name: str = "yearspan_ruler_es") -> YearSpanRuler:
+    return create_yearspan_ruler(nlp, name, patterns_es_YEARSPAN)
+
+
+@French.factory("yearspan_ruler")
+def create_yearspan_ruler_fr(nlp: Language, name: str = "yearspan_ruler_fr") -> YearSpanRuler:
+    return create_yearspan_ruler(nlp, name, patterns_fr_YEARSPAN)
+
+
+@Italian.factory("yearspan_ruler")
+def create_yearspan_ruler_it(nlp: Language, name: str = "yearspan_ruler_it") -> YearSpanRuler:
+    return create_yearspan_ruler(nlp, name, patterns_it_YEARSPAN)
+
+
+@Dutch.factory("yearspan_ruler")
+def create_yearspan_ruler_nl(nlp: Language, name: str = "yearspan_ruler_nl") -> YearSpanRuler:
+    return create_yearspan_ruler(nlp, name, patterns_nl_YEARSPAN)
+
+
+@Norwegian.factory("yearspan_ruler")
+def create_yearspan_ruler_no(nlp: Language, name: str = "yearspan_ruler_no") -> YearSpanRuler:
+    return create_yearspan_ruler(nlp, name, patterns_no_YEARSPAN)
+
+
+@Swedish.factory("yearspan_ruler")
+def create_yearspan_ruler_sv(nlp: Language, name: str = "yearspan_ruler_sv") -> YearSpanRuler:
+    return create_yearspan_ruler(nlp, name, patterns_sv_YEARSPAN)
+
+    
 # test the YearSpanRuler class
 if __name__ == "__main__":
 
@@ -166,7 +170,7 @@ if __name__ == "__main__":
         # run text through the pipeline
         doc = nlp(test["text"])
         # display the current pipeline components
-        print(nlp.pipe_names)
+        #print(nlp.pipe_names)
 
         # for token in doc:
         # print(f"{token.pos_}\t{token.text}\n")

@@ -11,10 +11,11 @@ from .PeriodoData import PeriodoData
 from .SeasonNameRuler import create_seasonname_ruler
 from .TemporalAnnotator import TemporalAnnotator
 from .VocabularyAnnotator import VocabularyAnnotator
-from .VocabularyRuler import create_vocabulary_ruler
+from .VocabularyEnum import VocabularyEnum
+from .VocabularyRuler import VocabularyRuler
 from .YearSpanRuler import create_yearspan_ruler
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 # For relative imports to work in Python 3.6
 import os

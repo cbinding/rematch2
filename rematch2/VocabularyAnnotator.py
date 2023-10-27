@@ -3,19 +3,20 @@
 Package   : rematch2
 Module    : VocabularyAnnotator.py
 Classes   : VocabularyAnnotator
-Version   : 1.0.0
+Version   : 20231027
 Project   : 
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
 Summary   : Vocabulary Annotation Tool for archaeological texts
 Imports   : os, pandas, spacy, rematch2
-Example   : va = VocabularyAnnotator()
+Example   : va = VocabularyAnnotator(vocabs=[], patterns=[])
             output = va.annotateText(input_text="abcde", format="csv")
 License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
 05/10/2023 CFB New component AAT annotator based on FISH annotator
 23/10/2023 CFB Changed to generic vocabulary annotator, pass in vocab
+27/10/2023 CFB type hints added for function signatures
 =============================================================================
 """
 import os
@@ -27,19 +28,17 @@ from collections.abc import MutableSequence
 from spacy.tokens import Doc
 from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
-# from rematch2 import components         # spaCy pipeline components
-# from rematch2 import BaseAnnotator
-# from components import BaseAnnotator
 
-# from .BaseAnnotator import BaseAnnotator
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from BaseAnnotator import BaseAnnotator
-    from VocabularyRuler import create_vocabulary_ruler
+    from VocabularyRuler import *
+    from VocabularyEnum import VocabularyEnum
 else:
     # uses current package visibility
     from .BaseAnnotator import BaseAnnotator
-    from .VocabularyRuler import create_vocabulary_ruler
+    from .VocabularyRuler import *
+    from .VocabularyEnum import VocabularyEnum
 
 # TODO: formats and vocabularies as enums??
 
@@ -48,38 +47,56 @@ class VocabularyAnnotator(BaseAnnotator):
     def __init__(
             self,
             language: str = "en",
-            min_lemmatize_length: int = 4,
-            min_term_length: int = 3,
-            lemmatize: bool = True,
-            pos: MutableSequence = [],
-            default_label: str = "OBJECT",
-            default_language: str = "en",
-            vocabulary: MutableSequence = [],
+            vocabs: MutableSequence = [],
             patterns: MutableSequence = []) -> None:
 
         super().__init__(language=language, patterns=patterns)
 
-        # using predefined (English language) spaCy pipeline
-        # self.__pipeline = spacy.load("en_core_web_sm", disable=['ner'])
-        self._pipeline.add_pipe("vocabulary_ruler", last=True, config={
-            "min_lemmatize_length": min_lemmatize_length,
-            "min_term_length": min_term_length,
-            "lemmatize": lemmatize,
-            "pos": pos,
-            "default_label": default_label,
-            "default_language": default_language,
-            "vocabulary": vocabulary})
+        for vocab in vocabs:
+            # get applicable ruler component
+            pipe_name = ""
+            match vocab:
+                case VocabularyEnum.AAT_ACTIVITIES:
+                    pipe_name = "aat_activities_ruler"
+                case VocabularyEnum.AAT_AGENTS:
+                    pipe_name = "aat_agents_ruler"
+                case VocabularyEnum.AAT_ASSOCIATED_CONCEPTS:
+                    pipe_name = "aat_associated_concepts_ruler"
+                case VocabularyEnum.AAT_MATERIALS:
+                    pipe_name = "aat_materials_ruler"
+                case VocabularyEnum.AAT_OBJECTS:
+                    pipe_name = "aat_objects_ruler"
+                case VocabularyEnum.AAT_PHYSICAL_ATTRIBUTES:
+                    pipe_name = "aat_physical_attributes_ruler"
+                case VocabularyEnum.AAT_STYLEPERIODS:
+                    pipe_name = "aat_styleperiods_ruler"
+                case VocabularyEnum.FISH_ARCHOBJECTS:
+                    pipe_name = "fish_archobjects_ruler"
+                case VocabularyEnum.FISH_ARCHSCIENCES:
+                    pipe_name = "fish_archsciences_ruler"
+                case VocabularyEnum.FISH_BUILDING_MATERIALS:
+                    pipe_name = "fish_building_materials_ruler"
+                case VocabularyEnum.FISH_COMPONENTS:
+                    pipe_name = "fish_components_ruler"
+                case VocabularyEnum.FISH_EVENT_TYPES:
+                    pipe_name = "fish_event_types_ruler"
+                case VocabularyEnum.FISH_EVIDENCE:
+                    pipe_name = "fish_evidence_ruler"
+                case VocabularyEnum.FISH_MARITIME_CRAFT:
+                    pipe_name = "fish_maritime_craft_ruler"
+                case VocabularyEnum.FISH_MONUMENT_TYPES:
+                    pipe_name = "fish_monument_types_ruler"
+                case VocabularyEnum.FISH_PERIODS:
+                    pipe_name = "fish_periods_ruler"
+                case _:
+                    pipe_name = "" 
+            # add to pipeline if found
+            if(pipe_name != ""):      
+                self._pipeline.add_pipe(pipe_name, last=True)
 
+           
     @staticmethod
-    def _load_vocab_from_json_file(file_path):
-        pass
-
-    @staticmethod
-    def _load_vocab_from_json_url(url):
-        pass
-
-    @staticmethod
-    def _to_html(doc):
+    def _to_html(doc: Doc) -> str:
         # convert results to HTML formatted string (override and call base method)
 
         # specify colours for HTML output
@@ -162,24 +179,9 @@ if __name__ == "__main__":
     Aside from three residual flints, none closely datable, the earliest remains comprised a small assemblage of Roman pottery and ceramic building material, also residual and most likely derived from a Roman farmstead found immediately to the north within the Phase II excavation area. A single sherd of Anglo-Saxon grass-tempered pottery was also residual.
     The earliest features, which accounted for the majority of the remains on site, relate to medieval agricultural activity focused within a large enclosure. There was little to suggest domestic occupation within the site: the pottery assemblage was modest and well abraded, whilst charred plant remains were sparse, and, as with some metallurgical residues, point to waste disposal rather than the locations of processing or consumption. A focus of occupation within the Rodley Manor site, on higher ground 160m to the north-west, seems likely, with the currently site having lain beyond this and providing agricultural facilities, most likely corrals and pens for livestock. Animal bone was absent, but the damp, low-lying ground would have been best suited to cattle. An assemblage of medieval coins recovered from the subsoil during a metal detector survey may represent a dispersed hoard.
     """
-
-    vocabulary = []
-    vocab_dir = os.path.join(os.path.abspath(""), "rematch2/vocabularies")
-    file_path = os.path.join(
-        vocab_dir, "vocab_en_AAT_ACTIVITIES_20231018.json")
-    with open(file_path, "r") as f:
-        vocabulary = json.load(f)
-
-    annotator = VocabularyAnnotator(
-        min_lemmatize_length=4,
-        min_term_length=3,
-        lemmatize=True,
-        pos=["NOUN"],
-        default_label="OBJECT",
-        default_language="en",
-        vocabulary=vocabulary
-    )
+    
+    annotator = VocabularyAnnotator(vocabs=[VocabularyEnum.AAT_ACTIVITIES, VocabularyEnum.FISH_MONUMENT_TYPES])
 
     # print(annotator.pipe_names)
-    output = annotator.annotateText(input_text=txt1, format="dataframe")
+    output = annotator.annotateText(input_text=txt1, output_format="dataframe")
     print(output)

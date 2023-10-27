@@ -2,7 +2,7 @@
 =============================================================================
 Package :   rematch2
 Module  :   NamedPeriodRuler.py
-Version :   20220803
+Version :   20231027
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
@@ -12,13 +12,16 @@ Summary :   spaCy custom pipeline component (specialized EntityRuler) to
 Imports :   os, sys, spacy, Language, EntityRuler, Doc
 Example :   nlp.add_pipe("namedperiod_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
-History :   03/08/2022 CFB Initially created script
+=============================================================================
+History :   
+03/08/2022 CFB Initially created script
+27/10/2023 CFB type hints added for function signatures
 =============================================================================
 """
 import os
 import sys
 import spacy            # NLP library
-
+import pandas as pd
 # from spacy.pipeline import EntityRuler
 from spacy.tokens import Doc
 from spacy.language import Language
@@ -34,7 +37,7 @@ else:
 
 
 @Language.factory(name="namedperiod_ruler", default_config={"periodo_authority_id": None})
-def create_namedperiod_ruler(nlp, name: str, periodo_authority_id: str):
+def create_namedperiod_ruler(nlp: Language, name: str="namedperiod_ruler", periodo_authority_id: str="") -> VocabularyRuler:
     # get terms from selected Perio.do authority as vocab
     # get as new instance, don't refresh cached data
     pd = PeriodoData(from_cache=True) #tmp...
@@ -57,11 +60,7 @@ def create_namedperiod_ruler(nlp, name: str, periodo_authority_id: str):
         nlp=nlp,
         name=name,
         lemmatize=False,
-        pos=["ADJ"],
-        default_label="PERIOD",
-        default_language="en",
-        min_term_length=3,
-        min_lemmatize_length=4,
+        default_label="PERIOD",        
         vocabulary=vocabulary
     )
 
@@ -102,7 +101,17 @@ if __name__ == "__main__":
 
     nlp.add_pipe("namedperiod_ruler", last=True, config={
                  "periodo_authority_id": periodo_authority_id})
-    doc = nlp(test_text2.lower())
+    doc = nlp(test_text2)
 
-    for ent in doc.ents:
-        print(ent.ent_id_, ent.text, ent.label_)
+    # load results into a DataFrame object:
+
+    results = [{
+        "from": ent.start_char,
+        "to": ent.end_char - 1,
+        "id": ent.ent_id_,
+        "text": ent.text,
+        "type": ent.label_
+    } for ent in doc.ents]
+
+    df = pd.DataFrame(results)
+    print(df)

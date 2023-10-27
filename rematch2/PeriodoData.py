@@ -2,6 +2,7 @@
 =============================================================================
 Package   : rematch2
 Module    : PeriodoData.py
+Classes   : PeriodoData
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
 Project   : 
@@ -14,6 +15,7 @@ License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
 17/06/2022 CFB Initially created script
+27/10/2023 CFB type hints added for function signatures
 =============================================================================
 """
 import json
@@ -32,11 +34,11 @@ class PeriodoData:
     PERIODO_URI = "https://n2t.net/ark:/99152/p0dataset.json"
     CACHE_FILE_NAME = "periodo-cache.json"
 
-    def __init__(self, from_cache=True):
+    def __init__(self, from_cache: bool=True) -> None:
         self.jsondata = None
         self.load(from_cache)
 
-    def load(self, from_cache=True):
+    def load(self, from_cache: bool=True) -> None:
         """load data from cache or from url"""
 
         # checking if cache file exists first
@@ -61,13 +63,13 @@ class PeriodoData:
         self._jsondata = new_value
 
     @staticmethod
-    def _json_from_url(url):
+    def _json_from_url(url: str):
         """download JSON data from URL"""
         data = json.loads(urlopen(url).read().decode("utf-8"))
         return data
 
     @staticmethod
-    def _json_from_file(file_name):
+    def _json_from_file(file_name: str):
         """load JSON data from file"""
         data = None
         with open(file_name, "r") as f:  # what if file doesn't exist?
@@ -75,13 +77,13 @@ class PeriodoData:
         return data
 
     @staticmethod
-    def _json_to_file(data, file_name):
+    def _json_to_file(data, file_name: str):
         """write JSON data to file"""
         with open(file_name, "w") as f:
             json.dump(data, f, indent=3)
 
     @staticmethod
-    def _cache_from_url(url=None, file_name=None):
+    def _cache_from_url(url=None, file_name:str=None):
         """refresh locally cached JSON file"""
         if url == None:
             url = PeriodoData.PERIODO_URI
@@ -96,7 +98,7 @@ class PeriodoData:
     # pip3 install jmespath
     # see https://jmespath.org/tutorial.html
 
-    def find(self, pattern):
+    def find(self, pattern:str=""):
         """find data by pattern, return JSON"""
         # result = jmespath.search(pattern, self.jsondata)
         jsonpath_expression = parse(pattern)
@@ -104,13 +106,13 @@ class PeriodoData:
         # return json.dumps(result) # to return JSON string, not python object
         return result
 
-    def count(self, pattern):
+    def count(self, pattern: str="") -> int:
         """get number of items matching the search pattern"""
         return length(self.find(pattern))
 
     # specialised properties based on .find
     # returns list of authority as [{id, label}]
-    def get_authority_list(self, sorted=True):
+    def get_authority_list(self, sorted: bool=True):
         # get list of authorities using jmespath:
         # lst = self.find("authorities.* | [?source.title != null].{id: id, label: @.source.title}")
         authorities = self.find("$.authorities.*.source[?(@.title != null)]")
@@ -128,7 +130,7 @@ class PeriodoData:
 
     # returns list of period labels as [{id: "123", label: "Iron Age", language: "en"}]
 
-    def get_period_list(self, authorityID="*"):
+    def get_period_list(self, authorityID: str="*"):
         # labels = self.find(f"authorities.{ authorityID }.periods.*.{{id: id, label: label, language: languageTag, local: localizedLabels.* | []}}")
         periods = self.find(f"$.authorities.{ authorityID }.periods.*")
 
@@ -171,7 +173,7 @@ class PeriodoData:
 # This class may be tested as a standalone script using the parameters below
 #  e.g. python PeriodoData.py
 if __name__ == "__main__":
-    pd = PeriodoData(False)
+    pd = PeriodoData(True)
     # pd.load()
     # print(pd.authorities) # all authorities
     # print(pd.data) # this specific authority

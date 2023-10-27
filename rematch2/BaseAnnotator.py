@@ -2,8 +2,8 @@
 =============================================================================
 Package   : rematch2
 Module    : BaseAnnotator.py
-Classes   : Annotator
-Version   : 1.0.0
+Classes   : BaseAnnotator
+Version   : 20231027
 Project   : 
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
@@ -15,10 +15,12 @@ License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History
 31/09/2022 CFB Initially created script
 02/02/2023 CFB use of supplementary patterns passed in during init
+27/10/2023 CFB type hints added for function signatures
 =============================================================================
 """
 import os
 from os.path import exists
+from collections.abc import MutableSequence
 import pandas as pd                     # for DataFrame output
 import spacy
 from spacy.tokens import Doc
@@ -26,38 +28,40 @@ from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
 
 
-# base class used for VocabularyAnnotator and TemporalAnnotator
+# base class for VocabularyAnnotator and TemporalAnnotator
 class BaseAnnotator():
-    def __init__(self, language="en", patterns=[]) -> None:
+    def __init__(self, language: str = "en", patterns: MutableSequence = []) -> None:
         # start with predefined language-specific spaCy pipeline
-        pipeline_name = ""
-        if (language == "de"):
-            pipeline_name = "de_core_news_sm"   # German
-        elif (language == "es"):
-            pipeline_name = "es_core_news_sm"   # Spanish
-        elif (language == "fr"):
-            pipeline_name = "fr_core_news_sm"   # French
-        elif (language == "it"):
-            pipeline_name = "it_core_news_sm"   # Italian
-        elif (language == "nl"):
-            pipeline_name = "nl_core_news_sm"   # Dutch
-        elif (language == "no"):
-            pipeline_name = "nb_core_news_sm"   # Norwegian Bokmal
-        elif (language == "sv"):
-            pipeline_name = "sv_core_news_sm"   # Swedish
-        else:
-            pipeline_name = "en_core_web_sm"    # English (default)
+        pipe_name = ""
+        match language.strip().lower():
+            case "de":
+                pipe_name = "de_core_news_sm"   # German
+            case "es":
+                pipe_name = "es_core_news_sm"   # Spanish
+            case "fr":
+                pipe_name = "fr_core_news_sm"   # French
+            case "it":
+                pipe_name = "it_core_news_sm"   # Italian
+            case "nl":
+                pipe_name = "nl_core_news_sm"   # Dutch
+            case "no":
+                pipe_name = "nb_core_news_sm"   # Norwegian Bokmal
+            case "sv":
+                pipe_name = "sv_core_news_sm"   # Swedish
+            case _:
+                pipe_name = "en_core_web_sm"    # English (default)
+
         # create the pipeline
-        self._pipeline = spacy.load(pipeline_name, disable=['ner'])
+        self._pipeline = spacy.load(pipe_name, disable=['ner'])
 
         # append any additional patterns passed in (for local customisation)
         if (len(patterns or []) > 0):
             self._pipeline.add_pipe(
                 "entity_ruler", last=True, config={"patterns": patterns})
 
-    # process text using the modified pipeline
 
-    def __annotate(self, input_text="") -> Doc:
+    # process text using the modified pipeline
+    def __annotate(self, input_text: str="") -> Doc:
         doc = self._pipeline(input_text)
         return doc
 
@@ -66,7 +70,7 @@ class BaseAnnotator():
         return self._pipeline.pipe_names
 
     # process text and output results to specified format
-    def annotateText(self, input_text="", format="csv"):
+    def annotateText(self, input_text: str="", output_format: str="csv"):
         output = ""
 
         # data cleansing stages on input text
@@ -85,24 +89,24 @@ class BaseAnnotator():
         doc = self.__annotate(cleaned)
 
         # convert the results to the required format
-        clean_format = format.strip().lower()
-        if (clean_format == "html"):
-            output = self._to_html(doc)
-        elif (clean_format == "ttl"):
-            output = self.__to_ttl(doc)
-        elif (clean_format == "json"):
-            output = self.__to_json(doc)
-        elif (clean_format == "dataframe"):
-            output = self.__to_dataframe(doc)
-        elif (clean_format == "csv"):
-            output = self.__to_csv(doc)
-        else:
-            output = doc  # spaCy doc for further processing
+        match output_format.strip().lower():
+            case "html":
+                output = self._to_html(doc)
+            case "ttl":
+                output = self.__to_ttl(doc)
+            case "json":
+                output = self.__to_json(doc)
+            case "dataframe":
+                output = self.__to_dataframe(doc)
+            case "csv":
+                output = self.__to_csv(doc)
+            case _:
+                output = doc  # spaCy doc for further processing
 
         return output
 
     # process single text file
-    def annotateFile(inputFileNameWithPath="", format="csv", encoding="utf-8-sig"):
+    def annotateFile(inputFileNameWithPath: str = "", output_format: str = "csv", encoding: str = "utf-8-sig"):
         txt = ""
 
         # open and read text file
@@ -110,12 +114,12 @@ class BaseAnnotator():
             txt = f.read()
 
         # process text file contents
-        output = self.annotateText(txt, format)
+        output = self.annotateText(txt, output_format)
         return output
 
     # convert results to pandas.DataFrame object
     @staticmethod
-    def __to_dataframe(doc) -> pd.DataFrame:
+    def __to_dataframe(doc: Doc) -> pd.DataFrame:
         data = [{
             "from": ent.start_char,
             "to": ent.end_char - 1,
@@ -131,7 +135,7 @@ class BaseAnnotator():
     # or write to specified CSV file if name supplied
 
     @staticmethod
-    def __to_csv(doc, fileName=None):
+    def __to_csv(doc: Doc, fileName: str = None) -> str:
         df = BaseAnnotator.__to_dataframe(doc)
         return df.to_csv(fileName, index=False)
 
@@ -139,13 +143,13 @@ class BaseAnnotator():
     # or write to specified JSON file if name supplied
 
     @staticmethod
-    def __to_json(doc, fileName=None):
+    def __to_json(doc: Doc, fileName: str = None) -> str:
         df = BaseAnnotator.__to_dataframe(doc)
         return df.to_json(fileName, orient="records")
 
     # convert results to TTL (Turtle RDF) formatted string
     @staticmethod
-    def __to_ttl(doc, id=None):
+    def __to_ttl(doc: Doc, id: str=None) -> str:
         ttl = ""
         if (id is None):
             id = "http://tempuri/mydata"
@@ -155,14 +159,14 @@ class BaseAnnotator():
     # convert results to python dictionary
 
     @staticmethod
-    def __to_dict(doc):
+    def __to_dict(doc: Doc) -> dict:
         df = BaseAnnotator.__to_dataframe(doc)
         return df.to_dict(orient="records")
 
     # convert results to HTML formatted string
 
     @staticmethod
-    def _to_html(doc, options={}) -> str:
+    def _to_html(doc: Doc, options = {}) -> str:
         # generate and return HTML marked up text
         # options passed in to specify colours for HTML output
         output = displacy.render(doc, style="ent", options=options)
