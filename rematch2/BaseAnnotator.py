@@ -56,8 +56,8 @@ class BaseAnnotator():
 
         # append any additional patterns passed in (for local customisation)
         if (len(patterns or []) > 0):
-            self._pipeline.add_pipe(
-                "entity_ruler", last=True, config={"patterns": patterns})
+            ruler = self._pipeline.add_pipe("entity_ruler", last=True)
+            ruler.initialize(lambda: [], nlp=self._pipeline, patterns=patterns)
 
 
     # process text using the modified pipeline

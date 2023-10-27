@@ -45,7 +45,8 @@ else:
 # default Perio.do authority ("p0kh9ds") is Historic England periods list..
 class TemporalAnnotator(BaseAnnotator):
     def __init__(
-        self, language: str="en", 
+        self, 
+        language: str="en", 
         periodo_authority_id: str="p0kh9ds", 
         patterns: MutableSequence=[]) -> None:
 

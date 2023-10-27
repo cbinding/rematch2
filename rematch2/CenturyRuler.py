@@ -65,7 +65,7 @@ class CenturyRuler(EntityRuler):
             nlp=nlp,
             name=name,
             phrase_matcher_attr="LOWER",
-            validate=True,
+            validate=False,
             overwrite_ents=True,
             ent_id_sep="||"
         )

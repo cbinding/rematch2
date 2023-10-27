@@ -45,10 +45,10 @@ else:
 
 class VocabularyAnnotator(BaseAnnotator):
     def __init__(
-            self,
-            language: str = "en",
-            vocabs: MutableSequence = [],
-            patterns: MutableSequence = []) -> None:
+        self,
+        language: str = "en",
+        vocabs: MutableSequence = [],
+        patterns: MutableSequence = []) -> None:
 
         super().__init__(language=language, patterns=patterns)
 
