@@ -191,25 +191,11 @@ The earliest features, which accounted for the majority of the remains on site, 
 # 'doc' returns the spaCy document object for further processing
 output_format = "html"
 
-# load one of the example vocabularies
-vocabulary = []
-vocab_dir = os.path.join(os.path.abspath(""), "rematch2/vocabularies")
-file_path = os.path.join(vocab_dir, "vocab_en_FISH_ARCHOBJECTS_20210921.json")
-with open(file_path, "r") as f:  # what if file doesn't exist?
-    vocabulary = json.load(f)
-
 # create and configure the annotator
-annotator = VocabularyAnnotator(
-    min_lemmatize_length=4,     # minimum length of term to apply lemmatization
-    min_term_length=3,          # minimum length of vocabulary term to consider matching on
-    lemmatize=True,             # whether to apply lemmatisation to the vocabulary terms
-    pos=["NOUN"],               # optional part of speech for matching vocabulary terms
-    default_label="OBJECT",     # default label to apply to matches, if not included in the vocabulary
-    vocabulary=vocabulary       # imported vocabulary of terms/phrases to match on)
-)
+annotator = VocabularyAnnotator(vocabs=[VocabularyEnum.FISH_MONUMENT_TYPES])   
 
 # process example text and display the results in required output format
-results = annotator.annotateText(input_text=test_text, format=output_format)
+results = annotator.annotateText(input_text=test_text, output_format=output_format)
 return results
 ```
 
