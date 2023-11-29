@@ -152,7 +152,7 @@ class VocabularyRuler(EntityRuler):
 
             # add pos tags if passed in
             # note POS only applied to LAST term if multi-word phrase
-            # e.g. { "LEMMA": "board", "POS": { "IN": ["NOUN"] }}
+            # e.g. { "LEMMA": "board", "POS": { "IN": ["NOUN", "PROPN"] }}
             if (len(pos) > 0 and n == phrase_length):
                 pat["POS"] = {"IN": pos}
 
@@ -178,7 +178,7 @@ def create_aat_agents_ruler(nlp: Language, name: str = "aat_agents_ruler") -> Vo
     return VocabularyRuler(
         nlp=nlp,
         name=name,
-        pos=["NOUN"],
+        pos=["NOUN", "PROPN"],
         default_label="AGENT",
         default_language="en",
         vocabulary=VocabularyRuler._vocabulary_from_enum(
@@ -215,7 +215,7 @@ def create_aat_objects_ruler(nlp: Language, name: str = "aat_objects_ruler") -> 
     return VocabularyRuler(
         nlp=nlp,
         name=name,
-        pos=["NOUN"],
+        pos=["NOUN", "PROPN"],
         default_label="OBJECT",
         default_language="en",
         vocabulary=VocabularyRuler._vocabulary_from_enum(
@@ -252,7 +252,7 @@ def create_fish_archobjects_ruler(nlp: Language, name: str = "fish_archobjects_r
     return VocabularyRuler(
         nlp=nlp,
         name=name,
-        pos=["NOUN"],
+        pos=["NOUN", "PROPN"],
         default_label="OBJECT",
         default_language="en",
         vocabulary=VocabularyRuler._vocabulary_from_enum(
@@ -289,7 +289,7 @@ def create_fish_components_ruler(nlp: Language, name: str = "fish_components_rul
     return VocabularyRuler(
         nlp=nlp,
         name=name,
-        pos=["NOUN"],
+        pos=["NOUN", "PROPN"],
         default_label="OBJECT",
         default_language="en",
         vocabulary=VocabularyRuler._vocabulary_from_enum(
@@ -326,7 +326,7 @@ def create_fish_maritime_craft_ruler(nlp: Language, name: str = "fish_maritime_c
     return VocabularyRuler(
         nlp=nlp,
         name=name,
-        pos=["NOUN"],
+        pos=["NOUN", "PROPN"],
         default_label="OBJECT",
         default_language="en",
         vocabulary=VocabularyRuler._vocabulary_from_enum(
@@ -339,7 +339,7 @@ def create_fish_monument_types_ruler(nlp: Language, name: str = "fish_monument_t
     return VocabularyRuler(
         nlp=nlp,
         name=name,
-        pos=["NOUN"],
+        pos=["NOUN", "PROPN"],
         default_label="OBJECT",
         default_language="en",
         vocabulary=VocabularyRuler._vocabulary_from_enum(

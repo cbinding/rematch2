@@ -21,6 +21,7 @@ History
 """
 from enum import Enum
 
+
 class VocabularyEnum(Enum):
     AAT_ACTIVITIES = "vocab_en_AAT_ACTIVITIES_20231018.json"
     AAT_AGENTS = "vocab_en_AAT_AGENTS_20231018.json"
@@ -38,3 +39,13 @@ class VocabularyEnum(Enum):
     FISH_MARITIME_CRAFT = "vocab_en_FISH_MARITIME_CRAFT_20221104.json"
     FISH_MONUMENT_TYPES = "vocab_en_FISH_MONUMENT_TYPES_20210921.json"
     FISH_PERIODS = "vocab_en_FISH_PERIODS_20211011.json"
+
+    '''
+    @staticmethod
+    def to_ruler(value: VocabularyEnum):
+        ruler_name = ""
+        match value:
+            case VocabularyEnum.AAT_ACTIVITIES:
+                ruler_name = "aat_activities_ruler"
+        return ruler_name
+    '''
