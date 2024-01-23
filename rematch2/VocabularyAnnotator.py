@@ -179,9 +179,14 @@ if __name__ == "__main__":
     Aside from three residual flints, none closely datable, the earliest remains comprised a small assemblage of Roman pottery and ceramic building material, also residual and most likely derived from a Roman farmstead found immediately to the north within the Phase II excavation area. A single sherd of Anglo-Saxon grass-tempered pottery was also residual.
     The earliest features, which accounted for the majority of the remains on site, relate to medieval agricultural activity focused within a large enclosure. There was little to suggest domestic occupation within the site: the pottery assemblage was modest and well abraded, whilst charred plant remains were sparse, and, as with some metallurgical residues, point to waste disposal rather than the locations of processing or consumption. A focus of occupation within the Rodley Manor site, on higher ground 160m to the north-west, seems likely, with the currently site having lain beyond this and providing agricultural facilities, most likely corrals and pens for livestock. Animal bone was absent, but the damp, low-lying ground would have been best suited to cattle. An assemblage of medieval coins recovered from the subsoil during a metal detector survey may represent a dispersed hoard.
     """
-    
-    annotator = VocabularyAnnotator(vocabs=[VocabularyEnum.AAT_ACTIVITIES, VocabularyEnum.FISH_MONUMENT_TYPES])
 
+    txt3 = """
+    The Excavation revealed a wealth of archaeological information. The earliest period was represented by residual finds of a Mesolithic worked flint axe in a medieval plough furrow and Bronze Age aurochs bone in an Iron Age pit. The Iron Age period consisted of several phases of a Banjo Enclosure with associated roundhouses, four-post structures, boundary ditches, pits and a quarry. In the early Roman period there was little activity other than quarrying, but later a farmstead was established with an agricultural system reminiscent of a vineyard. No evidence was recovered for the Saxon period, even as residual finds in later contexts, and thus it is assumed that the site was either unused by the population at that time, or subject to a regime that has left no trace in the archaeological record. In the medieval period a ridge and furrow cultivation system was established that cut across many earlier features but incorporated surprisingly little material from earlier periods. After the medieval period, the site appears to have been largely abandoned until Enclosure. The two phases of work took place between March - May 2000 and subsequently between August - October 2001 by CAM ARC, Cambridgeshire County Council (formerly the Archaeological Field Unit).
+    """
+    
+    #annotator = VocabularyAnnotator(vocabs=[VocabularyEnum.AAT_ACTIVITIES, VocabularyEnum.FISH_MONUMENT_TYPES])
+    
+    annotator = VocabularyAnnotator(vocabs=[VocabularyEnum.FISH_MONUMENT_TYPES])
     # print(annotator.pipe_names)
-    output = annotator.annotateText(input_text=txt1, output_format="dataframe")
+    output = annotator.annotateText(input_text=txt3, output_format="dataframe")
     print(output)
