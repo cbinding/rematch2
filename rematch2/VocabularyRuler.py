@@ -30,7 +30,6 @@ from spacy.language import Language
 from pprint import pprint
 
 import pandas as pd
-import explacy
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
@@ -385,7 +384,7 @@ if __name__ == "__main__":
     # nlp.add_pipe("aat_physical_attributes_ruler", last=True)
     # nlp.add_pipe("aat_styleperiods_ruler", last=True)
     # FISH vocabulary pipeline components
-    
+
     nlp.add_pipe("fish_archobjects_ruler", last=True)
     nlp.add_pipe("fish_monument_types_ruler", last=True)
 
@@ -398,7 +397,7 @@ if __name__ == "__main__":
     # nlp.add_pipe("fish_periods_ruler", last=True)
 
     doc = nlp(test_text.lower())
-    #explacy.print_parse_info(nlp, test_text.lower())
+    # explacy.print_parse_info(nlp, test_text.lower())
     # quick and dirty examination of results:
     # for ent in doc.ents:
     # print(ent.ent_id_, ent.text, ent.label_)

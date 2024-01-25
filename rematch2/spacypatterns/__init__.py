@@ -2,6 +2,7 @@ __version__ = "0.1.0"
 import os, sys
 
 from .patterns_cy_DAYNAME import patterns_cy_DAYNAME
+from .patterns_cz_DAYNAME import patterns_cz_DAYNAME
 from .patterns_de_DAYNAME import patterns_de_DAYNAME
 from .patterns_en_DAYNAME import patterns_en_DAYNAME
 from .patterns_es_DAYNAME import patterns_es_DAYNAME
@@ -11,6 +12,7 @@ from .patterns_nl_DAYNAME import patterns_nl_DAYNAME
 from .patterns_no_DAYNAME import patterns_no_DAYNAME
 from .patterns_sv_DAYNAME import patterns_sv_DAYNAME
 
+from .patterns_cz_MONTHNAME import patterns_cz_MONTHNAME
 from .patterns_de_MONTHNAME import patterns_de_MONTHNAME
 from .patterns_en_MONTHNAME import patterns_en_MONTHNAME
 from .patterns_es_MONTHNAME import patterns_es_MONTHNAME
@@ -20,6 +22,7 @@ from .patterns_nl_MONTHNAME import patterns_nl_MONTHNAME
 from .patterns_no_MONTHNAME import patterns_no_MONTHNAME
 from .patterns_sv_MONTHNAME import patterns_sv_MONTHNAME
 
+from .patterns_cz_SEASONNAME import patterns_cz_SEASONNAME
 from .patterns_de_SEASONNAME import patterns_de_SEASONNAME
 from .patterns_en_SEASONNAME import patterns_en_SEASONNAME
 from .patterns_es_SEASONNAME import patterns_es_SEASONNAME
@@ -29,6 +32,7 @@ from .patterns_nl_SEASONNAME import patterns_nl_SEASONNAME
 from .patterns_no_SEASONNAME import patterns_no_SEASONNAME
 from .patterns_sv_SEASONNAME import patterns_sv_SEASONNAME
 
+from .patterns_cz_ORDINAL import patterns_cz_ORDINAL
 from .patterns_de_ORDINAL import patterns_de_ORDINAL
 from .patterns_en_ORDINAL import patterns_en_ORDINAL
 from .patterns_es_ORDINAL import patterns_es_ORDINAL
