@@ -203,7 +203,8 @@ def get_noun_chunk_pairs(doc: Doc) -> MutableSequence:
 
 
 def main1():
-    log = LogFile("find_pairs_results.txt")
+    # create log file to report results
+    log = LogFile(f"find_pairs_results_{dt_start.strftime('%Y-%m-%d')}.txt")
 
     # write header information to screen
     dt_start = DT.now()
@@ -237,17 +238,21 @@ def main1():
     log.append(f"finished in {duration}")
 
 
-# run using XML file of OASIS abstracts
+# run using XML file of OASIS abstracts (oasis_descr_examples.xml)
 def main2():
-    log = LogFile("find_pairs_results.txt")
+    # OASIS example data received from Tim @ ADS
+    sourceFilePath = "./oasis_descr_examples.xml"
 
-    # write header information to screen
+    # create log file to report results
+    log = LogFile(f"find_pairs_results_{dt_start.strftime('%Y-%m-%d')}.txt")
+    
+    # write header information to log
     dt_start = DT.now()
-
+    log.append(f"Input data file path: '{sourceFilePath}'")    
     log.append(
         f"{__file__} started at {dt_start.strftime('%Y-%m-%dT%H:%M:%S')}")
 
-    sourceFilePath = "./oasis_descr_examples.xml"
+    
     try:
         # read XML file
         tree = ET.parse(sourceFilePath)
@@ -256,37 +261,39 @@ def main2():
         print(f"Could not read from {sourceFilePath}")
         return 0
 
-    # set up configured pipeline once rather than per record (faster?)
+    # set up configured pipeline once only (faster than per record)
     nlp = get_pipeline(periodo_authority_id="p0kh9ds")
 
-    # locate the abstracts in the XML file
     # find records to be processed in the XML file
     # xpathRecords = "/Collections/records/record"
-    xpathRecords = "/table/rows/row"  # OASIS example data from Tim
+    xpathRecords = "/table/rows/row"  
     print(f"looking for xpath {xpathRecords}")
     records = tree.xpath(xpathRecords)
+    
+    # print number of records found 
     totalRecords = len(records)
     print(f"found {totalRecords} records")
-
-    # process each record located
+    
+    # process each record
     currentRecord = 0
     for record in records:
         # find abstract(s) in the current record
         # abstracts = record.xpath('dc:description/text()',
-        # namespaces={'dc': 'http://purl.org/dc/elements/1.1/'})
+        # namespaces={'dc': 'http://purl.org/dc/elements/1.1/'}) 
+        abstracts = record.xpath("value[@columnNumber='1']/text()")
         # find identifier(s) in the current record
         # identifiers = record.xpath('dc:source/text()',
         # namespaces={'dc': 'http://purl.org/dc/elements/1.1/'})
-        # OASIS example data from Tim
-        abstracts = record.xpath("value[@columnNumber='1']/text()")
-        # OASIS example data from Tim
         identifiers = record.xpath("value[@columnNumber='0']/text()")
 
+        # if multiple abstracts for record, get first one
         if (len(abstracts) > 0):
             abstract = abstracts[0]
         else:
             abstract = ""
 
+        # if multiple identifiers for record, get first one
+        # and remove URL prefix if present
         if (len(identifiers) > 0):
             identifier = identifiers[0]
             identifier = identifier.replace(
@@ -294,11 +301,12 @@ def main2():
         else:
             identifier = ""
 
+        # process this abstract
         log.append(f"ID: {identifier}")
-
         log.append(find_period_object_pairs(
             nlp=nlp, periodo_authority_id="p0kh9ds", input_text=abstract.lower()))
 
+    # finished - write footer information to log
     dt_end = DT.now()
     log.append(
         f"{__file__} finished at {dt_start.strftime('%Y-%m-%dT%H:%M:%S')}")

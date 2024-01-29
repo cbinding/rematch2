@@ -246,6 +246,15 @@ def create_aat_styleperiods_ruler(nlp: Language, name: str = "aat_styleperiods_r
             VocabularyEnum.AAT_STYLEPERIODS)
     )
 
+@Language.factory(name="amcr_ruler")
+def create_amcr_ruler(nlp: Language, name: str = "amcr_ruler") -> VocabularyRuler:
+    return VocabularyRuler(
+        nlp=nlp,
+        name=name,
+        default_label="AMCR",
+        default_language="cs",
+        vocabulary=VocabularyRuler._vocabulary_from_enum(VocabularyEnum.AMCR)
+    )
 
 @Language.factory("fish_archobjects_ruler")
 def create_fish_archobjects_ruler(nlp: Language, name: str = "fish_archobjects_ruler") -> VocabularyRuler:
