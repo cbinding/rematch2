@@ -46,7 +46,7 @@ class BaseRuler(EntityRuler):
     def __init__(
         self,
         nlp: Language,
-        name: str = "base-ruler",
+        name: str = "base_ruler",
         lemmatize: bool = True,
         pos: MutableSequence = [],
         min_term_length: int = 3,
@@ -80,15 +80,15 @@ class BaseRuler(EntityRuler):
         patterns_to_add = []
         for item in patterns:
             # clean input values before using
-            clean_id = item.get("id", "").strip()
-            clean_label = item.get("label", default_label).strip()
+            clean_id = BaseRuler.normalize_string_whitespace(item.get("id", ""))
+            clean_label = BaseRuler.normalize_string_whitespace(item.get("label", default_label))
             pattern = item.get("pattern", "")
 
             # is there even a pattern present? 
             # (at this point it may be a list or a str)
             if len(pattern) > 0:
 
-                # if pattern is already built [list]
+                # if pattern is already built [{},{}]
                 if isinstance(pattern, list):
 
                     # add to list of patterns_to_add
@@ -101,9 +101,8 @@ class BaseRuler(EntityRuler):
                 # if pattern is plain string term/phrase    
                 elif isinstance(pattern, str):
                     
-                    # normalize whitespace (inconsistent 
-                    # whitespace can frustrate matching)
-                    clean_phrase = ' '.join(pattern.strip().split())
+                    # normalize whitespace (inconsistent whitespace can frustrate matching)
+                    clean_phrase = BaseRuler.normalize_string_whitespace(pattern)
                     
                     # if too small don't include it at all
                     if len(clean_phrase) < min_term_length:
@@ -151,6 +150,7 @@ class BaseRuler(EntityRuler):
                         new_pattern.append(pat)
 
                     # add newly built pattern to list of patterns
+                    # print(new_pattern)
                     patterns_to_add.append({
                         "id": clean_id,
                         "label": clean_label,
@@ -161,6 +161,33 @@ class BaseRuler(EntityRuler):
         if len(patterns_to_add) > 0:
             self.add_patterns(patterns_to_add) 
 
+
+
+    # new - experimental (static) functions to make things less complicated?
+    @staticmethod
+    def normalize_string_whitespace(s: str = ""): 
+        return ' '.join(s.strip().split())   
+    
+
+    @staticmethod
+    # not used yet
+    def convert_string_to_pattern(s: str = "", preserve_case: bool = False)-> list: 
+        clean_s = BaseRuler.normalize_string_whitespace(s) #.replace("\"", "\\\"")
+        item = {}
+        if(preserve_case):
+           item["TEXT"] = clean_s 
+        else:
+            item["LOWER"] = clean_s.lower()
+        return [item]
+
+
+    @staticmethod
+    # not used yet - add pos list to last element in a pattern
+    def add_pos_to_last_pattern_element(pattern: list=[], pos: list=[]) -> list:                           
+        if len(pattern) > 0 and len(pos) > 0:
+            pattern[-1]["POS"] = { "IN": pos }
+        return pattern
+        
 
     def __call__(self, doc: Doc) -> Doc:
         EntityRuler.__call__(self, doc)
@@ -416,7 +443,7 @@ if __name__ == "__main__":
     # nlp.add_pipe("fish_maritime_craft_ruler", last=True)
     # nlp.add_pipe("fish_periods_ruler", last=True)
 
-    doc = nlp(test_text4)
+    doc = nlp(test_text3.lower())
     # explacy.print_parse_info(nlp, test_text.lower())
     # quick and dirty examination of results:
     # for ent in doc.ents:
