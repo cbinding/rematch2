@@ -66,6 +66,7 @@ class PeriodoData:
     def _json_from_url(url: str):
         """download JSON data from URL"""
         data = json.loads(urlopen(url).read().decode("utf-8"))
+        #data = json.loads(urlopen(url).read())
         return data
 
     @staticmethod
@@ -83,7 +84,7 @@ class PeriodoData:
             json.dump(data, f, indent=3)
 
     @staticmethod
-    def _cache_from_url(url=None, file_name:str=None):
+    def _cache_from_url(url=None, file_name: str=None):
         """refresh locally cached JSON file"""
         if url == None:
             url = PeriodoData.PERIODO_URI

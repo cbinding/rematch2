@@ -32,12 +32,12 @@ import argparse                         # for argument parsing
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from BaseAnnotator import BaseAnnotator
-    from VocabularyRuler import *
+    from BaseRuler import *
     from VocabularyEnum import VocabularyEnum
 else:
     # uses current package visibility
     from .BaseAnnotator import BaseAnnotator
-    from .VocabularyRuler import *
+    from .BaseRuler import *
     from .VocabularyEnum import VocabularyEnum
 
 # TODO: formats and vocabularies as enums??
@@ -56,6 +56,8 @@ class VocabularyAnnotator(BaseAnnotator):
             # get applicable ruler component
             pipe_name = ""
             match vocab:
+                case VocabularyEnum.AMCR:
+                    pipe_name = "amcr_ruler"
                 case VocabularyEnum.AAT_ACTIVITIES:
                     pipe_name = "aat_activities_ruler"
                 case VocabularyEnum.AAT_AGENTS:

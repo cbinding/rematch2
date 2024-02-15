@@ -23,12 +23,12 @@ from spacy.language import Language
 
 from ..spacypatterns import vocab_en_AAT_AGENTS
 # from .PatternRuler import PatternRuler
-from .VocabularyRuler import create_vocabulary_ruler
+from .BaseRuler import create_base-ruler
 
 
 @Language.factory("aat_agent_ruler")
 def create_aat_agent_ruler(nlp, name="aat_agent_ruler"):
-    return create_vocabulary_ruler(nlp, name=name, label="AGENT", language="en", vocab=vocab_en_AAT_AGENTS)
+    return create_base-ruler(nlp, name=name, label="AGENT", language="en", vocab=vocab_en_AAT_AGENTS)
 
 
 # test the AAT_AgentRuler class

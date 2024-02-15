@@ -23,12 +23,12 @@ from spacy.language import Language
 
 from ..spacypatterns import patterns_en_AAT_STYLEPERIODS
 # from .PatternRuler import PatternRuler
-from .VocabularyRuler import create_vocabulary_ruler
+from .BaseRuler import create_base-ruler
 
 
 @Language.factory("aat_styleperiod_ruler")
 def create_aat_styleperiod_ruler(nlp, name="aat_styleperiod_ruler"):
-    return create_vocabulary_ruler(nlp, name=name, label="STYLEPERIOD", language="en", vocab=vocab_en_AAT_STYLEPERIODS)
+    return create_base-ruler(nlp, name=name, label="STYLEPERIOD", language="en", vocab=vocab_en_AAT_STYLEPERIODS)
 
 
 # test the AAT_StylePeriodRuler class

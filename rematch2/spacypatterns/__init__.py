@@ -1,8 +1,8 @@
 __version__ = "0.1.0"
 import os, sys
 
+from .patterns_cs_DAYNAME import patterns_cs_DAYNAME
 from .patterns_cy_DAYNAME import patterns_cy_DAYNAME
-from .patterns_cz_DAYNAME import patterns_cz_DAYNAME
 from .patterns_de_DAYNAME import patterns_de_DAYNAME
 from .patterns_en_DAYNAME import patterns_en_DAYNAME
 from .patterns_es_DAYNAME import patterns_es_DAYNAME
@@ -12,7 +12,7 @@ from .patterns_nl_DAYNAME import patterns_nl_DAYNAME
 from .patterns_no_DAYNAME import patterns_no_DAYNAME
 from .patterns_sv_DAYNAME import patterns_sv_DAYNAME
 
-from .patterns_cz_MONTHNAME import patterns_cz_MONTHNAME
+from .patterns_cs_MONTHNAME import patterns_cs_MONTHNAME
 from .patterns_de_MONTHNAME import patterns_de_MONTHNAME
 from .patterns_en_MONTHNAME import patterns_en_MONTHNAME
 from .patterns_es_MONTHNAME import patterns_es_MONTHNAME
@@ -22,7 +22,7 @@ from .patterns_nl_MONTHNAME import patterns_nl_MONTHNAME
 from .patterns_no_MONTHNAME import patterns_no_MONTHNAME
 from .patterns_sv_MONTHNAME import patterns_sv_MONTHNAME
 
-from .patterns_cz_SEASONNAME import patterns_cz_SEASONNAME
+from .patterns_cs_SEASONNAME import patterns_cs_SEASONNAME
 from .patterns_de_SEASONNAME import patterns_de_SEASONNAME
 from .patterns_en_SEASONNAME import patterns_en_SEASONNAME
 from .patterns_es_SEASONNAME import patterns_es_SEASONNAME
@@ -32,7 +32,7 @@ from .patterns_nl_SEASONNAME import patterns_nl_SEASONNAME
 from .patterns_no_SEASONNAME import patterns_no_SEASONNAME
 from .patterns_sv_SEASONNAME import patterns_sv_SEASONNAME
 
-from .patterns_cz_ORDINAL import patterns_cz_ORDINAL
+from .patterns_cs_ORDINAL import patterns_cs_ORDINAL
 from .patterns_de_ORDINAL import patterns_de_ORDINAL
 from .patterns_en_ORDINAL import patterns_en_ORDINAL
 from .patterns_es_ORDINAL import patterns_es_ORDINAL
@@ -42,6 +42,7 @@ from .patterns_nl_ORDINAL import patterns_nl_ORDINAL
 from .patterns_no_ORDINAL import patterns_no_ORDINAL
 from .patterns_sv_ORDINAL import patterns_sv_ORDINAL
 
+from .patterns_cs_CENTURY import patterns_cs_CENTURY
 from .patterns_de_CENTURY import patterns_de_CENTURY
 from .patterns_en_CENTURY import patterns_en_CENTURY
 from .patterns_es_CENTURY import patterns_es_CENTURY
@@ -51,6 +52,7 @@ from .patterns_nl_CENTURY import patterns_nl_CENTURY
 from .patterns_no_CENTURY import patterns_no_CENTURY
 from .patterns_sv_CENTURY import patterns_sv_CENTURY
 
+from .patterns_cs_DATEPREFIX import patterns_cs_DATEPREFIX
 from .patterns_de_DATEPREFIX import patterns_de_DATEPREFIX
 from .patterns_en_DATEPREFIX import patterns_en_DATEPREFIX
 from .patterns_es_DATEPREFIX import patterns_es_DATEPREFIX
@@ -60,6 +62,7 @@ from .patterns_nl_DATEPREFIX import patterns_nl_DATEPREFIX
 from .patterns_no_DATEPREFIX import patterns_no_DATEPREFIX
 from .patterns_sv_DATEPREFIX import patterns_sv_DATEPREFIX
 
+from .patterns_cs_DATESUFFIX import patterns_cs_DATESUFFIX
 from .patterns_de_DATESUFFIX import patterns_de_DATESUFFIX
 from .patterns_en_DATESUFFIX import patterns_en_DATESUFFIX
 from .patterns_es_DATESUFFIX import patterns_es_DATESUFFIX
@@ -69,6 +72,7 @@ from .patterns_nl_DATESUFFIX import patterns_nl_DATESUFFIX
 from .patterns_no_DATESUFFIX import patterns_no_DATESUFFIX
 from .patterns_sv_DATESUFFIX import patterns_sv_DATESUFFIX
 
+from .patterns_cs_DATESEPARATOR import patterns_cs_DATESEPARATOR
 from .patterns_de_DATESEPARATOR import patterns_de_DATESEPARATOR
 from .patterns_en_DATESEPARATOR import patterns_en_DATESEPARATOR
 from .patterns_es_DATESEPARATOR import patterns_es_DATESEPARATOR
@@ -78,6 +82,7 @@ from .patterns_nl_DATESEPARATOR import patterns_nl_DATESEPARATOR
 from .patterns_no_DATESEPARATOR import patterns_no_DATESEPARATOR
 from .patterns_sv_DATESEPARATOR import patterns_sv_DATESEPARATOR
 
+from .patterns_cs_YEARSPAN import patterns_cs_YEARSPAN
 from .patterns_de_YEARSPAN import patterns_de_YEARSPAN
 from .patterns_en_YEARSPAN import patterns_en_YEARSPAN
 from .patterns_es_YEARSPAN import patterns_es_YEARSPAN
@@ -91,5 +96,23 @@ from .patterns_sv_YEARSPAN import patterns_sv_YEARSPAN
 from .patterns_no_NAMEDPERIOD import patterns_no_NAMEDPERIOD
 from .patterns_sv_NAMEDPERIOD import patterns_sv_NAMEDPERIOD
 
+#vocabularies
+from .patterns_cs_AMCR_20221208 import patterns_cs_AMCR
+from .patterns_en_AAT_ACTIVITIES_20231018 import patterns_en_AAT_ACTIVITIES
+from .patterns_en_AAT_AGENTS_20231018 import patterns_en_AAT_AGENTS
+from .patterns_en_AAT_ASSOCIATED_CONCEPTS_20231018 import patterns_en_AAT_ASSOCIATED_CONCEPTS
+from .patterns_en_AAT_MATERIALS_20231018 import patterns_en_AAT_MATERIALS
+from .patterns_en_AAT_OBJECTS_20231018 import patterns_en_AAT_OBJECTS
+from .patterns_en_AAT_PHYSICAL_ATTRIBUTES_20231018 import patterns_en_AAT_PHYSICAL_ATTRIBUTES
+from .patterns_en_AAT_STYLEPERIODS_20231018 import patterns_en_AAT_STYLEPERIODS
+from .patterns_en_FISH_ARCHOBJECTS_20210921 import patterns_en_FISH_ARCHOBJECTS
+from .patterns_en_FISH_ARCHSCIENCES_20210921 import patterns_en_FISH_ARCHSCIENCES
+from .patterns_en_FISH_BUILDING_MATERIALS_20210921 import patterns_en_FISH_BUILDING_MATERIALS
+from .patterns_en_FISH_COMPONENTS_20210921 import patterns_en_FISH_COMPONENTS
+from .patterns_en_FISH_EVENT_TYPES_20210921 import patterns_en_FISH_EVENT_TYPES
+from .patterns_en_FISH_EVIDENCE_20210921 import patterns_en_FISH_EVIDENCE
+from .patterns_en_FISH_MARITIME_CRAFT_20221104 import patterns_en_FISH_MARITIME_CRAFT
+from .patterns_en_FISH_MONUMENT_TYPES_20210921 import patterns_en_FISH_MONUMENT_TYPES
+from .patterns_en_FISH_PERIODS_20211011 import patterns_en_FISH_PERIODS
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))

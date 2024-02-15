@@ -12,7 +12,7 @@ from .SeasonNameRuler import create_seasonname_ruler
 from .TemporalAnnotator import TemporalAnnotator
 from .VocabularyAnnotator import VocabularyAnnotator
 from .VocabularyEnum import VocabularyEnum
-from .VocabularyRuler import VocabularyRuler
+from .BaseRuler import BaseRuler
 from .YearSpanRuler import create_yearspan_ruler
 
 __version__ = "0.2.0"

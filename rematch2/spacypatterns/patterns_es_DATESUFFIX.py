@@ -14,29 +14,94 @@ History :   25/01/2024 CFB Initially created script
 =============================================================================
 """
 patterns_es_DATESUFFIX = [
-    { 
-        # "ac | dc | ad | bc | bce | bp | ce | a.c. | d.c. | a.d. | b.c. | b.c.e. | b.p. | c.e."
-        "label": "DATESUFFIX",
-		"pattern": [
-            {"OP": "?", "LOWER": {"REGEX": r"cal\.?"}},
-            {"LOWER": {"REGEX": r"^(ac|dc|ad|bce?|bp|ce|a\.c\.|d\.c\.|a\.d\.|b\.c\.(e\.)?|b\.p\.|c\.e\.)$"}}
-        ]
+    {
+    "id": "ad",
+    "label": "DATESUFFIX",
+    "pattern": "AD"
     },
-    { 
-        # "a. C. | d. C."
-        "label": "DATESUFFIX",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^[ad]\.$"}},
-            {"LOWER": "c."}
-        ]
+    {
+    "id": "ad",
+    "label": "DATESUFFIX",
+    "pattern": "A.D."
     },
-    { 
-        # "de cristo" | "antes de cristo"
-        "label": "DATESUFFIX",
-		"pattern": [
-            {"OP": "?", "LOWER": "antes"},
-            {"LOWER": "de"},
-            {"LOWER": "cristo"}
-        ]
-    }
+    {
+    "id": "ad",
+    "label": "DATESUFFIX",
+    "pattern": "DC"
+    },
+    {
+    "id": "ad",
+    "label": "DATESUFFIX",
+    "pattern": "d.C."
+    },
+    {
+    "id": "ad",
+    "label": "DATESUFFIX",
+    "pattern": "de cristo"
+    },
+  {
+    "id": "bc",
+    "label": "DATESUFFIX",
+    "pattern": "BC"
+  },  
+  {
+    "id": "bc",
+    "label": "DATESUFFIX",
+    "pattern": "B.C."
+  },  
+  {
+    "id": "bc",
+    "label": "DATESUFFIX",
+    "pattern": "AC"
+  },  
+  {
+    "id": "bc",
+    "label": "DATESUFFIX",
+    "pattern": "a.C."
+  },  
+  {
+    "id": "bc",
+    "label": "DATESUFFIX",
+    "pattern": "antes de cristo"
+  },  
+  {
+    "id": "ce",
+    "label": "DATESUFFIX",
+    "pattern": "CE"
+  }, 
+  {
+    "id": "ce",
+    "label": "DATESUFFIX",
+    "pattern": "C.E."
+  },  
+  {
+    "id": "bce",
+    "label": "DATESUFFIX",
+    "pattern": "BCE"
+  },
+  {
+    "id": "bce",
+    "label": "DATESUFFIX",
+    "pattern": "B.C.E."
+  },
+  {
+    "id": "bp",
+    "label": "DATESUFFIX",
+    "pattern": "BP"
+  },
+  {
+    "id": "bp",
+    "label": "DATESUFFIX",
+    "pattern": "B.P."
+  },
+  {
+    "id": "bp",
+    "label": "DATESUFFIX",
+    "pattern": "cal. BP"
+  },
+  {
+    "id": "bp",
+    "label": "DATESUFFIX",
+    "pattern": "cal. B.P."
+  }
 ]

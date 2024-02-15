@@ -23,7 +23,7 @@ import spacy
 from spacy.language import Language
 from spacy.pipeline import EntityRuler
 from spacy.tokens import Doc
-
+#from spacy.lang.cs import Czech #doesn't exist yet..
 from spacy.lang.de import German
 from spacy.lang.en import English
 from spacy.lang.es import Spanish
@@ -32,6 +32,7 @@ from spacy.lang.it import Italian
 from spacy.lang.nl import Dutch
 from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
+from spacy.lang.pl import Polish # experimental substitute for Czech as it doesn't exist yet..
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
@@ -56,7 +57,7 @@ else:
 # YearSpanRuler is a specialized EntityRuler
 class YearSpanRuler(EntityRuler):
 
-    def __init__(self, nlp: Language, name: str, patterns=[]) -> None:
+    def __init__(self, nlp: Language, name: str, patterns: MutableSequence = []) -> None:
 
         EntityRuler.__init__(
             self,
@@ -84,6 +85,7 @@ class YearSpanRuler(EntityRuler):
         # add patterns to this pipeline component
         self.add_patterns(patterns)
 
+
     def __call__(self, doc: Doc) -> Doc:
 
         doc = EntityRuler.__call__(self, doc)
@@ -100,43 +102,48 @@ def create_yearspan_ruler(nlp: Language, name: str = "yearspan_ruler", patterns:
 
 
 @German.factory("yearspan_ruler")
-def create_yearspan_ruler_de(nlp: Language, name: str = "yearspan_ruler_de") -> YearSpanRuler:
+def create_yearspan_ruler_de(nlp: Language, name: str = "yearspan_ruler") -> YearSpanRuler:
     return create_yearspan_ruler(nlp, name, patterns_de_YEARSPAN)
 
 
 @English.factory("yearspan_ruler")
-def create_yearspan_ruler_en(nlp: Language, name: str = "yearspan_ruler_en") -> YearSpanRuler:
+def create_yearspan_ruler_en(nlp: Language, name: str = "yearspan_ruler") -> YearSpanRuler:
     return create_yearspan_ruler(nlp, name, patterns_en_YEARSPAN)
 
 
 @Spanish.factory("yearspan_ruler")
-def create_yearspan_ruler_es(nlp: Language, name: str = "yearspan_ruler_es") -> YearSpanRuler:
+def create_yearspan_ruler_es(nlp: Language, name: str = "yearspan_ruler") -> YearSpanRuler:
     return create_yearspan_ruler(nlp, name, patterns_es_YEARSPAN)
 
 
 @French.factory("yearspan_ruler")
-def create_yearspan_ruler_fr(nlp: Language, name: str = "yearspan_ruler_fr") -> YearSpanRuler:
+def create_yearspan_ruler_fr(nlp: Language, name: str = "yearspan_ruler") -> YearSpanRuler:
     return create_yearspan_ruler(nlp, name, patterns_fr_YEARSPAN)
 
 
 @Italian.factory("yearspan_ruler")
-def create_yearspan_ruler_it(nlp: Language, name: str = "yearspan_ruler_it") -> YearSpanRuler:
+def create_yearspan_ruler_it(nlp: Language, name: str = "yearspan_ruler") -> YearSpanRuler:
     return create_yearspan_ruler(nlp, name, patterns_it_YEARSPAN)
 
 
 @Dutch.factory("yearspan_ruler")
-def create_yearspan_ruler_nl(nlp: Language, name: str = "yearspan_ruler_nl") -> YearSpanRuler:
+def create_yearspan_ruler_nl(nlp: Language, name: str = "yearspan_ruler") -> YearSpanRuler:
     return create_yearspan_ruler(nlp, name, patterns_nl_YEARSPAN)
 
 
 @Norwegian.factory("yearspan_ruler")
-def create_yearspan_ruler_no(nlp: Language, name: str = "yearspan_ruler_no") -> YearSpanRuler:
+def create_yearspan_ruler_no(nlp: Language, name: str = "yearspan_ruler") -> YearSpanRuler:
     return create_yearspan_ruler(nlp, name, patterns_no_YEARSPAN)
 
 
 @Swedish.factory("yearspan_ruler")
-def create_yearspan_ruler_sv(nlp: Language, name: str = "yearspan_ruler_sv") -> YearSpanRuler:
+def create_yearspan_ruler_sv(nlp: Language, name: str = "yearspan_ruler") -> YearSpanRuler:
     return create_yearspan_ruler(nlp, name, patterns_sv_YEARSPAN)
+
+# Polish as temp experimental substitute until Czech is available
+@Polish.factory("yearspan_ruler")
+def create_yearspan_ruler_cs(nlp: Language, name: str = "yearspan_ruler") -> YearSpanRuler:
+    return create_yearspan_ruler(nlp, name, patterns_cs_YEARSPAN)
 
     
 # test the YearSpanRuler class

@@ -10,7 +10,7 @@ from test_examples_english import test_examples_english
 from test_examples_oasis import test_examples_oasis
 from collections.abc import MutableSequence
 from rematch2.NamedPeriodRuler import create_namedperiod_ruler
-from rematch2.VocabularyRuler import create_fish_monument_types_ruler
+from rematch2.BaseRuler import create_fish_monument_types_ruler
 
 from lxml import etree as ET
 

@@ -34,6 +34,8 @@ class BaseAnnotator():
         # start with predefined language-specific spaCy pipeline
         pipe_name = ""
         match language.strip().lower():
+            case "cs":
+                pipe_name = "pl_core_news_sm"   # Polish (experiment for now, as there is no Czech SpaCy)
             case "de":
                 pipe_name = "de_core_news_sm"   # German
             case "es":
@@ -91,15 +93,15 @@ class BaseAnnotator():
         # convert the results to the required format
         match output_format.strip().lower():
             case "html":
-                output = self._to_html(doc)
+                output = self.__doc_to_html(doc)
             case "ttl":
-                output = self.__to_ttl(doc)
+                output = self.__doc_to_ttl(doc)
             case "json":
-                output = self.__to_json(doc)
+                output = self.__doc_to_json(doc)
             case "dataframe":
-                output = self.__to_dataframe(doc)
+                output = self.__doc_to_dataframe(doc)
             case "csv":
-                output = self.__to_csv(doc)
+                output = self.__doc_to_csv(doc)
             case _:
                 output = doc  # spaCy doc for further processing
 
@@ -119,7 +121,7 @@ class BaseAnnotator():
 
     # convert results to pandas.DataFrame object
     @staticmethod
-    def __to_dataframe(doc: Doc) -> pd.DataFrame:
+    def __doc_to_dataframe(doc: Doc) -> pd.DataFrame:
         data = [{
             "from": ent.start_char,
             "to": ent.end_char - 1,
@@ -135,21 +137,21 @@ class BaseAnnotator():
     # or write to specified CSV file if name supplied
 
     @staticmethod
-    def __to_csv(doc: Doc, fileName: str = None) -> str:
-        df = BaseAnnotator.__to_dataframe(doc)
+    def __doc_to_csv(doc: Doc, fileName: str = None) -> str:
+        df = BaseAnnotator.__doc_to_dataframe(doc)
         return df.to_csv(fileName, index=False)
 
     # convert results to JSON formatted string,
     # or write to specified JSON file if name supplied
 
     @staticmethod
-    def __to_json(doc: Doc, fileName: str = None) -> str:
-        df = BaseAnnotator.__to_dataframe(doc)
+    def __doc_to_json(doc: Doc, fileName: str = None) -> str:
+        df = BaseAnnotator.__doc_to_dataframe(doc)
         return df.to_json(fileName, orient="records")
 
     # convert results to TTL (Turtle RDF) formatted string
     @staticmethod
-    def __to_ttl(doc: Doc, id: str=None) -> str:
+    def __doc_to_ttl(doc: Doc, id: str=None) -> str:
         ttl = ""
         if (id is None):
             id = "http://tempuri/mydata"
@@ -159,14 +161,14 @@ class BaseAnnotator():
     # convert results to python dictionary
 
     @staticmethod
-    def __to_dict(doc: Doc) -> dict:
-        df = BaseAnnotator.__to_dataframe(doc)
+    def __doc_to_dict(doc: Doc) -> dict:
+        df = BaseAnnotator.__doc_to_dataframe(doc)
         return df.to_dict(orient="records")
 
     # convert results to HTML formatted string
 
     @staticmethod
-    def _to_html(doc: Doc, options = {}) -> str:
+    def __doc_to_html(doc: Doc, options = {}) -> str:
         # generate and return HTML marked up text
         # options passed in to specify colours for HTML output
         output = displacy.render(doc, style="ent", options=options)

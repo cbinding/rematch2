@@ -29,15 +29,15 @@ from spacy.language import Language
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from PeriodoData import PeriodoData
-    from VocabularyRuler import VocabularyRuler
+    from BaseRuler import BaseRuler
 else:
     # uses current package visibility
     from .PeriodoData import PeriodoData
-    from .VocabularyRuler import VocabularyRuler
+    from .BaseRuler import BaseRuler
 
 
 @Language.factory(name="namedperiod_ruler", default_config={"periodo_authority_id": None})
-def create_namedperiod_ruler(nlp: Language, name: str="namedperiod_ruler", periodo_authority_id: str="") -> VocabularyRuler:
+def create_namedperiod_ruler(nlp: Language, name: str="namedperiod_ruler", periodo_authority_id: str="") -> BaseRuler:
     # get terms from selected Perio.do authority as vocab
     # get as new instance, don't refresh cached data
     pd = PeriodoData(from_cache=True) #tmp...
@@ -45,23 +45,22 @@ def create_namedperiod_ruler(nlp: Language, name: str="namedperiod_ruler", perio
     # get periods for authority id
     periods = pd.get_period_list(periodo_authority_id)
 
-    # convert to vocabulary for use by VocabularyRuler
-    vocabulary = list(map(lambda item: {
+    # convert to vocabulary for use by BaseRuler
+    patterns = list(map(lambda item: {
         "id": item.get("uri", ""),
-        "language": item.get("language", "en"),
         "label": "NAMEDPERIOD",
-        "term": item.get("label", "")
+        "pattern": item.get("label", "")
     }, periods or []))
 
     #print(vocabulary)
 
     # create and return vocabulary ruler instance
-    return VocabularyRuler(
+    return BaseRuler(
         nlp=nlp,
         name=name,
         lemmatize=False,
         default_label="NAMEDPERIOD",        
-        vocabulary=vocabulary
+        patterns=patterns
     )
 
 

@@ -26,11 +26,11 @@ from spacy.language import Language
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from PeriodoData import PeriodoData
-    from VocabularyRuler import VocabularyRuler
+    from BaseRuler import BaseRuler
 else:
     # uses current package visibility
     from .PeriodoData import PeriodoData
-    from .VocabularyRuler import VocabularyRuler
+    from .BaseRuler import BaseRuler
 
 
 @Language.factory(name="namedperiod_ruler", default_config={"periodo_authority_id": None})

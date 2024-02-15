@@ -20,7 +20,7 @@ import os
 import sys
 import spacy            # NLP library
 from collections.abc import MutableSequence
-from spacy.pipeline import EntityRuler
+#from spacy.pipeline import EntityRuler
 
 from spacy.language import Language
 from spacy.lang.de import German
@@ -31,67 +31,74 @@ from spacy.lang.it import Italian
 from spacy.lang.nl import Dutch
 from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
+# from spacy.lang.cs import Czech # doesn't exist yet..
+from spacy.lang.pl import Polish # experimental substitute for Czech
 
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from spacypatterns import *
+    from BaseRuler import *
 else:
     # uses current package visibility
     from .spacypatterns import *
+    from .BaseRuler import *
 
 
-@Language.factory("datesuffix_ruler")
-def create_datesuffix_ruler(nlp: Language, name: str="datesuffix_ruler", patterns: MutableSequence=[]) -> EntityRuler:
-    return EntityRuler(
+@Language.factory(name="datesuffix_ruler")
+def create_datesuffix_ruler(nlp: Language, name: str="datesuffix_ruler", patterns: MutableSequence=[]) -> BaseRuler:
+    return BaseRuler(
         nlp=nlp,
         name=name,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||",
+        default_label="DATESUFFIX",
+        lemmatize=False,
+        min_term_length=2,
         patterns=patterns
     )
 
-
 @German.factory("datesuffix_ruler")
-def create_datesuffix_ruler_de(nlp: Language, name: str="datesuffix_ruler_de") -> EntityRuler:
+def create_datesuffix_ruler_de(nlp: Language, name: str = "datesuffix_ruler") -> BaseRuler:
     return create_datesuffix_ruler(nlp, name, patterns_de_DATESUFFIX)
-
+    
 
 @English.factory("datesuffix_ruler")
-def create_datesuffix_ruler_en(nlp: Language, name: str = "datesuffix_ruler_en") -> EntityRuler:
-    return create_datesuffix_ruler(nlp, name, patterns_en_DATESUFFIX)
+def create_datesuffix_ruler_en(nlp: Language, name: str = "datesuffix_ruler") -> BaseRuler:
+   return create_datesuffix_ruler(nlp, name, patterns_en_DATESUFFIX)
 
 
 @Spanish.factory("datesuffix_ruler")
-def create_datesuffix_ruler_es(nlp: Language, name: str = "datesuffix_ruler_es") -> EntityRuler:
+def create_datesuffix_ruler_es(nlp: Language, name: str = "datesuffix_ruler") -> BaseRuler:
     return create_datesuffix_ruler(nlp, name, patterns_es_DATESUFFIX)
 
 
 @French.factory("datesuffix_ruler")
-def create_datesuffix_ruler_fr(nlp: Language, name: str = "datesuffix_ruler_fr") -> EntityRuler:
+def create_datesuffix_ruler_fr(nlp: Language, name: str = "datesuffix_ruler") -> BaseRuler:
     return create_datesuffix_ruler(nlp, name, patterns_fr_DATESUFFIX)
 
 
 @Italian.factory("datesuffix_ruler")
-def create_datesuffix_ruler_it(nlp: Language, name: str = "datesuffix_ruler_it") -> EntityRuler:
+def create_datesuffix_ruler_it(nlp: Language, name: str = "datesuffix_ruler") -> BaseRuler:
     return create_datesuffix_ruler(nlp, name, patterns_it_DATESUFFIX)
 
 
 @Dutch.factory("datesuffix_ruler")
-def create_datesuffix_ruler_nl(nlp: Language, name: str = "datesuffix_ruler_nl") -> EntityRuler:
+def create_datesuffix_ruler_nl(nlp: Language, name: str = "datesuffix_ruler") -> BaseRuler:
     return create_datesuffix_ruler(nlp, name, patterns_nl_DATESUFFIX)
 
 
 @Norwegian.factory("datesuffix_ruler")
-def create_datesuffix_ruler_no(nlp: Language, name: str = "datesuffix_ruler_no") -> EntityRuler:
+def create_datesuffix_ruler_no(nlp: Language, name: str = "datesuffix_ruler") -> BaseRuler:
     return create_datesuffix_ruler(nlp, name, patterns_no_DATESUFFIX)
 
 
 @Swedish.factory("datesuffix_ruler")
-def create_datesuffix_ruler_sv(nlp: Language, name: str = "datesuffix_ruler_sv") -> EntityRuler:
+def create_datesuffix_ruler_sv(nlp: Language, name: str = "datesuffix_ruler") -> BaseRuler:
     return create_datesuffix_ruler(nlp, name, patterns_sv_DATESUFFIX)
+
+# Polish as temp experimental substitute until Czech is available
+@Polish.factory("datesuffix_ruler")
+def create_datesuffix_ruler_cs(nlp: Language, name: str = "datesuffix_ruler") -> BaseRuler:
+    return create_datesuffix_ruler(nlp, name, patterns_cs_DATESUFFIX)
 
 
 # test the pipeline component

@@ -9,7 +9,7 @@ Project :
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
             to identify Terms from the Getty AAT Objects Facet in free text. 
             Entity type added will be "OBJECT"
-Imports :   os, sys, spacy, Language, VocabularyRuler
+Imports :   os, sys, spacy, Language, BaseRuler
 Example :   nlp.add_pipe("aat_object_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History :   04/10/2023 CFB Initially created script
@@ -23,14 +23,14 @@ from spacy.language import Language
 
 from ..spacypatterns import vocab_en_AAT_OBJECTS
 # from .PatternRuler import PatternRuler
-# from .VocabularyRuler import create_vocabulary_ruler
-from .VocabularyRuler import VocabularyRuler
+# from .BaseRuler import create_base-ruler
+from .BaseRuler import BaseRuler
 
 
 @Language.factory("aat_object_ruler")
 def create_aat_object_ruler(nlp, name="aat_object_ruler", default_config={"lemmatize": True, "pos": ["NOUN"]}):
-    # return create_vocabulary_ruler(nlp, name=name, config={default_label: "OBJECT", default_language: "en", lemmatize: True, vocab: vocab_en_AAT_OBJECTS})
-    return VocabularyRuler(nlp, name=name, default_label="OBJECT", default_language="en", lemmatize=True, vocab=vocab_en_AAT_OBJECTS)
+    # return create_base-ruler(nlp, name=name, config={default_label: "OBJECT", default_language: "en", lemmatize: True, vocab: vocab_en_AAT_OBJECTS})
+    return BaseRuler(nlp, name=name, default_label="OBJECT", default_language="en", lemmatize=True, vocab=vocab_en_AAT_OBJECTS)
     # return None
 
 

@@ -24,7 +24,7 @@ from spacy.language import Language
 # from ..spacypatterns import patterns_en_AAT_ACTIVITIES
 from ..spacypatterns import vocab_en_AAT_ACTIVITIES
 # from .PatternRuler import PatternRuler
-from .VocabularyRuler import create_vocabulary_ruler
+from .BaseRuler import create_base-ruler
 
 # @Language.factory("aat_activity_ruler")
 # def create_aat_activity_ruler(nlp, name="aat_activity_ruler", patterns=patterns_en_AAT_ACTIVITIES):
@@ -33,7 +33,7 @@ from .VocabularyRuler import create_vocabulary_ruler
 
 @Language.factory("aat_activity_ruler")
 def create_aat_activity_ruler(nlp, name="aat_activity_ruler"):
-    return create_vocabulary_ruler(nlp, name=name, label="ACTIVITY", language="en", vocab=vocab_en_AAT_ACTIVITIES)
+    return create_base-ruler(nlp, name=name, label="ACTIVITY", language="en", vocab=vocab_en_AAT_ACTIVITIES)
 
 
 # test the AAT_ActivityRuler class

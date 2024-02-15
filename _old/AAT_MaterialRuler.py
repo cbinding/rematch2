@@ -23,12 +23,12 @@ from spacy.language import Language
 
 from ..spacypatterns import vocab_en_AAT_MATERIALS
 # from .PatternRuler import PatternRuler
-from .VocabularyRuler import create_vocabulary_ruler
+from .BaseRuler import create_base-ruler
 
 
 @Language.factory("aat_material_ruler")
 def create_aat_material_ruler(nlp, name="aat_material_ruler"):
-    return create_vocabulary_ruler(nlp, name=name, label="MATERIAL", language="en", vocab=vocab_en_AAT_MATERIALS)
+    return create_base-ruler(nlp, name=name, label="MATERIAL", language="en", vocab=vocab_en_AAT_MATERIALS)
 
 
 # test the AAT_MaterialRuler class

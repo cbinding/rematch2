@@ -22,9 +22,10 @@ import os
 import sys
 import spacy            # NLP library
 from collections.abc import MutableSequence
-from spacy.pipeline import EntityRuler
+#from spacy.pipeline import EntityRuler
 
 from spacy.language import Language
+#from spacy.lang.cs import Czech #doesn't exist yet..
 from spacy.lang.de import German
 from spacy.lang.en import English
 from spacy.lang.es import Spanish
@@ -33,66 +34,72 @@ from spacy.lang.it import Italian
 from spacy.lang.nl import Dutch
 from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
+from spacy.lang.pl import Polish # experimental substitute for Czech as it doesn't exist yet..
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from spacypatterns import *
+    from BaseRuler import *
 else:
     # uses current package visibility
     from .spacypatterns import *
+    from .BaseRuler import *
 
 
 @Language.factory("monthname_ruler")
-def create_monthname_ruler(nlp: Language, name: str="monthname_ruler", patterns: MutableSequence=[]) -> EntityRuler:
-    return EntityRuler(
+def create_monthname_ruler(nlp: Language, name: str="monthname_ruler", patterns: MutableSequence=[]) -> BaseRuler:
+    return BaseRuler(
         nlp=nlp,
         name=name,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||",
+        lemmatize=False,
+        min_term_length=3,
         patterns=patterns
     )
     
 
 @German.factory("monthname_ruler")
-def create_monthname_ruler_de(nlp: Language, name: str = "monthname_ruler_de") -> EntityRuler:
+def create_monthname_ruler_de(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_de_MONTHNAME)
 
 
 @English.factory("monthname_ruler")
-def create_monthname_ruler_en(nlp: Language, name: str = "monthname_ruler_en") -> EntityRuler:
+def create_monthname_ruler_en(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_en_MONTHNAME)
 
 
 @Spanish.factory("monthname_ruler")
-def create_monthname_ruler_es(nlp: Language, name: str = "monthname_ruler_es") -> EntityRuler:
+def create_monthname_ruler_es(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_es_MONTHNAME)
 
 
 @French.factory("monthname_ruler")
-def create_monthname_ruler_fr(nlp: Language, name: str = "monthname_ruler_fr") -> EntityRuler:
+def create_monthname_ruler_fr(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_fr_MONTHNAME)
 
 
 @Italian.factory("monthname_ruler")
-def create_monthname_ruler_it(nlp: Language, name: str = "monthname_ruler_it") -> EntityRuler:
+def create_monthname_ruler_it(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_it_MONTHNAME)
 
 
 @Dutch.factory("monthname_ruler")
-def create_monthname_ruler_nl(nlp: Language, name: str = "monthname_ruler_nl") -> EntityRuler:
+def create_monthname_ruler_nl(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_nl_MONTHNAME)
 
 
 @Norwegian.factory("monthname_ruler")
-def create_monthname_ruler_no(nlp: Language, name: str = "monthname_ruler_no") -> EntityRuler:
+def create_monthname_ruler_no(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_no_MONTHNAME)
 
 
 @Swedish.factory("monthname_ruler")
-def create_monthname_ruler_sv(nlp: Language, name: str = "monthname_ruler_sv") -> EntityRuler:
+def create_monthname_ruler_sv(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_sv_MONTHNAME)
+
+# Polish as temp experimental substitute until Czech is available
+@Polish.factory("monthname_ruler")
+def create_monthname_ruler_cs(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
+    return create_monthname_ruler(nlp, name, patterns_cs_MONTHNAME)
 
 
 # test the MonthNameRuler class

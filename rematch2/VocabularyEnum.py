@@ -7,7 +7,7 @@ Version   : 20231027
 Project   : 
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
-Summary   : Enum for use with VocabularyRuler - 
+Summary   : Enum for use with BaseRuler - 
                 predefined (JSON) vocabulary resources
 Imports   : Enum
 Example   : 
@@ -23,7 +23,7 @@ from enum import Enum
 
 
 class VocabularyEnum(Enum):
-    AMCR = "vocab_cs_AMCR_20221208.json"
+    AMCR = "vocab_cs_AMCR_20221208.json" # experimental
     AAT_ACTIVITIES = "vocab_en_AAT_ACTIVITIES_20231018.json"
     AAT_AGENTS = "vocab_en_AAT_AGENTS_20231018.json"
     AAT_ASSOCIATED_CONCEPTS = "vocab_en_AAT_ASSOCIATED_CONCEPTS_20231018.json"

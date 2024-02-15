@@ -21,6 +21,7 @@ History :
 """
 from collections.abc import MutableSequence
 
+#from spacy.lang.cs import Czech #doesn't exist yet..
 from spacy.lang.sv import Swedish
 from spacy.lang.nb import Norwegian
 from spacy.lang.nl import Dutch
@@ -29,6 +30,7 @@ from spacy.lang.fr import French
 from spacy.lang.es import Spanish
 from spacy.lang.en import English
 from spacy.lang.de import German
+from spacy.lang.pl import Polish # use as experimental substitute for Czech as it doesn't exist yet..
 from spacy.tokens import Doc
 from spacy.pipeline import EntityRuler
 from spacy.language import Language
@@ -105,45 +107,48 @@ def create_century_ruler(nlp: Language, name: str = "century_ruler", patterns: M
 
 
 @German.factory("century_ruler")
-def create_century_ruler_de(nlp: Language, name: str = "century_ruler_de") -> CenturyRuler:
+def create_century_ruler_de(nlp: Language, name: str = "century_ruler") -> CenturyRuler:
     return create_century_ruler(nlp, name, patterns_de_CENTURY)
 
 
 @English.factory("century_ruler")
-def create_century_ruler_en(nlp: Language, name: str = "century_ruler_en") -> CenturyRuler:
+def create_century_ruler_en(nlp: Language, name: str = "century_ruler") -> CenturyRuler:
     return create_century_ruler(nlp, name, patterns_en_CENTURY)
 
 
 @Spanish.factory("century_ruler")
-def create_century_ruler_es(nlp: Language, name: str = "century_ruler_es") -> CenturyRuler:
+def create_century_ruler_es(nlp: Language, name: str = "century_ruler") -> CenturyRuler:
     return create_century_ruler(nlp, name, patterns_es_CENTURY)
 
 
 @French.factory("century_ruler")
-def create_century_ruler_fr(nlp: Language, name: str = "century_ruler_fr") -> CenturyRuler:
+def create_century_ruler_fr(nlp: Language, name: str = "century_ruler") -> CenturyRuler:
     return create_century_ruler(nlp, name, patterns_fr_CENTURY)
 
 
 @Italian.factory("century_ruler")
-def create_century_ruler_it(nlp: Language, name: str = "century_ruler_it") -> CenturyRuler:
+def create_century_ruler_it(nlp: Language, name: str = "century_ruler") -> CenturyRuler:
     return create_century_ruler(nlp, name, patterns_it_CENTURY)
 
 
 @Dutch.factory("century_ruler")
-def create_century_ruler_nl(nlp: Language, name: str = "century_ruler_nl") -> CenturyRuler:
+def create_century_ruler_nl(nlp: Language, name: str = "century_ruler") -> CenturyRuler:
     return create_century_ruler(nlp, name, patterns_nl_CENTURY)
 
 
 @Norwegian.factory("century_ruler")
-def create_century_ruler_no(nlp: Language, name: str = "century_ruler_no") -> CenturyRuler:
+def create_century_ruler_no(nlp: Language, name: str = "century_ruler") -> CenturyRuler:
     return create_century_ruler(nlp, name, patterns_no_CENTURY)
 
 
 @Swedish.factory("century_ruler")
-def create_century_ruler_sv(nlp: Language, name: str = "century_ruler_sv") -> CenturyRuler:
+def create_century_ruler_sv(nlp: Language, name: str = "century_ruler") -> CenturyRuler:
     return create_century_ruler(nlp, name, patterns_sv_CENTURY)
 
-
+# Polish as temp experimental substitute until Czech is available
+@Polish.factory("century_ruler")
+def create_century_ruler_cs(nlp: Language, name: str = "century_ruler") -> CenturyRuler:
+    return create_century_ruler(nlp, name, patterns_cs_CENTURY)
 
 # test the pipeline component
 if __name__ == "__main__":
@@ -164,7 +169,9 @@ if __name__ == "__main__":
         {"lang": "no", "pipe": "nb_core_news_sm",
             "text": "gjenstanden stammer fra det 7. til 6. århundre f.Kr., men kan være eldre"},
         {"lang": "sv", "pipe": "sv_core_news_sm",
-            "text": "artefakten är från 700- till 600-talet f.Kr. men kan vara äldre"}
+            "text": "artefakten är från 700- till 600-talet f.Kr. men kan vara äldre"},
+        {"lang": "cs", "pipe": "pl_core_news_sm", # using Polish as no Czech language model currently available
+            "text": "artefakt pochází ze 7. až 6. století př. n. l., ale může být i starší"}
     ]
     for test in tests:
         # print header
@@ -176,10 +183,10 @@ if __name__ == "__main__":
         # run text through the pipeline
         doc = nlp(test["text"])
         # display the current pipeline components
-        print(nlp.pipe_names)
+        #print(nlp.pipe_names)
 
-        for token in doc:
-            print(f"{token.pos_}\t{token.text}\n")
+        #for token in doc:
+            #print(f"{token.pos_}\t{token.text}\n")
         # print the doc entities
         for ent in doc.ents:
             print(ent.ent_id_, ent.text, ent.label_)

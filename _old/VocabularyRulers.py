@@ -1,12 +1,12 @@
 """
 =============================================================================
 Package :   rematch2
-Module  :   VocabularyRulers.py
+Module  :   BaseRulers.py
 Version :   20231025
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
-Summary :   spaCy custom pipeline component (specialized VocabularyRuler)
+Summary :   spaCy custom pipeline component (specialized BaseRuler)
 Imports :   os, sys, spacy, EntityRuler, Doc, Language
 Example :   nlp.add_pipe("aat_objects_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
@@ -27,10 +27,10 @@ from spacy.language import Language
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
-    from VocabularyRuler import create_vocabulary_ruler
+    from BaseRuler import create_base-ruler
 else:
     # uses current package visibility
-    from .VocabularyRuler import create_vocabulary_ruler
+    from .BaseRuler import create_base-ruler
 
 
 class VocabularyEnum(Enum):
@@ -66,7 +66,7 @@ def _get_vocabulary(vocab: VocabularyEnum = VocabularyEnum.AAT_OBJECTS):
 
 @Language.factory("aat_activities_ruler")
 def create_aatactivities_ruler(nlp, name="aat_activities_ruler"):
-    return create_vocabulary_ruler(
+    return create_base-ruler(
         nlp=nlp,
         name=name,
         min_lemmatize_length=4,
@@ -81,7 +81,7 @@ def create_aatactivities_ruler(nlp, name="aat_activities_ruler"):
 
 @Language.factory("aat_agents_ruler")
 def create_aat_agents_ruler(nlp, name="aat_agents_ruler"):
-    return create_vocabulary_ruler(
+    return create_base-ruler(
         nlp=nlp,
         name=name,
         min_lemmatize_length=4,
@@ -96,7 +96,7 @@ def create_aat_agents_ruler(nlp, name="aat_agents_ruler"):
 
 @Language.factory("aat_associated_concepts_ruler")
 def create_aat_associated_concepts_ruler(nlp, name="aat_associated_concepts_ruler"):
-    return create_vocabulary_ruler(
+    return create_base-ruler(
         nlp=nlp,
         name=name,
         min_lemmatize_length=4,
@@ -111,7 +111,7 @@ def create_aat_associated_concepts_ruler(nlp, name="aat_associated_concepts_rule
 
 @Language.factory("aat_materials_ruler")
 def create_aat_materials_ruler(nlp, name="aat_materials_ruler"):
-    return create_vocabulary_ruler(
+    return create_base-ruler(
         nlp=nlp,
         name=name,
         min_lemmatize_length=4,
@@ -126,7 +126,7 @@ def create_aat_materials_ruler(nlp, name="aat_materials_ruler"):
 
 @Language.factory("aat_objects_ruler")
 def create_aat_objects_ruler(nlp, name="aat_objects_ruler"):
-    return create_vocabulary_ruler(
+    return create_base-ruler(
         nlp=nlp,
         name=name,
         min_lemmatize_length=4,
@@ -141,7 +141,7 @@ def create_aat_objects_ruler(nlp, name="aat_objects_ruler"):
 
 @Language.factory("aat_physical_attributes_ruler")
 def create_aat_physical_attributes_ruler(nlp, name="aat_physical_attributes_ruler"):
-    return create_vocabulary_ruler(
+    return create_base-ruler(
         nlp=nlp,
         name=name,
         min_lemmatize_length=4,
@@ -156,7 +156,7 @@ def create_aat_physical_attributes_ruler(nlp, name="aat_physical_attributes_rule
 
 @Language.factory("aat_styleperiods_ruler")
 def create_aat_styleperiods_ruler(nlp, name="aat_styleperiods_ruler"):
-    return create_vocabulary_ruler(
+    return create_base-ruler(
         nlp=nlp,
         name=name,
         min_lemmatize_length=4,
@@ -171,7 +171,7 @@ def create_aat_styleperiods_ruler(nlp, name="aat_styleperiods_ruler"):
 
 @Language.factory("fish_archobjects_ruler")
 def create_fish_archobjects_ruler(nlp, name="fish_archobjects_ruler"):
-    return create_vocabulary_ruler(
+    return create_base-ruler(
         nlp=nlp,
         name=name,
         min_lemmatize_length=4,
@@ -186,7 +186,7 @@ def create_fish_archobjects_ruler(nlp, name="fish_archobjects_ruler"):
 
 @Language.factory("fish_archsciences_ruler")
 def create_fish_archsciences_ruler(nlp, name="fish_archsciences_ruler"):
-    return create_vocabulary_ruler(
+    return create_base-ruler(
         nlp=nlp,
         name=name,
         min_lemmatize_length=4,
@@ -201,7 +201,7 @@ def create_fish_archsciences_ruler(nlp, name="fish_archsciences_ruler"):
 
 @Language.factory("fish_building_materials_ruler")
 def create_fish_building_materials_ruler(nlp, name="fish_building_materials_ruler"):
-    return create_vocabulary_ruler(
+    return create_base-ruler(
         nlp=nlp,
         name=name,
         min_lemmatize_length=4,
@@ -216,7 +216,7 @@ def create_fish_building_materials_ruler(nlp, name="fish_building_materials_rule
 
 @Language.factory("fish_components_ruler")
 def create_fish_components_ruler(nlp, name="fish_components_ruler"):
-    return create_vocabulary_ruler(
+    return create_base-ruler(
         nlp=nlp,
         name=name,
         min_lemmatize_length=4,
@@ -231,7 +231,7 @@ def create_fish_components_ruler(nlp, name="fish_components_ruler"):
 
 @Language.factory("fish_event_types_ruler")
 def create_fish_event_types_ruler(nlp, name="fish_event_types_ruler"):
-    return create_vocabulary_ruler(
+    return create_base-ruler(
         nlp=nlp,
         name=name,
         min_lemmatize_length=4,
@@ -246,7 +246,7 @@ def create_fish_event_types_ruler(nlp, name="fish_event_types_ruler"):
 
 @Language.factory("fish_evidence_ruler")
 def create_fish_evidence_ruler(nlp, name="fish_evidence_ruler"):
-    return create_vocabulary_ruler(
+    return create_base-ruler(
         nlp=nlp,
         name=name,
         min_lemmatize_length=4,
@@ -261,7 +261,7 @@ def create_fish_evidence_ruler(nlp, name="fish_evidence_ruler"):
 
 @Language.factory("fish_maritime_craft_ruler")
 def create_fish_maritime_craft_ruler(nlp, name="fish_maritime_craft_ruler"):
-    return create_vocabulary_ruler(
+    return create_base-ruler(
         nlp=nlp,
         name=name,
         min_lemmatize_length=4,
@@ -276,7 +276,7 @@ def create_fish_maritime_craft_ruler(nlp, name="fish_maritime_craft_ruler"):
 
 @Language.factory("fish_monument_types_ruler")
 def create_fish_monument_types_ruler(nlp, name="fish_monument_types_ruler"):
-    return create_vocabulary_ruler(
+    return create_base-ruler(
         nlp=nlp,
         name=name,
         min_lemmatize_length=4,
@@ -291,7 +291,7 @@ def create_fish_monument_types_ruler(nlp, name="fish_monument_types_ruler"):
 
 @Language.factory("fish_periods_ruler")
 def create_fish_periods_ruler(nlp, name="fish_periods_ruler"):
-    return create_vocabulary_ruler(
+    return create_base-ruler(
         nlp=nlp,
         name=name,
         min_lemmatize_length=4,
