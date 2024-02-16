@@ -3,7 +3,6 @@
 Package :   rematch2
 Module  :   CenturyRuler.py
 Classes :   CenturyRuler
-Version :   20231027
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
@@ -17,6 +16,7 @@ License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History :   
 03/08/2022 CFB Initially created script
 27/10/2023 CFB type hints added for function signatures
+16/02/2024 CFB remove BaseRuler inheritance, use EntityRuler directly
 =============================================================================
 """
 from collections.abc import MutableSequence
@@ -37,6 +37,7 @@ from spacy.language import Language
 import os
 import sys
 import spacy            # NLP library
+import pprint
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
@@ -47,6 +48,7 @@ if __package__ is None or __package__ == '':
     from DatePrefixRuler import create_dateprefix_ruler
     from OrdinalRuler import create_ordinal_ruler
     from spacypatterns import *
+    from Util import *
 else:
     # uses current package visibility
     from .SeasonNameRuler import create_seasonname_ruler
@@ -56,20 +58,19 @@ else:
     from .DatePrefixRuler import create_dateprefix_ruler
     from .OrdinalRuler import create_ordinal_ruler
     from .spacypatterns import *
+    from .Util import *
 
 
 # CenturyRuler is a specialized EntityRuler
 class CenturyRuler(EntityRuler):
 
-    def __init__(self, nlp: Language, name: str="century_ruler", patterns: MutableSequence=[]) -> None:
-        EntityRuler.__init__(
-            self,
-            nlp=nlp,
-            name=name,
-            phrase_matcher_attr="LOWER",
-            validate=False,
-            overwrite_ents=True,
-            ent_id_sep="||"
+    def __init__(self, nlp: Language, name: str="century_ruler", patterns: list=[]) -> None:
+        normalized_patterns = normalize_patterns(
+            nlp=nlp, 
+            patterns=patterns,
+            default_label="CENTURY",
+            lemmatize=False,
+            min_term_length=2
         )
         atomic_pipe_names = [
             "ordinal_ruler",
@@ -79,13 +80,25 @@ class CenturyRuler(EntityRuler):
             "datesuffix_ruler",
             "dateseparator_ruler"
         ]
-        for name in atomic_pipe_names:
-            if not name in nlp.pipe_names:
-                nlp.add_pipe(name, last=True)
+        for n in atomic_pipe_names:
+            if not n in nlp.pipe_names:
+                nlp.add_pipe(n, last=True)
 
+        EntityRuler.__init__(
+            self,
+            nlp=nlp,
+            name=name,            
+            phrase_matcher_attr="LOWER",
+            validate=False,
+            overwrite_ents=True,
+            ent_id_sep="||"
+        )
+        
+        #print(nlp.pipe_names)
          # add century patterns to this pipeline component
-        self.add_patterns(patterns)
-
+        self.add_patterns(normalized_patterns)
+        #pprint(patterns)
+        
     """
     Note see https://github.com/explosion/spaCy/discussions/6309
     "The EntityRuler is a wrapper around the Matcher and PhraseMatcher, so if you need more control of how overlapping matches are managed, 
@@ -95,10 +108,10 @@ class CenturyRuler(EntityRuler):
     """
 
     def __call__(self, doc: Doc) -> Doc:
-        EntityRuler.__call__(self, doc)
+        doc = EntityRuler.__call__(self, doc)
         filtered = [ent for ent in doc.ents if ent.label_ not in [
             "ORDINAL", "DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "MONTHNAME", "SEASONNAME"]]
-        # doc.ents = filtered
+        doc.ents = filtered       
         return doc
 
 @Language.factory("century_ruler")
@@ -181,12 +194,20 @@ if __name__ == "__main__":
         # add custom component at the end of the pipeline
         nlp.add_pipe("century_ruler", last=True)
         # run text through the pipeline
-        doc = nlp(test["text"])
+        doc = nlp(test["text"].lower())
         # display the current pipeline components
         #print(nlp.pipe_names)
 
         #for token in doc:
             #print(f"{token.pos_}\t{token.text}\n")
         # print the doc entities
+        #for ent in doc.ents:
+           # print(ent.ent_id_, ent.text, ent.label_)
+        
         for ent in doc.ents:
-            print(ent.ent_id_, ent.text, ent.label_)
+            print(f"{ent.start_char}, {ent.end_char - 1}, {ent.ent_id_}, {ent.text}, {ent.label_}")
+            #print(f"to: {ent.end_char - 1}")
+            #print(f"id: {ent.ent_id_}")
+            #print(f"text: {ent.text}")
+            #print(f"type: {ent.label_}")
+        

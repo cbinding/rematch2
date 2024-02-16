@@ -18,7 +18,6 @@ History :
 27/10/2023 CFB type hints added for function signatures
 =============================================================================
 """
-from collections.abc import MutableSequence
 import spacy
 from spacy.language import Language
 from spacy.pipeline import EntityRuler
@@ -43,6 +42,7 @@ if __package__ is None or __package__ == '':
     from DateSeparatorRuler import create_dateseparator_ruler
     from MonthNameRuler import create_monthname_ruler
     from SeasonNameRuler import create_seasonname_ruler
+    from Util import *
 else:
     # uses current package visibility
     from .spacypatterns import *
@@ -52,12 +52,13 @@ else:
     from .DateSeparatorRuler import create_dateseparator_ruler
     from .MonthNameRuler import create_monthname_ruler
     from .SeasonNameRuler import create_seasonname_ruler
+    from .Util import *
 
 
 # YearSpanRuler is a specialized EntityRuler
 class YearSpanRuler(EntityRuler):
 
-    def __init__(self, nlp: Language, name: str, patterns: MutableSequence = []) -> None:
+    def __init__(self, nlp: Language, name: str="yearspan_ruler", patterns: list=[]) -> None:
 
         EntityRuler.__init__(
             self,
@@ -82,8 +83,14 @@ class YearSpanRuler(EntityRuler):
             if not n in nlp.pipe_names:
                 nlp.add_pipe(n, last=True)
 
+        normalized_patterns = normalize_patterns(
+            nlp=nlp, 
+            patterns=patterns,
+            default_label="YEARSPAN",
+            lemmatize=False
+        )
         # add patterns to this pipeline component
-        self.add_patterns(patterns)
+        self.add_patterns(normalized_patterns)
 
 
     def __call__(self, doc: Doc) -> Doc:
@@ -97,7 +104,7 @@ class YearSpanRuler(EntityRuler):
 
 
 @Language.factory("yearspan_ruler")
-def create_yearspan_ruler(nlp: Language, name: str = "yearspan_ruler", patterns: MutableSequence = []) -> YearSpanRuler:
+def create_yearspan_ruler(nlp: Language, name: str = "yearspan_ruler", patterns: list=[]) -> YearSpanRuler:
     return YearSpanRuler(nlp, name, patterns)
 
 

@@ -14,64 +14,32 @@ History :   25/01/2024 CFB Initially created script
 =============================================================================
 """
 patterns_en_DATESUFFIX = [
-  {
+   {
     "id": "ad",
     "label": "DATESUFFIX",
-    "pattern": "AD"
+    "pattern": [{"LOWER": {"REGEX": "^a\.?d\.?$"}}]
+  },  
+  {
+    "id": "bc",
+    "label": "DATESUFFIX",
+    "pattern": [{"LOWER": {"REGEX": "^b\.?c\.?$"}}]
   }, 
   {
     "id": "ad",
     "label": "DATESUFFIX",
-    "pattern": "A.D."
-  },  
-  {
-    "id": "ce",
-    "label": "DATESUFFIX",
-    "pattern": "CE"
-  },
-  {
-    "id": "ce",
-    "label": "DATESUFFIX",
-    "pattern": "C.E."
-  },
+    "pattern": [{"LOWER": {"REGEX": "^c\.?e\.?$"}}]
+  },   
   {
     "id": "bc",
     "label": "DATESUFFIX",
-    "pattern": "BC"
-  },
-  {
-    "id": "bc",
-    "label": "DATESUFFIX",
-    "pattern": "B.C."
-  },
-  {
-    "id": "bce",
-    "label": "DATESUFFIX",
-    "pattern": "BCE"
-  },
-  {
-    "id": "bce",
-    "label": "DATESUFFIX",
-    "pattern": "B.C.E."
+    "pattern": [{"LOWER": {"REGEX": "^b\.?c\.?e\.?$"}}]
   },
   {
     "id": "bp",
     "label": "DATESUFFIX",
-    "pattern": "BP"
-  },
-  {
-    "id": "bp",
-    "label": "DATESUFFIX",
-    "pattern": "B.P."
-  },
-  {
-    "id": "bp",
-    "label": "DATESUFFIX",
-    "pattern": "cal. BP"
-  },
-  {
-    "id": "bp",
-    "label": "DATESUFFIX",
-    "pattern": "cal. B.P."    
+    "pattern": [
+      {"OP": "*", "LOWER": {"REGEX": "^cal\.?$"}},
+      {"LOWER": {"REGEX": "^b\.?p\.?$"}}
+    ]
   }
 ]

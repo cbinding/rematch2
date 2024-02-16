@@ -1,13 +1,11 @@
 """
 =============================================================================
 Package :   rematch2
-Module  :   BaseRuler.py
-Classes :   BaseRuler
-Version :   20231027
+Module  :   VocabularyRuler.py
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
-Summary :   spaCy custom pipeline component (specialized EntityRuler)
+Summary :   spaCy custom pipeline components (specialized EntityRuler)
 Imports :   EntityRuler, Language
 Example :   N/A - superclass for more specialized components    
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
@@ -17,12 +15,6 @@ History :
 27/10/2023 CFB type hints added for function signatures
 =============================================================================
 """
-import json
-import os
-import sys
-from pathlib import Path
-from collections.abc import MutableSequence
-from enum import Enum
 import spacy
 from spacy.pipeline import EntityRuler
 from spacy.tokens import Doc
@@ -33,358 +25,188 @@ import pandas as pd
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
-    from VocabularyEnum import VocabularyEnum
     from spacypatterns import *
+    from Util import *
 else:
     # uses current package visibility
-    from .VocabularyEnum import VocabularyEnum
     from .spacypatterns import *
-
-
-class BaseRuler(EntityRuler):
-
-    def __init__(
-        self,
-        nlp: Language,
-        name: str = "base_ruler",
-        lemmatize: bool = True,
-        pos: MutableSequence = [],
-        min_term_length: int = 3,
-        min_lemmatize_length: int = 4,
-        default_label: str = "UNKNOWN",
-        patterns: MutableSequence = []
-    ) -> None:
-
-        EntityRuler.__init__(
-            self,
-            nlp=nlp,
-            name=name,
-            phrase_matcher_attr="LOWER",
-            validate=False,
-            overwrite_ents=True,
-            ent_id_sep="||"
-        )
-        '''
-        # is this the same as saying:
-        super().__init__(
-            self,
-            nlp=nlp,
-            name=name,
-            phrase_matcher_attr="LOWER",
-            validate=False,
-            overwrite_ents=True,
-            ent_id_sep="||"
-        )'''
-
-        # patterns: [{id, label, language, pattern}, {id, label, language, pattern},...]
-        patterns_to_add = []
-        for item in patterns:
-            # clean input values before using
-            clean_id = BaseRuler.normalize_string_whitespace(item.get("id", ""))
-            clean_label = BaseRuler.normalize_string_whitespace(item.get("label", default_label))
-            pattern = item.get("pattern", "")
-
-            # is there even a pattern present? 
-            # (at this point it may be a list or a str)
-            if len(pattern) > 0:
-
-                # if pattern is already built [{},{}]
-                if isinstance(pattern, list):
-
-                    # add to list of patterns_to_add
-                    patterns_to_add.append({
-                        "id": clean_id,
-                        "label": clean_label,
-                        "pattern":  pattern
-                    })
-
-                # if pattern is plain string term/phrase    
-                elif isinstance(pattern, str):
-                    
-                    # normalize whitespace (inconsistent whitespace can frustrate matching)
-                    clean_phrase = BaseRuler.normalize_string_whitespace(pattern)
-                    
-                    # if too small don't include it at all
-                    if len(clean_phrase) < min_term_length:
-                        continue
-
-                    # if no lemmatization or POS checking required
-                    if lemmatize == False and len(pos) == 0:
-                        pat = {}
-                        pat["LOWER"] = clean_phrase.lower()
-                        # add to list of patterns_to_add
-                        patterns_to_add.append({
-                            "id": clean_id,
-                            "label": clean_label,
-                            "pattern":  [pat]
-                        })
-                        continue
-
-                    # lemmatisation and/or POS checking must be required
-                    # first tokenize the phrase
-                    doc = nlp(clean_phrase)
-                    phrase_length = len(doc)
-                    
-                    # build a new pattern for this phrase
-                    new_pattern = []                    
-                    # for each term in the phrase
-                    for n, tok in enumerate(doc, 1):
-                        pat = {}
-
-                        # lemmatize term if required (and if term long enough)
-                        # e.g. "skirting boards":
-                        # { "LEMMA": "skirt" }, { "LEMMA": "board" } or
-                        # { "LOWER": "skirt" }, { "LOWER": "board" }
-                        # IMPORTANT: lemmatization won't work if capitalised
-                        if (lemmatize and len(tok.text) >= min_lemmatize_length):
-                            pat["LEMMA"] = tok.lemma_.lower()
-                        else:
-                            pat["LOWER"] = tok.text.lower()  
-                    
-                        # add pos tags if passed in
-                        # note POS only applied to LAST term if multi-word phrase
-                        # e.g. { "LEMMA": "board", "POS": { "IN": ["NOUN", "PROPN"] }}
-                        if (len(pos) > 0 and n == phrase_length):
-                            pat["POS"] = {"IN": pos}
-
-                        new_pattern.append(pat)
-
-                    # add newly built pattern to list of patterns
-                    # print(new_pattern)
-                    patterns_to_add.append({
-                        "id": clean_id,
-                        "label": clean_label,
-                        "pattern":  new_pattern
-                    })
-            
-        # finally, add all new patterns to the underlying EntityRuler
-        if len(patterns_to_add) > 0:
-            self.add_patterns(patterns_to_add) 
-
-
-
-    # new - experimental (static) functions to make things less complicated?
-    @staticmethod
-    def normalize_string_whitespace(s: str = ""): 
-        return ' '.join(s.strip().split())   
-    
-
-    @staticmethod
-    # not used yet
-    def convert_string_to_pattern(s: str = "", preserve_case: bool = False)-> list: 
-        clean_s = BaseRuler.normalize_string_whitespace(s) #.replace("\"", "\\\"")
-        item = {}
-        if(preserve_case):
-           item["TEXT"] = clean_s 
-        else:
-            item["LOWER"] = clean_s.lower()
-        return [item]
-
-
-    @staticmethod
-    # not used yet - add pos list to last element in a pattern
-    def add_pos_to_last_pattern_element(pattern: list=[], pos: list=[]) -> list:                           
-        if len(pattern) > 0 and len(pos) > 0:
-            pattern[-1]["POS"] = { "IN": pos }
-        return pattern
-        
-
-    def __call__(self, doc: Doc) -> Doc:
-        EntityRuler.__call__(self, doc)
-        #pprint(doc)        
-        return doc
-
-
-    @staticmethod
-    def _patterns_from_json_file(file_name: str) -> MutableSequence:
-        base_path = (Path(__file__).parent / "vocabularies").resolve()
-        file_path = os.path.join(base_path, file_name)
-        patterns = []
-        with open(file_path, "r") as f:
-            patterns = json.load(f)
-
-        return patterns
-
-
-    @staticmethod
-    def _patterns_from_enum(vocab: VocabularyEnum) -> MutableSequence:
-        return BaseRuler._patterns_from_json_file(vocab.value)
+    from .Util import *
 
 
 @Language.factory(name="amcr_ruler")
-def create_amcr_ruler(nlp: Language, name: str = "amcr_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
-        default_label="AMCR",
-        patterns=patterns_cs_AMCR    
+def create_amcr_ruler(nlp: Language, name: str = "amcr_ruler") -> EntityRuler:
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_cs_AMCR,
+        default_label="AMCR"
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
+    
 
 @Language.factory(name="aat_activities_ruler")
-def create_aat_activities_ruler(nlp: Language, name: str = "aat_activities_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
-        default_label="ACTIVITY",
-        patterns=patterns_en_AAT_ACTIVITIES
+def create_aat_activities_ruler(nlp: Language, name: str = "aat_activities_ruler") -> EntityRuler:
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_en_AAT_ACTIVITIES,
+        default_label="ACTIVITY"
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
 
 
 @Language.factory("aat_agents_ruler")
-def create_aat_agents_ruler(nlp: Language, name: str="aat_agents_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
+def create_aat_agents_ruler(nlp: Language, name: str="aat_agents_ruler") -> EntityRuler:
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_en_AAT_AGENTS,
         pos=["NOUN", "PROPN"],
         default_label="AGENT",
-        patterns=patterns_en_AAT_AGENTS
     )
-
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
+    
 
 @Language.factory("aat_associated_concepts_ruler")
-def create_aat_associated_concepts_ruler(nlp: Language, name: str="aat_associated_concepts_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
+def create_aat_associated_concepts_ruler(nlp: Language, name: str="aat_associated_concepts_ruler") -> EntityRuler:    
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_en_AAT_ASSOCIATED_CONCEPTS,
         default_label="ASSOCIATED_CONCEPT",
-        patterns=patterns_en_AAT_ASSOCIATED_CONCEPTS
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
 
 
 @Language.factory("aat_materials_ruler")
-def create_aat_materials_ruler(nlp: Language, name: str="aat_materials_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
+def create_aat_materials_ruler(nlp: Language, name: str="aat_materials_ruler") -> EntityRuler:    
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_en_AAT_MATERIALS,
         default_label="MATERIAL",
-        patterns=patterns_en_AAT_MATERIALS
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
 
 
 @Language.factory("aat_objects_ruler")
-def create_aat_objects_ruler(nlp: Language, name: str="aat_objects_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
+def create_aat_objects_ruler(nlp: Language, name: str="aat_objects_ruler") -> EntityRuler:
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
         pos=["NOUN", "PROPN"],
+        patterns=patterns_en_AAT_OBJECTS,
         default_label="OBJECT",
-        patterns=patterns_en_AAT_OBJECTS
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
 
 
 @Language.factory("aat_physical_attributes_ruler")
-def create_aat_physical_attributes_ruler(nlp: Language, name: str="aat_physical_attributes_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
+def create_aat_physical_attributes_ruler(nlp: Language, name: str="aat_physical_attributes_ruler") -> EntityRuler:    
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_en_AAT_PHYSICAL_ATTRIBUTES,
         default_label="PHYSICAL_ATTRIBUTE",
-        patterns=patterns_en_AAT_PHYSICAL_ATTRIBUTES
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
 
 
 @Language.factory("aat_styleperiods_ruler")
-def create_aat_styleperiods_ruler(nlp: Language, name: str="aat_styleperiods_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
+def create_aat_styleperiods_ruler(nlp: Language, name: str="aat_styleperiods_ruler") -> EntityRuler:    
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_en_AAT_STYLEPERIODS,
         default_label="STYLEPERIOD",
-        patterns=patterns_en_AAT_STYLEPERIODS
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
 
 
 @Language.factory("fish_archobjects_ruler")
-def create_fish_archobjects_ruler(nlp: Language, name: str="fish_archobjects_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
+def create_fish_archobjects_ruler(nlp: Language, name: str="fish_archobjects_ruler") -> EntityRuler:    
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
         pos=["NOUN", "PROPN"],
+        patterns=patterns_en_FISH_ARCHOBJECTS,
         default_label="OBJECT",
-        patterns=patterns_en_FISH_ARCHOBJECTS
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
 
 
 @Language.factory("fish_archsciences_ruler")
-def create_fish_archsciences_ruler(nlp: Language, name: str="fish_archsciences_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
+def create_fish_archsciences_ruler(nlp: Language, name: str="fish_archsciences_ruler") -> EntityRuler:    
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_en_FISH_ARCHSCIENCES,
         default_label="ARCHSCIENCE",
-        patterns=patterns_en_FISH_ARCHSCIENCES
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
 
 
 @Language.factory("fish_building_materials_ruler")
-def create_fish_building_materials_ruler(nlp: Language, name: str="fish_building_materials_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
+def create_fish_building_materials_ruler(nlp: Language, name: str="fish_building_materials_ruler") -> EntityRuler:    
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_en_FISH_BUILDING_MATERIALS,
         default_label="MATERIAL",
-        patterns=patterns_en_FISH_BUILDING_MATERIALS
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
 
 
 @Language.factory("fish_components_ruler")
-def create_fish_components_ruler(nlp: Language, name: str="fish_components_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
+def create_fish_components_ruler(nlp: Language, name: str="fish_components_ruler") -> EntityRuler:
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_en_FISH_COMPONENTS,
         pos=["NOUN", "PROPN"],
         default_label="OBJECT",
-        patterns=patterns_en_FISH_COMPONENTS
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
 
 
 @Language.factory("fish_event_types_ruler")
-def create_fish_event_types_ruler(nlp: Language, name: str="fish_event_types_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
+def create_fish_event_types_ruler(nlp: Language, name: str="fish_event_types_ruler") -> EntityRuler:    
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_en_FISH_EVENT_TYPES,
         default_label="EVENT",
-        patterns=patterns_en_FISH_EVENT_TYPES
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
 
 
 @Language.factory("fish_evidence_ruler")
-def create_fish_evidence_ruler(nlp: Language, name: str="fish_evidence_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
+def create_fish_evidence_ruler(nlp: Language, name: str="fish_evidence_ruler") -> EntityRuler:    
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_en_FISH_EVIDENCE,
         default_label="EVIDENCE",
-        patterns=patterns_en_FISH_EVIDENCE
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
 
 
 @Language.factory("fish_maritime_craft_ruler")
-def create_fish_maritime_craft_ruler(nlp: Language, name: str="fish_maritime_craft_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
+def create_fish_maritime_craft_ruler(nlp: Language, name: str="fish_maritime_craft_ruler") -> EntityRuler:    
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_en_FISH_MARITIME_CRAFT,
         pos=["NOUN", "PROPN"],
         default_label="OBJECT",
-        patterns=patterns_en_FISH_MARITIME_CRAFT
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
 
 
 @Language.factory("fish_monument_types_ruler")
-def create_fish_monument_types_ruler(nlp: Language, name: str="fish_monument_types_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
+def create_fish_monument_types_ruler(nlp: Language, name: str="fish_monument_types_ruler") -> EntityRuler:
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_en_FISH_MONUMENT_TYPES,
         pos=["NOUN", "PROPN"],
         default_label="OBJECT",
-        #min_lemmatize_length=3,
-        patterns=patterns_en_FISH_MONUMENT_TYPES
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
 
 
 @Language.factory("fish_periods_ruler")
-def create_fish_periods_ruler(nlp: Language, name: str="fish_periods_ruler") -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
+def create_fish_periods_ruler(nlp: Language, name: str="fish_periods_ruler") -> EntityRuler:    
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_en_FISH_PERIODS,
         default_label="NAMEDPERIOD",
-        patterns=patterns_en_FISH_PERIODS
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
 
 
 # test the BaseRuler class

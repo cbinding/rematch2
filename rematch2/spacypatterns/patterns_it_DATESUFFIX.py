@@ -14,22 +14,32 @@ History :   25/01/2024 CFB Initially created script
 =============================================================================
 """
 patterns_it_DATESUFFIX = [
-    { 
-        "label": "DATESUFFIX",
-		"pattern": [            
-            {"LOWER": {"REGEX": r"^(?:d\.?c\.?|c\.?e\.?)$"}}
-        ]
-    },
-    { 
-        "label": "DATESUFFIX",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(?:a\.?c\.?|b\.?c\.?(?:e\.?)?)$"}}
-        ]
-    },
-    { 
-        "label": "DATESUFFIX",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^b\.?p\.?$"}}
-        ]
-    }
+    {
+    "id": "ad",
+    "label": "DATESUFFIX",
+    "pattern": [{"LOWER": {"REGEX": "^a\.?d\.?$"}}]
+  },  
+  {
+    "id": "bc",
+    "label": "DATESUFFIX",
+    "pattern": [{"LOWER": {"REGEX": "^b\.?c\.?$"}}]
+  }, 
+  {
+    "id": "ad",
+    "label": "DATESUFFIX",
+    "pattern": [{"LOWER": {"REGEX": "^c\.?e\.?$"}}]
+  },   
+  {
+    "id": "bc",
+    "label": "DATESUFFIX",
+    "pattern": [{"LOWER": {"REGEX": "^b\.?c\.?e\.?$"}}]
+  },
+  {
+    "id": "bp",
+    "label": "DATESUFFIX",
+    "pattern": [
+      {"OP": "*", "LOWER": {"REGEX": "^cal\.?$"}},
+      {"LOWER": {"REGEX": "^b\.?p\.?$"}}
+    ]
+  }
 ]

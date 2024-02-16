@@ -14,13 +14,34 @@ History :   25/01/2024 CFB Initially created script
 =============================================================================
 """
 patterns_nl_DATESUFFIX = [
-    { 
-        "label": "DATESUFFIX",
-		"pattern": [
-            {"OP": "?", "LOWER": {"REGEX": r"cal\.?"}},
-            {"LOWER": {"REGEX": r"^(ad|bce?|bp|a\.d\.|b\.c\.|b\.c\.e\.|b\.p\.)$"}}
-        ]
-    },
+    {
+    "id": "ad",
+    "label": "DATESUFFIX",
+    "pattern": [{"LOWER": {"REGEX": "^a\.?d\.?$"}}]
+  },  
+  {
+    "id": "bc",
+    "label": "DATESUFFIX",
+    "pattern": [{"LOWER": {"REGEX": "^b\.?c\.?$"}}]
+  }, 
+  {
+    "id": "ad",
+    "label": "DATESUFFIX",
+    "pattern": [{"LOWER": {"REGEX": "^c\.?e\.?$"}}]
+  },   
+  {
+    "id": "bc",
+    "label": "DATESUFFIX",
+    "pattern": [{"LOWER": {"REGEX": "^b\.?c\.?e\.?$"}}]
+  },
+  {
+    "id": "bp",
+    "label": "DATESUFFIX",
+    "pattern": [
+      {"OP": "*", "LOWER": {"REGEX": "^cal\.?$"}},
+      {"LOWER": {"REGEX": "^b\.?p\.?$"}}
+    ]
+  },
     { 
         "label": "DATESUFFIX",
 		"pattern": [

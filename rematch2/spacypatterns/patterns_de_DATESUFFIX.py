@@ -15,93 +15,63 @@ History :   25/01/2024 CFB Initially created script
 """
 patterns_de_DATESUFFIX = [
   {
-    "id": "ad",
+    "id": "ad1",
     "label": "DATESUFFIX",
-    "pattern": "AD"
-  },  
-  {
-    "id": "ad",
-    "label": "DATESUFFIX",
-    "pattern": "A.D."
-  }, 
-  {
-    "id": "ad",
-    "label": "DATESUFFIX",
-    "pattern": "n chr"
-  }, 
-  {
-    "id": "ad",
-    "label": "DATESUFFIX",
-    "pattern": "n. Chr."
-  }, 
-  {
-    "id": "ad",
-    "label": "DATESUFFIX",
-    "pattern": "na Christus"
-  }, 
-  {
-    "id": "ce",
-    "label": "DATESUFFIX",
-    "pattern": "CE"
-  }, 
-  {
-    "id": "ce",
-    "label": "DATESUFFIX",
-    "pattern": "C.E."
+    "pattern": [{"LOWER": {"REGEX": "^a\.?d\.?$"}}]
   },  
   {
     "id": "bc",
     "label": "DATESUFFIX",
-    "pattern": "BC"
-  },  
+    "pattern": [{"LOWER": {"REGEX": "^b\.?c\.?$"}}]
+  }, 
   {
-    "id": "bc",
+    "id": "ad2",
     "label": "DATESUFFIX",
-    "pattern": "B.C."
-  },  
-  {
-    "id": "bc",
-    "label": "DATESUFFIX",
-    "pattern": "v chr"
-  },  
-  {
-    "id": "bc",
-    "label": "DATESUFFIX",
-    "pattern": "v. Chr."
-  },  
-  {
-    "id": "bc",
-    "label": "DATESUFFIX",
-    "pattern": "vor Christus"
-  },  
+    "pattern": [{"LOWER": {"REGEX": "^c\.?e\.?$"}}]
+  },   
   {
     "id": "bce",
     "label": "DATESUFFIX",
-    "pattern": "BCE"
-  },
-  {
-    "id": "bce",
-    "label": "DATESUFFIX",
-    "pattern": "B.C.E."
+    "pattern": [{"LOWER": {"REGEX": "^b\.?c\.?e\.?$"}}]
   },
   {
     "id": "bp",
     "label": "DATESUFFIX",
-    "pattern": "BP"
+    "pattern": [
+      {"OP": "*", "LOWER": {"REGEX": "^cal\.?$"}},
+      {"LOWER": {"REGEX": "^b\.?p\.?$"}}
+    ]
   },
   {
-    "id": "bp",
+    "id": "ad3",
     "label": "DATESUFFIX",
-    "pattern": "B.P."
-  },
+    "pattern": [
+        {"LOWER": {"REGEX": "^n\.?$"}},
+        {"LOWER": {"REGEX": "^chr\.?$"}}
+      ]
+  }, 
   {
-    "id": "bp",
+    "id": "ad4",
     "label": "DATESUFFIX",
-    "pattern": "cal. BP"
-  },
+    "pattern": [
+        {"LOWER": "na"}, 
+        {"LOWER": "christus"}
+      ]
+  },   
   {
-    "id": "bp",
+    "id": "ad5",
     "label": "DATESUFFIX",
-    "pattern": "cal. B.P."
-  }
+    "pattern": [
+        {"LOWER": {"REGEX": "^v\.?$"}},
+        {"LOWER": {"REGEX": "^chr\.?$"}}
+      ]
+  },    
+  {
+    "id": "ad6",
+    "label": "DATESUFFIX",
+    "pattern": [
+        {"LOWER": "vor"}, 
+        {"LOWER": "christus"}
+      ]
+  }  
 ]

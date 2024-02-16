@@ -30,7 +30,7 @@ import argparse                         # for argument parsing
 
 # base class for VocabularyAnnotator and TemporalAnnotator
 class BaseAnnotator():
-    def __init__(self, language: str = "en", patterns: MutableSequence = []) -> None:
+    def __init__(self, language: str="en", patterns: list=[]) -> None:
         # start with predefined language-specific spaCy pipeline
         pipe_name = ""
         match language.strip().lower():
@@ -93,7 +93,15 @@ class BaseAnnotator():
         # convert the results to the required format
         match output_format.strip().lower():
             case "html":
-                output = self.__doc_to_html(doc)
+                options = {
+                    "ents": [
+                        "OBJECT"                        
+                    ],
+                    "colors": {
+                        "OBJECT": "yellow"
+                    }
+                }
+                output = self.__doc_to_html(doc, options)
             case "ttl":
                 output = self.__doc_to_ttl(doc)
             case "json":
@@ -130,7 +138,9 @@ class BaseAnnotator():
             "type": ent.label_
         } for ent in doc.ents]
 
+        pd.set_option('display.max_colwidth', None)
         df = pd.DataFrame(data)
+        
         return df
 
     # convert results to CSV formatted string,

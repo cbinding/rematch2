@@ -2,42 +2,42 @@
 =============================================================================
 Package :   rematch2
 Module  :   NamedPeriodRuler.py
-Version :   20231027
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
 Summary :   spaCy custom pipeline component (specialized EntityRuler) to 
             identify named periods (from Perio.do) in free text. 
             Entity type added will be "NAMEDPERIOD"
-Imports :   os, sys, spacy, Language, EntityRuler, Doc
+Imports :   os, sys, spacy, Language, EntityRuler
 Example :   nlp.add_pipe("namedperiod_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History :   
 03/08/2022 CFB Initially created script
 27/10/2023 CFB type hints added for function signatures
+16/02/2024 CFB remove BaseRuler inheritance, use EntityRuler directly
 =============================================================================
 """
 import os
 import sys
 import spacy            # NLP library
 import pandas as pd
-# from spacy.pipeline import EntityRuler
+from spacy.pipeline import EntityRuler
 from spacy.tokens import Doc
 from spacy.language import Language
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from PeriodoData import PeriodoData
-    from BaseRuler import BaseRuler
+    from Util import *
 else:
     # uses current package visibility
     from .PeriodoData import PeriodoData
-    from .BaseRuler import BaseRuler
+    from .Util import *
 
 
 @Language.factory(name="namedperiod_ruler", default_config={"periodo_authority_id": None})
-def create_namedperiod_ruler(nlp: Language, name: str="namedperiod_ruler", periodo_authority_id: str="") -> BaseRuler:
+def create_namedperiod_ruler(nlp: Language, name: str="namedperiod_ruler", periodo_authority_id: str="") -> EntityRuler:
     # get terms from selected Perio.do authority as vocab
     # get as new instance, don't refresh cached data
     pd = PeriodoData(from_cache=True) #tmp...
@@ -45,23 +45,21 @@ def create_namedperiod_ruler(nlp: Language, name: str="namedperiod_ruler", perio
     # get periods for authority id
     periods = pd.get_period_list(periodo_authority_id)
 
-    # convert to vocabulary for use by BaseRuler
+    # parse out and convert  
     patterns = list(map(lambda item: {
         "id": item.get("uri", ""),
         "label": "NAMEDPERIOD",
         "pattern": item.get("label", "")
     }, periods or []))
 
-    #print(vocabulary)
-
-    # create and return vocabulary ruler instance
-    return BaseRuler(
-        nlp=nlp,
-        name=name,
-        lemmatize=False,
-        default_label="NAMEDPERIOD",        
-        patterns=patterns
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns,
+        default_label="NAMEDPERIOD",
+        lemmatize=False
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
+    
 
 
 # test the NamedPeriodRuler class

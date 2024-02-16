@@ -2,7 +2,6 @@
 =============================================================================
 Package :   rematch2
 Module  :   DayNameRuler.py
-Version :   20231027
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
@@ -10,19 +9,23 @@ Summary :   spaCy custom pipeline component (specialized EntityRuler)
             Language-sensitive component to identify day names
             in free text. Entity type added will be "DAYNAME"
 Imports :   os, sys, spacy, Language, EntityRuler, Doc
-Example :   nlp.add_pipe("dayname_ruler", last=True)           
+Example :   
+    nlp = spacy.load("en_core_web_sm", disable=['ner'])
+    nlp.add_pipe("dateprefix_ruler", last=True)  
+    doc = nlp("On Monday, Tuesday or even Wednesday")   
+    # tags ["Monday", "Tuesday", "Wednesday"] as "DAYNAME"          
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History :   
 03/08/2022 CFB Initially created script
 27/10/2023 CFB type hints added for function signatures
+16/02/2024 CFB remove BaseRuler inheritance, use EntityRuler directly
 =============================================================================
 """
 import os
 import sys
 import spacy            # NLP library
-from collections.abc import MutableSequence
-#from spacy.pipeline import EntityRuler
+from spacy.pipeline import EntityRuler
 
 from spacy.language import Language
 #from spacy.lang.cs import Czech #doesn't exist yet..
@@ -39,66 +42,67 @@ from spacy.lang.pl import Polish # experimental substitute for Czech as it doesn
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from spacypatterns import *
-    from BaseRuler import *
+    from Util import *
 else:
     # uses current package visibility
     from .spacypatterns import *
-    from .BaseRuler import *
+    from .Util import *
 
 
 @Language.factory("dayname_ruler")
-def create_dayname_ruler(nlp: Language, name: str="dayname_ruler", patterns: MutableSequence=[]) -> BaseRuler:
-    return BaseRuler(
-        nlp=nlp,
-        name=name, 
+def create_dayname_ruler(nlp: Language, name: str="dayname_ruler", patterns: MutableSequence=[]) -> EntityRuler:
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns,
+        default_label="DAYNAME",
         lemmatize=False,
-        min_term_length=3,       
-        patterns=patterns
+        min_term_length=3
     )
+    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
     
 
 @German.factory("dayname_ruler")
-def create_dayname_ruler_de(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
+def create_dayname_ruler_de(nlp: Language, name: str = "dayname_ruler") -> EntityRuler:
     return create_dayname_ruler(nlp, name, patterns_de_DAYNAME)
 
 
 @English.factory("dayname_ruler")
-def create_dayname_ruler_en(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
+def create_dayname_ruler_en(nlp: Language, name: str = "dayname_ruler") -> EntityRuler:
     return create_dayname_ruler(nlp, name, patterns_en_DAYNAME)
 
 
 @Spanish.factory("dayname_ruler")
-def create_dayname_ruler_es(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
+def create_dayname_ruler_es(nlp: Language, name: str = "dayname_ruler") -> EntityRuler:
     return create_dayname_ruler(nlp, name, patterns_es_DAYNAME)
 
 
 @French.factory("dayname_ruler")
-def create_dayname_ruler_fr(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
+def create_dayname_ruler_fr(nlp: Language, name: str = "dayname_ruler") -> EntityRuler:
     return create_dayname_ruler(nlp, name, patterns_fr_DAYNAME)
 
 
 @Italian.factory("dayname_ruler")
-def create_dayname_ruler_it(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
+def create_dayname_ruler_it(nlp: Language, name: str = "dayname_ruler") -> EntityRuler:
     return create_dayname_ruler(nlp, name, patterns_it_DAYNAME)
 
 
 @Dutch.factory("dayname_ruler")
-def create_dayname_ruler_nl(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
+def create_dayname_ruler_nl(nlp: Language, name: str = "dayname_ruler") -> EntityRuler:
     return create_dayname_ruler(nlp, name, patterns_nl_DAYNAME)
 
 
 @Norwegian.factory("dayname_ruler")
-def create_dayname_ruler_no(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
+def create_dayname_ruler_no(nlp: Language, name: str = "dayname_ruler") -> EntityRuler:
     return create_dayname_ruler(nlp, name, patterns_no_DAYNAME)
 
 
 @Swedish.factory("dayname_ruler")
-def create_dayname_ruler_sv(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
+def create_dayname_ruler_sv(nlp: Language, name: str = "dayname_ruler") -> EntityRuler:
     return create_dayname_ruler(nlp, name, patterns_sv_DAYNAME)
 
 # Using Polish as temp experimental substitute until Czech is available
 @Polish.factory("dayname_ruler")
-def create_dayname_ruler_cs(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
+def create_dayname_ruler_cs(nlp: Language, name: str = "dayname_ruler") -> EntityRuler:
     return create_dayname_ruler(nlp, name, patterns_cs_DAYNAME)
 
 # test the DayNameRuler class
