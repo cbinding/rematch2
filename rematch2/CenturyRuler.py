@@ -19,7 +19,7 @@ History :
 16/02/2024 CFB remove BaseRuler inheritance, use EntityRuler directly
 =============================================================================
 """
-from collections.abc import MutableSequence
+#from collections.abc import MutableSequence
 
 #from spacy.lang.cs import Czech #doesn't exist yet..
 from spacy.lang.sv import Swedish
@@ -37,7 +37,7 @@ from spacy.language import Language
 import os
 import sys
 import spacy            # NLP library
-import pprint
+from pprint import pprint
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
@@ -51,12 +51,12 @@ if __package__ is None or __package__ == '':
     from Util import *
 else:
     # uses current package visibility
-    from .SeasonNameRuler import create_seasonname_ruler
-    from .MonthNameRuler import create_monthname_ruler
-    from .DateSeparatorRuler import create_dateseparator_ruler
-    from .DateSuffixRuler import create_datesuffix_ruler
-    from .DatePrefixRuler import create_dateprefix_ruler
-    from .OrdinalRuler import create_ordinal_ruler
+    from .SeasonNameRuler import * #create_seasonname_ruler
+    from .MonthNameRuler import * #create_monthname_ruler
+    from .DateSeparatorRuler import * #create_dateseparator_ruler
+    from .DateSuffixRuler import * #create_datesuffix_ruler
+    from .DatePrefixRuler import * #create_dateprefix_ruler
+    from .OrdinalRuler import * #create_ordinal_ruler
     from .spacypatterns import *
     from .Util import *
 
@@ -97,7 +97,7 @@ class CenturyRuler(EntityRuler):
         #print(nlp.pipe_names)
          # add century patterns to this pipeline component
         self.add_patterns(normalized_patterns)
-        #pprint(patterns)
+        print(patterns)
         
     """
     Note see https://github.com/explosion/spaCy/discussions/6309
@@ -108,14 +108,17 @@ class CenturyRuler(EntityRuler):
     """
 
     def __call__(self, doc: Doc) -> Doc:
+        for ent in doc.ents:
+            print(f"{ent.start_char}, {ent.end_char - 1}, {ent.ent_id_}, {ent.text}, {ent.label_}")
         doc = EntityRuler.__call__(self, doc)
         filtered = [ent for ent in doc.ents if ent.label_ not in [
             "ORDINAL", "DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "MONTHNAME", "SEASONNAME"]]
         doc.ents = filtered       
         return doc
 
+
 @Language.factory("century_ruler")
-def create_century_ruler(nlp: Language, name: str = "century_ruler", patterns: MutableSequence = []) -> CenturyRuler:
+def create_century_ruler(nlp: Language, name: str = "century_ruler", patterns: list=[]) -> CenturyRuler:
     return CenturyRuler(nlp, name, patterns)
 
 
@@ -158,10 +161,12 @@ def create_century_ruler_no(nlp: Language, name: str = "century_ruler") -> Centu
 def create_century_ruler_sv(nlp: Language, name: str = "century_ruler") -> CenturyRuler:
     return create_century_ruler(nlp, name, patterns_sv_CENTURY)
 
+
 # Polish as temp experimental substitute until Czech is available
 @Polish.factory("century_ruler")
 def create_century_ruler_cs(nlp: Language, name: str = "century_ruler") -> CenturyRuler:
     return create_century_ruler(nlp, name, patterns_cs_CENTURY)
+
 
 # test the pipeline component
 if __name__ == "__main__":
@@ -198,11 +203,11 @@ if __name__ == "__main__":
         # display the current pipeline components
         #print(nlp.pipe_names)
 
-        #for token in doc:
-            #print(f"{token.pos_}\t{token.text}\n")
+        for token in doc:
+            print(f"{token.pos_}\t{token.text}\n")
         # print the doc entities
         #for ent in doc.ents:
-           # print(ent.ent_id_, ent.text, ent.label_)
+            #print(ent.ent_id_, ent.text, ent.label_)
         
         for ent in doc.ents:
             print(f"{ent.start_char}, {ent.end_char - 1}, {ent.ent_id_}, {ent.text}, {ent.label_}")

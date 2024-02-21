@@ -1,5 +1,5 @@
 from spacy.language import Language
-from collections.abc import MutableSequence
+#from collections.abc import MutableSequence
 
 # normalize string whitespace
 def normalize_whitespace(s: str = ""): 
@@ -90,7 +90,7 @@ def normalize_patterns(
     return normalized_patterns
 
 
-def _patterns_from_json_file(file_path: str) -> MutableSequence:
+def _patterns_from_json_file(file_path: str) -> list:
     patterns = []
 
     with open(file_path, "r") as f:

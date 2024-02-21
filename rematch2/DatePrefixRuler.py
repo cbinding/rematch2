@@ -49,7 +49,7 @@ else:
     from .Util import *
 
 
-@Language.factory("dateprefix_ruler")
+@Language.factory("dateprefix_ruler", default_config={"patterns": []})
 def create_dateprefix_ruler(nlp: Language, name: str = "dateprefix_ruler", patterns: list=[]) -> EntityRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
@@ -58,7 +58,15 @@ def create_dateprefix_ruler(nlp: Language, name: str = "dateprefix_ruler", patte
         lemmatize=False,
         min_term_length=2
     )
-    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return EntityRuler(
+        nlp=nlp, 
+        name=name, 
+        patterns=normalized_patterns,
+        phrase_matcher_attr="LOWER",
+        validate=False,
+        overwrite_ents=True,
+        ent_id_sep="||"
+    )
 
 
 @German.factory("dateprefix_ruler")

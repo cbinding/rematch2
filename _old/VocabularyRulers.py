@@ -63,6 +63,15 @@ def _get_vocabulary(vocab: VocabularyEnum = VocabularyEnum.AAT_OBJECTS):
 
     return vocabulary
 
+def _patterns_from_json_file(file_name: str) -> list:
+        base_path = (Path(__file__).parent / "vocabularies").resolve()
+        file_path = os.path.join(base_path, file_name)
+        patterns = []
+        with open(file_path, "r") as f:
+            patterns = json.load(f)
+
+        return patterns
+
 
 @Language.factory("aat_activities_ruler")
 def create_aatactivities_ruler(nlp, name="aat_activities_ruler"):

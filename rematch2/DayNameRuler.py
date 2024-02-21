@@ -49,8 +49,8 @@ else:
     from .Util import *
 
 
-@Language.factory("dayname_ruler")
-def create_dayname_ruler(nlp: Language, name: str="dayname_ruler", patterns: MutableSequence=[]) -> EntityRuler:
+@Language.factory("dayname_ruler", default_config={"patterns": []})
+def create_dayname_ruler(nlp: Language, name: str="dayname_ruler", patterns: list=[]) -> EntityRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns,
@@ -58,7 +58,15 @@ def create_dayname_ruler(nlp: Language, name: str="dayname_ruler", patterns: Mut
         lemmatize=False,
         min_term_length=3
     )
-    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return EntityRuler(
+        nlp=nlp, 
+        name=name, 
+        patterns=normalized_patterns,
+        phrase_matcher_attr="LOWER",
+        validate=False,
+        overwrite_ents=True,
+        ent_id_sep="||"
+    )
     
 
 @German.factory("dayname_ruler")

@@ -9,7 +9,7 @@ Project :
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
             Language-sensitive component to identify and tag ordinal centuries
             in free text. Entity type added will be "YEARSPAN"
-Imports :   MutableSequence, Language, Doc
+Imports :   Language, Doc
 Example :   nlp.add_pipe("yearspan_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
@@ -103,7 +103,7 @@ class YearSpanRuler(EntityRuler):
         return doc
 
 
-@Language.factory("yearspan_ruler")
+@Language.factory("yearspan_ruler", default_config={"patterns": []})
 def create_yearspan_ruler(nlp: Language, name: str = "yearspan_ruler", patterns: list=[]) -> YearSpanRuler:
     return YearSpanRuler(nlp, name, patterns)
 
@@ -172,7 +172,9 @@ if __name__ == "__main__":
         {"lang": "no", "pipe": "nb_core_news_sm",
             "text": "Gjenstanden ble datert fra 1650 til 1800 e.Kr. og var korrodert"},
         {"lang": "sv", "pipe": "sv_core_news_sm",
-            "text": "Artefakten daterades från 1650 till 1800 e.Kr. och var korroderad"}
+            "text": "Artefakten daterades från 1650 till 1800 e.Kr. och var korroderad"},
+        {"lang": "cs", "pipe": "pl_core_news_sm", "text": "Objekt zámku v Chanovicích (okr. Klatovy) se nalézá spolu s pozdně románským kostelem sv. Kříže na severozápadním okraji obce. Byl postaven na nevýrazné ostrožně, jejíž páteř vytvářejí výchozy žulové skály. Ze tří stran sídlo obklopuje zpustlý park s rybníkem v jeho dolní části. Na severovýchodní straně pak k zámku přiléhá areál hospodářského dvora. Nejstarším dokladem existence chanovického sídla je pozdně románský kostel Povýšení sv. Kříže. Jako vlastnický kostel se patrně vázal na zde již existující feudální sídlo. Předpokládá se, že leželo v místech pozdějšího poplužního dvora, dnes dochovaného v klasicistní přestavbě. V průběhu 13. stol. bylo sídlo přeneseno na skalnatou ostrožnu, do míst dnešního zámku. V písemných pramenech se Chanovice objevují ve 2. polovině 14. století. Z této doby pochází též nejstarší dochovaná gotická část sídla. K výrazné přestavbě objektu došlo v prvních desetiletích 16. století za Chanovských z Dlouhé Vsi, kdy stavba nabyla dnešní půdorysné podoby. Areál byl ohrazen novou, značně silnou obvodovou zdí, respektující v některých úsecích starší konstrukce. Roku 1670 byla Chanovicím odpuštěna část berní povinnosti, což snad naznačuje, že obec v této době postihla jakási živelná pohroma. Do podoby sídla výrazně zasáhla barokní přestavba, ke které došlo někdy okolo poloviny 18. století za majitele Ferdinanda Jáchyma Rumerskirchena. Dílčí zásahy do stavby nastaly patrně také po ničivém požáru roku 1781, při kterém vyhořel kostel, fara, škola a zámek spolu s hospodářskými budovami přilehlého dvora. Na přelomu 18. a 19. stol. zámek rychle střídal majitele a pustnul. Písemné prameny uvádí, že roku 1811 objekt, v té době ve velmi špatném stavu, koupil plzeňský podnikatel František Becher. Ten nechal sejmout jedno patro, zámek opravil a pokryl těžkou krytinou. Úpravám se nevyhnul ani chanovický hospodářský dvůr. Částečně ho nechal přestavět na konci 19. stol. nový majitel Eduard Rytíř z Doubků. Poslední známá úprava hospodářského dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)"
+        }
     ]
     for test in tests:
         # print header
@@ -186,8 +188,8 @@ if __name__ == "__main__":
         # display the current pipeline components
         #print(nlp.pipe_names)
 
-        # for token in doc:
-        # print(f"{token.pos_}\t{token.text}\n")
+        for token in doc:
+            print(f"{token.pos_}\t{token.text}\n")
         # print the doc entities
         for ent in doc.ents:
             print(ent.ent_id_, ent.text, ent.label_)

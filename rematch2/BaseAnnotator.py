@@ -20,7 +20,7 @@ History
 """
 import os
 from os.path import exists
-from collections.abc import MutableSequence
+#from collections.abc import MutableSequence
 import pandas as pd                     # for DataFrame output
 import spacy
 from spacy.tokens import Doc

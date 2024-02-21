@@ -22,7 +22,7 @@ History
 import os
 from os.path import exists
 import pandas as pd                     # for DataFrame output
-from collections.abc import MutableSequence
+#from collections.abc import MutableSequence
 import spacy
 from spacy.tokens import Doc
 from spacy import displacy              # for HTML formatting results
@@ -48,7 +48,7 @@ class TemporalAnnotator(BaseAnnotator):
         self, 
         language: str="en", 
         periodo_authority_id: str="p0kh9ds", 
-        patterns: MutableSequence=[]) -> None:
+        patterns: list=[]) -> None:
 
         # call the superclass initialisation function
         super().__init__(language=language, patterns=patterns)

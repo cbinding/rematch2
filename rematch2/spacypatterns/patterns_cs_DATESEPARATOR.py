@@ -17,7 +17,7 @@ patterns_cs_DATESEPARATOR = [
     { 
         "label": "DATESEPARATOR",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(?:[\–\-/]|až)$"}}            
+            {"LOWER": {"REGEX": r"^(?:[\–\-/]|až|a)$"}}            
         ]
     }
 ]

@@ -58,7 +58,15 @@ def create_namedperiod_ruler(nlp: Language, name: str="namedperiod_ruler", perio
         default_label="NAMEDPERIOD",
         lemmatize=False
     )
-    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return EntityRuler(
+        nlp=nlp, 
+        name=name, 
+        patterns=normalized_patterns,
+        phrase_matcher_attr="LOWER",
+        validate=False,
+        overwrite_ents=True,
+        ent_id_sep="||"
+    )
     
 
 

@@ -13,13 +13,18 @@ License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History :   25/01/2024 CFB Initially created script
 =============================================================================
 """
-patterns_cs_CENTURY = [
+patterns_cs_CENTURY = [    
     { 
         "label": "CENTURY",
 		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "ORDINAL"},
-            {"LOWER": {"REGEX": r"^(století|tisíciletí)$"}},
+            {"OP": "?", "LOWER": {"REGEX": r"^(?:století|tisícil(?:\.|etí))$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "ORDINAL"},
+            {"LOWER": {"REGEX": r"^(?:století|tisícil(?:\.|etí))$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
         ]
     },
@@ -28,12 +33,7 @@ patterns_cs_CENTURY = [
 		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ENT_TYPE": "ORDINAL"},
-            {"OP": "?", "LOWER": {"REGEX": r"^(století|tisíciletí)$"}},
-            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
-            {"ENT_TYPE": "DATESEPARATOR"},
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
-            {"ENT_TYPE": "ORDINAL"},
-            {"LOWER": {"REGEX": r"^(století|tisíciletí)$"}},
+            {"LOWER": {"REGEX": r"^(?:století|tisícil(?:\.|etí))$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
         ]
     }

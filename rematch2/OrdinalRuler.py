@@ -43,7 +43,7 @@ else:
     from .Util import *
 
 
-@Language.factory("ordinal_ruler")
+@Language.factory("ordinal_ruler", default_config={"patterns": []})
 def create_ordinal_ruler(nlp: Language, name: str="ordinal_ruler", patterns: list=[]) -> EntityRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
@@ -52,7 +52,16 @@ def create_ordinal_ruler(nlp: Language, name: str="ordinal_ruler", patterns: lis
         lemmatize=False,
         min_term_length=2
     )
-    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
+    #print(normalized_patterns)
+    return EntityRuler(
+        nlp=nlp, 
+        name=name, 
+        patterns=normalized_patterns,
+        phrase_matcher_attr="LOWER",
+        validate=False,
+        overwrite_ents=True,
+        ent_id_sep="||"
+    )
 
 
 @German.factory("ordinal_ruler")
@@ -121,7 +130,9 @@ if __name__ == "__main__":
         {"lang": "no", "pipe": "nb_core_news_sm",
             "text": "fra det første, det fjerde og det sjette til det 19. eller 20. århundre"},
         {"lang": "sv", "pipe": "sv_core_news_sm",
-            "text": "från det första, det fjärde och det sjätte till 1800- eller 1900-talet"}
+            "text": "från det första, det fjärde och det sjätte till 1800- eller 1900-talet"},
+        {"lang": "cs", "pipe": "pl_core_news_sm",
+            "text": "artefakt pochází ze 7. až 6. století př. n. l., ale může být i starší"}
     ]
     for test in tests:
         print(f"-------------\nlanguage = {test['lang']}")
@@ -129,8 +140,8 @@ if __name__ == "__main__":
         nlp.add_pipe("ordinal_ruler", last=True)
         doc = nlp(test["text"])
 
-        # for token in doc:
-        # print(f"{token.pos_}\t{token.text}\n")
+        for token in doc:
+            print(f"{token.pos_}\t{token.text}\n")
 
         for ent in doc.ents:
             print(ent.ent_id_, ent.text, ent.label_)

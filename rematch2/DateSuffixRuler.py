@@ -48,7 +48,7 @@ else:
     from .Util import *
 
 
-@Language.factory(name="datesuffix_ruler")
+@Language.factory(name="datesuffix_ruler", default_config={"patterns": []})
 def create_datesuffix_ruler(nlp: Language, name: str="datesuffix_ruler", patterns: list=[]) -> EntityRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
@@ -57,7 +57,15 @@ def create_datesuffix_ruler(nlp: Language, name: str="datesuffix_ruler", pattern
         lemmatize=False,
         min_term_length=2
     )
-    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return EntityRuler(
+        nlp=nlp, 
+        name=name, 
+        patterns=normalized_patterns,
+        phrase_matcher_attr="LOWER",
+        validate=False,
+        overwrite_ents=True,
+        ent_id_sep="||"
+    )
     
 
 @German.factory("datesuffix_ruler")
@@ -125,7 +133,9 @@ if __name__ == "__main__":
         {"lang": "no", "pipe": "nb_core_news_sm",
             "text": "dateres fra 1. århundre f.Kr. til 5. århundre e.Kr., eller 1500 f.Kr"},
         {"lang": "sv", "pipe": "sv_core_news_sm",
-            "text": "från 1:a århundradet f.Kr. till 500-talet e.Kr., eller 1500 f.Kr"}
+            "text": "från 1:a århundradet f.Kr. till 500-talet e.Kr., eller 1500 f.Kr"},
+        {"lang": "cs", "pipe": "pl_core_news_sm",
+            "text": "artefakt pochází ze 7. až 6. století př. n. l., ale může být i starší"}
     ]
 
     for test in tests:

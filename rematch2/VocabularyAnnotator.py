@@ -24,8 +24,8 @@ from os.path import exists
 import json
 import pandas as pd                     # for DataFrame output
 import spacy
-from collections.abc import MutableSequence
-from spacy.tokens import Doc
+#from collections.abc import MutableSequence
+#from spacy.tokens import Doc
 from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
 
@@ -47,8 +47,8 @@ class VocabularyAnnotator(BaseAnnotator):
     def __init__(
         self,
         language: str = "en",
-        vocabs: MutableSequence = [],
-        patterns: MutableSequence = []) -> None:
+        vocabs: list=[],
+        patterns: list=[]) -> None:
 
         super().__init__(language=language, patterns=patterns)
 

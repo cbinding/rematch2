@@ -122,8 +122,8 @@ class BaseRuler(EntityRuler):
                         # e.g. "skirting boards":
                         # { "LEMMA": "skirt" }, { "LEMMA": "board" } or
                         # { "LOWER": "skirt" }, { "LOWER": "board" }
-                        # IMPORTANT: lemmatization won't work where the text is
-                        # capitalised as spaCy will mistake it for a proper Noun
+                        # IMPORTANT: lemmatization doesn't work where text is
+                        # capitalised, as spaCy mistakes it for a proper Noun
                         if (lemmatize and len(tok.text) >= min_lemmatize_length):
                             pat["LEMMA"] = tok.lemma_.lower()
                         else:
@@ -206,7 +206,7 @@ def create_amcr_ruler(nlp: Language, name: str = "amcr_ruler") -> BaseRuler:
         nlp=nlp,
         name=name,
         default_label="AMCR",
-        patterns=patterns_cs_AMCR    
+        patterns=_patterns_from_json_file()
     )
 
 @Language.factory(name="aat_activities_ruler")

@@ -18,6 +18,13 @@ patterns_cs_ORDINAL = [
     { 
         "label": "ORDINAL",
 		"pattern": [
+            {"TEXT": {"REGEX": r"^\d+$"}},
+            {"TEXT": "."}
+        ]
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": [
             {"LOWER": {"REGEX": r"^(1\.|první)$"}}            
         ]
     },
@@ -50,24 +57,13 @@ patterns_cs_ORDINAL = [
 		"pattern": [
             {"LOWER": {"REGEX": r"^(6\.|šestý)$"}}            
         ]
-    },
-    { 
-        "label": "ORDINAL",
-		"pattern": "6."
-    },
+    },    
     { 
         "label": "ORDINAL",
 		"pattern": [
             {"LOWER": {"REGEX": r"^(7\.|sedmý)$"}}            
         ]
-    },
-    { 
-        "label": "ORDINAL",
-		"pattern": [
-            {"TEXT": "7"},  
-            {"TEXT": "."},           
-        ]
-    },
+    },    
     { 
         "label": "ORDINAL",
 		"pattern": [

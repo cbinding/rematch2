@@ -45,8 +45,8 @@ else:
     from .Util import *
 
 
-@Language.factory("monthname_ruler")
-def create_monthname_ruler(nlp: Language, name: str="monthname_ruler", patterns: MutableSequence=[]) -> EntityRuler:
+@Language.factory("monthname_ruler", default_config={"patterns": []})
+def create_monthname_ruler(nlp: Language, name: str="monthname_ruler", patterns: list=[]) -> EntityRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns,
@@ -54,7 +54,15 @@ def create_monthname_ruler(nlp: Language, name: str="monthname_ruler", patterns:
         lemmatize=False,
         min_term_length=3
     )
-    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return EntityRuler(
+        nlp=nlp, 
+        name=name, 
+        patterns=normalized_patterns,
+        phrase_matcher_attr="LOWER",
+        validate=False,
+        overwrite_ents=True,
+        ent_id_sep="||"
+    )
     
 
 @German.factory("monthname_ruler")

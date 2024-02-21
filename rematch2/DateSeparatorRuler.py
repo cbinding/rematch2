@@ -46,7 +46,7 @@ else:
     from .Util import *
 
 
-@Language.factory("dateseparator_ruler")
+@Language.factory("dateseparator_ruler", default_config={"patterns": []})
 def create_dateseparator_ruler(nlp: Language, name: str="dateseparator_ruler", patterns: list=[]) -> EntityRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
@@ -55,7 +55,15 @@ def create_dateseparator_ruler(nlp: Language, name: str="dateseparator_ruler", p
         lemmatize=False,
         min_term_length=2
     )
-    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return EntityRuler(
+        nlp=nlp, 
+        name=name, 
+        patterns=normalized_patterns,
+        phrase_matcher_attr="LOWER",
+        validate=False,
+        overwrite_ents=True,
+        ent_id_sep="||"
+    )
 
 
 @German.factory("dateseparator_ruler")
@@ -121,7 +129,9 @@ if __name__ == "__main__":
         {"lang": "no", "pipe": "nb_core_news_sm",
             "text": "bygget i 1480 til 1275, eller 1500-1600"},
         {"lang": "sv", "pipe": "sv_core_news_sm",
-            "text": "byggd 1480 till 1275, eller 1500-1600"}
+            "text": "byggd 1480 till 1275, eller 1500-1600"},
+        {"lang": "cs", "pipe": "pl_core_news_sm",
+            "text": "artefakt pochází ze 7. až 6. století př. n. l., ale může být i starší"}
     ]
     for test in tests:
         print(f"-------------\nlanguage = {test['lang']}")

@@ -46,7 +46,7 @@ else:
     from .Util import *
 
 
-@Language.factory("seasonname_ruler")
+@Language.factory("seasonname_ruler", default_config={"patterns": []})
 def create_seasonname_ruler(nlp: Language, name: str = "seasonname_ruler", patterns: list=[]) -> EntityRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
@@ -55,7 +55,15 @@ def create_seasonname_ruler(nlp: Language, name: str = "seasonname_ruler", patte
         lemmatize=False,
         min_term_length=3
     )
-    return EntityRuler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return EntityRuler(
+        nlp=nlp, 
+        name=name, 
+        patterns=normalized_patterns,
+        phrase_matcher_attr="LOWER",
+        validate=False,
+        overwrite_ents=True,
+        ent_id_sep="||"
+    )
 
 
 @German.factory("seasonname_ruler")
