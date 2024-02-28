@@ -72,17 +72,16 @@ class CenturyRuler(EntityRuler):
             lemmatize=False,
             min_term_length=2
         )
-        atomic_pipe_names = [
+        for name in [
             "ordinal_ruler",
             "monthname_ruler",
             "seasonname_ruler",
             "dateprefix_ruler",
             "datesuffix_ruler",
             "dateseparator_ruler"
-        ]
-        for n in atomic_pipe_names:
-            if not n in nlp.pipe_names:
-                nlp.add_pipe(n, last=True)
+        ]:
+            if not name in nlp.pipe_names:
+                nlp.add_pipe(name, last=True)
 
         EntityRuler.__init__(
             self,
@@ -97,7 +96,7 @@ class CenturyRuler(EntityRuler):
         #print(nlp.pipe_names)
          # add century patterns to this pipeline component
         self.add_patterns(normalized_patterns)
-        #print(patterns)
+        #print(normalized_patterns)
         
     """
     Note see https://github.com/explosion/spaCy/discussions/6309
@@ -108,8 +107,8 @@ class CenturyRuler(EntityRuler):
     """
 
     def __call__(self, doc: Doc) -> Doc:
-        #for ent in doc.ents:
-            #print(f"{ent.start_char}, {ent.end_char - 1}, {ent.ent_id_}, {ent.text}, {ent.label_}")
+        for ent in doc.ents:
+            print(f"{ent.start_char}, {ent.end_char - 1}, {ent.ent_id_}, {ent.text}, {ent.label_}")
         doc = EntityRuler.__call__(self, doc)
         filtered = [ent for ent in doc.ents if ent.label_ not in [
             "ORDINAL", "DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "MONTHNAME", "SEASONNAME"]]
@@ -203,8 +202,8 @@ if __name__ == "__main__":
         # display the current pipeline components
         #print(nlp.pipe_names)
 
-        for token in doc:
-            print(f"{token.pos_}\t{token.text}\n")
+        #for token in doc:
+            #print(f"{token.pos_}\t{token.text}\n")
         # print the doc entities
         #for ent in doc.ents:
             #print(ent.ent_id_, ent.text, ent.label_)

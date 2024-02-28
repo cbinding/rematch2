@@ -58,7 +58,12 @@ patterns_es_DATESUFFIX = [
     "id": "bc",
     "label": "DATESUFFIX",
     "pattern": "a.C."
-  },  
+  },   
+  {
+    "id": "bc",
+    "label": "DATESUFFIX",
+    "pattern": "a. C."
+  }, 
   {
     "id": "bc",
     "label": "DATESUFFIX",

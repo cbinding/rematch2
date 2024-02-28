@@ -17,6 +17,12 @@ patterns_es_ORDINAL = [
     { 
         "label": "ORDINAL",
 		"pattern": [
+            {"TEXT": {"REGEX": r"^([MDCLXVI]+|\d+[°º])$"}}            
+        ] 
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": [
             {"LOWER": {"REGEX": r"^(1°|i|primer[oa]?)$"}}            
         ]
     },

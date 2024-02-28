@@ -92,6 +92,9 @@ from .patterns_nl_YEARSPAN import patterns_nl_YEARSPAN
 from .patterns_no_YEARSPAN import patterns_no_YEARSPAN
 from .patterns_sv_YEARSPAN import patterns_sv_YEARSPAN
 
+# experimental...
+from .patterns_en_NEGATION import patterns_en_NEGATION
+
 # superseded by PeriodoRuler
 from .patterns_no_PERIOD import patterns_no_PERIOD
 from .patterns_sv_PERIOD import patterns_sv_PERIOD

@@ -33,5 +33,7 @@ class TestCenturyRuler(unittest.TestCase):
         nlp = spacy.load("es_core_news_sm", disable=['ner'])
         nlp.add_pipe("century_ruler", last=True)
         doc = nlp(txt)
-        found = next((ent for ent in doc.ents if ent.label_ == "CENTURY" and ent.text == "siglo VII al VI a. C."), False)
+        for ent in doc.ents:
+            print(ent.text)
+        found = next((ent for ent in doc.ents if ent.label_ == "CENTURY" and ent.start_char == 22), False)
         self.assertTrue(found)

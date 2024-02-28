@@ -1,5 +1,4 @@
 from spacy.language import Language
-#from collections.abc import MutableSequence
 
 # normalize string whitespace
 def normalize_whitespace(s: str = ""): 
@@ -59,18 +58,18 @@ def normalize_patterns(
                 for n, tok in enumerate(doc, 1):
                     element = {}
 
-                    # lemmatize term if required (and if term is long enough)
+                    # lemmatize term if required (providing term is long enough)
                     # e.g. "skirting boards":
                     # { "LEMMA": "skirt" }, { "LEMMA": "board" } or
                     # { "LOWER": "skirt" }, { "LOWER": "board" }
-                    # IMPORTANT: lemmatization won't work where the text is
-                    # capitalised as spaCy will mistake it for a proper Noun
+                    # IMPORTANT: lemmatization doesn't work if the text is
+                    # capitalised as spaCy mistakes it for a proper Noun
                     if (lemmatize and len(tok.text) >= min_lemmatize_length):
                         element["LEMMA"] = tok.lemma_.lower()
                     else:
                         element["LOWER"] = tok.text.lower()  
                     
-                    # add pos tags if passed in
+                    # add pos tags check if any passed in
                     # note POS only applied to LAST term if multi-word phrase
                     # e.g. { "LEMMA": "board", "POS": { "IN": ["NOUN", "PROPN"] }}
                     if (len(pos) > 0 and n == phrase_length):

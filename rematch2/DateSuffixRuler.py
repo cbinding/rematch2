@@ -57,6 +57,7 @@ def create_datesuffix_ruler(nlp: Language, name: str="datesuffix_ruler", pattern
         lemmatize=False,
         min_term_length=2
     )
+    #print(normalized_patterns)
     return EntityRuler(
         nlp=nlp, 
         name=name, 
@@ -123,7 +124,7 @@ if __name__ == "__main__":
         {"lang": "en", "pipe": "en_core_web_sm",
             "text": "dating from 1st century BC to 5th century A.D., or 1500 BP"},
         {"lang": "es", "pipe": "es_core_news_sm",
-            "text": "que data del siglo I a.C. al siglo V d.C., o 1500 a.C."},
+            "text": "que data del siglo I a.C. al siglo V d.C., o 1500 a.C., o 1850 a. C."},
         {"lang": "fr", "pipe": "fr_core_news_sm",
             "text": "datant du 1er siècle avant JC au 5ème siècle après JC, ou 1500 BP ou IIe siècle de notre ère"},
         {"lang": "it", "pipe": "it_core_news_sm",
