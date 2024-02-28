@@ -1,7 +1,7 @@
 """
 =============================================================================
 Package :   rematch2.spacypatterns
-Module  :   patterns_fr_NAMEDPERIOD.py
+Module  :   patterns_fr_PERIOD.py
 Version :   20240125
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
@@ -13,41 +13,41 @@ License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History :   25/01/2024 CFB Initially created script
 =============================================================================
 """
-patterns_fr_NAMEDPERIOD = [
+patterns_fr_PERIOD = [
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [{"LOWER": "trias"}]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [{"LOWER": "secondaire"}]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [{"LOWER": "jurassique"}]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [{"LOWER": "crétacé"}]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [{"LOWER": "tertiaire"}]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [{"LOWER": {"REGEX": "^oligoc[eè]ne$"}}]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [{"LOWER": {"REGEX": "^plioc[eè]ne$"}}]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [{"LOWER": "quaternaire"}]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^pl[eé]istoc[eè]ne$"}},
             {"OP": "?", "LOWER": {
@@ -55,11 +55,11 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [{"LOWER": {"REGEX": "pr[ée]histoire"}}]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER":  {"REGEX": "^pal[eé]olithique$"}},
             {"OP": "?", "LOWER": {
@@ -67,65 +67,65 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER":  "chronologie"},
             {"OP": "?", "LOWER": {"REGEX": "^am[eé]ricaine$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^b[oö]lling$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^epipal[eé]olithique$"}},
             {"OP": "?", "POS": "ADJ"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^w[uü]rm$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "dryas"},
             {"OP": "?", "POS": "ADJ"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^aller[oö]d$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^holoc[eè]ne$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "tardiglaciaire"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^m[eé]solithique$"}},
             {"OP": "?", "LOWER": {"REGEX": "^(ancien|moyen|final|r[ée]cent)$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^n[eé]olithique$"}},
             {"OP": "?", "LOWER": {
@@ -133,51 +133,51 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^pr[eé]bor[eé]al$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "atlantique"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^sub\\-bor[eé]al$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "egypte"},
             {"LOWER": "antique"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "chronologie"},
             {"LOWER": "antillaise"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "chalcolithique"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "protohistoire"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^[aâ]ges?$"}},
             {"LOWER": "des"},
@@ -185,7 +185,7 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^(l[’'])?[aâ]ge$"}},
             {"LOWER": "du"},
@@ -194,14 +194,14 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "bronze"},
             {"LOWER": {"REGEX": "^(ancien|moyen|final)$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "bronze"},
             {"LOWER": {"REGEX": "^r[eé]cent$"}},
@@ -209,33 +209,33 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^[eé]p(oque)?$"}},
             {"LOWER": {"REGEX": "^myc[eé]nienne$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "hallstatt"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^[eé]p(oque)?$"}},
             {"LOWER": "orientalisante"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^sub\\-atlantique$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"OP": "?", "LOWER": {
@@ -246,14 +246,14 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "italie"},
             {"LOWER": {"REGEX": "^archa[iï]que$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "riss"},
             {"LOWER": "-"},
@@ -261,14 +261,14 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^[eé]p(oque)?$"}},
             {"LOWER": {"REGEX": "^archa[iï]que$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "transition"},
             {"LOWER": "bronze"},
@@ -277,7 +277,7 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "antiquit[eé]"}},
             {"OP": "?", "LOWER": {
@@ -285,35 +285,35 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^(empire|gallo|r[eé]publique|gaule)$"}},
             {"LOWER": {"REGEX": "^romaine?$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^[eé]p(oque)?$"}},
             {"LOWER": {"REGEX": "^pr[eé]\\-classique$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^[eé]p(oque)?$"}},
             {"LOWER": "classique"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^[eé]p(oque)?$"}},
             {"LOWER": {"REGEX": "^[eé]trusque$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "la"},
             {"LOWER":  {"REGEX": "t[eè]ne"}},
@@ -321,14 +321,14 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^[eé]p(oque)?$"}},
             {"LOWER": {"REGEX": "^hell[eé]nistique$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^[eé]p(oque)?$"}},
             {"LOWER": "tardo"},
@@ -337,7 +337,7 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^(haut|bas)$"}},
             {"OP": "?", "POS": "PUNCT"},
@@ -345,19 +345,19 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "haut-empire"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "bas-empire"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "empire"},
             {"LOWER": "d'"},
@@ -365,7 +365,7 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^r[eè]gne$"}},
             {"LOWER": "d'"},
@@ -373,35 +373,35 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^[eé]p(oque)?$"}},
             {"LOWER": "franque"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "empire"},
             {"LOWER": "byzantin"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^[eé]p(oque)?$"}},
             {"LOWER": {"REGEX": "^m[eé]rovingienne$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^[eé]p(oque)?$"}},
             {"LOWER": {"REGEX": "^carolingien(ne)?$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^(haut|bas)$"}},
             {"LOWER": "moyen"},
@@ -409,7 +409,7 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^(haut|bas)$"}},
             {"LOWER": "moyen"},
@@ -418,7 +418,7 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "moyen"},
             {"LOWER": {"REGEX": "^[aâ]ge$"}},
@@ -426,74 +426,74 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^[eé]p(oque)?$"}},
             {"LOWER": {"REGEX": "m[eé]di[eé]vaux"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^[eé]p(oque)?$"}},
             {"LOWER": "islamique"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "umayyades"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "abbassides"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "empire"},
             {"LOWER": "ottoman"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "temps"},
             {"LOWER": "modernes"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^p[eé]riode$"}},
             {"LOWER": "moderne"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "renaissance"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^r[eé]volution$"}},
             {"LOWER": {"REGEX": "^fran[cç]aise$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": "contemporaine"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^si[eè]cles$"}},
             {"LOWER": "des"},
@@ -504,7 +504,7 @@ patterns_fr_NAMEDPERIOD = [
 
 
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"IN": [
                 "turonien",
@@ -514,14 +514,14 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"POS": "ADJ"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": "du"},
@@ -529,32 +529,32 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "protohistorique"},
             {"OP": "?", "POS": "ADJ"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^tib[eè]re$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "antonins"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "s[eé]v[eè]res"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^(julio|tibero)$"}},
             {"OP": "?", "POS": "PUNCT"},
@@ -562,84 +562,84 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": {"REGEX": "^m[eé]rovingienne$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": {"REGEX": "^carolingien(ne)?$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": {"REGEX": "^archa[iï]que$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": "georgienne"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": "victorienne"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": {"REGEX": "^hell[eé]nistique$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": {"REGEX": "^august[eé]enne$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": {"REGEX": "^tib[eé]rienne$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": "claudienne"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": {"REGEX": "^n[eé]ronienne$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": "flavienne"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": "de"},
@@ -647,7 +647,7 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": "de"},
@@ -655,7 +655,7 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": "de"},
@@ -663,35 +663,35 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": "d'hadrien"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": "antonine"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": {"REGEX": "aur[eé]lienne"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": {"REGEX": "s[eé]v[eé]rienne"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": "de"},
@@ -699,7 +699,7 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": "des"},
@@ -707,21 +707,21 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": "constantinienne"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"OP": "?", "LOWER": {"REGEX": "^([eé]p|[eé]poque|p[eé]riode)$"}},
             {"LOWER": "byzantine"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": {"REGEX": "^si[eè]cle$"}},
             {"LOWER": "des"},
@@ -729,20 +729,20 @@ patterns_fr_NAMEDPERIOD = [
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "minoen"},
             {"OP": "?", "LOWER": {"REGEX": "^(ancien|moyen|r[eé]cent)$"}}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "subminoen"}
         ]
     },
     {
-        "label": "NAMEDPERIODOLD",
+        "label": "PERIODOLD",
         "pattern": [
             {"LOWER": "corinthien"},
             {"OP": "?", "LOWER": {"REGEX": "^(ancien|moyen|r[eé]cent)$"}}

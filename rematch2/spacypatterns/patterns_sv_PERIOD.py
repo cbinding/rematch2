@@ -1,7 +1,7 @@
 """
 =============================================================================
 Package :   rematch2.spacypatterns
-Module  :   patterns_sv_NAMEDPERIOD.py
+Module  :   patterns_sv_PERIOD.py
 Version :   20240125
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
@@ -13,22 +13,22 @@ License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History :   25/01/2024 CFB Initially created script
 =============================================================================
 """
-patterns_sv_NAMEDPERIOD = [ 
+patterns_sv_PERIOD = [ 
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "paleolitikum"}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "förhistorisk"},
             {"LOWER": "tid"}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"OP": "?", "LOWER": {"REGEX": r"^(?:äldre|yngre)$"}},
             {"LOWER": {"REGEX": r"^stenåldern?"}}
@@ -36,31 +36,31 @@ patterns_sv_NAMEDPERIOD = [
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^(?:tidig|mellan|sen)mesolitikum$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^(?:magle|konge)mosekulturen$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "erteböllekulturen"}           
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^(?:tidig|mellan|sen)neolitikum$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "mellanneolitisk"},
             {"LOWER": "tid"},
@@ -68,129 +68,129 @@ patterns_sv_NAMEDPERIOD = [
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "trattbägarkulturen"}           
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "klockbägarkultur"}           
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "gropkeramisk"},
             {"LOWER": "kultur"}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "stridsyxekulturen"}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"OP": "?", "LOWER": {"REGEX": r"^(?:äldre|yngre)$"}},
             {"LOWER": "bronsålder"}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"OP": "?", "LOWER": {"REGEX": r"^(?:äldre|förromersk|romersk|yngre)$"}},
             {"LOWER": {"REGEX": r"^järnåldern?$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "folkvandringstid"}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "vendeltid"}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "vikingatid"}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "historisk"},
             {"LOWER": "tid"}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^medeltida?$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "tidig"},
             {"LOWER": "medeltid"}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^(?:hög|sen)medeltid$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "folkungatiden"}                  
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "kalmarunionen"}                  
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^(?:tidig|sen)?modern$"}},
             {"LOWER": "tid"}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"OP": "?", "LOWER": {"REGEX": r"^(?:äldre|yngre)$"}},
             {"LOWER": "vasatiden"}                  
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "karolinska"},
             {"LOWER": "tiden"}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "stormaktstiden"}                  
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "frihetstiden"}                  
         ] 

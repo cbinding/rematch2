@@ -1,16 +1,16 @@
 """
 =============================================================================
 Package :   rematch2
-Module  :   NamedPeriodRuler.py
+Module  :   PeriodoRuler.py
 Version :   20220803
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   ARIADNEplus
 Summary :   spaCy custom pipeline component (specialized EntityRuler) to 
             identify named periods (from Perio.do) in free text. 
-            Entity type added will be "NAMEDPERIOD"
+            Entity type added will be "PERIOD"
 Imports :   os, sys, spacy, Language, EntityRuler, Doc
-Example :   nlp.add_pipe("namedperiod_ruler", last=True)           
+Example :   nlp.add_pipe("periodo_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History :   03/08/2022 CFB Initially created script
 =============================================================================
@@ -33,15 +33,15 @@ else:
     from .BaseRuler import BaseRuler
 
 
-@Language.factory(name="namedperiod_ruler", default_config={"periodo_authority_id": None})
-def create_namedperiod_ruler(nlp, name: str, periodo_authority_id: str):
-    ruler = NamedPeriodRuler(nlp, name, periodo_authority_id)
+@Language.factory(name="periodo_ruler", default_config={"periodo_authority_id": None})
+def create_periodo_ruler(nlp, name: str, periodo_authority_id: str):
+    ruler = PeriodoRuler(nlp, name, periodo_authority_id)
     return ruler
 
-# NamedPeriodRuler is a specialized EntityRuler
+# PeriodoRuler is a specialized EntityRuler
 
 
-class NamedPeriodRuler(EntityRuler):
+class PeriodoRuler(EntityRuler):
 
     def __init__(self, nlp: Language, name: str, periodo_authority_id=None) -> None:
         EntityRuler.__init__(
@@ -57,7 +57,7 @@ class NamedPeriodRuler(EntityRuler):
         pd = PeriodoData()  # new instance, don't refresh cached data
         periodo_periods = pd.get_period_list(
             periodo_authority_id)  # periods for authority id
-        periodo_patterns = NamedPeriodRuler._periods_to_patterns(
+        periodo_patterns = PeriodoRuler._periods_to_patterns(
             periodo_periods, nlp)  # convert to spaCy pattern format
         self.add_patterns(periodo_patterns)
 
@@ -87,14 +87,14 @@ class NamedPeriodRuler(EntityRuler):
         patterns = list(map(lambda item: {
             "id": item.get("uri", ""),
             "language": item.get("language", ""),
-            "label": "NAMEDPERIOD",
-            "pattern": NamedPeriodRuler._period_to_pattern(item.get("label", ""), nlp)
+            "label": "PERIOD",
+            "pattern": PeriodoRuler._period_to_pattern(item.get("label", ""), nlp)
             # "pattern": list(map(lambda word: {"LOWER": word.lower()}, item.get("label", "").split()))
         }, data or []))
         return patterns
 
 
-# test the NamedPeriodRuler class
+# test the PeriodoRuler class
 if __name__ == "__main__":
 
     # import json
@@ -128,7 +128,7 @@ if __name__ == "__main__":
     nlp = spacy.load(pipeline, disable=['ner'])
     # nlp.max_length = 2000000
 
-    nlp.add_pipe("namedperiod_ruler", last=True, config={
+    nlp.add_pipe("periodo_ruler", last=True, config={
                  "periodo_authority_id": periodo_authority_id})
     doc = nlp(test_text2.lower())
 

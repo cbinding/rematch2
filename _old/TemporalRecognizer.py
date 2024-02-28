@@ -25,7 +25,7 @@ import os               # for general file/directory functionality
 import spacy            # NLP library
 from spacy import displacy
 
-from NamedPeriodRuler import NamedPeriodRuler
+from PeriodoRuler import PeriodoRuler
 from CenturyRuler import CenturyRuler
 from YearSpanRuler import YearSpanRuler
 
@@ -63,7 +63,7 @@ class TemporalRecognizer:
 
         # add 'composite' entityRuler patterns (year spans, century spans etc.)
         # composite patterns can refer to atomic patterns as entity types
-        self._nlp.add_pipe("namedperiod_ruler", config={
+        self._nlp.add_pipe("periodo_ruler", config={
                            "periodo_authority_id": authority})
         self._nlp.add_pipe("century_ruler")
         self._nlp.add_pipe("yearspan_ruler")
@@ -151,11 +151,11 @@ class TemporalRecognizer:
 
         # return HTML rendering of input text with entities highlighted
         options = {
-            "ents": ["YEARSPAN", "CENTURY", "NAMEDPERIOD", "MONUMENT", "EVENTTYPE", "MATERIAL", "ARCHSCIENCE"],
+            "ents": ["YEARSPAN", "CENTURY", "PERIOD", "MONUMENT", "EVENTTYPE", "MATERIAL", "ARCHSCIENCE"],
             "colors": {
                 "YEARSPAN": "lightgreen",
                 "CENTURY": "lightgreen",
-                "NAMEDPERIOD": "lightgreen",
+                "PERIOD": "lightgreen",
                 "MONUMENT": "lightblue",
                 "EVENTTYPE": "lightgray",
                 "MATERIAL": "steelblue",

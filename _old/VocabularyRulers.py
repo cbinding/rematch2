@@ -307,7 +307,7 @@ def create_fish_periods_ruler(nlp, name="fish_periods_ruler"):
         min_term_length=3,
         lemmatize=True,
         pos=[],
-        default_label="NAMEDPERIOD",
+        default_label="PERIOD",
         default_language="en",
         vocabulary=_get_vocabulary(VocabularyEnum.FISH_PERIODS)
     )

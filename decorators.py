@@ -23,7 +23,7 @@ import functools
 from datetime import datetime as DT # For measuring elapsed time
 
 # custom decorator to output execution timing information
-# see https://realpython.com/primer-on-python-decorators/
+# based on https://realpython.com/primer-on-python-decorators/
 def run_timed(func):
     @functools.wraps(func)
     def wrapper_run_timed(*args, **kwargs):

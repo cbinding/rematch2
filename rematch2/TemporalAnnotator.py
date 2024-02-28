@@ -17,6 +17,7 @@ History
 21/11/2022 CFB Initially created script using VocabularyAnnotator as template
 02/02/2023 CFB Support for supplementary patterns passed to base initialisation
 27/10/2023 CFB type hints added for function signatures
+28/02/2024 CFB NamedPeriodRuler renamed to PeriodoRuler
 =============================================================================
 """
 import os
@@ -34,13 +35,14 @@ if __package__ is None or __package__ == '':
     from BaseAnnotator import BaseAnnotator
     from CenturyRuler import create_century_ruler
     from YearSpanRuler import create_yearspan_ruler
-    from NamedPeriodRuler import create_namedperiod_ruler
+    from PeriodoRuler import create_periodo_ruler
 else:
     # uses current package visibility
     from .BaseAnnotator import BaseAnnotator
     from .CenturyRuler import create_century_ruler
     from .YearSpanRuler import create_yearspan_ruler
-    from .NamedPeriodRuler import create_namedperiod_ruler
+    from .PeriodoRuler import create_periodo_ruler
+
 
 # default Perio.do authority ("p0kh9ds") is Historic England periods list..
 class TemporalAnnotator(BaseAnnotator):
@@ -55,7 +57,7 @@ class TemporalAnnotator(BaseAnnotator):
 
         self._pipeline.add_pipe("century_ruler", last=True)
         self._pipeline.add_pipe("yearspan_ruler", last=True)
-        self._pipeline.add_pipe("namedperiod_ruler", last=True, config={
+        self._pipeline.add_pipe("periodo_ruler", last=True, config={
             "periodo_authority_id": periodo_authority_id})
 
 
@@ -69,13 +71,13 @@ class TemporalAnnotator(BaseAnnotator):
             "ents": [
                 "CENTURY",
                 "YEARSPAN",
-                "NAMEDPERIOD"
+                "PERIOD"
 
             ],
             "colors": {
                 "CENTURY": "lightgreen",
                 "YEARSPAN": "steelblue",
-                "NAMEDPERIOD": "lightpink"
+                "PERIOD": "lightpink"
             }
         }
         output = BaseAnnotator._to_html(

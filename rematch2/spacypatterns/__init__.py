@@ -92,8 +92,8 @@ from .patterns_nl_YEARSPAN import patterns_nl_YEARSPAN
 from .patterns_no_YEARSPAN import patterns_no_YEARSPAN
 from .patterns_sv_YEARSPAN import patterns_sv_YEARSPAN
 
-# superseded by NamedPeriodRuler
-from .patterns_no_NAMEDPERIOD import patterns_no_NAMEDPERIOD
-from .patterns_sv_NAMEDPERIOD import patterns_sv_NAMEDPERIOD
+# superseded by PeriodoRuler
+from .patterns_no_PERIOD import patterns_no_PERIOD
+from .patterns_sv_PERIOD import patterns_sv_PERIOD
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))

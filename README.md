@@ -13,7 +13,7 @@
     - [datesuffix_ruler](#datesuffix_ruler)
     - [century_ruler](#century_ruler)
     - [yearspan_ruler](#yearspan_ruler)
-    - [namedperiod_ruler](#namedperiod_ruler)
+    - [periodo_ruler](#periodo_ruler)
     - [temporal_annotator](#temporal_annotator)
     - [Temporal component usage](#component_usage)
   - [Vocabulary components](#vocabulary_components)
@@ -65,17 +65,17 @@ The pipeline components utilise spaCy _patterns_ located in the _spacypatterns_ 
 
 `rematch2` performs specialised NER focussed on temporal entities, and implements specialised spaCy pipeline components to identify the following entity types in free text:
 
-| Component Name                          | Entity Type | Description                                                              |                                             Examples |
-| --------------------------------------- | ----------- | ------------------------------------------------------------------------ | ---------------------------------------------------: |
-| [dayname_ruler](#dayname_ruler)         | DAYNAME     | Day names and their common abbreviations                                 |                              _Mon., TUES, Wednesday_ |
-| [monthname_ruler](#monthname_ruler)     | MONTHNAME   | Month names and their common abbreviations                               |                                   _Jan., FEB, March_ |
-| [seasonname_ruler](#seasonname_ruler)   | SEASONNAME  | Season names                                                             |               _Spring, SUMMER, Autumn, WINTER, Fall_ |
-| [ordinal_ruler](#ordinal_ruler)         | ORDINAL     | Expressions of ordinals (used in identifying centuries)                  |                             _1st, first, THIRD, 3RD_ |
-| [dateprefix_ruler](#dateprefix_ruler)   | DATEPREFIX  | Prefixes commonly associated with years, spans and centuries             |    _Circa, Early, earlier, mid, MIDDLE, Late, later_ |
-| [datesuffix_ruler](#datesuffix_ruler)   | DATESUFFIX  | Prefixes commonly associated with years, spans and centuries             |                       _A.D., AD, B.C., BC, B.P., BP_ |
-| [century_ruler](#century_ruler)         | CENTURY     | Ordinal century expression                                               | _early 15th century BC to late fifteenth century AD_ |
-| [yearspan_ruler](#yearspan_ruler)       | YEARSPAN    | Spans of years (possibly with prefixes and/or suffixes)                  |                         _early 1300 to late 1350 AD_ |
-| [namedperiod_ruler](#namedperiod_ruler) | NAMEDPERIOD | Period label from a specified [Perio.do](https://perio.do/en/) authority |              _Bronze Age, Early Medieval, Victorian_ |
+| Component Name                        | Entity Type | Description                                                              |                                             Examples |
+| ------------------------------------- | ----------- | ------------------------------------------------------------------------ | ---------------------------------------------------: |
+| [dayname_ruler](#dayname_ruler)       | DAYNAME     | Day names and their common abbreviations                                 |                              _Mon., TUES, Wednesday_ |
+| [monthname_ruler](#monthname_ruler)   | MONTHNAME   | Month names and their common abbreviations                               |                                   _Jan., FEB, March_ |
+| [seasonname_ruler](#seasonname_ruler) | SEASONNAME  | Season names                                                             |               _Spring, SUMMER, Autumn, WINTER, Fall_ |
+| [ordinal_ruler](#ordinal_ruler)       | ORDINAL     | Expressions of ordinals (used in identifying centuries)                  |                             _1st, first, THIRD, 3RD_ |
+| [dateprefix_ruler](#dateprefix_ruler) | DATEPREFIX  | Prefixes commonly associated with years, spans and centuries             |    _Circa, Early, earlier, mid, MIDDLE, Late, later_ |
+| [datesuffix_ruler](#datesuffix_ruler) | DATESUFFIX  | Prefixes commonly associated with years, spans and centuries             |                       _A.D., AD, B.C., BC, B.P., BP_ |
+| [century_ruler](#century_ruler)       | CENTURY     | Ordinal century expression                                               | _early 15th century BC to late fifteenth century AD_ |
+| [yearspan_ruler](#yearspan_ruler)     | YEARSPAN    | Spans of years (possibly with prefixes and/or suffixes)                  |                         _early 1300 to late 1350 AD_ |
+| [periodo_ruler](#periodo_ruler)       | PERIOD      | Period label from a specified [Perio.do](https://perio.do/en/) authority |              _Bronze Age, Early Medieval, Victorian_ |
 
 ### dayname_ruler <a class="anchor" id="dayname_ruler"></a>
 
@@ -109,9 +109,9 @@ Identifies typical expressions of centuries or spans of centuries in text. Utili
 
 Identifies typical expressions of years or spans of years in text. Utilises other rulers to identify more complex patterns e.g. _late 1712 to early 1714 AD_
 
-### namedperiod_ruler <a class="anchor" id="namedperiod_ruler"></a>
+### periodo_ruler <a class="anchor" id="periodo_ruler"></a>
 
-The namedperiod ruler component utilises the [Perio.do](https://perio.do/) dataset. When configured with a valid Perio.do authority identifier e.g. `'p0xxt6t'` [Scottish Archaeological Periods & Ages (ScAPA)](http://n2t.net/ark:/99152/p0xxt6t), the component will match against the labels of periods contained within the specified authority. e.g. _Chalcolithic, \_Early Bronze Age_, _Antonine_
+The periodo ruler component utilises the [Perio.do](https://perio.do/) dataset. When configured with a valid Perio.do authority identifier e.g. `'p0xxt6t'` [Scottish Archaeological Periods & Ages (ScAPA)](http://n2t.net/ark:/99152/p0xxt6t), the component will match against the labels of periods contained within the specified authority. e.g. _Chalcolithic, \_Early Bronze Age_, _Antonine_
 
 ## Usage <a class="anchor" id="component_usage"></a>
 
@@ -192,7 +192,7 @@ The earliest features, which accounted for the majority of the remains on site, 
 output_format = "html"
 
 # create and configure the annotator
-annotator = VocabularyAnnotator(vocabs=[VocabularyEnum.FISH_MONUMENT_TYPES])   
+annotator = VocabularyAnnotator(vocabs=[VocabularyEnum.FISH_MONUMENT_TYPES])
 
 # process example text and display the results in required output format
 results = annotator.annotateText(input_text=test_text, output_format=output_format)

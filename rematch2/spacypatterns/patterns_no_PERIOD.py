@@ -1,7 +1,7 @@
 """
 =============================================================================
 Package :   rematch2.spacypatterns
-Module  :   patterns_no_NAMEDPERIOD.py
+Module  :   patterns_no_PERIOD.py
 Version :   20240125
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
@@ -13,243 +13,243 @@ License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History :   25/01/2024 CFB Initially created script
 =============================================================================
 """
-patterns_no_NAMEDPERIOD = [ 
+patterns_no_PERIOD = [ 
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"LOWER": {"REGEX": r"^steinalder(?:en)?$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": r"^(?:tidlig|mellom|sei?n)(?:mesolitt?iske?|mesol[iuo]tikk?um)$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": r"^(?:tidlig|mellom|sei?n)(?:neolitt?iske?|neolitikk?um)$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"LOWER": "metalltid"}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"LOWER": {"REGEX": r"^brons(?:ea|å|aa?)lder(?:en)?$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"LOWER": {"REGEX": r"^j[eäæ]rn(?:å|aa?)lder(?:en)?$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"LOWER": {"REGEX": r"^romer(?:ske?|tid)$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"LOWER": {"REGEX": r"^folkevandringstid(?:en)?$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"LOWER": {"REGEX": r"^merovingertid(?:en)?$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"LOWER": {"REGEX": r"^vikinge?tid(?:en)?$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^(?:tidlig|høy|sen)?(?:middelalder(?:en)?|medeltida)$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^(?:nyere|moderne|vår)$"}},
             {"LOWER": {"REGEX": r"^tida?$"}}
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^istid(?:ens?)?$"}}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^oldtid(?:ens?)?$"}}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "forhistoriske"}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^(?:paleolittiske?|paleolitikum)$"}}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^jegersteinalder(?:en)?$"}}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "pionerfase"}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^pionerbosetning(?:en)?$"}}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^(?:jeger|fosna|komsa)(?:[–-]?kultur(?:en)?)?$"}}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^(?:Mikrolittfasen|\bmm\b)$"}}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "tørkopfasen"}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^lundev(?:å|aa?)genfasen$"}}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^nøstvet(?:fasen)?$"}}             
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^nøstvet(?:[–-]?kultur(?:en)?)?$"}}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "gjølstadfasen"}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "tverrpilfasen"}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "nøstvetøksfasen"}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^(?:traktbeger(?:fasen)?|\btrb\b)$"}}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "senstenalder"}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "bondesteinalder"}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "stridsøksfasen"}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "seinneolitikum"}            
         ] 
     },    
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "germansk"},
             {"LOWER": {"REGEX": r"^j[eäæ]rn(?:å|aa?)lder(?:en)?$"}}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "reformatorisk"}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^borgerkrigstid(?:en)?$"}}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^mellomkrigstid(?:en)?$"}}            
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": "etter"},
             {"ORTH": {"REGEX": r"^[–-]$"}},        
@@ -257,7 +257,7 @@ patterns_no_NAMEDPERIOD = [
         ] 
     },
     { 
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
             {"LOWER": {"REGEX": r"^per(?:iode)?$"}},
             {"LOWER": {"REGEX": r"^[IV]+$"}}              

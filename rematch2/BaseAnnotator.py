@@ -27,6 +27,12 @@ from spacy.tokens import Doc
 from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
 
+if __package__ is None or __package__ == '':
+    # uses current directory visibility
+    from Util import *
+else:
+    from .Util import *
+
 
 # base class for VocabularyAnnotator and TemporalAnnotator
 class BaseAnnotator():
@@ -72,7 +78,7 @@ class BaseAnnotator():
         return self._pipeline.pipe_names
 
     # process text and output results to specified format
-    def annotateText(self, input_text: str="", output_format: str="csv"):
+    def annotateText(self, input_text: str="", output_format: str="csv", options: dict=None):
         output = ""
 
         # data cleansing stages on input text
@@ -85,7 +91,7 @@ class BaseAnnotator():
 
         # normalise white space before annotation
         # (extra spaces frustrate pattern matching)
-        cleaned = " ".join(input_text.strip().split())
+        cleaned = normalize_whitespace(input_text)
 
         # perform the annotation
         doc = self.__annotate(cleaned)
@@ -93,14 +99,32 @@ class BaseAnnotator():
         # convert the results to the required format
         match output_format.strip().lower():
             case "html":
-                options = {
-                    "ents": [
-                        "OBJECT"                        
-                    ],
-                    "colors": {
-                        "OBJECT": "yellow"
+                # default options if none passed in
+                if options is None:
+                    options = {
+                        "ents": [
+                            "CENTURY",
+                            "YEARSPAN",
+                            "PERIOD",
+                            "MONUMENT",
+                            "OBJECT",
+                            "ARCHSCIENCE",
+                            "EVIDENCE",
+                            "MATERIAL",
+                            "EVENTTYPE"
+                        ],
+                        "colors": {
+                            "CENTURY": "lightgreen",
+                            "YEARSPAN": "salmon",
+                            "PERIOD": "yellow",
+                            "MONUMENT": "cyan",
+                            "OBJECT": "plum",
+                            "ARCHSCIENCE": "pink",
+                            "EVIDENCE": "aliceblue",
+                            "MATERIAL": "antiquewhite",
+                            "EVENTTYPE": "coral",
+                        }
                     }
-                }
                 output = self.__doc_to_html(doc, options)
             case "ttl":
                 output = self.__doc_to_ttl(doc)
@@ -127,6 +151,7 @@ class BaseAnnotator():
         output = self.annotateText(txt, output_format)
         return output
 
+
     # convert results to pandas.DataFrame object
     @staticmethod
     def __doc_to_dataframe(doc: Doc) -> pd.DataFrame:
@@ -143,6 +168,7 @@ class BaseAnnotator():
         
         return df
 
+
     # convert results to CSV formatted string,
     # or write to specified CSV file if name supplied
 
@@ -150,6 +176,7 @@ class BaseAnnotator():
     def __doc_to_csv(doc: Doc, fileName: str = None) -> str:
         df = BaseAnnotator.__doc_to_dataframe(doc)
         return df.to_csv(fileName, index=False)
+
 
     # convert results to JSON formatted string,
     # or write to specified JSON file if name supplied
@@ -159,6 +186,7 @@ class BaseAnnotator():
         df = BaseAnnotator.__doc_to_dataframe(doc)
         return df.to_json(fileName, orient="records")
 
+
     # convert results to TTL (Turtle RDF) formatted string
     @staticmethod
     def __doc_to_ttl(doc: Doc, id: str=None) -> str:
@@ -167,6 +195,7 @@ class BaseAnnotator():
             id = "http://tempuri/mydata"
         # TODO....
         return ttl
+
 
     # convert results to python dictionary
 

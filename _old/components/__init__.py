@@ -9,7 +9,7 @@ from .DateSuffixRuler import create_datesuffix_ruler
 from .DateSeparatorRuler import create_dateseparator_ruler
 from .CenturyRuler import create_century_ruler
 from .YearSpanRuler import create_yearspan_ruler
-from .NamedPeriodRuler import create_namedperiod_ruler
+from .PeriodoRuler import create_periodo_ruler
 from .BaseRuler import create_base-ruler
 #from .FISH_ComponentRuler import create_fish_component_ruler
 #from .FISH_ArchObjectRuler import create_fish_archobject_ruler

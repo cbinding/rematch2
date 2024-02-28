@@ -16,15 +16,17 @@ License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History
 17/06/2022 CFB Initially created script
 27/10/2023 CFB type hints added for function signatures
+28/02/2024 CFB locate periodo cache file with vocabulary patterns
 =============================================================================
 """
 import json
-
+import os
 from jsonpath_ng import jsonpath
 from jsonpath_ng.ext import parse
 
 from os.path import exists
 from urllib.request import urlopen
+from pathlib import Path
 
 
 class PeriodoData:
@@ -34,6 +36,8 @@ class PeriodoData:
     PERIODO_URI = "https://n2t.net/ark:/99152/p0dataset.json"
     CACHE_FILE_NAME = "periodo-cache.json"
 
+    
+    
     def __init__(self, from_cache: bool=True) -> None:
         self.jsondata = None
         self.load(from_cache)
@@ -42,7 +46,8 @@ class PeriodoData:
         """load data from cache or from url"""
 
         # checking if cache file exists first
-        file_name = PeriodoData.CACHE_FILE_NAME
+        base_path = (Path(__file__).parent / "vocabularies").resolve()
+        file_name = os.path.join(base_path, PeriodoData.CACHE_FILE_NAME)
         cache_file_exists = exists(file_name)
 
         # if cache not present or we want to force a refresh,
@@ -89,7 +94,9 @@ class PeriodoData:
         if url == None:
             url = PeriodoData.PERIODO_URI
         if file_name == None:
-            file_name = PeriodoData.CACHE_FILE_NAME
+            base_path = (Path(__file__).parent / "vocabularies").resolve()
+            file_name = os.path.join(base_path, PeriodoData.CACHE_FILE_NAME)
+            #file_name = PeriodoData.CACHE_FILE_NAME
 
         data = PeriodoData._json_from_url(url)
         PeriodoData._json_to_file(data, file_name)
@@ -136,9 +143,11 @@ class PeriodoData:
         periods = self.find(f"$.authorities.{ authorityID }.periods.*")
 
         lst = []
+        BASE_URI = "http://n2t.net/ark:/99152/"
         for period in periods:
             id = period.value.get("id", "")
-            uri = f"http://n2t.net/ark:/99152/{ period.value.get('id', '') }"
+
+            uri = f"{BASE_URI}{ period.value.get('id', '') }"
             label = period.value.get("label", "")
             language = period.value.get("language", "")
             localized = period.value.get("localizedLabels", {}).items()
@@ -146,7 +155,7 @@ class PeriodoData:
             # main terms
             lst.append({
                 "id": id,
-                "uri": f"http://n2t.net/ark:/99152/{id}",
+                "uri": f"{BASE_URI}{id}",
                 "label": label,
                 "language": language
             })
@@ -157,7 +166,7 @@ class PeriodoData:
                     if (localizedLabel != label):
                         lst.append({
                             "id": id,
-                            "uri": f"http://n2t.net/ark:/99152/{id}",
+                            "uri": f"{BASE_URI}{id}",
                             "label": localizedLabel,
                             "language": localizedLanguage
                         })

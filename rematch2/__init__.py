@@ -5,7 +5,7 @@ from .DateSeparatorRuler import create_dateseparator_ruler
 from .DateSuffixRuler import create_datesuffix_ruler
 from .DayNameRuler import create_dayname_ruler
 from .MonthNameRuler import create_monthname_ruler
-from .NamedPeriodRuler import create_namedperiod_ruler
+from .PeriodoRuler import create_periodo_ruler
 from .OrdinalRuler import create_ordinal_ruler
 from .PeriodoData import PeriodoData
 from .SeasonNameRuler import create_seasonname_ruler
@@ -14,6 +14,7 @@ from .VocabularyAnnotator import VocabularyAnnotator
 from .VocabularyEnum import VocabularyEnum
 from .VocabularyRuler import *
 from .Util import *
+#from .LogFile import LogFile # not currently used
 from .YearSpanRuler import create_yearspan_ruler
 
 __version__ = "0.2.0"

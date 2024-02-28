@@ -371,7 +371,7 @@ def create_fish_periods_ruler(nlp: Language, name: str="fish_periods_ruler") -> 
     return BaseRuler(
         nlp=nlp,
         name=name,
-        default_label="NAMEDPERIOD",
+        default_label="PERIOD",
         patterns=patterns_en_FISH_PERIODS
     )
 

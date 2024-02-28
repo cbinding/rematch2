@@ -344,7 +344,7 @@ def create_fish_periods_ruler(nlp: Language, name: str="fish_periods_ruler") -> 
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_FISH_PERIODS_20211011.json"),
-        default_label="NAMEDPERIOD",
+        default_label="PERIOD",
     )
     return EntityRuler(
         nlp=nlp, 

@@ -1,14 +1,14 @@
-patterns_en_FISH_NAMEDPERIOD = [
+patterns_en_FISH_PERIOD = [
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/PA",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "palaeolithic"}
 		] 
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/MPA",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "middle"},
 			{"LOWER": "palaeolithic"}
@@ -16,7 +16,7 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/EPR",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "early"},
 			{"LOWER": "prehistoric"}
@@ -24,7 +24,7 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/LPR",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "later"},
 			{"LOWER": "prehistoric"}
@@ -32,7 +32,7 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/UPA",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "upper"},
 			{"LOWER": "palaeolithic"}
@@ -40,7 +40,7 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/UP",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "prehistoric"},
 			{"LOWER": "or"},
@@ -49,21 +49,21 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/ME",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "mesolithic"}
 		] 
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/PR",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "prehistoric"}
 		] 
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/EME",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "early"},
 			{"LOWER": "mesolithic"}
@@ -71,7 +71,7 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/LME",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "late"},
 			{"LOWER": "mesolithic"}
@@ -79,7 +79,7 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/ENE",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "early"},
 			{"LOWER": "neolithic"}
@@ -87,7 +87,7 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/MNE",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "middle"},
 			{"LOWER": "neolithic"}
@@ -95,7 +95,7 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/EBA",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "early"},
 			{"LOWER": "bronze"},
@@ -104,7 +104,7 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/BA",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "bronze"},
 			{"LOWER": "age"}
@@ -112,14 +112,14 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/NE",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "neolithic"}
 		] 
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/IA",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "iron"},
 			{"LOWER": "age"}
@@ -127,7 +127,7 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/EIA",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "early"},
 			{"LOWER": "iron"},
@@ -136,7 +136,7 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/MBA",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "middle"},
 			{"LOWER": "bronze"},
@@ -145,7 +145,7 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/LNE",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "late"},
 			{"LOWER": "neolithic"}
@@ -153,7 +153,7 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/LBA",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "late"},
 			{"LOWER": "bronze"},
@@ -162,7 +162,7 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/MIA",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "middle"},
 			{"LOWER": "iron"},
@@ -171,14 +171,14 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/RO",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "roman"}
 		] 
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/PM",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "post"},
 			{"OP": "?", "ORTH": "-"},
@@ -187,7 +187,7 @@ patterns_en_FISH_NAMEDPERIOD = [
     },	
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/EM",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "early"},
 			{"LOWER": "medieval"}
@@ -195,21 +195,21 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/UN",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "uncertain"}
 		] 
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/MD",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "medieval"}
 		] 
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/UM",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "early"},
 			{"LOWER": "med."},
@@ -219,14 +219,14 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/MO",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "modern"}
 		] 
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/LIA",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "late"},
 			{"LOWER": "iron"},
@@ -235,7 +235,7 @@ patterns_en_FISH_NAMEDPERIOD = [
     },
 	{
 		"id": "http://purl.org/heritagedata/schemes/eh_period/concepts/LPA",
-        "label": "NAMEDPERIOD",
+        "label": "PERIOD",
 		"pattern": [
 			{"LOWER": "lower"},
 			{"LOWER": "paleolithic"}

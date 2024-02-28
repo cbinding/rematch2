@@ -97,7 +97,7 @@ class CenturyRuler(EntityRuler):
         #print(nlp.pipe_names)
          # add century patterns to this pipeline component
         self.add_patterns(normalized_patterns)
-        print(patterns)
+        #print(patterns)
         
     """
     Note see https://github.com/explosion/spaCy/discussions/6309
@@ -108,8 +108,8 @@ class CenturyRuler(EntityRuler):
     """
 
     def __call__(self, doc: Doc) -> Doc:
-        for ent in doc.ents:
-            print(f"{ent.start_char}, {ent.end_char - 1}, {ent.ent_id_}, {ent.text}, {ent.label_}")
+        #for ent in doc.ents:
+            #print(f"{ent.start_char}, {ent.end_char - 1}, {ent.ent_id_}, {ent.text}, {ent.label_}")
         doc = EntityRuler.__call__(self, doc)
         filtered = [ent for ent in doc.ents if ent.label_ not in [
             "ORDINAL", "DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "MONTHNAME", "SEASONNAME"]]

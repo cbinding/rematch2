@@ -35,7 +35,7 @@ from rematch2 import BaseAnnotator
 class FishVocabularyAnnotator(BaseAnnotator):
     def __init__(self,
                  language="en",
-                 entity_types=["NAMEDPERIOD", "MATERIAL", "MARITIME", "EVIDENCE",
+                 entity_types=["PERIOD", "MATERIAL", "MARITIME", "EVIDENCE",
                                "EVENTTYPE", "ARCHSCIENCE", "OBJECT", "COMPONENT", "MONUMENT"],
                  periodo_authority_id="p0kh9ds",
                  patterns=[]) -> None:
@@ -49,8 +49,8 @@ class FishVocabularyAnnotator(BaseAnnotator):
         # conditionally add rematch2 component(s) to the end of the pipeline
         # in order specified in init (allows user-specified order)
         for entity_type in list(map(lambda s: (s or "").strip().upper(), entity_types)):
-            if (entity_type == "NAMEDPERIOD"):
-                self._pipeline.add_pipe("namedperiod_ruler", last=True, config={
+            if (entity_type == "PERIOD"):
+                self._pipeline.add_pipe("periodo_ruler", last=True, config={
                     "periodo_authority_id": periodo_authority_id})
             elif (entity_type == "ARCHSCIENCE"):
                 self._pipeline.add_pipe("fish_archscience_ruler", last=True)
@@ -79,7 +79,7 @@ class FishVocabularyAnnotator(BaseAnnotator):
         # specify colours for HTML output
         options = {
             "ents": [
-                "NAMEDPERIOD",
+                "PERIOD",
                 "EVIDENCE",
                 "MATERIAL",
                 "MARITIME",
@@ -90,7 +90,7 @@ class FishVocabularyAnnotator(BaseAnnotator):
                 "MONUMENT"
             ],
             "colors": {
-                "NAMEDPERIOD": "lightpink",
+                "PERIOD": "lightpink",
                 "EVIDENCE": "beige",
                 "MATERIAL": "lightgreen",
                 "MARITIME": "steelblue",

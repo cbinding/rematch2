@@ -1,0 +1,415 @@
+title:         find_pairs.py results
+description:   find paired entities in text
+timestamp:     28/02/24 12:03:03
+periodo ID:    "p0kh9ds"
+input records: 8
+results:
+
+=============================================================
+identifier: https://doi.org/10.5284/1039457
+input text:
+"The report archived here details archaeological projects at Seaton Pottery, funded by Historic Scotland, and at the Aberdeen Pottery, funded by Barratt Construction Ltd. Seaton Pottery is Scotland's most northerly industrial pottery and featured in an exhibition in Aberdeen City Council’s Provost Skene's House, Aberdeen in 2004 much of the research included in this paper was collected for that project. The Aberdeen Pottery is one of Scotland's earliest industrial potteries and its location and products were a subject of much discussion among Scottish ceramicists until the developer-funded project outlined in the report.  The digital archive available here comprises the report and illustrations. The finds and copy archive have been deposited with Aberdeen Art Gallery and Museums. The original archive is to be deposited with RCAHMS."
+
+Entity occurrence counts:
+id                                                            type      lemma        
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68694   [OBJECT]  "art gallery"    1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68698   [OBJECT]  "museum"         1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68928   [OBJECT]  "house"          1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/100151  [OBJECT]  "paper"          1
+
+Noun chunk pairs:
+NONE FOUND
+
+Dependency match pairs:
+NONE FOUND
+
+=============================================================
+identifier: https://doi.org/10.5284/1048332
+input text:
+"An archaeological strip and map was undertaken by CFA Archaeology Ltd at Stanegate Cottages, Newbrough during August 2017. The excavation revealed a pit which contained the remains of two AOC Beakers, three flint knives, a hollowed pebble and a single jet-like bead. This was probably the plough damaged remains of what was a much deeper pit. The artefact assemblage is typical of a Beaker funerary context and it is assumed that the pit is a ploughed-out Beaker burial. The works also identified a linear ditch, a shallow curvilinear ditch and a natural erosion ditch. The ditch features may be part of the Romano-British group of cropmarks identified to the west of the development area and may form part of a wider series of prehistoric field divisions within the landscape."
+
+Entity occurrence counts:
+id                                                            type      lemma          
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351   [OBJECT]  "ditch"            3
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70398   [OBJECT]  "pit"              3
+http://purl.org/heritagedata/schemes/mda_obj/concepts/96754   [OBJECT]  "beaker"           2
+http://n2t.net/ark:/99152/p0kh9dst7t7                         [PERIOD]  "prehistoric"      1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68623   [OBJECT]  "field"            1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68890   [OBJECT]  "linear ditch"     1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68928   [OBJECT]  "cottage"          1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/69434   [OBJECT]  "work"             1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70018   [OBJECT]  "beaker burial"    1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/78156   [OBJECT]  "feature"          1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/141192  [OBJECT]  "assemblage"       1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/95798   [OBJECT]  "plough"           1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/96377   [OBJECT]  "knife"            1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/96488   [OBJECT]  "bead"             1
+
+Noun chunk pairs:
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"   -   "field"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68623
+
+Dependency match pairs:
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"   .   "field"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68623
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  .*   "field"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68623
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  ;*   "ditch"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  ;*   "features"           [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/78156
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  $+   "field"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68623
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  $++  "field"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68623
+
+=============================================================
+identifier: https://doi.org/10.5284/1116137
+input text:
+"This collection comprises images and GIS data from an earthwork survey and trial trench evaluation carried out by Cotswold Archaeology in October 2022 at Keeley Lane, Wootton, Bedfordshire, at the request of EDP Ltd acting on behalf of Rainier Developments Ltd. The earthwork survey recorded the extant remains of a medieval ridge and furrow agricultural system of variable preservation and mapped the extent of a large quarry pit located in the central area of the Site. Five trenches were initially excavated across the 3ha Site. An additional trench was subsequently excavated to further investigate a localised cluster of four pits. The pits produced pottery of Late Iron Age/Roman date as well as small quantities of animal bone including cattle, sheep/goat, pig, and dog. A single isolated undated V-shaped ditch was also investigated in Trench 5, at the south-eastern end of the Site, possibly representing a former field boundary. The results of the fieldwork suggest a low level of activity within the Site during the Late Iron Age/Roman period, possibly suggesting that the Site lay within the agricultural hinterland of a contemporary settlement to the north and / or east, where further Roman activity has been recorded. Medieval and post-medieval activity within the Site is attested by the ridge and furrow earthworks as well as the remnants of the large quarry pit, which was seen to truncate the ridge and furrow within the central portion of the Site."
+
+Entity occurrence counts:
+id                                                           type      lemma             
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412  [OBJECT]  "site"                7
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68917  [OBJECT]  "trench"              4
+http://n2t.net/ark:/99152/p0kh9ds9nsj                        [PERIOD]  "roman"               3
+http://n2t.net/ark:/99152/p0kh9dscbkd                        [PERIOD]  "medieval"            3
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70352  [OBJECT]  "earthwork"           3
+http://n2t.net/ark:/99152/p0kh9ds8p8k                        [PERIOD]  "late iron age"       2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68628  [OBJECT]  "ridge and furrow"    2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/69068  [OBJECT]  "quarry"              2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70398  [OBJECT]  "pit"                 2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68625  [OBJECT]  "field boundary"      1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68866  [OBJECT]  "fieldwork"           1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68977  [OBJECT]  "settlement"          1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351  [OBJECT]  "ditch"               1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/95074  [OBJECT]  "animal bone"         1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/95353  [OBJECT]  "level"               1
+
+Noun chunk pairs:
+NONE FOUND
+
+Dependency match pairs:
+http://n2t.net/ark:/99152/p0kh9ds8p8k    [PERIOD]      "late iron age"  <<   "level"              [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/95353
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <<   "level"              [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/95353
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  .*   "quarry"             [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/69068
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  .*   "pit"                [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70398
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  .*   "site"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412
+http://n2t.net/ark:/99152/p0kh9ds8p8k    [PERIOD]      "late iron age"  .*   "animal bone"        [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/95074
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "animal bone"        [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/95074
+http://n2t.net/ark:/99152/p0kh9ds8p8k    [PERIOD]      "late iron age"  .*   "site"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412
+http://n2t.net/ark:/99152/p0kh9ds8p8k    [PERIOD]      "late iron age"  .*   "settlement"         [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68977
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "site"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "settlement"         [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68977
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  .*   "ridge and furrow"   [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68628
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  .*   "earthworks"         [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70352
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  ;*   "earthwork"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70352
+http://n2t.net/ark:/99152/p0kh9ds8p8k    [PERIOD]      "late iron age"  ;*   "fieldwork"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68866
+http://n2t.net/ark:/99152/p0kh9ds8p8k    [PERIOD]      "late iron age"  ;*   "level"              [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/95353
+http://n2t.net/ark:/99152/p0kh9ds8p8k    [PERIOD]      "late iron age"  ;*   "site"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  ;*   "fieldwork"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68866
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  ;*   "level"              [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/95353
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  ;*   "site"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  ;*   "settlement"         [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68977
+
+=============================================================
+identifier: https://doi.org/10.5284/1112527
+input text:
+"This collection comprises images, site records, and CAD files from the archaeological field survey carried out by Headland Archaeology at Carelton Cemetery, Poulton-le-Fylde, Blackpool, during November and December 2019.       The archaeological field survey(English Heritage Level 2) and trial trench evaluation at Carleton Cemetery, Poulton-le-Fylde, Blackpool, was commissioned by Cemetery Development Services Ltd. as a planning condition(Ref 19/0278) for the extension of the cemetery.       The field survey, supplemented by LiDAR data analysis, has confirmed and the observations and conclusions of the Heritage Statement recording three former field boundaries as low linear earthworks which correspond to the post-medieval agricultural landscape as depicted on the Map of the Stonyhurst Estate(1774). Ridge and furrow cultivation has been recorded throughout.        The subsequent trial trench evaluation recorded the fill of one of the former field boundaries which has been recut to contain a clay drainage pipe. No cultural material was recovered from the fill of the ditch to indicate a date. No archaeological features were recorded anywhere else on the site and therefore, whilst the post medieval field system may be of local historical interest, the archaeological potential of the site is assessed as very low.        The field survey, supplemented by LiDAR data analysis, has confirmed the observations and conclusions of the Heritage Statement recording three former field boundaries as low linear earthworks which correspond to the post-medieval agricultural landscape as depicted on the Map of the Stonyhurst Estate(1774). Ridge and furrow cultivation has been recorded throughout.        The subsequent trial trench evaluation recorded the fill of one of the former field boundaries which has been recut to contain a clay drainage pipe. No cultural material was recovered from the fall of the ditch to indicate a date. No archaeological features were recorded anywhere else on the site and therefore, whilst the post medieval field system may be of local historical interest, the archaeological potential of the site is assessed as very low."
+
+Entity occurrence counts:
+id                                                            type      lemma                   
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412   [OBJECT]  "site"                      5
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68623   [OBJECT]  "field"                     4
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68625   [OBJECT]  "field boundary"            4
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70053   [OBJECT]  "cemetery"                  4
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68917   [OBJECT]  "trench"                    3
+http://n2t.net/ark:/99152/p0kh9dscbkd                         [PERIOD]  "medieval"                  2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/102912  [OBJECT]  "archaeological feature"    2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68633   [OBJECT]  "field system"              2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68890   [OBJECT]  "linear earthwork"          2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351   [OBJECT]  "ditch"                     2
+http://purl.org/heritagedata/schemes/mda_obj/concepts/97616   [OBJECT]  "post"                      2
+http://purl.org/heritagedata/schemes/mda_obj/concepts/95353   [OBJECT]  "level"                     1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/96930   [OBJECT]  "file"                      1
+
+Noun chunk pairs:
+NONE FOUND
+
+Dependency match pairs:
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  <<   "linear earthworks"  [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68890
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  ;*   "field"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68623
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  ;*   "field boundaries"   [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68625
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  ;*   "linear earthworks"  [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68890
+
+=============================================================
+identifier: https://doi.org/10.5284/1101032
+input text:
+"This collection comprises images, reports and CAD from an archaeological trial trench evaluation and mitigation in the back plot of Rectory View, Hargrave, Northamptonshire between December 2019 and February 2021, the work was undertaken by MOLA. Evaluation Undated, linear archaeological features were found, as well as a single posthole. Features in Trench 1 were closely grouped together at the west end and in the centre of the trench there was a large, possible 11th-12th-century boundary ditch, aligned with the property boundaries, which was re-cut at least twice. Trench 2 contained linear ditches at its southern end, which were arranged perpendicular to each other in pairs and may represent the corner of a structure or horticultural enclosure.    Mitigation MOLA was commissioned to carry out a programme of archaeological mitigation at a proposed residential development site on land at Rectory View, Hargrave, Northamptonshire. The works comprised the Strip, Map and Sample of three building footprints and Archaeological Observation, Investigation, Recording, Analysis and Publication during intrusive ground works associated with the development. The early medieval activity on the site consisted of two circular enclosures, in addition to a collection of pits and postholes which did not form any clear structures. A watering hole believed to be used by livestock was also identified. This early activity likely relates to livestock management and although direct evidence of occupation could not be clearly identified it is likely that a dwelling was located close to the site. The later medieval activity focused on the establishment of two plots, which was further sub-divided by ditches. An isolated post-medieval pit and a modern dog burial was also found within the main excavation area. Two other areas were monitored during these works a large early medieval ditch was identified in the northern area and several early medieval postholes and pits were identified in the southern area."
+
+Entity occurrence counts:
+id                                                            type      lemma                   
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68917   [OBJECT]  "trench"                    4
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/69434   [OBJECT]  "work"                      4
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412   [OBJECT]  "site"                      3
+http://n2t.net/ark:/99152/p0kh9dsmf3f                         [PERIOD]  "early medieval"            3
+http://n2t.net/ark:/99152/p0kh9dscbkd                         [PERIOD]  "medieval"                  2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70420   [OBJECT]  "structure"                 2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351   [OBJECT]  "ditch"                     2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70354   [OBJECT]  "enclosure"                 1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/78156   [OBJECT]  "feature"                   1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70398   [OBJECT]  "pit"                       1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70356   [OBJECT]  "circular enclosure"        1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70326   [OBJECT]  "boundary ditch"            1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70323   [OBJECT]  "property boundary"         1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70018   [OBJECT]  "burial"                    1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68890   [OBJECT]  "linear ditch"              1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/151827  [OBJECT]  "footprint"                 1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/102912  [OBJECT]  "archaeological feature"    1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/97697   [OBJECT]  "sample"                    1
+
+Noun chunk pairs:
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"   -   "pit"                [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70398
+http://n2t.net/ark:/99152/p0kh9dsmf3f    [PERIOD]     "early medieval"   -   "ditch"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351
+
+Dependency match pairs:
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"   <   "pit"                [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70398
+http://n2t.net/ark:/99152/p0kh9dsmf3f    [PERIOD]     "early medieval"   <   "ditch"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  <<   "pit"                [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70398
+http://n2t.net/ark:/99152/p0kh9dsmf3f    [PERIOD]     "early medieval"  <<   "ditch"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"   .   "pit"                [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70398
+http://n2t.net/ark:/99152/p0kh9dsmf3f    [PERIOD]     "early medieval"   .   "ditch"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351
+http://n2t.net/ark:/99152/p0kh9dsmf3f    [PERIOD]     "early medieval"  .*   "site"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412
+http://n2t.net/ark:/99152/p0kh9dsmf3f    [PERIOD]     "early medieval"  .*   "circular enclosures" [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70356
+http://n2t.net/ark:/99152/p0kh9dsmf3f    [PERIOD]     "early medieval"  .*   "structures"         [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70420
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  .*   "ditches"            [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  .*   "pit"                [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70398
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  .*   "burial"             [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70018
+http://n2t.net/ark:/99152/p0kh9dsmf3f    [PERIOD]     "early medieval"  .*   "ditch"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351
+http://n2t.net/ark:/99152/p0kh9dsmf3f    [PERIOD]     "early medieval"  ;*   "works"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/69434
+http://n2t.net/ark:/99152/p0kh9dsmf3f    [PERIOD]     "early medieval"  ;*   "ditch"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  $++  "burial"             [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70018
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  <+   "pit"                [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70398
+http://n2t.net/ark:/99152/p0kh9dsmf3f    [PERIOD]     "early medieval"  <+   "ditch"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  <++  "pit"                [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70398
+http://n2t.net/ark:/99152/p0kh9dsmf3f    [PERIOD]     "early medieval"  <++  "ditch"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351
+
+=============================================================
+identifier: https://doi.org/10.5284/1113007
+input text:
+"This collection comprises images, reports, spreadsheets, databases, GIS data and site records from three phases of archaeological evaluation at Foxbridge, Swindon, Wiltshire. Work was undertaken by Oxford Archaeology between October 2019 and October 2020. Phase 1 Between 28th October and 8th November 2019, Oxford Archaeology undertook a trial trench evaluation on the site of a proposed mixed development at Foxbridge, Swindon. The works comprised the excavation of 30 trenches and formed the first of three phases of evaluation undertaken within the proposed development area. The 30 trenches were located in the northern half of the proposed development area and included five trenches targeted on geophysical anomalies provisionally interpreted as the continuation of Durocornovium Roman Town, a Scheduled Monument located to the north of and partially within the site. Archaeological remains consistent with Roman roadside activity were identified within these five trenches. It is the intention to preserve this remains in situ and given poor ground conditions during the works, excavation of the exposed features was minimally intrusive. The remains comprised rectilinear enclosures, pits and a couple of postholes but no evidence for in situ structural remains was identified. The activity is contained within a 50m wide strip that runs parallel to the Wanborough Road, which forms the eastern site boundary, and is delimited to the west by a large enclosure ditch. Features of potential archaeological origin investigated to the west of this ditch were demonstrated to be of geological origin. The finds assemblage comprises 396 sherds of Roman pottery, ceramic building material, glass and metal objects, worked flint, animal bone and stone. The assemblage suggests the activity within the site occurred predominately in the middle Roman period with none of the contexts dated to earlier than the 2nd century. The pottery assemblage, however, does contain sherds dating to the late Roman period suggesting activity within the site continued into the 4th and early 5th centuries. This is supported by the metalwork assemblage which includes six late Roman coins. Although no obvious in situ building remains were present, several fragments of roof tile and unworked limestone were recovered and suggest the presence of structures within the vicinity. Similarly, the recovery of metal working slag suggests industrial activities occurred within the area, but no evidence was recorded within the trenches. A single inhumation was identified, and although heavily disturbed it is believed to be that of an adult male. A buried soil of unknown origin was recorded sealing the archaeological features. The origin of this deposit is uncertain, but it is suspected to represent a former land surface or occupation layer. No archaeological features or deposit were recorded in the trenches located beyond those targeting the roadside activity.  Phase 2 In August 2020, Oxford Archaeology undertook a trial-trench evaluation at the site of a proposed mixed development. The works comprised the excavation of seven trenches within the scheduled area of the Roman town of Durocornovium. Although evenly distributed across the site, several of the trenches were positioned to investigate anomalies identified by geophysical survey. The correlation between geophysical anomalies and the features exposed during the evaluation was poor. Despite this, the evaluation identified a concentration of middle and late Roman activity. Wanbrough Road, which forms the eastern site boundary, follows the route of the Roman road of Ermin street. The distribution of features within the site suggests a focus of activity along the roadside. Beam slots indicate the presence of a wooden structure dating to the middle Roman period, and three stone walls form a multi-phased, multi-roomed building of unknown function. Ditches forming a rectangular enclosure and possible trackways were also present. Pottery recovered from the features suggest they originated in the middle Roman period. Many of the ditches appear to have been maintained or re-established, and artefactual evidence suggest several continued in use into the late Roman period. Further away from Ermin street, in the south-west corner of the site, the remains of a small cemetery were exposed. Eight inhumation burials were identified and extending beyond the limits of one of the trenches. The extent of the cemetery is unknown, but the southern limit appears to be defined by a small gully. The finds assemblage comprised 827 sherds of Roman pottery, the majority of which dates to the late Roman period, as well as glass, metal objects including coins, and animal bones.  Phase 3 In late September and early October 2020, Oxford Archaeology undertook a trial-trench evaluation at Foxbridge, Swindon, the site of a proposed mixed development. The works comprised the excavation of 29 trenches and is the third phase of evaluation undertaken within the site. Due to prolong heavy rain the trenches became waterlogged during the evaluation. While it is not considered that these conditions hindered the identification of archaeological remains within the trenches, it did impact the level of hand excavation that could be undertaken and therefore the characterisation of several features identified. Archaeological features dating from the late Mesolithic/early Neolithic period through to the post-medieval period were recorded across the area. The archaeological features were distributed across the site and predominately comprised ditches and a number of pits. The trenches were positioned to ground truth the results of a geophysical survey. The correlation between the results of the survey and the trial trenching is mixed. Geophysical anomalies interpreted as 'positive linear archaeology' were all present and were dated to the medieval and postmedieval periods. However, the correlation between anomalies interpreted with less certainty was moderately poor. While some archaeological features were identified that correlated with the anomalies, there was no evidence for others. Several archaeological features were also identified during the evaluation that were not identified by the geophysical survey. The earliest activity recorded comprises an assemblage of struck flint from an alluvial deposit in the centre of the site. The assemblage includes blade cores and debitage indicative of blade production dating to the early Neolithic period, although a late Mesolithic date is possible. Although the assemblage was not recovered from an in situ scatter, the struck flint is fresh and is unlikely to have been moved far from the original point of deposition, suggesting flint production within the site. A small prehistoric enclosure was also identified. The absence of internal features suggest it served an agricultural function as a stock enclosure, rather than being indicative of domestic/settlement activity. Pottery recovered from the feature has been dated to the mid to late Bronze Age and the early to middle Iron Age. Prehistoric pottery was also recovered from a number of ditches. Previous evaluations within the Foxbridge site have identified significant activity of Roman date associated with Wanborough Roman town, which lies to the north. Only four land management ditches of Roman date were recorded during this phase of evaluation. Dated to the 1st and 2nd centuries, the ditches are more likely to be associated with an early Roman farmstead located 300m to the south-west of the site than with the activity recorded during the previous phases of evaluation within the Foxbridge site which is predominately of middle and late Roman date. The Phase 3 area appears to lie between the two foci of Roman activity. The ditches dating to both the prehistoric and Roman periods represent land management and drainage, but it is not possible to define any field systems based on their orientation and distribution.   Enclosure ditches most likely associated with a small medieval/post-medieval farmstead were also recorded within the site."
+
+Entity occurrence counts:
+id                                                            type      lemma                   
+http://n2t.net/ark:/99152/p0kh9ds9nsj                         [PERIOD]  "roman"                     20
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412   [OBJECT]  "site"                      20
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68917   [OBJECT]  "trench"                    16
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351   [OBJECT]  "ditch"                      9
+http://purl.org/heritagedata/schemes/mda_obj/concepts/141192  [OBJECT]  "assemblage"                 8
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/78156   [OBJECT]  "feature"                    8
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/102912  [OBJECT]  "archaeological feature"     6
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/69434   [OBJECT]  "work"                       5
+http://n2t.net/ark:/99152/p0kh9dscbkd                         [PERIOD]  "medieval"                   4
+http://n2t.net/ark:/99152/p0kh9dst7t7                         [PERIOD]  "prehistoric"                3
+http://purl.org/heritagedata/schemes/mda_obj/concepts/137051  [OBJECT]  "sherd"                      3
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68750   [OBJECT]  "town"                       3
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70354   [OBJECT]  "enclosure"                  3
+http://purl.org/heritagedata/schemes/mda_obj/concepts/142911  [OBJECT]  "deposit"                    3
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70420   [OBJECT]  "structure"                  2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70391   [OBJECT]  "stone"                      2
+http://n2t.net/ark:/99152/p0kh9dscmjf                         [PERIOD]  "late mesolithic"            2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70323   [OBJECT]  "boundary"                   2
+http://n2t.net/ark:/99152/p0kh9dsbnzg                         [PERIOD]  "early neolithic"            2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70264   [OBJECT]  "street"                     2
+                                                                        "road"                       2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70053   [OBJECT]  "cemetery"                   2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70031   [OBJECT]  "inhumation"                 2
+http://purl.org/heritagedata/schemes/mda_obj/concepts/95074   [OBJECT]  "animal bone"                2
+http://purl.org/heritagedata/schemes/mda_obj/concepts/95423   [OBJECT]  "coin"                       2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622   [OBJECT]  "farmstead"                  2
+http://purl.org/heritagedata/schemes/mda_obj/concepts/142921  [OBJECT]  "bury soil"                  1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70935   [OBJECT]  "gully"                      1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/97322   [OBJECT]  "debitage"                   1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/96399   [OBJECT]  "blade"                      1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/95353   [OBJECT]  "level"                      1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/96115   [OBJECT]  "roof tile"                  1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/96379   [OBJECT]  "point"                      1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/151831  [OBJECT]  "blade core"                 1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70310   [OBJECT]  "beam slot"                  1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70426   [OBJECT]  "wall"                       1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70366   [OBJECT]  "rectangular enclosure"      1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70364   [OBJECT]  "rectilinear enclosure"      1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70270   [OBJECT]  "trackway"                   1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70264   [OBJECT]  "roman road"                 1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70018   [OBJECT]  "burial"                     1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68977   [OBJECT]  "settlement"                 1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68765   [OBJECT]  "monument"                   1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68667   [OBJECT]  "stock enclosure"            1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68633   [OBJECT]  "field system"               1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/145103  [OBJECT]  "occupation layer"           1
+http://n2t.net/ark:/99152/p0kh9dsqx6c                         [PERIOD]  "middle iron age"            1
+http://n2t.net/ark:/99152/p0kh9dsqkbq                         [PERIOD]  "late bronze age"            1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/97418   [OBJECT]  "slag"                       1
+
+Noun chunk pairs:
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"   -   "town"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68750
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"   -   "coins"              [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/95423
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"   -   "enclosure"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70354
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"   -   "farmstead"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"   -   "farmstead"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622
+
+Dependency match pairs:
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"   <   "town"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68750
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"   <   "coins"              [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/95423
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"   <   "enclosure"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70354
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"   <   "farmstead"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"   <   "farmstead"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <<   "trenches"           [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68917
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <<   "town"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68750
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <<   "sherds"             [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/137051
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <<   "assemblage"         [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/141192
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <<   "coins"              [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/95423
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <<   "structure"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70420
+http://n2t.net/ark:/99152/p0kh9dscmjf    [PERIOD]    "late mesolithic"  <<   "archaeological features" [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/102912
+http://n2t.net/ark:/99152/p0kh9dsbnzg    [PERIOD]    "early neolithic"  <<   "archaeological features" [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/102912
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  <<   "archaeological features" [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/102912
+http://n2t.net/ark:/99152/p0kh9dsbnzg    [PERIOD]    "early neolithic"  <<   "blade cores"        [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/151831
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  <<   "enclosure"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70354
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <<   "ditches"            [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <<   "farmstead"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <<   "site"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  <<   "ditches"            [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  <<   "farmstead"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"   .   "town"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68750
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"   .   "coins"              [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/95423
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"   .   "enclosure"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70354
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"   .   "farmstead"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"   .   "farmstead"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "town"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68750
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "monument"           [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68765
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "site"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "trenches"           [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68917
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "animal bones"       [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/95074
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "stone"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70391
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "coins"              [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/95423
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "walls"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70426
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  .*   "enclosure"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70354
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  .*   "ditches"            [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "farmstead"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  .*   "field systems"      [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68633
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "field systems"      [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68633
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  .*   "farmstead"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  .*   "site"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  ;*   "trenches"           [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68917
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  ;*   "assemblage"         [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/141192
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  ;*   "sherds"             [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/137051
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  ;*   "site"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  ;*   "works"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/69434
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  ;*   "beam slots"         [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70310
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  ;*   "structure"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70420
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  ;*   "features"           [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/78156
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  ;*   "ditches"            [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351
+http://n2t.net/ark:/99152/p0kh9dscmjf    [PERIOD]    "late mesolithic"  ;*   "archaeological features" [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/102912
+http://n2t.net/ark:/99152/p0kh9dsbnzg    [PERIOD]    "early neolithic"  ;*   "archaeological features" [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/102912
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  ;*   "archaeological features" [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/102912
+http://n2t.net/ark:/99152/p0kh9dsbnzg    [PERIOD]    "early neolithic"  ;*   "assemblage"         [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/141192
+http://n2t.net/ark:/99152/p0kh9dsbnzg    [PERIOD]    "early neolithic"  ;*   "blade cores"        [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/151831
+http://n2t.net/ark:/99152/p0kh9dsbnzg    [PERIOD]    "early neolithic"  ;*   "debitage"           [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/97322
+http://n2t.net/ark:/99152/p0kh9dsbnzg    [PERIOD]    "early neolithic"  ;*   "blade"              [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/96399
+http://n2t.net/ark:/99152/p0kh9dscmjf    [PERIOD]    "late mesolithic"  ;*   "assemblage"         [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/141192
+http://n2t.net/ark:/99152/p0kh9dscmjf    [PERIOD]    "late mesolithic"  ;*   "blade cores"        [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/151831
+http://n2t.net/ark:/99152/p0kh9dscmjf    [PERIOD]    "late mesolithic"  ;*   "debitage"           [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/97322
+http://n2t.net/ark:/99152/p0kh9dscmjf    [PERIOD]    "late mesolithic"  ;*   "blade"              [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/96399
+http://n2t.net/ark:/99152/p0kh9dsqkbq    [PERIOD]    "late bronze age"  ;*   "feature"            [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/78156
+http://n2t.net/ark:/99152/p0kh9dsqx6c    [PERIOD]    "middle iron age"  ;*   "feature"            [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/78156
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  ;*   "farmstead"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  ;*   "ditches"            [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  ;*   "enclosure"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70354
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  $++  "monument"           [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68765
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <+   "town"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68750
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <+   "coins"              [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/95423
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  <+   "enclosure"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70354
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <+   "farmstead"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  <+   "farmstead"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <++  "town"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68750
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <++  "coins"              [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/95423
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  <++  "enclosure"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70354
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <++  "farmstead"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622
+http://n2t.net/ark:/99152/p0kh9dscbkd    [PERIOD]           "medieval"  <++  "farmstead"          [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622
+
+=============================================================
+identifier: https://doi.org/10.5284/1084816
+input text:
+"From 1976 to 1981 excavations were undertaken by York Archaeological Trust at 16-22 Coppergate, York. Although the site is internationally renowned for its Anglo-Scandinavian archaeology, the site also revealed significant archaeological remains of Roman date. The Roman deposits included a small mid-4th century inhumation cemetery comprising six burials and an empty grave cut, together with a possible cemetery boundary ditch. A narrative detailing the sequence of Roman remains at the site was produced by Hall, Evans and Ottaway(2011, 199-221) using details from the original Level III report archive report(Evans 1997). In 2003 the six burials were assessed by Dr S. Mays from the Ancient Monuments Laboratory, English Heritage(now the Research Department of Historic England). The present report was commissioned and funded by Historic England to ensure the publication and dissemination of this small but important group of burials. The report collates the information relating to the excavated remains(based on Hall et al. 2011, 213-7) and the osteological analysis of the six skeletons recovered(Mays 2003). Details of the individual graves are given in the burial catalogue."
+
+Entity occurrence counts:
+id                                                            type      lemma                
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70018   [OBJECT]  "burial"                 4
+http://n2t.net/ark:/99152/p0kh9ds9nsj                         [PERIOD]  "roman"                  3
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412   [OBJECT]  "site"                   3
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70080   [OBJECT]  "grave"                  2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68680   [OBJECT]  "hall"                   1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68765   [OBJECT]  "monument"               1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70031   [OBJECT]  "skeleton"               1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70053   [OBJECT]  "cemetery"               1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70060   [OBJECT]  "inhumation cemetery"    1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70326   [OBJECT]  "boundary ditch"         1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/71428   [OBJECT]  "laboratory"             1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/87136   [OBJECT]  "hall"                   1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/142911  [OBJECT]  "deposit"                1
+http://purl.org/heritagedata/schemes/mda_obj/concepts/95353   [OBJECT]  "level"                  1
+
+Noun chunk pairs:
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"   -   "deposits"           [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/142911
+
+Dependency match pairs:
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"   <   "deposits"           [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/142911
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <<   "deposits"           [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/142911
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"   .   "deposits"           [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/142911
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "deposits"           [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/142911
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "inhumation cemetery" [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70060
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "burials"            [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70018
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "grave"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70080
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "cemetery"           [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70053
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "boundary ditch"     [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70326
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "site"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "hall"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/87136
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  .*   "level"              [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/95353
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  ;*   "site"               [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <+   "deposits"           [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/142911
+http://n2t.net/ark:/99152/p0kh9ds9nsj    [PERIOD]              "roman"  <++  "deposits"           [OBJECT] http://purl.org/heritagedata/schemes/mda_obj/concepts/142911
+
+=============================================================
+identifier: https://doi.org/10.5284/1093228
+input text:
+"This collection comprises site data(reports, images, a CAD drawing, spreadsheets, databases, GIS data and site records) from the second phase of archaeological work associated with the development of a new onshore substation and related infrastructure for Galloper Offshore Wind Farm. Between 2011 and 2016, Wessex Archaeology carried out a programme of trial trenching, area excavation and watching briefs in association with the onshore elements of the Galloper Offshore Wind Farm development. This part of the archive relates to fieldwork between 2014 and 2016 under project numbers 104810-104812. The investigated area coincided with the footprint of the new onshore substation, located between Leiston and Sizewell, some 1 km from the Suffolk coast, as well as the cable route linking it to the landfall site on Sizewell beach. The works revealed little evidence for activity during earlier prehistoric periods, although a cluster of pits and other features seem to be indicative of Early Iron Age occupation. One of the pits was notable due to the large quantity(over 6 kg) of pottery and fired clay found in its upper fill. Several undated ditches may represent the fragmentary remains of a late prehistoric field system. The principal findings of the investigations relate to the early and mid-Romano-British period, with an extensive system of conjoined enclosures and trackways periodically modified and abandoned after the mid-3rd century AD. Four cremation graves, dating to the late 1st to mid-2nd centuries AD, were also found near the margins of the enclosure complex. Although the enclosures are thought to have largely been used for agricultural purposes - particularly livestock management - there were also indications of contemporary occupation, possibly the remains of a farmstead. The unexpected almost total absence of post-Roman remains seems to suggest the westward expansion of medieval Sizewell was constrained, to the south, by the route of Sizewell Gap. Fieldwork undertaken from 2010 to 2013, under projects 77610 and 77611 are deposited separately in part 1."
+
+Entity occurrence counts:
+id                                                            type      lemma            
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412   [OBJECT]  "site"               3
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70354   [OBJECT]  "enclosure"          3
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68866   [OBJECT]  "fieldwork"          2
+http://n2t.net/ark:/99152/p0kh9dst7t7                         [PERIOD]  "prehistoric"        2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/139319  [OBJECT]  "wind farm"          2
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/69434   [OBJECT]  "work"               2
+http://n2t.net/ark:/99152/p0kh9ds9nsj                         [PERIOD]  "roman"              1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351   [OBJECT]  "ditch"              1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70270   [OBJECT]  "trackway"           1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68622   [OBJECT]  "farmstead"          1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68633   [OBJECT]  "field system"       1
+http://n2t.net/ark:/99152/p0kh9dscbkd                         [PERIOD]  "medieval"           1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/160412  [OBJECT]  "cable"              1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/151827  [OBJECT]  "footprint"          1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/142071  [OBJECT]  "cremation grave"    1
+http://n2t.net/ark:/99152/p0kh9dszskn                         [PERIOD]  "early iron age"     1
+http://purl.org/heritagedata/schemes/eh_tmt2/concepts/78156   [OBJECT]  "feature"            1
+
+Noun chunk pairs:
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"   -   "field system"       [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68633
+
+Dependency match pairs:
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"   <   "field system"       [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68633
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  <<   "field system"       [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68633
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"   .   "field system"       [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68633
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  .*   "features"           [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/78156
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  .*   "field system"       [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68633
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  ;*   "works"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/69434
+http://n2t.net/ark:/99152/p0kh9dszskn    [PERIOD]     "early iron age"  ;*   "works"              [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/69434
+http://n2t.net/ark:/99152/p0kh9dszskn    [PERIOD]     "early iron age"  ;*   "features"           [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/78156
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  ;*   "ditches"            [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70351
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  $+   "field system"       [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68633
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  $++  "field system"       [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68633
+http://n2t.net/ark:/99152/p0kh9dst7t7    [PERIOD]        "prehistoric"  <++  "field system"       [OBJECT] http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68633
