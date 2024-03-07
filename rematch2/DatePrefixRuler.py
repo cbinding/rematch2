@@ -118,28 +118,25 @@ def create__dateprefix_ruler_cs(nlp: Language, name: str = "dateprefix_ruler") -
 if __name__ == "__main__":
 
     tests = [
-        {"lang": "de", "pipe": "de_core_news_sm",
-            "text": "erbaut Anfang bis Mitte 1480 bis Ende 1275 oder Anfang des 16. Jahrhunderts"},
-        {"lang": "en", "pipe": "en_core_web_sm",
-            "text": "constructed in early to mid 1480 to late 1275, or early 1500s"},
-        {"lang": "es", "pipe": "es_core_news_sm",
-            "text": "construido a principios o mediados de 1480 hasta finales de 1275 o principios del siglo XVI"},
-        {"lang": "fr", "pipe": "fr_core_news_sm",
-            "text": "construit du début au milieu de 1480 à la fin de 1275 ou au début des années 1500"},
-        {"lang": "it", "pipe": "it_core_news_sm",
-            "text": "costruito dall'inizio alla metà del 1480 fino alla fine del 1275 o all'inizio del 1500"},
-        {"lang": "nl", "pipe": "nl_core_news_sm",
-            "text": "gebouwd in het begin tot midden 1480 tot eind 1275, of begin 1500"},
-        {"lang": "no", "pipe": "nb_core_news_sm",
-            "text": "konstruert tidlig til midten av 1480 til slutten av 1275, eller tidlig på 1500-tallet"},
-        {"lang": "sv", "pipe": "sv_core_news_sm",
-            "text": "byggd i början till mitten av 1480 till slutet av 1275, eller tidigt 1500-tal"}
+        {"lang": "de", "text": "erbaut Anfang bis Mitte 1480 bis Ende 1275 oder Anfang des 16. Jahrhunderts"},
+        {"lang": "en", "text": "constructed in early to mid 1480 to late 1275, or early 1500s"},
+        {"lang": "es", "text": "construido a principios o mediados de 1480 hasta finales de 1275 o principios del siglo XVI"},
+        {"lang": "fr", "text": "construit du début au milieu de 1480 à la fin de 1275 ou au début des années 1500"},
+        {"lang": "it", "text": "costruito dall'inizio alla metà del 1480 fino alla fine del 1275 o all'inizio del 1500"},
+        {"lang": "nl", "text": "gebouwd in het begin tot midden 1480 tot eind 1275, of begin 1500"},
+        {"lang": "no", "text": "konstruert tidlig til midten av 1480 til slutten av 1275, eller tidlig på 1500-tallet"},
+        {"lang": "sv", "text": "byggd i början till mitten av 1480 till slutet av 1275, eller tidigt 1500-tal"}
     ]
 
     for test in tests:
-        print(f"-------------\nlanguage = {test.get('lang', 'en')}")
-        nlp = spacy.load(test.get("pipe", "en_core_web_sm"), disable=['ner'])
+        lang = test.get('lang', '')
+        text = test.get('text', '')
+
+        print(f"-------------\nlanguage = {lang}")
+        nlp = get_pipeline_for_language(lang)
         nlp.add_pipe("dateprefix_ruler", last=True)
-        doc = nlp(test.get("text", ""))
-        for ent in doc.ents:
-            print(ent.ent_id_, ent.text, ent.label_)
+        doc = nlp(text)
+        
+        print(doc_toks_to_text(doc))
+        print(doc_ents_to_text(doc))
+

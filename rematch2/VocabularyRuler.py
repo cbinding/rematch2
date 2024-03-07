@@ -196,6 +196,7 @@ def create_fish_archobjects_ruler(nlp: Language, name: str="fish_archobjects_rul
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         pos=["NOUN", "PROPN"],
+        min_lemmatize_length=3,
         patterns=patterns_from_json_file("patterns_en_FISH_ARCHOBJECTS_20210921.json"),
         default_label="OBJECT",
     )
@@ -205,8 +206,7 @@ def create_fish_archobjects_ruler(nlp: Language, name: str="fish_archobjects_rul
         patterns=normalized_patterns,
         phrase_matcher_attr="LOWER",
         validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
+        overwrite_ents=False
     )
 
 
@@ -315,8 +315,7 @@ def create_fish_maritime_craft_ruler(nlp: Language, name: str="fish_maritime_cra
         patterns=normalized_patterns,
         phrase_matcher_attr="LOWER",
         validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
+        overwrite_ents=True
     )
 
 
@@ -324,18 +323,27 @@ def create_fish_maritime_craft_ruler(nlp: Language, name: str="fish_maritime_cra
 def create_fish_monument_types_ruler(nlp: Language, name: str="fish_monument_types_ruler") -> EntityRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
+        min_lemmatize_length=3,
         patterns=patterns_from_json_file("patterns_en_FISH_MONUMENT_TYPES_20210921.json"),
         pos=["NOUN", "PROPN"],
         default_label="OBJECT",
-    )
+    )    
+
+    # temp diagnostics - write normalized_patterns to a file for review
+    with open("fish_monument_types_ruler_patterns.py", "w") as f:
+        f.write("x = [\n")
+        for pattern in normalized_patterns:
+            f.write(f"{pattern},\n") 
+        f.write("]")   
+
+
     return EntityRuler(
         nlp=nlp, 
         name=name, 
         patterns=normalized_patterns,
         phrase_matcher_attr="LOWER",
         validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
+        overwrite_ents=False
     )
 
 
@@ -414,8 +422,8 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     #doc = nlp(cs_test_text2)
 
     # create pipeline and add one or more custom pipeline components
-    nlp = spacy.load("en_core_web_sm", disable=['ner'])
 
+    nlp = get_pipeline_for_language("en")
     #nlp = spacy.load("pl_core_news_sm", disable=['ner'])
     #nlp.add_pipe("amcr_ruler", last=True)
     
@@ -440,7 +448,7 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     # nlp.add_pipe("fish_maritime_craft_ruler", last=True)
     # nlp.add_pipe("fish_periods_ruler", last=True)
 
-    doc = nlp(en_test_text3.lower())
+    doc = nlp(en_test_text3)
     # explacy.print_parse_info(nlp, en_test_text.lower())
     # quick and dirty examination of results:
     # for ent in doc.ents:

@@ -1,11 +1,49 @@
+import spacy
+import json
 from spacy.language import Language
+from spacy.tokens import Doc
+
+
+# get suitable spaCy NLP pipeline for given ISO639-1 (2-char) language code
+def get_pipeline_for_language(language: str="") -> Language:
+    pipe_name = ""
+    match language.strip().lower():
+        case "cs":
+            pipe_name = "pl_core_news_sm"   # Polish (experiment for now, as there is no Czech SpaCy)
+        case "de":
+            pipe_name = "de_core_news_sm"   # German
+        case "en":
+             pipe_name = "en_core_web_sm"   # English
+        case "es":
+            pipe_name = "es_core_news_sm"   # Spanish
+        case "fr":
+            pipe_name = "fr_core_news_sm"   # French
+        case "it":
+            pipe_name = "it_core_news_sm"   # Italian
+        case "nl":
+            pipe_name = "nl_core_news_sm"   # Dutch
+        case "no":
+            pipe_name = "nb_core_news_sm"   # Norwegian Bokmal
+        case "sv":
+            pipe_name = "sv_core_news_sm"   # Swedish
+        case _:
+            pipe_name = ""
+
+    # create the pipeline
+    if pipe_name != "":
+        nlp = spacy.load(pipe_name, disable=['ner'])
+    else:
+        nlp = spacy.blank("xx")
+    return nlp
+
 
 # normalize string whitespace
 def normalize_whitespace(s: str = ""): 
     return ' '.join(s.strip().split()) 
 
 
-# normalize input patterns for use with custom rulers
+# normalize input patterns with Language pipeline
+# as used for custom rulers, for consistency
 # patterns: [{id, label, pattern}, {id, label, pattern},...]    
 def normalize_patterns(
     nlp: Language, 
@@ -28,7 +66,7 @@ def normalize_patterns(
         # (at this point it may be a list or a str)
         if len(pattern) > 0:
 
-            # if already a token pattern  [{},{}]
+            # if already a token pattern  [{}, {}, ...]
             if isinstance(pattern, list):
 
                 # just add to normalized_patterns
@@ -55,28 +93,31 @@ def normalize_patterns(
                 # build a new token pattern for this phrase
                 new_pattern = []                    
                 # for each term (token) in the phrase
-                for n, tok in enumerate(doc, 1):
+                #for n, tok in enumerate(doc, 0):
+                for tok in doc:
                     element = {}
 
                     # lemmatize term if required (providing term is long enough)
                     # e.g. "skirting boards":
                     # { "LEMMA": "skirt" }, { "LEMMA": "board" } or
                     # { "LOWER": "skirt" }, { "LOWER": "board" }
-                    # IMPORTANT: lemmatization doesn't work if the text is
-                    # capitalised as spaCy mistakes it for a proper Noun
-                    if (lemmatize and len(tok.text) >= min_lemmatize_length):
+                    # IMPORTANT: lemmatization may not work if text is
+                    # capitalised, as spaCy regards it as a proper Noun
+                    if (lemmatize == True and len(tok.text) >= min_lemmatize_length):
                         element["LEMMA"] = tok.lemma_.lower()
                     else:
                         element["LOWER"] = tok.text.lower()  
                     
                     # add pos tags check if any passed in
-                    # note POS only applied to LAST term if multi-word phrase
+                    # note POS (was) only applied to LAST term if multi-word phrase
                     # e.g. { "LEMMA": "board", "POS": { "IN": ["NOUN", "PROPN"] }}
-                    if (len(pos) > 0 and n == phrase_length):
+                    # 06/03/2024 - POS now only applied to single words, but not phrases
+                    #if (len(pos) > 0 and n == phrase_length):
+                    if (len(pos) > 0 and phrase_length == 1):
                         element["POS"] = {"IN": pos}
 
                     new_pattern.append(element)
-
+                    
                 # add newly built pattern to normalized_patterns
                 # print(new_pattern)
                 normalized_patterns.append({
@@ -89,6 +130,7 @@ def normalize_patterns(
     return normalized_patterns
 
 
+# load list of patterns from specified JSON file
 def _patterns_from_json_file(file_path: str) -> list:
     patterns = []
 
@@ -97,3 +139,34 @@ def _patterns_from_json_file(file_path: str) -> list:
 
     return patterns
 
+
+def doc_toks_to_text(doc: Doc)-> str:
+    result = "tokens:\n"
+    for tok in doc:
+        result += "{index:<4} {span:^12} {pos:<10} {text:<40}\n".format(
+            index = tok.i,
+            span = f"({tok.idx + 1} -> {tok.idx + len(tok.text)})",
+            pos = tok.pos_,
+            text = f"\"{tok.text}\""
+        )
+    return result
+
+
+def doc_ents_to_text(doc: Doc)-> str:
+    result = "entities:\n"
+    for ent in doc.ents:
+        result += "{index:4} {span:^12} {type:<10} {id} {text:<40}\n".format(
+            index="",                
+            span = f"({ent.start_char + 1} -> {ent.end_char})",
+            type = ent.label_,
+            text = f"\"{ent.text}\"",
+            id = ent.ent_id_
+        )
+    return result
+    
+
+    def entities_to_html_list(doc: Doc)-> str:result = ""
+    result = "<ul>"
+    for ent in doc.ents:
+            result += f"<li>({ent.start_char} &#8594; {ent.end_char - 1}) \"{ent.text}\" [{ent.label_}]</li>"
+    result += "</ul>"

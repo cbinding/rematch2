@@ -171,47 +171,31 @@ def create_century_ruler_cs(nlp: Language, name: str = "century_ruler") -> Centu
 if __name__ == "__main__":
 
     tests = [
-        {"lang": "de", "pipe": "de_core_news_sm",
-            "text": "Das Artefakt stammt aus dem 7. bis 6. Jahrhundert v. Chr., Kann aber älter sein"},
-        {"lang": "en", "pipe": "en_core_web_sm",
-            "text": "the artefact dates from the 7th to 6th century BC but may be older"},
-        {"lang": "es", "pipe": "es_core_news_sm",
-            "text": "el artefacto data del siglo VII al VI a. C. pero puede ser más antiguo"},
-        {"lang": "fr", "pipe": "fr_core_news_sm",
-            "text": "l'artefact date du 7ème au 6ème siècle avant JC mais peut être plus ancien"},
-        {"lang": "it", "pipe": "it_core_news_sm",
-            "text": "il manufatto risale al VII-VI secolo aC ma potrebbe essere più antico"},
-        {"lang": "nl", "pipe": "nl_core_news_sm",
-            "text": "het artefact dateert uit de 7e tot 6e eeuw voor Christus, maar kan ouder zijn"},
-        {"lang": "no", "pipe": "nb_core_news_sm",
-            "text": "gjenstanden stammer fra det 7. til 6. århundre f.Kr., men kan være eldre"},
-        {"lang": "sv", "pipe": "sv_core_news_sm",
-            "text": "artefakten är från 700- till 600-talet f.Kr. men kan vara äldre"},
-        {"lang": "cs", "pipe": "pl_core_news_sm", # using Polish as no Czech language model currently available
-            "text": "artefakt pochází ze 7. až 6. století př. n. l., ale může být i starší"}
+        {"lang": "de", "text": "Das Artefakt stammt aus dem 7. bis 6. Jahrhundert v. Chr., Kann aber älter sein"},
+        {"lang": "en", "text": "the artefact dates from the 7th to 6th century BC but may be older"},
+        {"lang": "es", "text": "el artefacto data del siglo VII al VI a. C. pero puede ser más antiguo"},
+        {"lang": "fr", "text": "l'artefact date du 7ème au 6ème siècle avant JC mais peut être plus ancien"},
+        {"lang": "it", "text": "il manufatto risale al VII-VI secolo aC ma potrebbe essere più antico"},
+        {"lang": "nl", "text": "het artefact dateert uit de 7e tot 6e eeuw voor Christus, maar kan ouder zijn"},
+        {"lang": "no", "text": "gjenstanden stammer fra det 7. til 6. århundre f.Kr., men kan være eldre"},
+        {"lang": "sv", "text": "artefakten är från 700- till 600-talet f.Kr. men kan vara äldre"},
+        {"lang": "cs", "text": "artefakt pochází ze 7. až 6. století př. n. l., ale může být i starší"}
     ]
     for test in tests:
+        lang = test.get("lang", "")
+        text = test.get("text", "")
         # print header
-        print(f"-------------\nlanguage = {test['lang']}")
+        print(f"-------------\nlanguage = {lang}")
         # load language-specific pre-built pipeline
-        nlp = spacy.load(test["pipe"], disable=['ner'])
+        nlp = get_pipeline_for_language(lang)
         # add custom component at the end of the pipeline
         nlp.add_pipe("century_ruler", last=True)
         # run text through the pipeline
-        doc = nlp(test["text"].lower())
+        doc = nlp(text.lower())
         # display the current pipeline components
         #print(nlp.pipe_names)
 
-        #for token in doc:
-            #print(f"{token.pos_}\t{token.text}\n")
-        # print the doc entities
-        #for ent in doc.ents:
-            #print(ent.ent_id_, ent.text, ent.label_)
-        
-        for ent in doc.ents:
-            print(f"{ent.start_char}, {ent.end_char - 1}, {ent.ent_id_}, {ent.text}, {ent.label_}")
-            #print(f"to: {ent.end_char - 1}")
-            #print(f"id: {ent.ent_id_}")
-            #print(f"text: {ent.text}")
-            #print(f"type: {ent.label_}")
+        print(doc_toks_to_text(doc))
+        print(doc_ents_to_text(doc))
+
         

@@ -2,7 +2,6 @@
 =============================================================================
 Package :   rematch2.spacypatterns
 Module  :   patterns_en_NEGATION.py
-Version :   20240228
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
@@ -20,6 +19,22 @@ patterns_en_NEGATION = [
     },
     { 
         "label": "NEGATION",
+		"pattern": "did not reveal"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "didn't reveal"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "did not form"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "didn't form"
+    },
+    { 
+        "label": "NEGATION",
 		"pattern": "no correlation"
     },
     { 
@@ -28,23 +43,47 @@ patterns_en_NEGATION = [
     },
     { 
         "label": "NEGATION",
+		"pattern": "lacks evidence"
+    },
+    { 
+        "label": "NEGATION",
 		"pattern": "no evidence"
-    }, 
+    },
     { 
         "label": "NEGATION",
 		"pattern": "little evidence"
     },  
     { 
         "label": "NEGATION",
-		"pattern": "no support for"
+		"pattern": "no support"
     }, 
     { 
         "label": "NEGATION",
 		"pattern": "does not support"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "doesn't support"
     },  
     { 
         "label": "NEGATION",
+		"pattern": "unsupported"
+    }, 
+    { 
+        "label": "NEGATION",
+		"pattern": "not supported"
+    }, 
+    { 
+        "label": "NEGATION",
 		"pattern": "unlikely"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "less likely"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "not likely"
     },
     { 
         "label": "NEGATION",
@@ -52,7 +91,15 @@ patterns_en_NEGATION = [
     },
     { 
         "label": "NEGATION",
+		"pattern": "less probable"
+    },
+    { 
+        "label": "NEGATION",
         "pattern": "probably not"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "no"
     },
     { 
         "label": "NEGATION",
@@ -60,7 +107,39 @@ patterns_en_NEGATION = [
     },
     { 
         "label": "NEGATION",
+		"pattern": "no obvious"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "not identified"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "unidentified"
+    },    
+    { 
+        "label": "NEGATION",
 		"pattern": "not possible"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "is not"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "was not"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "would not"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "did not"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "possibly not"
     },
     { 
         "label": "NEGATION",
@@ -69,5 +148,9 @@ patterns_en_NEGATION = [
     { 
         "label": "NEGATION",
 		"pattern": "cannot be"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "not thought to be"
     }
 ]

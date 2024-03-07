@@ -37,30 +37,8 @@ else:
 # base class for VocabularyAnnotator and TemporalAnnotator
 class BaseAnnotator():
     def __init__(self, language: str="en", patterns: list=[]) -> None:
-        # start with predefined language-specific spaCy pipeline
-        pipe_name = ""
-        match language.strip().lower():
-            case "cs":
-                pipe_name = "pl_core_news_sm"   # Polish (experiment for now, as there is no Czech SpaCy)
-            case "de":
-                pipe_name = "de_core_news_sm"   # German
-            case "es":
-                pipe_name = "es_core_news_sm"   # Spanish
-            case "fr":
-                pipe_name = "fr_core_news_sm"   # French
-            case "it":
-                pipe_name = "it_core_news_sm"   # Italian
-            case "nl":
-                pipe_name = "nl_core_news_sm"   # Dutch
-            case "no":
-                pipe_name = "nb_core_news_sm"   # Norwegian Bokmal
-            case "sv":
-                pipe_name = "sv_core_news_sm"   # Swedish
-            case _:
-                pipe_name = "en_core_web_sm"    # English (default)
-
-        # create the pipeline
-        self._pipeline = spacy.load(pipe_name, disable=['ner'])
+        # start with predefined language-specific spaCy pipeline        
+        self._pipeline = get_pipeline_for_language(language)
 
         # append any additional patterns passed in (for local customisation)
         if (len(patterns or []) > 0):

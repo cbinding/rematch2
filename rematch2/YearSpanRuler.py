@@ -157,39 +157,29 @@ def create_yearspan_ruler_cs(nlp: Language, name: str = "yearspan_ruler") -> Yea
 if __name__ == "__main__":
 
     tests = [
-        {"lang": "de", "pipe": "de_core_news_sm",
-            "text": "Das Artefakt wurde von 1650 bis 1800 n. Chr. datiert und war korrodiert"},
-        {"lang": "en", "pipe": "en_core_web_sm",
-            "text": "The artefact was dated from 1650 to 1800 AD and was corroded"},
-        {"lang": "es", "pipe": "es_core_news_sm",
-            "text": "El artefacto estaba fechado entre 1650 y 1800 d. C. y estaba corroído."},
-        {"lang": "fr", "pipe": "fr_core_news_sm",
-            "text": "L'artefact était daté de 1650 à 1800 après JC et a été corrodé"},
-        {"lang": "it", "pipe": "it_core_news_sm",
-            "text": "Il manufatto fu datato dal 1650 al 1800 d.C. e fu corroso"},
-        {"lang": "nl", "pipe": "nl_core_news_sm",
-            "text": "Het artefact dateerde van 1650 tot 1800 na Christus en was gecorrodeerd"},
-        {"lang": "no", "pipe": "nb_core_news_sm",
-            "text": "Gjenstanden ble datert fra 1650 til 1800 e.Kr. og var korrodert"},
-        {"lang": "sv", "pipe": "sv_core_news_sm",
-            "text": "Artefakten daterades från 1650 till 1800 e.Kr. och var korroderad"},
-        {"lang": "cs", "pipe": "pl_core_news_sm", "text": "Objekt zámku v Chanovicích (okr. Klatovy) se nalézá spolu s pozdně románským kostelem sv. Kříže na severozápadním okraji obce. Byl postaven na nevýrazné ostrožně, jejíž páteř vytvářejí výchozy žulové skály. Ze tří stran sídlo obklopuje zpustlý park s rybníkem v jeho dolní části. Na severovýchodní straně pak k zámku přiléhá areál hospodářského dvora. Nejstarším dokladem existence chanovického sídla je pozdně románský kostel Povýšení sv. Kříže. Jako vlastnický kostel se patrně vázal na zde již existující feudální sídlo. Předpokládá se, že leželo v místech pozdějšího poplužního dvora, dnes dochovaného v klasicistní přestavbě. V průběhu 13. stol. bylo sídlo přeneseno na skalnatou ostrožnu, do míst dnešního zámku. V písemných pramenech se Chanovice objevují ve 2. polovině 14. století. Z této doby pochází též nejstarší dochovaná gotická část sídla. K výrazné přestavbě objektu došlo v prvních desetiletích 16. století za Chanovských z Dlouhé Vsi, kdy stavba nabyla dnešní půdorysné podoby. Areál byl ohrazen novou, značně silnou obvodovou zdí, respektující v některých úsecích starší konstrukce. Roku 1670 byla Chanovicím odpuštěna část berní povinnosti, což snad naznačuje, že obec v této době postihla jakási živelná pohroma. Do podoby sídla výrazně zasáhla barokní přestavba, ke které došlo někdy okolo poloviny 18. století za majitele Ferdinanda Jáchyma Rumerskirchena. Dílčí zásahy do stavby nastaly patrně také po ničivém požáru roku 1781, při kterém vyhořel kostel, fara, škola a zámek spolu s hospodářskými budovami přilehlého dvora. Na přelomu 18. a 19. stol. zámek rychle střídal majitele a pustnul. Písemné prameny uvádí, že roku 1811 objekt, v té době ve velmi špatném stavu, koupil plzeňský podnikatel František Becher. Ten nechal sejmout jedno patro, zámek opravil a pokryl těžkou krytinou. Úpravám se nevyhnul ani chanovický hospodářský dvůr. Částečně ho nechal přestavět na konci 19. stol. nový majitel Eduard Rytíř z Doubků. Poslední známá úprava hospodářského dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)"
-        }
+        {"lang": "de", "text": "Das Artefakt wurde von 1650 bis 1800 n. Chr. datiert und war korrodiert"},
+        {"lang": "en", "text": "The artefact was dated from 1650 to 1800 AD and was corroded"},
+        {"lang": "es", "text": "El artefacto estaba fechado entre 1650 y 1800 d. C. y estaba corroído."},
+        {"lang": "fr", "text": "L'artefact était daté de 1650 à 1800 après JC et a été corrodé"},
+        {"lang": "it", "text": "Il manufatto fu datato dal 1650 al 1800 d.C. e fu corroso"},
+        {"lang": "nl", "text": "Het artefact dateerde van 1650 tot 1800 na Christus en was gecorrodeerd"},
+        {"lang": "no", "text": "Gjenstanden ble datert fra 1650 til 1800 e.Kr. og var korrodert"},
+        {"lang": "sv", "text": "Artefakten daterades från 1650 till 1800 e.Kr. och var korroderad"},
+        {"lang": "cs", "text": "Objekt zámku v Chanovicích (okr. Klatovy) se nalézá spolu s pozdně románským kostelem sv. Kříže na severozápadním okraji obce. Byl postaven na nevýrazné ostrožně, jejíž páteř vytvářejí výchozy žulové skály. Ze tří stran sídlo obklopuje zpustlý park s rybníkem v jeho dolní části. Na severovýchodní straně pak k zámku přiléhá areál hospodářského dvora. Nejstarším dokladem existence chanovického sídla je pozdně románský kostel Povýšení sv. Kříže. Jako vlastnický kostel se patrně vázal na zde již existující feudální sídlo. Předpokládá se, že leželo v místech pozdějšího poplužního dvora, dnes dochovaného v klasicistní přestavbě. V průběhu 13. stol. bylo sídlo přeneseno na skalnatou ostrožnu, do míst dnešního zámku. V písemných pramenech se Chanovice objevují ve 2. polovině 14. století. Z této doby pochází též nejstarší dochovaná gotická část sídla. K výrazné přestavbě objektu došlo v prvních desetiletích 16. století za Chanovských z Dlouhé Vsi, kdy stavba nabyla dnešní půdorysné podoby. Areál byl ohrazen novou, značně silnou obvodovou zdí, respektující v některých úsecích starší konstrukce. Roku 1670 byla Chanovicím odpuštěna část berní povinnosti, což snad naznačuje, že obec v této době postihla jakási živelná pohroma. Do podoby sídla výrazně zasáhla barokní přestavba, ke které došlo někdy okolo poloviny 18. století za majitele Ferdinanda Jáchyma Rumerskirchena. Dílčí zásahy do stavby nastaly patrně také po ničivém požáru roku 1781, při kterém vyhořel kostel, fara, škola a zámek spolu s hospodářskými budovami přilehlého dvora. Na přelomu 18. a 19. stol. zámek rychle střídal majitele a pustnul. Písemné prameny uvádí, že roku 1811 objekt, v té době ve velmi špatném stavu, koupil plzeňský podnikatel František Becher. Ten nechal sejmout jedno patro, zámek opravil a pokryl těžkou krytinou. Úpravám se nevyhnul ani chanovický hospodářský dvůr. Částečně ho nechal přestavět na konci 19. stol. nový majitel Eduard Rytíř z Doubků. Poslední známá úprava hospodářského dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)"}
     ]
     for test in tests:
+        lang = test.get("lang", "")
+        text = test.get("text", "")
+
         # print header
-        print(f"-------------\nlanguage = {test['lang']}")
+        print(f"-------------\nlanguage = {lang}")
         # load language-specific pre-built pipeline
-        nlp = spacy.load(test["pipe"], disable=['ner'])
+        nlp = get_pipeline_for_language(lang)
         # add custom component at the end of the pipeline
         nlp.add_pipe("yearspan_ruler", last=True)
         # run text through the pipeline
-        doc = nlp(test["text"])
-        # display the current pipeline components
-        #print(nlp.pipe_names)
+        doc = nlp(text)
+        
+        print(doc_toks_to_text(doc))
+        print(doc_ents_to_text(doc))
 
-        for token in doc:
-            print(f"{token.pos_}\t{token.text}\n")
-        # print the doc entities
-        for ent in doc.ents:
-            print(ent.ent_id_, ent.text, ent.label_)

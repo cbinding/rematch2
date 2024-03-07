@@ -114,29 +114,25 @@ def create_dateseparator_ruler_cs(nlp: Language, name: str = "dateseparator_rule
 if __name__ == "__main__":
 
     tests = [
-        {"lang": "de", "pipe": "de_core_news_sm",
-            "text": "erbaut 1480 bis 1275 oder 1500-1600"},
-        {"lang": "en", "pipe": "en_core_web_sm",
-            "text": "constructed in 1480 to 1275, or 1500-1600"},
-        {"lang": "es", "pipe": "es_core_news_sm",
-            "text": "construido en 1480 a 1275, o 1500-1600"},
-        {"lang": "fr", "pipe": "fr_core_news_sm",
-            "text": "construit en 1480 à 1275, ou 1500-1600"},
-        {"lang": "it", "pipe": "it_core_news_sm",
-            "text": "costruito nel 1480-1275, o 1500-1600"},
-        {"lang": "nl", "pipe": "nl_core_news_sm",
-            "text": "gebouwd in 1480 tot 1275, of 1500-1600"},
-        {"lang": "no", "pipe": "nb_core_news_sm",
-            "text": "bygget i 1480 til 1275, eller 1500-1600"},
-        {"lang": "sv", "pipe": "sv_core_news_sm",
-            "text": "byggd 1480 till 1275, eller 1500-1600"},
-        {"lang": "cs", "pipe": "pl_core_news_sm",
-            "text": "artefakt pochází ze 7. až 6. století př. n. l., ale může být i starší"}
+        {"lang": "de", "text": "erbaut 1480 bis 1275 oder 1500-1600"},
+        {"lang": "en", "text": "constructed in 1480 to 1275, or 1500-1600"},
+        {"lang": "es", "text": "construido en 1480 a 1275, o 1500-1600"},
+        {"lang": "fr", "text": "construit en 1480 à 1275, ou 1500-1600"},
+        {"lang": "it", "text": "costruito nel 1480-1275, o 1500-1600"},
+        {"lang": "nl", "text": "gebouwd in 1480 tot 1275, of 1500-1600"},
+        {"lang": "no", "text": "bygget i 1480 til 1275, eller 1500-1600"},
+        {"lang": "sv", "text": "byggd 1480 till 1275, eller 1500-1600"},
+        {"lang": "cs", "text": "artefakt pochází ze 7. až 6. století př. n. l., ale může být i starší"}
     ]
     for test in tests:
-        print(f"-------------\nlanguage = {test['lang']}")
-        nlp = spacy.load(test["pipe"], disable=['ner'])
+        lang = test.get("lang", "")
+        text = test.get("text", "")
+
+        print(f"-------------\nlanguage = {lang}")
+        nlp = get_pipeline_for_language(lang)
         nlp.add_pipe("dateseparator_ruler", last=True)
-        doc = nlp(test["text"])
-        for ent in doc.ents:
-            print(ent.ent_id_, ent.text, ent.label_)
+        doc = nlp(text)
+        
+        print(doc_toks_to_text(doc))
+        print(doc_ents_to_text(doc))
+

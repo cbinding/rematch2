@@ -11,7 +11,7 @@ Example :
     nlp = spacy.load("en_core_web_sm", disable=['ner'])
     nlp.add_pipe("datesuffix_ruler", last=True)  
     doc = nlp("from 1st century BC to 5th century A.D., and circa 1500 BP")   
-    # tags ["BC", "A.D.", "BP"] as "DATESUFFIX"      
+    # identifies ["BC", "A.D.", "BP"] as "DATESUFFIX"      
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History :   
@@ -119,30 +119,26 @@ def create_datesuffix_ruler_cs(nlp: Language, name: str = "datesuffix_ruler") ->
 if __name__ == "__main__":
 
     tests = [
-        {"lang": "de", "pipe": "de_core_news_sm",
-            "text": "aus dem 1. Jahrhundert v. Chr. Bis zum 5. Jahrhundert n. Chr. Oder 1500 BP"},
-        {"lang": "en", "pipe": "en_core_web_sm",
-            "text": "dating from 1st century BC to 5th century A.D., or 1500 BP"},
-        {"lang": "es", "pipe": "es_core_news_sm",
-            "text": "que data del siglo I a.C. al siglo V d.C., o 1500 a.C., o 1850 a. C."},
-        {"lang": "fr", "pipe": "fr_core_news_sm",
-            "text": "datant du 1er siècle avant JC au 5ème siècle après JC, ou 1500 BP ou IIe siècle de notre ère"},
-        {"lang": "it", "pipe": "it_core_news_sm",
-            "text": "databile dal I secolo a.C. al V secolo d.C., o 1500 a.C"},
-        {"lang": "nl", "pipe": "nl_core_news_sm",
-            "text": "daterend uit de 1e eeuw voor Christus tot de 5e eeuw na Christus, of 1500 BP"},
-        {"lang": "no", "pipe": "nb_core_news_sm",
-            "text": "dateres fra 1. århundre f.Kr. til 5. århundre e.Kr., eller 1500 f.Kr"},
-        {"lang": "sv", "pipe": "sv_core_news_sm",
-            "text": "från 1:a århundradet f.Kr. till 500-talet e.Kr., eller 1500 f.Kr"},
-        {"lang": "cs", "pipe": "pl_core_news_sm",
-            "text": "artefakt pochází ze 7. až 6. století př. n. l., ale může být i starší"}
+        {"lang": "de", "text": "aus dem 1. Jahrhundert v. Chr. Bis zum 5. Jahrhundert n. Chr. Oder 1500 BP"},
+        {"lang": "en", "text": "dating from 1st century BC to 5th century A.D., or 1500 BP"},
+        {"lang": "es", "text": "que data del siglo I a.C. al siglo V d.C., o 1500 a.C., o 1850 a. C."},
+        {"lang": "fr", "text": "datant du 1er siècle avant JC au 5ème siècle après JC, ou 1500 BP ou IIe siècle de notre ère"},
+        {"lang": "it", "text": "databile dal I secolo a.C. al V secolo d.C., o 1500 a.C"},
+        {"lang": "nl", "text": "daterend uit de 1e eeuw voor Christus tot de 5e eeuw na Christus, of 1500 BP"},
+        {"lang": "no", "text": "dateres fra 1. århundre f.Kr. til 5. århundre e.Kr., eller 1500 f.Kr"},
+        {"lang": "sv", "text": "från 1:a århundradet f.Kr. till 500-talet e.Kr., eller 1500 f.Kr"},
+        {"lang": "cs", "text": "artefakt pochází ze 7. až 6. století př. n. l., ale může být i starší"}
     ]
 
     for test in tests:
-        print(f"-------------\nlanguage = {test['lang']}")
-        nlp = spacy.load(test["pipe"], disable=['ner'])
+        lang = test.get("lang", "")
+        text = test.get("text", "")
+
+        print(f"-------------\nlanguage = {lang}")
+        nlp = get_pipeline_for_language(lang)
         nlp.add_pipe("datesuffix_ruler", last=True)
-        doc = nlp(test["text"])
-        for ent in doc.ents:
-            print(ent.ent_id_, ent.text, ent.label_)
+        doc = nlp(text)
+        
+        print(doc_toks_to_text(doc))
+        print(doc_ents_to_text(doc))
+

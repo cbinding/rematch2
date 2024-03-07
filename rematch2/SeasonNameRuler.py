@@ -114,27 +114,24 @@ def create_seasonname_ruler_cs(nlp: Language, name: str = "seasonname_ruler") ->
 if __name__ == "__main__":
 
     tests = [
-        {"language": "de", "pipe": "de_core_news_sm",
-            "text": "Im Frühling oder im Sommer oder im Herbst oder im Winter"},
-        {"language": "en", "pipe": "en_core_web_sm",
-            "text": "In Spring, or in Summer, or in Autumn or in Winter"},
-        {"language": "es", "pipe": "es_core_news_sm",
-            "text": "En primavera, o en verano, o en otoño o en invierno"},
-        {"language": "fr", "pipe": "fr_core_news_sm",
-            "text": "Au printemps, ou en été, ou en automne ou en hiver"},
-        {"language": "it", "pipe": "it_core_news_sm",
-            "text": "In primavera, o in estate, o in autunno o in inverno"},
-        {"language": "nl", "pipe": "nl_core_news_sm",
-            "text": "In de lente, of in de zomer, of in de herfst of in de winter"},
-        {"language": "no", "pipe": "nb_core_news_sm",
-            "text": "Om våren, eller om sommeren, eller om høsten eller om vinteren"},
-        {"language": "sv", "pipe": "sv_core_news_sm",
-            "text": "På våren, eller på sommaren, eller på hösten eller på vintern"}
+        {"lang": "de", "text": "Im Frühling oder im Sommer oder im Herbst oder im Winter"},
+        {"lang": "en", "text": "In Spring, or in Summer, or in Autumn or in Winter"},
+        {"lang": "es", "text": "En primavera, o en verano, o en otoño o en invierno"},
+        {"lang": "fr", "text": "Au printemps, ou en été, ou en automne ou en hiver"},
+        {"lang": "it", "text": "In primavera, o in estate, o in autunno o in inverno"},
+        {"lang": "nl", "text": "In de lente, of in de zomer, of in de herfst of in de winter"},
+        {"lang": "no", "text": "Om våren, eller om sommeren, eller om høsten eller om vinteren"},
+        {"lang": "sv", "text": "På våren, eller på sommaren, eller på hösten eller på vintern"}
     ]
     for test in tests:
-        print(f"-------------\nlanguage = {test['language']}")
-        nlp = spacy.load(test["pipe"], disable=['ner'])
+        lang = test.get("lang", "")
+        text = test.get("text", "")
+
+        print(f"-------------\nlanguage = {lang}")
+        nlp = get_pipeline_for_language(lang)
         nlp.add_pipe("seasonname_ruler", last=True)
-        doc = nlp(test["text"])
-        for ent in doc.ents:
-            print(ent.ent_id_, ent.text, ent.label_)
+        doc = nlp(text)
+        
+        print(doc_toks_to_text(doc))
+        print(doc_ents_to_text(doc))
+

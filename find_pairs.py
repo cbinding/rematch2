@@ -22,34 +22,24 @@ import json
 import itertools  # for product
 import pandas as pd
 import spacy
+import json
+from html import escape
 from pathlib import Path
-from spacy.tokens import Doc
+from spacy import displacy
+from spacy.tokens import Doc, Span
+#from spacy.tokens import Span
 from spacy.matcher import DependencyMatcher
-from test_examples_english import test_examples_english
-from test_examples_oasis import test_examples_oasis
 from collections.abc import MutableSequence
-from rematch2.PeriodoRuler import create_periodo_ruler
+from rematch2 import create_periodo_ruler
 from rematch2.VocabularyRuler import *
+from rematch2.NegationRuler import *
 from lxml import etree as ET
 from datetime import datetime as DT
 from Util import *
 from decorators import run_timed
 
-
-def get_pipeline(periodo_authority_id: str = ""):
-    # use predefined spaCy pipeline, disable default NER component
-    nlp = spacy.load("en_core_web_sm", disable=['ner'])
-
-    # add rematch2 component(s) to the end of the pipeline
-    nlp.add_pipe("periodo_ruler", last=True, config={
-        "periodo_authority_id": periodo_authority_id})
-    nlp.add_pipe("fish_archobjects_ruler", last=True)
-    nlp.add_pipe("fish_monument_types_ruler", last=True)
-    return nlp
-
-
 # parse and extract list of records from source XML file 
-# [{"id", "text"}, {"id", "text"}, ...] for subsequent processing
+# returns [{"id", "text"}, {"id", "text"}, ...] for subsequent processing
 def get_records_from_xml_file(file_path: str="")-> list:
     records = []
     try:
@@ -94,15 +84,115 @@ def get_records_from_xml_file(file_path: str="")-> list:
     return records
 
     
+# scoring used to rank pairs results
+def get_score_for_rel_op(rel_op: str="") -> float:
+    score = float(0)
+
+    match (rel_op or "").strip().lower():
+        case "-": score = 1.0
+        case "<": score = 0.8
+        case ">": score = 0.8
+        case "<<": score = 0.6
+        case ">>": score = 0.6
+        case ".*": score = 0.2
+        case ";*": score = 0.2
+        case _: score = 0.0
+    return score
+
+
+# to consistently represent a token in results
+def results_token(tok):    
+    return {
+        "from": tok.i,
+        "to": tok.i + len(tok.text),
+        "text": tok.text,
+        "pos": tok.pos_,
+        "lemma": tok.lemma_
+    }
+
+
+# to consistently represent an entity in results
+def results_entity(ent: Span):
+    return {
+        "from": ent.start_char,
+        "to": ent.end_char - 1,
+        "id": ent.ent_id_ ,
+        "text": ent.text,
+        "lemma": ent.lemma_,
+        "type": ent.label_
+    }
+
+
+# to consistently represent an entity pair in results
+def results_pair(ent1: Span, ent2: Span, rel_op: str=""):
+    return {
+        "rel_op": rel_op,
+        "score": get_score_for_rel_op(rel_op),
+        "ent1": results_entity(ent1),
+        "ent2": results_entity(ent2)
+    }
+
+
+# not used yet, make HTML display easier
+# by breaking down into smaller functions?
+def ent_for_html_display(ent: Span) -> str:
+    html = f"<div class=\"entity {ecape(ent.label_.lower())}\">"
+    if ent.ent_id_:
+        html += f"<a href=\"{ent.ent_id_}\">{escape(ent.text)}</a>"
+    else:
+        html += escape(ent.text)
+    html +=f"</div>"
+    return html
+
+
+# custom along the lines of displacy but locally controllable
+# TODO: not finished or used yet...
+def custom_html_rendering(doc: Doc):
+    
+    def render_in_tag(tag_name: str, content: str):
+        return f"<{escape(tag_name)}>{escape(content)}></{escape(tag_name)}>"
+
+    def tok_for_render(tok):
+        return {
+            "index": tok.idx,
+            "text": tok.text_with_ws,
+            "label": None
+        }
+
+    def ent_for_render(ent):
+        return {
+            "index": ent.start,
+            "text": ent.text,
+            "label": ent.label_
+        }
+
+    toks_outside_entities = list(filter(lambda t: t.ent_iob_ not in ['B', 'I'], doc)) 
+    toks_for_render = list(map(tok_for_render, toks_outside_entities))
+    ents_for_render = list(map(ent_for_render, doc.ents))
+    items_for_render = sorted(toks_for_render + ents_for_render, key=lambda x: x.get("index", 0))
+
+    html = "<div>"
+    for item in items_for_render:
+        if item["label"] is not None:
+            html += f"<mark class='entity {escape(item['label'].lower())}'>{escape(item['text'])}</mark>"
+        else:
+            html += item["text"] 
+    html += "</div>"
+    return html
+
+
+
 def find_period_object_pairs(nlp=None, input_text: str = "") -> dict:
     
     # set up overall single result structure to be returned
     result = {
-        "input_text": input_text,
-        "tokens": [],
-        "entities": [],
-        "noun_chunk_pairs": [],
-        "dependency_match_pairs": []
+        #"input_text": input_text,
+        #"tokens": [],
+        #"entities": [],
+        "doc": {},
+        "displacy_ents": [],
+        "counts": [],        
+        "pairs": []
     }
 
     # normalise white space before annotation
@@ -111,100 +201,74 @@ def find_period_object_pairs(nlp=None, input_text: str = "") -> dict:
 
     # perform the annotation
     doc = nlp(cleaned)
-    
+    result["doc"] = doc.to_json()
+
+    # write text with entities tagged
+    options = { "ents": None, "colors": { "NEGATION": "lightgray","PERIOD": "yellow", "OBJECT": "plum" } }
+    result["displacy_ents"] = displacy.render(doc, style="ent", minify=True, options=options)           
+
     # add tokens to result
-    result["tokens"] = [{
-        "from": tok.i,
-        "to": tok.i + len(tok.text),
-        "text": tok.text,
-        "pos": tok.pos_,
-        "lemma": tok.lemma_
-    } for tok in doc]
+    #result["tokens"] = list(map(results_token, doc))
 
     # add entities to result
-    result["entities"] = [{
-        "from": ent.start_char,
-        "to": ent.end_char - 1,
-        "id": ent.ent_id_,
-        "text": ent.text,
-        "lemma": ent.lemma_,
-        "type": ent.label_
-    } for ent in doc.ents]
+    #result["entities"] = list(map(results_entity, doc.ents)) #[entity_for_results(ent) for ent in doc.ents]
 
-    # add noun_chunk pairs to result
-    noun_chunk_pairs = get_noun_chunk_pairs(doc)
+    # add entity counts to results
+    result["counts"] = get_entity_counts(doc)
 
-    result["noun_chunk_pairs"] = [{
-        #"label": f"[{ent1.label_} - {ent2.label_}] [{ent1.ent_id_}] '{ent1}' - '{ent2}' [{ent2.ent_id_}]",
-        "ent1": {  
-            "from": ent1.start_char,
-            "to": ent1.end_char - 1,
-            "id": ent1.ent_id_ ,
-            "text": ent1.text,
-            "type": ent1.label_
-        },
-        "ent2": {  
-            "from": ent2.start_char,
-            "to": ent2.end_char - 1,
-            "id": ent2.ent_id_ ,
-            "text": ent2.text,
-            "type": ent2.label_
-        }
-    } for ent1, ent2 in noun_chunk_pairs]
+    #print(custom_html_rendering(doc))
 
-    # add dependency match pairs to result
+    # add dependency match pairs to results
     # semgrex symbols for dependency relationship between terms
     # see https://spacy.io/usage/rule-based-matching#dependencymatcher-operators
-    for rel_op in [
+    rel_ops = [
         "<",    # A is the immediate dependent of B
         ">",    # A is the immediate head of B
         "<<",   # A is the dependent in a chain to B following dep → head paths
         ">>",   # A is the head in a chain to B following head → dep paths
-        ".",    # A immediately precedes B, i.e. A.i == B.i - 1, and both are within the same dependency tree
+        #".",    # A immediately precedes B, i.e. A.i == B.i - 1, and both are within the same dependency tree
         ".*",   # A precedes B, i.e. A.i < B.i, and both are within the same dependency tree
         ";",    # A immediately follows B, i.e. A.i == B.i + 1, and both are within the same dependency tree
         ";*",   # A follows B, i.e. A.i > B.i, and both are within the same dependency tree
-        "$+",   # B is a right immediate sibling of A, i.e. A and B have the same parent and A.i == B.i - 1
-        "$-",   # B is a left immediate sibling of A, i.e. A and B have the same parent and A.i == B.i + 1
-        "$++",  # B is a right sibling of A, i.e. A and B have the same parent and A.i < B.i
-        "$--",  # B is a left sibling of A, i.e. A and B have the same parent and A.i > B.i
-        ">+",   # B is a right immediate child of A, i.e. A is a parent of B and A.i == B.i - 1
-        ">-",   # B is a left immediate child of A, i.e. A is a parent of B and A.i == B.i + 1
-        ">++",  # B is a right child of A, i.e. A is a parent of B and A.i < B.i
-        ">--",  # B is a left child of A, i.e. A is a parent of B and A.i > B.i
-        "<+",   # B is a right immediate parent of A, i.e. A is a child of B and A.i == B.i - 1
-        "<-",   # B is a left immediate parent of A, i.e. A is a child of B and A.i == B.i + 1
-        "<++",  # B is a right parent of A, i.e. A is a child of B and A.i < B.i
-        "<--"   # B is a left parent of A, i.e. A is a child of B and A.i > B.i
-    ]:
-        dependency_match_pairs = get_dependency_match_pairs(doc, rel_op)
-        for ent1, ent2 in dependency_match_pairs:
-            result["dependency_match_pairs"].append({
-                #"label": f"[{ent1.label_} {rel_op} {ent2.label_}] [{ent1.ent_id_}] '{ent1}' - '{ent2}' [{ent2.ent_id_}]",
-                #"label": f"{ent1.ent_id_} [{ent1.label_}] '{ent1}' {op} '{ent2}' [{ent2.label_}] {ent2.ent_id_}",
-                "rel_op": rel_op,
-                "ent1": {  
-                    "from": ent1.start_char,
-                    "to": ent1.end_char - 1,
-                    "id": ent1.ent_id_ ,
-                    "text": ent1.text,
-                    "type": ent1.label_
-                },
-                "ent2": {  
-                    "from": ent2.start_char,
-                    "to": ent2.end_char - 1,
-                    "id": ent2.ent_id_ ,
-                    "text": ent2.text,
-                    "type": ent2.label_
-                }
-            })
+        #"$+",   # B is a right immediate sibling of A, i.e. A and B have the same parent and A.i == B.i - 1
+        #"$-",   # B is a left immediate sibling of A, i.e. A and B have the same parent and A.i == B.i + 1
+        #"$++",  # B is a right sibling of A, i.e. A and B have the same parent and A.i < B.i
+        #"$--",  # B is a left sibling of A, i.e. A and B have the same parent and A.i > B.i
+        #">+",   # B is a right immediate child of A, i.e. A is a parent of B and A.i == B.i - 1
+        #">-",   # B is a left immediate child of A, i.e. A is a parent of B and A.i == B.i + 1
+        #">++",  # B is a right child of A, i.e. A is a parent of B and A.i < B.i
+        #">--",  # B is a left child of A, i.e. A is a parent of B and A.i > B.i
+        #"<+",   # B is a right immediate parent of A, i.e. A is a child of B and A.i == B.i - 1
+        #"<-",   # B is a left immediate parent of A, i.e. A is a child of B and A.i == B.i + 1
+        #"<++",  # B is a right parent of A, i.e. A is a child of B and A.i < B.i
+        #"<--"   # B is a left parent of A, i.e. A is a child of B and A.i > B.i
+    ]    
+    dependency_pairs = get_dependency_pairs(doc, rel_ops)
+    noun_chunk_pairs = get_noun_chunk_pairs(doc)
+
+    # eliminate any duplicate pairs with lower scores
+    best_scoring_pairs = {}
+    for item in noun_chunk_pairs + dependency_pairs:
+        id = f"{item['ent1']['id']}|{item['ent2']['id']}"            
+        if (id not in best_scoring_pairs or item['score'] > best_scoring_pairs[id]['score']):
+            best_scoring_pairs[id] = item
+    best_pairs = list(best_scoring_pairs.values())
+
+    # finally, sort best_scoring_pairs by ascending score and add to overall results
+    result["pairs"] = sorted(best_pairs, key=lambda x: x.get("score", 0), reverse=True)
     return result
    
 
-# using dependency matcher..
+# Using dependency matcher. Find PERIOD - OBJECT dependency pairs
 # https://spacy.io/usage/rule-based-matching#dependencymatcher
-# look for PERIOD - OBJECT dependency pairs, return as tuple array [[ent, ent], [ent, ent]]
-def get_dependency_match_pairs(doc: Doc, rel_op: str = ".") -> MutableSequence:
+# returns list of pair result
+def get_dependency_pairs(doc: Doc, rel_ops: list=[]) -> list:
+    results = []
+    for rel_op in rel_ops:
+        results += get_dependency_pairs_by_rel_op(doc, rel_op)
+    return results
+# Find PERIOD - OBJECT dependency pairs for a single rel_op
+def get_dependency_pairs_by_rel_op(doc: Doc, rel_op: str = ".") -> list:
     pattern = [
         {
             "RIGHT_ID": "period",
@@ -213,7 +277,7 @@ def get_dependency_match_pairs(doc: Doc, rel_op: str = ".") -> MutableSequence:
         {
             "LEFT_ID": "period",
             "REL_OP": rel_op,
-            "RIGHT_ID": "object",
+            "RIGHT_ID": "object",            
             "RIGHT_ATTRS": {"ENT_TYPE": "OBJECT"}
         }
     ]
@@ -231,15 +295,16 @@ def get_dependency_match_pairs(doc: Doc, rel_op: str = ".") -> MutableSequence:
             ent.start <= id and ent.end > id for id in token_ids), doc.ents)
         # using cartesian product to give all PERIOD - OBJECT pair combinations
         for ent1, ent2 in itertools.product(periods, objects):
-            # using dict to eliminate duplicates
-            matched[f"{ent1.ent_id_}|{ent2.ent_id_}"] = tuple([ent1, ent2])
-    # return as array of tuple
-    return matched.values()
+            id = f"{ent1.ent_id_}|{ent2.ent_id_}"
+            matched[id] = results_pair(ent1, ent2, rel_op)
+            
+    # return list of result items
+    return list(matched.values())
 
 
-# look for PERIOD - OBJECT pairs in noun chunks,
-# return as tuple array [[ent, ent], [ent, ent]]
-def get_noun_chunk_pairs(doc: Doc) -> MutableSequence:
+# look for PERIOD - OBJECT pairs within noun chunks,
+# returns list of pair result
+def get_noun_chunk_pairs(doc: Doc) -> list:
    
     matched = dict()
     for chunk in doc.noun_chunks:
@@ -249,10 +314,12 @@ def get_noun_chunk_pairs(doc: Doc) -> MutableSequence:
         objects = filter(lambda ent: ent.label_ == "OBJECT", chunk.ents)
         # Use cartesian product to give all PERIOD - OBJECT pairs
         for ent1, ent2 in itertools.product(periods, objects):
-            # using dict to eliminate duplicate pairs
-            matched[f"{ent1.ent_id_}|{ent2.ent_id_}"] = tuple([ent1, ent2])           
+            # using dict to eliminate duplicates with lower scores
+            id = f"{ent1.ent_id_}|{ent2.ent_id_}"
+            matched[id] = results_pair(ent1, ent2, "-")
+
      # return as array of tuple
-    return matched.values()
+    return list(matched.values())
 
 
 def results_to_json_file(file_name: str="", results: dict={}):
@@ -275,25 +342,40 @@ def results_to_text_file(file_name: str="", results: dict={}):
         
         # write metadata header
         metadata = results.get("metadata", {})
-        text_file.write(f"title:         {metadata.get('title', '')}\n")
-        text_file.write(f"description:   {metadata.get('description', '')}\n")
-        text_file.write(f"timestamp:     {metadata.get('timestamp', '')}\n")
-        text_file.write(f"periodo ID:    \"{metadata.get('periodo_authority_id', '')}\"\n")
-        text_file.write(f"input records: {metadata.get('input_record_count', '')}\n")
+        text_file.write(f"title:                {metadata.get('title', '')}\n")
+        text_file.write(f"description:          {metadata.get('description', '')}\n")
+        text_file.write(f"started:              {metadata.get('timestamp', '')}\n")
+        text_file.write(f"periodo authority ID: \"{metadata.get('periodo_authority_id', '')}\"\n")
+        text_file.write(f"input records count:  {metadata.get('input_record_count', '')}\n")
+        
+        # write results
         text_file.write("results:\n")
-
         for r in results.get("results", []):            
             
-            # write record header
+            # write result header
             identifier = r.get("identifier", "")
-            input_text = r.get("input_text", "")            
+            input_text = r["doc"]["text"]         
             text_file.write("\n=============================================================\n")
             text_file.write(f"identifier: {identifier}\n")
             text_file.write(f"input text:\n\"{input_text}\"\n")
             
             # summarise identified entities (by desc count)             
-            text_file.write("\nEntity occurrence counts:\n")
-            # load entities into a DataFrame object:
+            text_file.write("\nCounts:\n")
+            #doc = Doc.from_json(doc_json=r.get("doc"))
+
+            counts = get_entity_counts(doc)
+            for item in counts:                    
+                    text_file.write("[{type}] {id:<40} {text:>20} {count}\n".format(
+                        type = item["type"],
+                        id = item["id"],
+                        text = item["text"],
+                        count = item["count"]))
+
+
+
+            # first load entities into a DataFrame object:
+            
+            '''ents = doc.ents
             entities = r.get("entities", [])
             pd.set_option('display.max_rows', None)
             df = pd.DataFrame([{
@@ -304,54 +386,170 @@ def results_to_text_file(file_name: str="", results: dict={}):
                 "lemma": f"\"{e.get('lemma', '').lower()}\"",
                 "type": f"[{e.get('type', '')}]"
             } for e in entities])   
-            # write structured table to output file         
-            text_file.write(df.groupby(["id", "type", "lemma"]).size().sort_values(ascending=False).to_string())
+            # write as structured table to output file         
+            text_file.write(df.groupby(["id", "type", "lemma"]).size().sort_values(ascending=False).to_string())'''
 
             # write noun chunk pairs as fixed width string values
-            text_file.write("\n\nNoun chunk pairs:\n")
-            noun_chunk_pairs = r.get("noun_chunk_pairs", [])
-            if len(noun_chunk_pairs) == 0:
+            text_file.write("\n\nPairs:\n")
+            pairs = r.get("pairs", [])
+            if len(pairs) == 0:
                 text_file.write("NONE FOUND\n")
             else:
-                for pair in noun_chunk_pairs:
-                    text_file.write("{id_1:<40} [{type_1:<}] {text_1:>20} {sep:^5} {text_2:<20} [{type_2:>}] {id_2:<40}\n".format(
+                for pair in pairs:
+                    text_file.write("{score} {id_1:<40} [{type_1:<}] {text_1:>20} - {text_2:<20} [{type_2:>}] {id_2:<40}\n".format(
+                        score = pair.get('score',float(0)),
                         type_1 = pair['ent1']['type'],
                         type_2 = pair['ent2']['type'],
                         id_1 = pair['ent1']['id'],
                         id_2 = pair['ent2']['id'],                  
                         text_1 = f"\"{pair['ent1']['text']}\"",                        
-                        text_2 = f"\"{pair['ent2']['text']}\"",
-                        sep = "-"                       
+                        text_2 = f"\"{pair['ent2']['text']}\""    
                     ))
+            
 
-            # write dependency match pairs as fixed width string values
-            text_file.write("\nDependency match pairs:\n")
-            dependency_match_pairs = r.get("dependency_match_pairs", [])
-            if len(dependency_match_pairs) == 0:
-                text_file.write("NONE FOUND\n")
+# count entities by id, return list [{id, type, text, count}, {id, type, text, count}, ...] 
+# returned in descending count order - note there is probably a more elegant way to do this    
+def get_entity_counts(doc: Doc) -> list:
+    counts = {}
+
+    for ent in doc.ents:
+        # don't include NEGATION in summary counts?
+        if ent.label_ == "NEGATION":
+            continue
+
+        # get suitable identifier to aggregate counts
+        id=""
+        if ent.ent_id_:
+            id = ent.ent_id_
+        elif ent.lemma_:
+            id = ent.lemma_
+        elif ent.text:
+            id = ent.text
+        else:
+            id = "other"
+        
+        # create a new record if not encountered before, or increment the count
+        if id not in counts:
+            counts[id] = { "id": id, "type": ent.label_, "text": ent.lemma_, "count": 1 } 
+        else:
+            counts[id]["count"] += 1            
+    
+    # return as list sorted by ascending count
+    return sorted(list(counts.values()), key=lambda x: x.get("count", 0), reverse=True)
+
+
+# TODO: create custom version of displacy rendering
+def results_to_html_file(file_name: str="", results: dict={}):
+    # construct suitable output file name if not passed in
+    if len(file_name) == 0:
+        timestamp = DT.now().strftime(("%Y%m%dT%H%M%S"))
+        file_name = f"{Path(__file__).stem}_results_{timestamp}.html"
+
+    # open (or create) the output file
+    with open(file_name, "w") as html_file:
+        # write header tags
+        html_file.write('<!DOCTYPE html>')
+        html_file.write('<html>')
+        html_file.write('<head>')
+
+        # write CSS from file to style tag (so no file dependency)
+        with open('find_pairs.css', 'r', encoding='utf8') as css_file:
+            css_text = css_file.read()
+            html_file.write(f'<style>{css_text}</style>')
+                
+        html_file.write('</head>')
+        html_file.write('<body>')
+        
+        # write metadata header
+        metadata = results.get("metadata", {})
+        html_file.write(f"<div><strong>title:</strong> {escape(metadata.get('title', ''))}</div>")
+        html_file.write(f"<div><strong>description:</strong> {escape(metadata.get('description', ''))}</div>")
+        html_file.write(f"<div><strong>started:</strong> {escape(metadata.get('timestamp', ''))}</div>")
+        html_file.write(f"<div><strong>periodo authority ID:</strong> \"{escape(metadata.get('periodo_authority_id', ''))}\"</div>")
+        html_file.write(f"<div><strong>input records count:</strong> {metadata.get('input_record_count', '')}</div>")
+
+        # write results
+        html_file.write("<h2>results:</h2>")
+        for r in results.get("results", []):  
+
+            # write result header
+            identifier = escape(r.get("identifier", ""))                 
+            html_file.write("<hr>")
+            if(identifier.startswith("http")):
+                html_file.write(f"<div><strong>ID:</strong> <a href='{identifier}'>{identifier}</a></div>")
             else:
-                for pair in dependency_match_pairs:
-                    text_file.write("{id_1:<40} [{type_1:<}] {text_1:>20} {sep:^5} {text_2:<20} [{type_2:>}] {id_2:<40}\n".format(
-                        type_1 = pair['ent1']['type'],
-                        type_2 = pair['ent2']['type'],
-                        id_1 = pair['ent1']['id'],
-                        id_2 = pair['ent2']['id'],                  
-                        text_1 = f"\"{pair['ent1']['text']}\"",                        
-                        text_2 = f"\"{pair['ent2']['text']}\"",
-                        sep = pair["rel_op"]
-                    ))
-      
+                html_file.write(f"<div><strong>ID:</strong> {identifier}</div>")
+            
+            html_file.write(f"<p>{r.get('displacy_ents')}</p>")
+            
+            # write entity counts summary
+            html_file.write("<h3>Counts:</h3>") 
+            counts = r.get('counts') 
+            if len(counts) == 0:
+                html_file.write("<p>NONE FOUND</p>")
+            else:
+                html_file.write("<table>")
+                for item in counts:
+                    html_file.write("<tr>")                    
+                    html_file.write("<td style='text-align:right; vertical-align: middle;'>")
+                    html_file.write(f"<div class=\"entity {item['type'].lower()}\">")
+                    html_file.write(f"<a href=\"{item['id']}\">{escape(item['text'])}</a>")
+                    html_file.write(f"</div>")
+                    html_file.write(f"<td>({item['count']})</td>")
+                    html_file.write(f"</tr>")
+                html_file.write("</table>")  
 
-# run using record list of [{"id", "text"}, {"id", "text"}, ...]
+            # write noun chunk pairs
+            html_file.write("<h3>Pairs:</h3>")
+            pairs = r.get("pairs", [])
+            if len(pairs) == 0:
+                html_file.write("<p>NONE FOUND</p>")
+            else:
+                html_file.write("<table>")
+                for pair in pairs:
+                    html_file.write("<tr>")
+                    #html_file.write(f"<td><small>({pair['ent1']['from']}&#8594;{pair['ent1']['to']})</small></td>")                    
+                    #html_file.write(f"<td><small>[{pair['ent1']['type']}]</small></td>")   
+                    html_file.write(f"<td style='text-align:right; vertical-align: middle;'>")
+                    html_file.write(f"<div class=\"entity {pair['ent1']['type'].lower()}\">")
+                    html_file.write(f"<a href=\"{pair['ent1']['id']}\">{escape(pair['ent1']['text'])}</a>")
+                    html_file.write(f"</div>")
+                    html_file.write(f"</td>")                    
+                    html_file.write(f"<td style='text-align:left; vertical-align: middle'>")
+                    html_file.write(f"<div class=\"entity {pair['ent2']['type'].lower()}\">")
+                    html_file.write(f"<a href=\"{pair['ent2']['id']}\">{escape(pair['ent2']['text'])}</a>")
+                    html_file.write(f"</div>")
+                    html_file.write(f"</td>")
+                    html_file.write(f"<td>({pair['score']})</td>")
+                    
+                    #html_file.write(f"<td><small>[{pair['ent2']['type']}]</small></td>") 
+                    #html_file.write(f"<td><small>({pair['ent2']['from']}&#8594;{pair['ent2']['to']})</small></td>")                                                         
+                    html_file.write("</tr>")
+                html_file.write("</table>")
+            
+        # write footer tags       
+        html_file.write('</body>')
+        html_file.write('</html>')
+
+
+# run using input record list [{"id", "text"}, {"id", "text"}, ...]
 @run_timed
 def main(records: list=[], periodo_authority_id: str="p0kh9ds") -> dict:
     input_record_count = len(records)        
     
-    # print number of records found 
+    # print number of input records 
     print(f"processing {input_record_count} records")
     
-    # set up configured pipeline once only (faster than per record)
-    nlp = get_pipeline(periodo_authority_id=periodo_authority_id)    
+    # use predefined spaCy pipeline (English)
+    nlp = get_pipeline_for_language("en")
+    
+    # add rematch2 component(s) to the end of the pipeline
+    nlp.add_pipe("periodo_ruler", last=True, config={
+        "periodo_authority_id": periodo_authority_id})
+    #nlp.add_pipe("aat_objects_ruler", last=True)
+    nlp.add_pipe("negation_ruler", last=True)
+    nlp.add_pipe("fish_archobjects_ruler", last=True)
+    nlp.add_pipe("fish_monument_types_ruler", last=True)  
 
      # create structured results (inc diagnostic information)
     results = {
@@ -376,37 +574,43 @@ def main(records: list=[], periodo_authority_id: str="p0kh9ds") -> dict:
         
         result = find_period_object_pairs(
             nlp=nlp, 
-            input_text=input_text.lower()
+            input_text=input_text
         )
         
         if result is None:
             result = {}
 
-        result["identifier"] = identifier
-        result["input_text"] = input_text
-
+        result["identifier"] = identifier       
         results["results"].append(result)
 
     return results
        
 
 if __name__ == '__main__':
+    test_records = []
 
-    # override - set to False for local testing of small example textss
+    # override - set to False for local testing of small example texts
     from_xml = False
-
-    if(from_xml):
-        # get list of records to be processed [{"id", "text"},{"id", "text"}]
-        # (XML file is OASIS example data received from Tim @ ADS)      
-        records = get_records_from_xml_file("./oasis_descr_examples.xml")
-    else:
-        # example records for testing
-        records = test_examples_oasis    
     
-    results = main(records=records, periodo_authority_id="p0kh9ds")
-    timestamp = DT.now().strftime(("%Y%m%dT%H%M%S"))
-    filename = f"{Path(__file__).stem}_results_{timestamp}"
-    print("writing results to file...")
-    results_to_json_file(file_name=f"{filename}.json", results=results)
-    results_to_text_file(file_name=f"{filename}.txt", results=results)
-    print("done")
+    print(f"{__file__} loading test records...")
+    if(from_xml):
+        # get list of test records to be processed [{"id", "text"},{"id", "text"}]
+        # (XML file is OASIS example data received from Tim @ ADS)      
+        test_records = get_records_from_xml_file("./oasis_descr_examples.xml")
+    else:
+        # load some local tests..
+        test_file_path = (Path(__file__).parent / "test_examples_english.json").resolve() 
+        with open(test_file_path, "r") as f:
+            test_records = json.load(f)            
+    
+    # run using test records
+    print(f"{__file__} running against test records...")
+    test_results = main(records=test_records, periodo_authority_id="p0kh9ds")
+    
+    print(f"{__file__} writing results to files...")
+    results_file_name = f"{ Path(__file__).stem }_results_{ DT.now().strftime('%Y%m%dT%H%M%S') }"    
+    results_to_json_file(file_name=f"{ results_file_name }.json", results=test_results)
+    #results_to_text_file(file_name=f"{ results_file_name }.txt", results=test_results)
+    results_to_html_file(file_name=f"{ results_file_name }.html", results=test_results)
+    
+    print(f"{__file__} done")

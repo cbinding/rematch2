@@ -114,34 +114,25 @@ def create_ordinal_ruler_cs(nlp: Language, name: str = "ordinal_ruler") -> Entit
 if __name__ == "__main__":
 
     tests = [
-        {"lang": "de", "pipe": "de_core_news_sm",
-            "text": "vom ersten, vierten und sechsten bis zum 19. oder 20. Jahrhundert"},
-        {"lang": "en", "pipe": "en_core_web_sm",
-            #"text": "from the first, the fourth and the sixth to the 19th or 20th century"},
-            "text": "the artefact dates from the 7th to 6th century BC but may be older"},
-        {"lang": "es", "pipe": "es_core_news_sm",
-            "text": "desde el primero, el cuarto y el sexto hasta el siglo XIX o XX"},
-        {"lang": "fr", "pipe": "fr_core_news_sm",
-            "text": "du premier, quatrième et sixième au XIXe ou XXe siècle"},
-        {"lang": "it", "pipe": "it_core_news_sm",
-            "text": "dal primo, quarto e sesto al XIX o XX secolo"},
-        {"lang": "nl", "pipe": "nl_core_news_sm",
-            "text": "van de eerste, de vierde en de zesde tot de 19e of 20e eeuw"},
-        {"lang": "no", "pipe": "nb_core_news_sm",
-            "text": "fra det første, det fjerde og det sjette til det 19. eller 20. århundre"},
-        {"lang": "sv", "pipe": "sv_core_news_sm",
-            "text": "från det första, det fjärde och det sjätte till 1800- eller 1900-talet"},
-        {"lang": "cs", "pipe": "pl_core_news_sm",
-            "text": "artefakt pochází ze 7. až 6. století př. n. l., ale může být i starší"}
+        {"lang": "de", "text": "vom ersten, vierten und sechsten bis zum 19. oder 20. Jahrhundert"},
+        {"lang": "en", "text": "the artefact dates from the 7th to 6th century BC but may be older"},
+        {"lang": "es", "text": "desde el primero, el cuarto y el sexto hasta el siglo XIX o XX"},
+        {"lang": "fr", "text": "du premier, quatrième et sixième au XIXe ou XXe siècle"},
+        {"lang": "it", "text": "dal primo, quarto e sesto al XIX o XX secolo"},
+        {"lang": "nl", "text": "van de eerste, de vierde en de zesde tot de 19e of 20e eeuw"},
+        {"lang": "no", "text": "fra det første, det fjerde og det sjette til det 19. eller 20. århundre"},
+        {"lang": "sv", "text": "från det första, det fjärde och det sjätte till 1800- eller 1900-talet"},
+        {"lang": "cs", "text": "artefakt pochází ze 7. až 6. století př. n. l., ale může být i starší"}
     ]
     for test in tests:
-        print(f"-------------\nlanguage = {test['lang']}")
-        nlp = spacy.load(test["pipe"], disable=['ner'])
+        lang = test.get("lang", "")
+        text = test.get("text", "")
+
+        print(f"-------------\nlanguage = {lang}")
+        nlp = get_pipeline_for_language(lang)
         nlp.add_pipe("ordinal_ruler", last=True)
-        doc = nlp(test["text"])
+        
+        doc = nlp(text)
 
-        for token in doc:
-            print(f"{token.pos_}\t{token.text}\n")
-
-        for ent in doc.ents:
-            print(ent.ent_id_, ent.text, ent.label_)
+        print(doc_toks_to_text(doc))
+        print(doc_ents_to_text(doc))

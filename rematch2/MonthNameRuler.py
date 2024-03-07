@@ -114,27 +114,24 @@ def create_monthname_ruler_cs(nlp: Language, name: str = "monthname_ruler") -> E
 if __name__ == "__main__":
 
     tests = [
-        {"lang": "de", "pipe": "de_core_news_sm",
-            "text": "Im Januar oder im März oder im Oktober, vielleicht im Dezember?"},
-        {"lang": "en", "pipe": "en_core_web_sm",
-            "text": "In January or in March or in October, maybe in Dec"},
-        {"lang": "es", "pipe": "es_core_news_sm",
-            "text": "¿En enero o en marzo o en octubre, tal vez en diciembre?"},
-        {"lang": "fr", "pipe": "fr_core_news_sm",
-            "text": "En janvier ou en mars ou en octobre, peut-être en décembre?"},
-        {"lang": "it", "pipe": "it_core_news_sm",
-            "text": "A gennaio o a marzo o a ottobre, forse a dicembre?"},
-        {"lang": "nl", "pipe": "nl_core_news_sm",
-            "text": "In januari of in maart of in oktober, misschien in december?"},
-        {"lang": "no", "pipe": "nb_core_news_sm",
-            "text": "I januar eller i mars eller i oktober, kanskje i desember?"},
-        {"lang": "sv", "pipe": "sv_core_news_sm",
-            "text": "I januari eller i mars eller i oktober, kanske i december?"}
+        {"lang": "de", "text": "Im Januar oder im März oder im Oktober, vielleicht im Dezember?"},
+        {"lang": "en", "text": "In January or in March or in October, maybe in Dec"},
+        {"lang": "es", "text": "¿En enero o en marzo o en octubre, tal vez en diciembre?"},
+        {"lang": "fr", "text": "En janvier ou en mars ou en octobre, peut-être en décembre?"},
+        {"lang": "it", "text": "A gennaio o a marzo o a ottobre, forse a dicembre?"},
+        {"lang": "nl", "text": "In januari of in maart of in oktober, misschien in december?"},
+        {"lang": "no", "text": "I januar eller i mars eller i oktober, kanskje i desember?"},
+        {"lang": "sv", "text": "I januari eller i mars eller i oktober, kanske i december?"}
     ]
+    
     for test in tests:
-        print(f"-------------\nlanguage = {test['lang']}")
-        nlp = spacy.load(test["pipe"], disable=['ner'])
+        lang = test.get("lang", "")
+        text = test.get("text", "")
+
+        print(f"-------------\nlanguage = {lang}")
+        nlp = get_pipeline_for_language(lang)
         nlp.add_pipe("monthname_ruler", last=True)
-        doc = nlp(test["text"])
-        for ent in doc.ents:
-            print(ent.ent_id_, ent.text, ent.label_)
+        doc = nlp(text)
+
+        print(doc_toks_to_text(doc))
+        print(doc_ents_to_text(doc))

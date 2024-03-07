@@ -1,0 +1,51 @@
+body {
+    font-family: sans-serif;
+}
+
+a:hover {
+    color: red;
+}
+
+.entity {
+    padding: 0.3em 0.3em;
+    margin: 0 0.2em;
+    line-height: 1;
+    border-radius: 0.35em;
+    vertical-align: middle;
+}
+
+.period {
+    background: yellow;
+}
+
+.period::after {
+    margin-left: 1em;
+    content: "PERIOD";
+    float: right;
+    font-weight: bold;
+    font-size: small;
+}
+
+.object {
+    background: plum;
+}
+
+.object::after {
+    margin-left: 1em;
+    content: "OBJECT";
+    float: right;
+    font-weight: bold;
+    font-size: small;
+}
+
+.negation {
+    background: lightgray;
+}
+
+.negation::after {
+    margin-left: 1em;
+    content: "NEGATION";
+    float: right;
+    font-weight: bold;
+    font-size: small;
+}

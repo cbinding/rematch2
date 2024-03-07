@@ -117,27 +117,24 @@ def create_dayname_ruler_cs(nlp: Language, name: str = "dayname_ruler") -> Entit
 if __name__ == "__main__":
 
     tests = [
-        {"lang": "de", "pipe": "de_core_news_sm",
-            "text": "Am Montag oder Dienstag oder vielleicht sogar am Mittwoch"},
-        {"lang": "en", "pipe": "en_core_web_sm",
-            "text": "On Monday or Tuesday or maybe even on Wednesday"},
-        {"lang": "es", "pipe": "es_core_news_sm",
-            "text": "El lunes o el martes o tal vez incluso el miércoles"},
-        {"lang": "fr", "pipe": "fr_core_news_sm",
-            "text": "Le lundi ou le mardi ou peut-être même le mercredi"},
-        {"lang": "it", "pipe": "it_core_news_sm",
-            "text": "Il lunedì o il martedì o forse anche il mercoledì"},
-        {"lang": "nl", "pipe": "nl_core_news_sm",
-            "text": "Op maandag of dinsdag of misschien zelfs op woensdag"},
-        {"lang": "no", "pipe": "nb_core_news_sm",
-            "text": "På mandag eller tirsdag eller kanskje til og med på onsdag"},
-        {"lang": "sv", "pipe": "sv_core_news_sm",
-            "text": "På måndag eller tisdag eller kanske till och med på onsdag"}
+        {"lang": "de", "text": "Am Montag oder Dienstag oder vielleicht sogar am Mittwoch"},
+        {"lang": "en", "text": "On Monday or Tuesday or maybe even on Wednesday"},
+        {"lang": "es", "text": "El lunes o el martes o tal vez incluso el miércoles"},
+        {"lang": "fr", "text": "Le lundi ou le mardi ou peut-être même le mercredi"},
+        {"lang": "it", "text": "Il lunedì o il martedì o forse anche il mercoledì"},
+        {"lang": "nl", "text": "Op maandag of dinsdag of misschien zelfs op woensdag"},
+        {"lang": "no", "text": "På mandag eller tirsdag eller kanskje til og med på onsdag"},
+        {"lang": "sv", "text": "På måndag eller tisdag eller kanske till och med på onsdag"}
     ]
     for test in tests:
-        print(f"-------------\nlanguage = {test['lang']}")
-        nlp = spacy.load(test["pipe"], disable=['ner'])
+        lang = test.get("lang", "")
+        text = test.get("text", "")
+
+        print(f"-------------\nlanguage = {lang}")
+        nlp = get_pipeline_for_language(lang)
         nlp.add_pipe("dayname_ruler", last=True)
-        doc = nlp(test["text"])
-        for ent in doc.ents:
-            print(ent.ent_id_, ent.text, ent.label_)
+        doc = nlp(text)
+
+        print(doc_toks_to_text(doc))
+        print(doc_ents_to_text(doc))
+
