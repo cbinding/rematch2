@@ -75,8 +75,8 @@ class YearSpanRuler(EntityRuler):
             "datesuffix_ruler",
             "dateseparator_ruler",
             "ordinal_ruler",
-            "monthname_ruler",
-            "seasonname_ruler"
+            #"monthname_ruler",
+            #"seasonname_ruler"
         ]
 
         for n in atomic_pipe_names:
@@ -180,6 +180,6 @@ if __name__ == "__main__":
         # run text through the pipeline
         doc = nlp(text)
         
-        print(doc_toks_to_text(doc))
-        print(doc_ents_to_text(doc))
+        print("Tokens:\n" + doc_toks_to_text(doc))
+        print("Entities:\n" + doc_ents_to_text(doc))
 

@@ -61,11 +61,11 @@ class BaseAnnotator():
 
         # data cleansing stages on input text
         # cleaned = input_text.strip()
-        # remove any punctuation before annotation DOESNT WORK for unicode punctuation though, only ASCII
+        # remove any punctuation before annotation DOESN'T WORK for unicode punctuation though, only ASCII
         # cleaned = cleaned.translate(str.maketrans("", "", string.punctuation))
         # this does handle unicode
         # cleaned = regex.sub('[\p{P}\p{Sm}]+', '', cleaned)
-        # problem though - if we strip punctuation here we lose full stops before the NER...
+        # problem though - if we strip punctuation here we lose crucial info before the NER e.g. full stops...
 
         # normalise white space before annotation
         # (extra spaces frustrate pattern matching)
@@ -76,33 +76,7 @@ class BaseAnnotator():
 
         # convert the results to the required format
         match output_format.strip().lower():
-            case "html":
-                # default options if none passed in
-                if options is None:
-                    options = {
-                        "ents": [
-                            "CENTURY",
-                            "YEARSPAN",
-                            "PERIOD",
-                            "MONUMENT",
-                            "OBJECT",
-                            "ARCHSCIENCE",
-                            "EVIDENCE",
-                            "MATERIAL",
-                            "EVENTTYPE"
-                        ],
-                        "colors": {
-                            "CENTURY": "lightgreen",
-                            "YEARSPAN": "salmon",
-                            "PERIOD": "yellow",
-                            "MONUMENT": "cyan",
-                            "OBJECT": "plum",
-                            "ARCHSCIENCE": "pink",
-                            "EVIDENCE": "aliceblue",
-                            "MATERIAL": "antiquewhite",
-                            "EVENTTYPE": "coral",
-                        }
-                    }
+            case "html":                
                 output = self.__doc_to_html(doc, options)
             case "ttl":
                 output = self.__doc_to_ttl(doc)
@@ -149,7 +123,6 @@ class BaseAnnotator():
 
     # convert results to CSV formatted string,
     # or write to specified CSV file if name supplied
-
     @staticmethod
     def __doc_to_csv(doc: Doc, fileName: str = None) -> str:
         df = BaseAnnotator.__doc_to_dataframe(doc)
@@ -158,7 +131,6 @@ class BaseAnnotator():
 
     # convert results to JSON formatted string,
     # or write to specified JSON file if name supplied
-
     @staticmethod
     def __doc_to_json(doc: Doc, fileName: str = None) -> str:
         df = BaseAnnotator.__doc_to_dataframe(doc)
@@ -176,17 +148,33 @@ class BaseAnnotator():
 
 
     # convert results to python dictionary
-
     @staticmethod
     def __doc_to_dict(doc: Doc) -> dict:
         df = BaseAnnotator.__doc_to_dataframe(doc)
         return df.to_dict(orient="records")
 
-    # convert results to HTML formatted string
 
+    # convert results to HTML formatted string
     @staticmethod
-    def __doc_to_html(doc: Doc, options = {}) -> str:
+    def __doc_to_html(doc: Doc, options = None) -> str:
         # generate and return HTML marked up text
         # options passed in to specify colours for HTML output
+        # default options if none passed in
+        if options is None:
+            options = {
+                "ents": None, # so all are displayed
+                "colors": {
+                    "CENTURY": "lightgreen",
+                    "YEARSPAN": "moccasin",
+                    "PERIOD": "yellow",
+                    "MONUMENT": "cyan",
+                    "OBJECT": "plum",
+                    "ARCHSCIENCE": "lightpink",
+                    "EVIDENCE": "aliceblue",
+                    "MATERIAL": "antiquewhite",
+                    "EVENTTYPE": "coral",
+                    "NEGATION": "lightgray"
+                }
+            }
         output = displacy.render(doc, style="ent", options=options)
         return output

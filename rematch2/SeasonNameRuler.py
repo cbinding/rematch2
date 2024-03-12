@@ -132,6 +132,6 @@ if __name__ == "__main__":
         nlp.add_pipe("seasonname_ruler", last=True)
         doc = nlp(text)
         
-        print(doc_toks_to_text(doc))
-        print(doc_ents_to_text(doc))
+        print("Tokens:\n" + doc_toks_to_text(doc))
+        print("Entities:\n" + doc_ents_to_text(doc))
 

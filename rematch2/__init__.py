@@ -13,6 +13,8 @@ from .TemporalAnnotator import TemporalAnnotator
 from .VocabularyAnnotator import VocabularyAnnotator
 from .VocabularyEnum import VocabularyEnum
 from .VocabularyRuler import *
+from .EntityPair import EntityPair
+from .EntityPairs import EntityPairs
 from .Util import *
 #from .LogFile import LogFile # not currently used
 from .YearSpanRuler import create_yearspan_ruler

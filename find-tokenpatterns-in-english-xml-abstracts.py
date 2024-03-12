@@ -54,7 +54,7 @@ def writeEntitiesToHtmlFile(doc, targetFileNameWithPath=""):
         ],
         "colors": {
             "CENTURY": "lightgreen",
-            "YEARSPAN": "salmon",
+            "YEARSPAN": "moccasin",
             "PERIOD": "yellow",
             "MONUMENT": "cyan",
             "OBJECT": "plum",

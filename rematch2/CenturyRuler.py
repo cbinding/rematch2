@@ -195,7 +195,7 @@ if __name__ == "__main__":
         # display the current pipeline components
         #print(nlp.pipe_names)
 
-        print(doc_toks_to_text(doc))
-        print(doc_ents_to_text(doc))
+        print("Tokens:\n" + doc_toks_to_text(doc))
+        print("Entities:\n" + doc_ents_to_text(doc))
 
         

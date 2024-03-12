@@ -450,23 +450,5 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
 
     doc = nlp(en_test_text3)
     # explacy.print_parse_info(nlp, en_test_text.lower())
-    # quick and dirty examination of results:
-    # for ent in doc.ents:
-    # print(ent.ent_id_, ent.text, ent.label_)
-    #for tok in doc:
-        #print(tok.text, tok.pos_, tok.lemma_)
-
-    # better...
-    results = [{
-        "from": ent.start_char,
-        "to": ent.end_char - 1,
-        "id": ent.ent_id_,
-        "text": ent.text,
-        "type": ent.label_
-    } for ent in doc.ents]
-
-    # prevent truncation (of URIs)
-    pd.set_option('display.max_colwidth', None)
-    # load results into a DataFrame object:    
-    df = pd.DataFrame(results)
-    print(df)
+    print("Tokens:\n" + doc_toks_to_text(doc))
+    print("Entities:\n" + doc_ents_to_text(doc))

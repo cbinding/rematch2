@@ -20,7 +20,7 @@ patterns_en_YEARSPAN = [
         "pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ENT_TYPE": "MONTHNAME"},
-            {"ORTH": {"REGEX": r"^\d+$"}},
+            {"ORTH": {"REGEX": r"^\d{4}$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
@@ -30,7 +30,7 @@ patterns_en_YEARSPAN = [
         "pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ENT_TYPE": "SEASONNAME"},
-            {"ORTH": {"REGEX": r"^\d+$"}},
+            {"ORTH": {"REGEX": r"^\d{4}$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
@@ -55,7 +55,7 @@ patterns_en_YEARSPAN = [
         "comment": "e.g. mid 1580 AD",
         "pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
-            {"ORTH": {"REGEX": r"^\d+$"}},
+            {"ORTH": {"REGEX": r"^\d{3,4}$"}},
             {"OP": "+", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
@@ -63,10 +63,10 @@ patterns_en_YEARSPAN = [
         "label": "YEARSPAN",
         "comment": "e.g. 1580 to 1690 AD",
         "pattern": [
-            {"ORTH": {"REGEX": r"^\d+$"}},
+            {"ORTH": {"REGEX": r"^\d{3,4}$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
             {"ENT_TYPE": "DATESEPARATOR"},
-            {"ORTH": {"REGEX": r"^\d+$"}},
+            {"ORTH": {"REGEX": r"^\d{3,4}$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
@@ -75,12 +75,37 @@ patterns_en_YEARSPAN = [
         "comment": "e.g. early 100 BC to late 100 AD",
         "pattern": [
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
-            {"ORTH": {"REGEX": r"^\d+$"}},
+            {"ORTH": {"REGEX": r"^\d{3,4}$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
             {"ENT_TYPE": "DATESEPARATOR"},
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
-            {"ORTH": {"REGEX": r"^\d+$"}},
+            {"ORTH": {"REGEX": r"^\d{3,4}}$"}},
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
+        ]
+    },
+    { 
+        "label": "YEARSPAN",         
+        "comment": "e.g. beginning of the fifth century AD",
+		"pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "ORDINAL"},
+            {"LOWER": {"REGEX": r"^(century|centuries|millennium|millennia)$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+        ]
+    },
+    { 
+        "label": "YEARSPAN",         
+        "comment": "e.g. start of the first to end of the 2nd century AD",
+		"pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "ORDINAL"},
+            {"OP": "?", "LOWER": {"REGEX": r"^(century|centuries|millennium|millennia)$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "ORDINAL"},
+            {"LOWER": {"REGEX": r"^(century|centuries|millennium|millennia)$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
         ]
     }
 ]

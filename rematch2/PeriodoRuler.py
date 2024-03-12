@@ -8,8 +8,12 @@ Project :
 Summary :   spaCy custom pipeline component (specialized EntityRuler) to 
             identify named periods (from Perio.do) in free text. 
             Entity type added will be "PERIOD"
-Imports :   os, sys, spacy, Language, EntityRuler
-Example :   nlp.add_pipe("periodo_ruler", last=True)           
+Imports :   os, sys, spacy, Language, EntityRuler, Doc, Language
+Example :   
+        nlp = spacy.load(pipe_name, disable=['ner'])
+        nlp.add_pipe("periodo_ruler", last=True) 
+        doc = nlp(test_text)
+
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History :   
@@ -110,16 +114,6 @@ if __name__ == "__main__":
     nlp.add_pipe("periodo_ruler", last=True, config={
                  "periodo_authority_id": periodo_authority_id})
     doc = nlp(test_text)
-
-    # load results into a DataFrame object:
-
-    results = [{
-        "from": ent.start_char,
-        "to": ent.end_char - 1,
-        "id": ent.ent_id_,
-        "text": ent.text,
-        "type": ent.label_
-    } for ent in doc.ents]
-
-    df = pd.DataFrame(results)
-    print(df.to_string())
+    
+    print("Tokens:\n" + doc_toks_to_text(doc))
+    print("Entities:\n" + doc_ents_to_text(doc))

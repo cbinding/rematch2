@@ -15,7 +15,35 @@ History :   28/02/2024 CFB Initially created script
 patterns_en_NEGATION = [
     { 
         "label": "NEGATION",
+		"pattern": "negated"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "negation"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "negative"
+    },
+    { 
+        "label": "NEGATION",
 		"pattern": "absence of"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "was absent"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "is absent"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "disproves"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "disproved"
     },
     { 
         "label": "NEGATION",
@@ -24,6 +52,14 @@ patterns_en_NEGATION = [
     { 
         "label": "NEGATION",
 		"pattern": "didn't reveal"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "not present"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "not detected"
     },
     { 
         "label": "NEGATION",
@@ -39,6 +75,10 @@ patterns_en_NEGATION = [
     },
     { 
         "label": "NEGATION",
+		"pattern": "lack of"
+    },
+    { 
+        "label": "NEGATION",
 		"pattern": "lack of evidence"
     },
     { 
@@ -47,12 +87,36 @@ patterns_en_NEGATION = [
     },
     { 
         "label": "NEGATION",
+		"pattern": "lacked evidence"
+    },
+    { 
+        "label": "NEGATION",
 		"pattern": "no evidence"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "limited evidence"
     },
     { 
         "label": "NEGATION",
 		"pattern": "little evidence"
     },  
+    { 
+        "label": "NEGATION",
+		"pattern": "little to suggest"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "does not suggest"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "did not suggest"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "didn't suggest"
+    },
     { 
         "label": "NEGATION",
 		"pattern": "no support"
@@ -111,6 +175,10 @@ patterns_en_NEGATION = [
     },
     { 
         "label": "NEGATION",
+		"pattern": "not obvious"
+    },
+    { 
+        "label": "NEGATION",
 		"pattern": "not identified"
     },
     { 
@@ -143,7 +211,27 @@ patterns_en_NEGATION = [
     },
     { 
         "label": "NEGATION",
+		"pattern": "probably not"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "definitely not"
+    },
+    { 
+        "label": "NEGATION",
 		"pattern": "impossible"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "improbable"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "infeasible"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "not feasible"
     },
     { 
         "label": "NEGATION",
@@ -152,5 +240,13 @@ patterns_en_NEGATION = [
     { 
         "label": "NEGATION",
 		"pattern": "not thought to be"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "uncertain"
+    },
+    { 
+        "label": "NEGATION",
+		"pattern": "less certain"
     }
 ]

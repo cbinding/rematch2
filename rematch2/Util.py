@@ -1,7 +1,8 @@
 import spacy
 import json
 from spacy.language import Language
-from spacy.tokens import Doc
+from spacy.tokens import Doc, Span
+import pandas as pd
 
 
 # get suitable spaCy NLP pipeline for given ISO639-1 (2-char) language code
@@ -140,33 +141,123 @@ def _patterns_from_json_file(file_path: str) -> list:
     return patterns
 
 
-def doc_toks_to_text(doc: Doc)-> str:
-    result = "tokens:\n"
-    for tok in doc:
-        result += "{index:<4} {span:^12} {pos:<10} {text:<40}\n".format(
-            index = tok.i,
-            span = f"({tok.idx + 1} -> {tok.idx + len(tok.text)})",
-            pos = tok.pos_,
-            text = f"\"{tok.text}\""
-        )
-    return result
+# count entities by id, return list [{id, type, text, count}, {id, type, text, count}, ...] 
+# returned in descending count order - note there is probably a more elegant way to do this    
+def get_entity_counts_by_id(doc: Doc) -> list:
+    counts = {}
 
-
-def doc_ents_to_text(doc: Doc)-> str:
-    result = "entities:\n"
     for ent in doc.ents:
-        result += "{index:4} {span:^12} {type:<10} {id} {text:<40}\n".format(
-            index="",                
-            span = f"({ent.start_char + 1} -> {ent.end_char})",
-            type = ent.label_,
-            text = f"\"{ent.text}\"",
+        # don't include NEGATION in summary counts?
+        if ent.label_ == "NEGATION":
+            continue
+
+        # get suitable identifier to aggregate counts
+        id=""
+        if ent.ent_id_:
             id = ent.ent_id_
-        )
-    return result
+        elif ent.lemma_:
+            id = ent.lemma_
+        elif ent.text:
+            id = ent.text
+        else:
+            id = "other"
+        
+        # create a new record if not encountered before, or increment the count
+        if id not in counts:
+            counts[id] = { "id": id, "type": ent.label_, "text": ent.lemma_, "count": 1 } 
+        else:
+            counts[id]["count"] += 1            
     
+    # return as list sorted by ascending count
+    return sorted(list(counts.values()), key=lambda x: x.get("count", 0), reverse=True)
 
-    def entities_to_html_list(doc: Doc)-> str:result = ""
-    result = "<ul>"
-    for ent in doc.ents:
-            result += f"<li>({ent.start_char} &#8594; {ent.end_char - 1}) \"{ent.text}\" [{ent.label_}]</li>"
-    result += "</ul>"
+
+# used for diagnostics on local tests
+def doc_toks_to_text(doc: Doc)-> str:
+    toks = [{
+        "index": tok.i,
+        "from": tok.idx,
+        "to": tok.idx + len(tok.text) - 1,
+        "pos": tok.pos_,
+        "text": tok.text        
+    } for tok in doc]
+    df = pd.DataFrame(toks)
+    # prevent truncation (mainly of URIs)
+    pd.set_option('display.max_colwidth', None)  
+    return(df.to_string(index=False))
+
+
+# used for diagnostics on local tests
+def doc_ents_to_text(doc: Doc)-> str:
+    ents = [{
+        "from": ent.start_char,
+        "to": ent.end_char - 1,
+        "type": ent.label_,
+        "id": ent.ent_id_,
+        "text": ent.text
+    } for ent in doc.ents] 
+    df = pd.DataFrame(ents)
+    # prevent truncation (mainly of URIs)
+    pd.set_option('display.max_colwidth', None)     
+    return(df.to_string(index=False))   
+
+
+def doc_ents_to_html(doc: Doc)-> str:
+    ents = [{
+        "from": ent.start_char,
+        "to": ent.end_char - 1,
+        "type": ent.label_,
+        "id": ent.ent_id_,
+        "text": ent.text
+    } for ent in doc.ents] 
+    df = pd.DataFrame(ents)
+    return(df.to_html(index=False))     
+
+
+# custom along the lines of displacy but locally controllable
+# TODO: not finished or used anywhere yet...
+def custom_html_rendering(doc: Doc):
+    
+    def render_in_tag(tag_name: str, content: str):
+        return f"<{escape(tag_name)}>{escape(content)}></{escape(tag_name)}>"
+
+    def tok_for_render(tok):
+        return {
+            "index": tok.idx,
+            "text": tok.text_with_ws,
+            "label": None
+        }
+
+    def ent_for_render(ent):
+        return {
+            "index": ent.start,
+            "text": ent.text,
+            "label": ent.label_
+        }
+
+    toks_outside_entities = list(filter(lambda t: t.ent_iob_ not in ['B', 'I'], doc)) 
+    toks_for_render = list(map(tok_for_render, toks_outside_entities))
+    ents_for_render = list(map(ent_for_render, doc.ents))
+    items_for_render = sorted(toks_for_render + ents_for_render, key=lambda x: x.get("index", 0))
+
+    html = "<div>"
+    for item in items_for_render:
+        if item["label"] is not None:
+            html += f"<mark class='entity {escape(item['label'].lower())}'>{escape(item['text'])}</mark>"
+        else:
+            html += item["text"] 
+    html += "</div>"
+    return html
+
+
+# TODO: not used yet, make HTML display easier
+# by breaking down into smaller functions?
+def ent_for_html_display(ent: Span) -> str:
+    html = f"<div class=\"entity {ecape(ent.label_.lower())}\">"
+    if ent.ent_id_:
+        html += f"<a href=\"{ent.ent_id_}\">{escape(ent.text)}</a>"
+    else:
+        html += escape(ent.text)
+    html +=f"</div>"
+    return html
+   

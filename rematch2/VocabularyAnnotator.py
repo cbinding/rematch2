@@ -9,8 +9,10 @@ Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
 Summary   : Vocabulary Annotation Tool for archaeological texts
 Imports   : os, pandas, spacy, rematch2
-Example   : va = VocabularyAnnotator(vocabs=[], patterns=[])
-            output = va.annotateText(input_text="abcde", format="csv")
+Example   :
+    txt = "Medieval plough furrows were indicated across the entire site"
+    ann = VocabularyAnnotator(vocabs=[VocabularyEnum.FISH_MONUMENT_TYPES])
+    out = ann.annotateText(input_text=txt, output_format="html")            
 License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
@@ -24,8 +26,6 @@ from os.path import exists
 import json
 import pandas as pd                     # for DataFrame output
 import spacy
-#from collections.abc import MutableSequence
-#from spacy.tokens import Doc
 from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
 
@@ -103,37 +103,23 @@ class VocabularyAnnotator(BaseAnnotator):
 
         # specify colours for HTML output
         options = {
-            "ents": [
-                "ACTIVITY",
-                "AGENT",
-                "MATERIAL",
-                "OBJECT",
-                "STYLEPERIOD",
-                "PERIOD",
-                "EVIDENCE",
-                "MARITIME",
-                "ARCHSCIENCE",
-                "EVENTTYPE",
-                "COMPONENT",
-                "MONUMENT"
-            ],
+            "ents": None, # so all will be displayed
             "colors": {
                 "ACTIVITY": "lightpink",
                 "AGENT": "beige",
                 "MATERIAL": "lightgreen",
                 "OBJECT": "yellow",
-                "STYLEPERIOD": "salmon",
+                "STYLEPERIOD": "moccasin",
                 "PERIOD": "lightgray",
                 "EVIDENCE": "beige",
                 "MARITIME": "steelblue",
                 "ARCHSCIENCE": "lightblue",
                 "EVENTTYPE": "cyan",
                 "COMPONENT": "yellow",
-                "MONUMENT": "salmon"
+                "MONUMENT": "lightsalmon"
             }
         }
-        output = super(VocabularyAnnotator, VocabularyAnnotator)._to_html(
-            doc, options=options)
+        output = super(VocabularyAnnotator, VocabularyAnnotator).__doc_to_html(doc, options=options)
         # output = BaseAnnotator()._to_html(doc, options=options)
         # generate and return HTML marked up text
         # output = displacy.render(doc, style="ent", options=options)

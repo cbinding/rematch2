@@ -98,7 +98,7 @@ class FishVocabularyAnnotator(BaseAnnotator):
                 "EVENTTYPE": "cyan",
                 "OBJECT": "yellow",
                 "COMPONENT": "yellow",
-                "MONUMENT": "salmon"
+                "MONUMENT": "lightsalmon"
             }
         }
         output = super(FishVocabularyAnnotator, FishVocabularyAnnotator)._to_html(

@@ -28,13 +28,62 @@ from spacy.lang.en import English
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from spacypatterns import *
-    from Util import *    
+    from Util import *
+    from EntityPairs import EntityPairs    
 else:
     # uses current package visibility
     from .spacypatterns import *
-    from .Util import *   
+    from .Util import * 
+    from .EntityPairs import EntityPairs    
 
 
+# NegationRuler is a specialized EntityRuler
+class NegationRuler(EntityRuler):
+
+    def __init__(self, nlp: Language, name: str="negation_ruler", patterns: list=[]) -> None:
+        normalized_patterns = normalize_patterns(
+            nlp=nlp, 
+            patterns=patterns,
+            default_label="NEGATION",
+            lemmatize=False,
+            min_term_length=2
+        )        
+
+        EntityRuler.__init__(
+            self,
+            nlp=nlp,
+            name=name,            
+            phrase_matcher_attr="LOWER",
+            validate=False,
+            overwrite_ents=True,
+            ent_id_sep="||"
+        )
+        
+        # add negation patterns to this pipeline component
+        self.add_patterns(normalized_patterns)
+        # print(normalized_patterns)        
+    
+    def __call__(self, doc: Doc) -> Doc:
+        #for ent in doc.ents:
+            #print(f"{ent.start_char}, {ent.end_char - 1}, {ent.ent_id_}, {ent.text}, {ent.label_}")
+        doc = EntityRuler.__call__(self, doc)
+
+        rel_ops = [ "<", ">", "<<", ">>", ".*", ";", ";*" ]        
+        entity_pairs = EntityPairs(doc=doc, rel_ops=rel_ops, left_types=["NEGATION"]).pairs
+         # here - check for negation pairs and mark negated entities...
+        for pair in entity_pairs:
+            pass
+        for ent in doc.ents:
+            pass
+
+        return doc
+
+
+@Language.factory("negation_ruler", default_config={"patterns": []})
+def create_negation_ruler(nlp: Language, name: str = "negation_ruler", patterns: list=[]) -> NegationRuler:
+    return NegationRuler(nlp, name, patterns)
+
+'''
 @Language.factory("negation_ruler", default_config={"patterns": []})
 def create_negation_ruler(nlp: Language, name: str="negation_ruler", patterns: list=[]) -> EntityRuler:
     normalized_patterns = normalize_patterns(
@@ -53,7 +102,7 @@ def create_negation_ruler(nlp: Language, name: str="negation_ruler", patterns: l
         overwrite_ents=True,
         ent_id_sep="||"
     )
-    
+ '''   
 
 @English.factory("negation_ruler")
 def create_negation_ruler_en(nlp: Language, name: str = "negation_ruler") -> EntityRuler:
@@ -114,6 +163,6 @@ if __name__ == "__main__":
         print(f"-------------\n{text}\n")
         doc = nlp(text)
         
-        print(doc_toks_to_text(doc))
-        print(doc_ents_to_text(doc))
+        print("Tokens:\n" + doc_toks_to_text(doc))
+        print("Entities:\n" + doc_ents_to_text(doc))
 

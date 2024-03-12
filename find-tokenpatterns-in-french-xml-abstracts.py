@@ -53,7 +53,7 @@ def writeEntitiesToHtmlFile(doc, targetFileNameWithPath=""):
         "colors": {
             "CENTURY": "lightgreen",
             "PERIOD": "yellow",
-            "YEARSPAN": "salmon"
+            "YEARSPAN": "moccasin"
         }
     }
     html = displacy.render([doc], style="ent", page=True,
