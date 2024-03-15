@@ -24,7 +24,7 @@ import spacy            # NLP library
 from spacy.pipeline import EntityRuler
 
 from spacy.language import Language
-#from spacy.lang.cs import Czech #doesn't exist yet..
+#from spacy.lang.cs import Czech # doesn't exist yet..
 from spacy.lang.de import German
 from spacy.lang.en import English
 from spacy.lang.es import Spanish
@@ -39,10 +39,12 @@ if __package__ is None or __package__ == '':
     # uses current directory visibility
     from spacypatterns import *
     from Util import *
+    from DocSummary import DocSummary
 else:
     # uses current package visibility
     from .spacypatterns import *
     from .Util import *
+    from .DocSummary import DocSummary
 
 
 @Language.factory("monthname_ruler", default_config={"patterns": []})
@@ -133,5 +135,5 @@ if __name__ == "__main__":
         nlp.add_pipe("monthname_ruler", last=True)
         doc = nlp(text)
 
-        print("Tokens:\n" + doc_toks_to_text(doc))
-        print("Entities:\n" + doc_ents_to_text(doc))
+        print("Tokens:\n" + DocSummary(doc).tokens("text"))
+        print("Entities:\n" + DocSummary(doc).entities("text"))

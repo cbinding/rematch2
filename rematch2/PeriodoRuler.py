@@ -35,10 +35,12 @@ if __package__ is None or __package__ == '':
     # uses current directory visibility
     from PeriodoData import PeriodoData
     from Util import *
+    from DocSummary import DocSummary
 else:
     # uses current package visibility
     from .PeriodoData import PeriodoData
     from .Util import *
+    from .DocSummary import DocSummary
 
 
 @Language.factory(name="periodo_ruler", default_config={"periodo_authority_id": None})
@@ -115,5 +117,5 @@ if __name__ == "__main__":
                  "periodo_authority_id": periodo_authority_id})
     doc = nlp(test_text)
     
-    print("Tokens:\n" + doc_toks_to_text(doc))
-    print("Entities:\n" + doc_ents_to_text(doc))
+    print("Tokens:\n" + DocSummary(doc).tokens("text"))
+    print("Entities:\n" + DocSummary(doc).entities("text"))

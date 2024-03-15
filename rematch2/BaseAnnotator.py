@@ -30,9 +30,9 @@ import argparse                         # for argument parsing
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from Util import *
+    from DocSummary import DocSummary
 else:
-    from .Util import *
-
+    from .DocSummary import DocSummary
 
 # base class for VocabularyAnnotator and TemporalAnnotator
 class BaseAnnotator():
@@ -52,11 +52,11 @@ class BaseAnnotator():
         return doc
 
     @property
-    def pipe_names(self):
+    def pipe_names(self) -> list:
         return self._pipeline.pipe_names
 
     # process text and output results to specified format
-    def annotateText(self, input_text: str="", output_format: str="csv", options: dict=None):
+    def annotateText(self, input_text: str="", output_format: str="csv", options: dict=None) -> str|list:
         output = ""
 
         # data cleansing stages on input text
@@ -77,19 +77,22 @@ class BaseAnnotator():
         # convert the results to the required format
         match output_format.strip().lower():
             case "html":                
-                output = self.__doc_to_html(doc, options)
-            case "ttl":
-                output = self.__doc_to_ttl(doc)
+                output = DocSummary(doc).doctext(format="html", options=options) #self.__doc_to_html(doc, options)
+            #case "ttl":
+                #output = self.__doc_to_ttl(doc)
             case "json":
-                output = self.__doc_to_json(doc)
-            case "dataframe":
-                output = self.__doc_to_dataframe(doc)
+                output = DocSummary(doc).entities(format="json") #self.__doc_to_json(doc)
+            case "text":
+                output = DocSummary(doc).entities(format="text")
+            #case "dataframe":
+                #output = DocSummary(doc).entities("html") #self.__doc_to_dataframe(doc)
             case "csv":
-                output = self.__doc_to_csv(doc)
+                output = DocSummary(doc).entities(format="csv") #self.__doc_to_csv(doc)
             case _:
-                output = doc  # spaCy doc for further processing
+                output = DocSummary(doc).entities()
 
         return output
+
 
     # process single text file
     def annotateFile(inputFileNameWithPath: str = "", output_format: str = "csv", encoding: str = "utf-8-sig"):
@@ -103,7 +106,7 @@ class BaseAnnotator():
         output = self.annotateText(txt, output_format)
         return output
 
-
+'''
     # convert results to pandas.DataFrame object
     @staticmethod
     def __doc_to_dataframe(doc: Doc) -> pd.DataFrame:
@@ -178,3 +181,4 @@ class BaseAnnotator():
             }
         output = displacy.render(doc, style="ent", options=options)
         return output
+'''

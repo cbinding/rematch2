@@ -15,6 +15,7 @@ from .VocabularyEnum import VocabularyEnum
 from .VocabularyRuler import *
 from .EntityPair import EntityPair
 from .EntityPairs import EntityPairs
+from .DocSummary import DocSummary
 from .Util import *
 #from .LogFile import LogFile # not currently used
 from .YearSpanRuler import create_yearspan_ruler

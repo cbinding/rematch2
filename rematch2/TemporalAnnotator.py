@@ -36,12 +36,14 @@ if __package__ is None or __package__ == '':
     from CenturyRuler import create_century_ruler
     from YearSpanRuler import create_yearspan_ruler
     from PeriodoRuler import create_periodo_ruler
+    from DocSummary import DocSummary    
 else:
     # uses current package visibility
     from .BaseAnnotator import BaseAnnotator
     from .CenturyRuler import create_century_ruler
     from .YearSpanRuler import create_yearspan_ruler
     from .PeriodoRuler import create_periodo_ruler
+    from .DocSummary import DocSummary
 
 
 # default Perio.do authority ("p0kh9ds") is Historic England periods list..
@@ -80,9 +82,10 @@ class TemporalAnnotator(BaseAnnotator):
                 "PERIOD": "lightpink"
             }
         }
-        output = BaseAnnotator._to_html(
-            doc, options=options)
-        return output
+        return DocSummary(doc).doctext(format="html", options=options)
+        #output =  BaseAnnotator._to_html(
+           # doc, options=options)
+        #return output
 
 
 if __name__ == "__main__":

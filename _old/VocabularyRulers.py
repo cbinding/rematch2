@@ -27,10 +27,10 @@ from spacy.language import Language
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
-    from BaseRuler import create_base-ruler
+    from BaseRuler import create_base_ruler
 else:
     # uses current package visibility
-    from .BaseRuler import create_base-ruler
+    from .BaseRuler import create_base_ruler
 
 
 class VocabularyEnum(Enum):
@@ -63,7 +63,7 @@ def _get_vocabulary(vocab: VocabularyEnum = VocabularyEnum.AAT_OBJECTS):
 
     return vocabulary
 
-def _patterns_from_json_file(file_name: str) -> list:
+def _get_patterns_from_json_file(file_name: str) -> list:
         base_path = (Path(__file__).parent / "vocabularies").resolve()
         file_path = os.path.join(base_path, file_name)
         patterns = []

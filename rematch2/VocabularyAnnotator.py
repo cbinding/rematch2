@@ -8,7 +8,7 @@ Project   :
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
 Summary   : Vocabulary Annotation Tool for archaeological texts
-Imports   : os, pandas, spacy, rematch2
+Imports   : os, rematch2
 Example   :
     txt = "Medieval plough furrows were indicated across the entire site"
     ann = VocabularyAnnotator(vocabs=[VocabularyEnum.FISH_MONUMENT_TYPES])
@@ -23,10 +23,10 @@ History
 """
 import os
 from os.path import exists
-import json
-import pandas as pd                     # for DataFrame output
-import spacy
-from spacy import displacy              # for HTML formatting results
+#import json
+#import pandas as pd                     # for DataFrame output
+#import spacy
+#from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
 
 if __package__ is None or __package__ == '':
@@ -34,11 +34,13 @@ if __package__ is None or __package__ == '':
     from BaseAnnotator import BaseAnnotator
     from VocabularyEnum import VocabularyEnum
     from VocabularyRuler import *
+    from DocSummary import DocSummary
 else:
     # uses current package visibility
     from .BaseAnnotator import BaseAnnotator
     from .VocabularyEnum import VocabularyEnum
     from .VocabularyRuler import *
+    from .DocSummary import DocSummary
 
 # TODO: formats and vocabularies as enums??
 
@@ -119,11 +121,12 @@ class VocabularyAnnotator(BaseAnnotator):
                 "MONUMENT": "lightsalmon"
             }
         }
-        output = super(VocabularyAnnotator, VocabularyAnnotator).__doc_to_html(doc, options=options)
+        return DocSummary(doc).doctext(format="html", options=options)
+        #output = super(VocabularyAnnotator, VocabularyAnnotator).__doc_to_html(doc, options=options)
         # output = BaseAnnotator()._to_html(doc, options=options)
         # generate and return HTML marked up text
         # output = displacy.render(doc, style="ent", options=options)
-        return output
+        #return output
 
 
 if __name__ == "__main__":
@@ -176,5 +179,5 @@ if __name__ == "__main__":
     
     annotator = VocabularyAnnotator(vocabs=[VocabularyEnum.FISH_MONUMENT_TYPES])
     # print(annotator.pipe_names)
-    output = annotator.annotateText(input_text=txt3, output_format="dataframe")
+    output = annotator.annotateText(input_text=txt3, output_format="text")
     print(output)

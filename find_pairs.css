@@ -11,7 +11,11 @@ a:hover {
     margin: 0 0.2em;
     line-height: 1;
     border-radius: 0.35em;
-    vertical-align: middle;    
+    vertical-align: middle; 
+    border: 2px solid gray;   
+}
+.negated {
+    border: 2px dashed red;
 }
 
 .period {

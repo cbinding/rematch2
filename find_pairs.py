@@ -26,15 +26,10 @@ from datetime import datetime as DT
 from html import escape
 from pathlib import Path
 from spacy import displacy
-#from spacy.tokens import Doc, Span, Token
-#from spacy.tokens import Span
-#from rematch2 import create_periodo_ruler
-from rematch2 import EntityPair, EntityPairs, PeriodoRuler, VocabularyRuler, NegationRuler
-#from rematch2.PeriodoRuler import *
-#from rematch2.VocabularyRuler import *
-#from rematch2.NegationRuler import *
+from spacy.tokens import Doc #, Span, Token
+from rematch2 import EntityPair, EntityPairs, PeriodoRuler, VocabularyRuler, NegationRuler, DocSummary
 from Util import *
-from decorators import run_timed
+from decorators import run_timed # form local run timing
 
 
 # parse and extract list of records from source XML file 
@@ -83,175 +78,286 @@ def get_records_from_xml_file(file_path: str="")-> list:
     return records
 
 
-# won't work atm as results not JSON serializable
 def results_to_json_file(file_name: str="", results: dict={}):
     # construct suitable file name if not passed in
     if len(file_name) == 0:
         timestamp = DT.now().strftime(("%Y%m%dT%H%M%S"))
         file_name = f"{Path(__file__).stem}_results_{timestamp}.json"
 
-    with open(file_name, "w") as json_file:     
-        json.dump(results, json_file)
+    def result_to_json(result):
+        id = result.get("identifier", "")
+        doc = result.get("doc", None)        
+        return { 
+            "identifier": id, 
+            "doc": doc.to_json() 
+        }
+
+    with open(file_name, "w") as json_file:  
+        json_file.write(json.dumps({
+            "metadata": results["metadata"], 
+            "results": list(map(result_to_json , results["results"]))
+        }))
 
 
-def results_to_text_file(file_name: str="", results: dict={}):
+def results_to_text_file(file_name: str="", results: dict={}):    
+    lines = []   
+    # write metadata header
+    metadata = results.get("metadata", {})
+    lines.append(f"title:                {metadata.get('title', '')}")
+    lines.append(f"description:          {metadata.get('description', '')}")
+    lines.append(f"started:              {metadata.get('timestamp', '')}")
+    lines.append(f"periodo authority ID: {metadata.get('periodo_authority_id', '')}")
+
+    # write results
+    lines.append("results:")
+    for result in results.get("results", []):            
+            
+        # write result header
+        identifier = result.get("identifier", "")
+        doc = result.get("doc")
+        input_text = doc.text 
+
+        lines.append("\n=============================================================")
+        lines.append(f"{identifier}")
+        lines.append(f"\"{input_text}\"")
+            
+        # write entity counts (by desc count)             
+        lines.append("\nEntity Counts:")  
+        entity_counts = DocSummary(doc).entcounts(format="text")  
+        lines.append(entity_counts)           
+        '''
+        entity_counts = get_entity_counts_by_id(doc)
+        for item in entity_counts:                    
+            lines.append("[{type}] {id:<60} {text:>20} ({count})".format(
+                type = item["type"],
+                id = item["id"],
+                text = item["text"],
+                count = item["count"]
+                )
+            )
+        '''
+            
+        # write entity pairs as fixed width string values
+        lines.append("\nEntity Pairs:")
+        entity_pairs = DocSummary(doc).entpairs(
+            format="text",
+            rel_ops=[ "<", ">", "<<", ">>", ".", ";" ], 
+            left_types=["PERIOD", "YEARSPAN"], 
+            right_types=["OBJECT"]
+        )
+        lines.append(entity_pairs)
+        '''
+        entity_pairs = EntityPairs(
+            doc=doc, 
+            rel_ops=[ "<", ">", "<<", ">>", ".", ";" ], 
+            left_types=["PERIOD", "YEARSPAN"], 
+            right_types=["OBJECT"]
+        ).pairs
+        if len(entity_pairs) == 0:
+            lines.append("NONE FOUND")
+        else:
+            for pair in entity_pairs:
+                lines.append(f"{str(pair)}")
+        '''
+        # write negated entities
+        lines.append("\nNegated Entities:")
+        negated_ents = list(filter(lambda ent: ent._.is_negated == True, doc.ents))
+        if len(negated_ents) == 0:
+            lines.append("NONE FOUND")
+        else:
+            for ent in negated_ents:
+                lines.append("({start}->{end}) [{type}] {id:<60} {text}".format(
+                    start = ent.start,
+                    end = ent.end,
+                    type = ent.label_,
+                    id = ent.ent_id_,
+                    text = ent.text
+                ))
+
     # construct suitable file name if not passed in
     if len(file_name) == 0:
         timestamp = DT.now().strftime(("%Y%m%dT%H%M%S"))
         file_name = f"{Path(__file__).stem}_results_{timestamp}.txt"
 
     with open(file_name, "w") as text_file:
-        
-        # write metadata header
-        metadata = results.get("metadata", {})
-        text_file.write(f"title:                {metadata.get('title', '')}\n")
-        text_file.write(f"description:          {metadata.get('description', '')}\n")
-        text_file.write(f"started:              {metadata.get('timestamp', '')}\n")
-        text_file.write(f"periodo authority ID: \"{metadata.get('periodo_authority_id', '')}\"\n")
-        text_file.write(f"input records count:  {metadata.get('input_record_count', '')}\n")
-        
-        # write results
-        text_file.write("results:\n")
-        for r in results.get("results", []):            
-            
-            # write result header
-            identifier = r.get("identifier", "")
-            input_text = r["doc"]["text"]         
-            text_file.write("\n=============================================================\n")
-            text_file.write(f"{identifier}\n")
-            text_file.write(f"\"{input_text}\"\n")
-            
-            # write entity counts (by desc count)             
-            text_file.write("\nEntity Counts:\n")            
-            counts = r.get('entity_counts')
-            for item in counts:                    
-                text_file.write("[{type}] {id:<60} {text:>20} ({count})\n".format(
-                    type = item["type"],
-                    id = item["id"],
-                    text = item["text"],
-                    count = item["count"]
-                    )
-                )
-            
-            # write entity pairs as fixed width string values
-            text_file.write("\n\nEntity Pairs:\n")
-            pairs = r.get("entity_pairs", [])
-            if len(pairs) == 0:
-                text_file.write("NONE FOUND\n")
-            else:
-                for pair in pairs:
-                    text_file.write(f"{str(pair)}\n")
-                
+        text_file.write("\n".join(lines))
+
 
 def results_to_html_file(file_name: str="", results: dict={}):
+    html = []
+
+    # write header tags
+    html.append("<!DOCTYPE html>")
+    html.append("<html>")
+        
+    # write CSS from file to style tag (so no file dependency)
+    html.append("<head>")
+    with open('find_pairs.css', 'r', encoding='utf8') as css_file:
+        css_text = css_file.read()
+        html.append(f'<style>{css_text}</style>')    
+    
+    html.append("</head>")
+    html.append("<body>")
+
+     # write metadata header
+    metadata = results.get("metadata", {})
+    html.append("<h3>Metadata:</h3>")
+    html.append("<ul>")
+    html.append(f"<li><strong>title:</strong> {metadata.get('title', '')}</li>")
+    html.append(f"<li><strong>description:</strong> {metadata.get('description', '')}</li>")
+    html.append(f"<li><strong>started:</strong>              {metadata.get('timestamp', '')}</li>")
+    html.append(f"<li><strong>periodo authority ID:</strong> {metadata.get('periodo_authority_id', '')}</li>")
+    html.append(f"<li><strong>input records count:</strong>  {metadata.get('input_record_count', '')}</li>")
+    html.append("</ul>")
+
+    # write results in body tag
+    html.append("<h3>results:</h3>")
+    for result in results.get("results", []):  
+        identifier = result.get("identifier", "")
+        doc = result.get("doc", None)           
+        html.append(result_to_html_string(identifier, doc))
+
+    # write footer tags
+    html.append("</body>")
+    html.append("</html>")
+    
     # construct suitable output file name if not passed in
     if len(file_name) == 0:
         timestamp = DT.now().strftime(("%Y%m%dT%H%M%S"))
         file_name = f"{Path(__file__).stem}_results_{timestamp}.html"
 
-    # open (or create) the output file
+    # open (or create) and write to the output file
     with open(file_name, "w") as html_file:
-        # write header tags
-        html_file.write('<!DOCTYPE html>')
-        html_file.write('<html>')
-        html_file.write('<head>')
+        html_file.write( "".join(html))
 
-        # write CSS from file to style tag (so no file dependency)
-        with open('find_pairs.css', 'r', encoding='utf8') as css_file:
-            css_text = css_file.read()
-            html_file.write(f'<style>{css_text}</style>')
-                
-        html_file.write('</head>')
-        html_file.write('<body>')
-        
-        # write metadata header
-        metadata = results.get("metadata", {})
-        html_file.write(f"<div><strong>title:</strong> {escape(metadata.get('title', ''))}</div>")
-        html_file.write(f"<div><strong>description:</strong> {escape(metadata.get('description', ''))}</div>")
-        html_file.write(f"<div><strong>started:</strong> {escape(metadata.get('timestamp', ''))}</div>")
-        html_file.write(f"<div><strong>periodo authority ID:</strong> \"{escape(metadata.get('periodo_authority_id', ''))}\"</div>")
-        html_file.write(f"<div><strong>input records count:</strong> {metadata.get('input_record_count', '')}</div>")
 
-        # write results
-        html_file.write("<h2>results:</h2>")
-        for r in results.get("results", []):  
+# write single results as a HTML string for presentation output
+def result_to_html_string(identifier: str = "", doc: Doc = None) -> str:
 
-            # write result header
-            identifier = escape(r.get("identifier", ""))                 
-            html_file.write("<hr>")
-            if(identifier.startswith("http")):
-                html_file.write(f"<h3><a href='{identifier}'>{identifier}</a></h3>")
-            else:
-                html_file.write(f"<h3>{identifier}</h3>")
-            
-            html_file.write(f"<p>{r.get('displacy_ents')}</p>")
-            
-            # write entity counts summary
-            html_file.write("<h3>Entity Counts:</h3>") 
-            entity_counts = r.get('entity_counts') 
-            if len(entity_counts) == 0:
-                html_file.write("<p>NONE FOUND</p>")
-            else:
-                html_file.write("<table>")
-                for item in entity_counts:
-                    html_file.write("<tr>")                    
-                    html_file.write("<td style='text-align:right; vertical-align: middle;'>")
-                    html_file.write(f"<div class=\"entity {item['type'].lower()}\">")
-                    if(item['id'].startswith("http")):
-                        html_file.write(f"<a href=\"{item['id']}\">{escape(item['text'])}</a>")
-                    else:
-                        html_file.write(f"{escape(item['text'])}")
-                    html_file.write(f"</div>")
-                    html_file.write(f"<td>({item['count']})</td>")
-                    html_file.write(f"</tr>")
-                html_file.write("</table>")  
-
-            # write entity pairs
-            html_file.write("<h3>Entity Pairs:</h3>")
-            entity_pairs = r.get("entity_pairs", [])
-            if len(entity_pairs) == 0:
-                html_file.write("<p>NONE FOUND</p>")
-            else:
-                html_file.write("<table>")
-                for pair in entity_pairs:
-                    html_file.write("<tr>")
-                    #html_file.write(f"<td><small>({pair['ent1']['from']}&#8594;{pair['ent1']['to']})</small></td>")                    
-                    #html_file.write(f"<td><small>[{pair['ent1']['type']}]</small></td>")   
-                    html_file.write(f"<td style='text-align:right; vertical-align: middle;'>")
-                    html_file.write(f"<div class=\"entity {pair.ent1.label_.lower()}\">")
-                    if(pair.ent1.ent_id_.startswith("http")):
-                        html_file.write(f"<a href=\"{pair.ent1.ent_id_}\">{escape(pair.ent1.text)}</a>")
-                    else:
-                        html_file.write(f"{escape(pair.ent1.text)}")
-                    html_file.write(f"</div>")
-                    html_file.write(f"</td>")                    
-                    html_file.write(f"<td style='text-align:left; vertical-align: middle'>")
-                    html_file.write(f"<div class=\"entity {pair.ent2.label_.lower()}\">")
-                    if(pair.ent2.ent_id_.startswith("http")):
-                        html_file.write(f"<a href=\"{pair.ent2.ent_id_}\">{escape(pair.ent2.text)}</a>")
-                    else:
-                        html_file.write(f"{escape(pair.ent2.text)}")
-                    html_file.write(f"</div>")
-                    html_file.write(f"</td>")
-                    html_file.write(f"<td>({pair.score})</td>")                    
-                    #html_file.write(f"<td><small>[{pair['ent2']['type']}]</small></td>") 
-                    #html_file.write(f"<td><small>({pair['ent2']['from']}&#8594;{pair['ent2']['to']})</small></td>")                                                         
-                    html_file.write("</tr>")
-                html_file.write("</table>")
-
-            #html_file.write("<h3>Entity Pairs as DF table:</h3>")
-            #html_file.write(r.get("entity_pairs_table"))
-            
-        # write footer tags       
-        html_file.write('</body>')
-        html_file.write('</html>')
-
-def flag_negated_entities(doc):
-    # use predefined spaCy pipeline (English)
-    nlp = get_pipeline_for_language("en")
-    nlp.add_pipe("negation_ruler", last=True)
-
+    html = []
+    # start with horizontal line break
+    html.append("<hr>") 
     
+    # write identifier as heading
+    html.append("<h4>")
+    if(identifier.startswith("http")):
+        html.append(f"<a href='{identifier}'>{identifier}</a>")
+    else:
+        html.append(f"{escape(identifier)}")
+    html.append("</h4>")
+
+    # write displacy HTML rendering of doc text as paragraph with highlighted entities 
+    '''
+    options = { 
+        "ents": None, # to display all
+        "colors": { 
+            "NEGATION": "lightgray",
+            "PERIOD": "yellow", 
+            "YEARSPAN": "moccasin", 
+            "OBJECT": "plum" 
+        } 
+    }        
+    html.append("<p>{rendered}</p>".format(
+        rendered = displacy.render(doc, style="ent", minify=True, options=options) 
+    ))
+    '''
+    doctext = DocSummary(doc).doctext(format="html")
+    html.append(f"<p>{doctext}</p>")
+
+    # write entity counts
+    html.append("<h3>Entity Counts:</h3>")
+    html.append(DocSummary(doc).entcounts(format="htmlc"))
+    '''
+    entity_counts = get_entity_counts_by_id(doc)
+    if len(entity_counts) == 0:
+        html.append("<p>NONE FOUND</p>")
+    else:
+        html.append("<table><tbody>")
+        for item in entity_counts:
+            html.append("<tr>")
+            html.append("<td style='text-align:right; vertical-align: middle;'>")
+            html.append(f"<div class='entity {escape(item['type'].lower())}'>")
+            if(item['id'].startswith("http")):
+                html.append(f"<a href='{item['id']}'>{escape(item['text'])}</a>")
+            else:
+                html.append(f"{escape(item['text'])}")
+            html.append("</div>")
+            html.append("</td>")
+            html.append(f"<td>({item['count']})</td>")
+            html.append("</tr>")
+        html.append("</tbody></table>")
+    '''
+
+    # get and write entity pairs
+    html.append("<h3>Entity Pairs:</h3>")
+    pairs = DocSummary(doc).entpairs(
+        format="htmlc", 
+        rel_ops=[ "<", ">", "<<", ">>", ".", ";" ], 
+        left_types=["PERIOD", "YEARSPAN"], 
+        right_types=["OBJECT"]
+        )
+    html.append(pairs)
+
+    '''
+    entity_pairs = EntityPairs(
+        doc=doc, 
+        rel_ops=[ "<", ">", "<<", ">>", ".", ";" ], 
+        left_types=["PERIOD", "YEARSPAN"], 
+        right_types=["OBJECT"]
+    ).pairs
+
+    if len(entity_pairs) == 0:
+        html.append("<p>NONE FOUND</p>")
+    else:
+        html.append("<table><tbody>")
+        for pair in entity_pairs:
+            html.append("<tr>")
+            html.append("<td style='text-align:right; vertical-align: middle;'>")
+            html.append(f"<div class='entity {escape(pair.ent1.label_.lower())}'>")
+            if(pair.ent1.ent_id_.startswith("http")):
+                html.append(f"<a href='{pair.ent1.ent_id_}'>{escape(pair.ent1.text)}</a>")
+            else:
+                html.append(f"{escape(pair.ent1.text)}")
+            html.append("</div></td>")                    
+            html.append(f"<td style='text-align:left; vertical-align: middle'>")
+            html.append(f"<div class='entity {escape(pair.ent2.label_.lower())}'>")
+            if(pair.ent2.ent_id_.startswith("http")):
+                html.append(f"<a href='{pair.ent2.ent_id_}'>{escape(pair.ent2.text)}</a>")
+            else:
+                html.append(f"{escape(pair.ent2.text)}")
+            html.append("</div></td>")
+            html.append(f"<td>({pair.score})</td>")
+            html.append("</tr>")
+        html.append("</tbody></table>")
+    '''
+    
+    # write list of negated entities
+    html.append("<h3>Negated Entities:</h3>")
+    negated_ents = list(filter(lambda ent: ent._.is_negated == True, doc.ents))
+    if len(negated_ents) == 0:
+        html.append("<p>NONE FOUND</p>")
+    else:
+        html.append("<table><tbody>")
+        for ent in negated_ents: 
+            html.append("<tr>")
+            html.append("<td style='text-align:right; vertical-align: middle;'>")
+            html.append(f"<div class='negated entity {escape(ent.label_.lower())}'>")
+            if ent.ent_id_.startswith("http"):
+                html.append(f"<a href='{ent.ent_id_}'>{escape(ent.text)}</a>") 
+            else:
+                html.append(f"<span>{escape(ent.text)}</span>")
+            html.append("</div>")
+            html.append("</td>")
+            html.append(f"<td>({ent.start_char} &#8594; {ent.end_char - 1})</td>")
+            html.append("</tr>")      
+        html.append("</tbody></table>")
+
+    # write list of tokens (trying out DocSummary class...)
+    html.append(DocSummary(doc).tokens("htmll"))
+
+    # finally, return the built HTML string
+    return "".join(html)
+
 
 # run using input record list [{"id", "text"}, {"id", "text"}, ...]
 @run_timed
@@ -269,11 +375,14 @@ def main(records: list=[], periodo_authority_id: str="p0kh9ds") -> dict:
     nlp.add_pipe("periodo_ruler", last=True, config={
         "periodo_authority_id": periodo_authority_id})
     #nlp.add_pipe("aat_objects_ruler", last=True)
-    nlp.add_pipe("negation_ruler", last=True)
     nlp.add_pipe("fish_archobjects_ruler", last=True)
     nlp.add_pipe("fish_monument_types_ruler", last=True)  
+    # make sure negation_ruler is placed last in the pipeline, 
+    # as it flags "is_negated" property for existing entities
+    nlp.add_pipe("negation_ruler", last=True)    
+    #print(nlp.pipe_names)
 
-     # create structured results (inc diagnostic information)
+    # create structured results (inc diagnostic information)
     results = {
         "metadata": {
             "title": "find_pairs.py results",
@@ -293,46 +402,16 @@ def main(records: list=[], periodo_authority_id: str="p0kh9ds") -> dict:
         identifier = record.get("id", "")
         input_text = record.get("text", "")
         print(f"processing record {current_record} of {input_record_count} [ID: {identifier}]")
-        
-        # set up result structure to be returned
-        result = {
-            "identifier": identifier,
-            "doc": {},
-            "displacy_ents": [],
-            "entity_counts": [],        
-            "entity_pairs": []
-        }
-
+    
         # normalise white space prior to annotation
         # (extra spaces frustrate pattern matching)
         cleaned = normalize_whitespace(input_text)
 
         # perform the annotation
         doc = nlp(cleaned)
-        result["doc"] = doc.to_json()
 
-        # write HTML formatted doc text with entities tagged
-        options = { 
-            "ents": None, # to display all
-            "colors": { 
-                "NEGATION": "lightgray",
-                "PERIOD": "yellow", 
-                "YEARSPAN": "moccasin", 
-                "OBJECT": "plum" 
-            } 
-        }
-        result["displacy_ents"] = displacy.render(doc, style="ent", minify=True, options=options)           
-        
-        # add entity counts to results
-        result["entity_counts"] = get_entity_counts_by_id(doc)
-
-        # using semgrex symbols for dependency relationships between terms
-        # see https://spacy.io/usage/rule-based-matching#dependencymatcher-operators
-        rel_ops = [ "<", ">", "<<", ">>", ".*", ";", ";*" ]   
-        result["entity_pairs"] = EntityPairs(doc=doc, rel_ops=rel_ops, left_types=["PERIOD", "YEARSPAN"], right_types=["OBJECT"]).pairs     
-        #result["entity_pairs"] = EntityPairs(doc=doc, rel_ops=rel_ops, left_type="NEGATION", right_type="OBJECT").pairs
-        #result["entity_pairs_table"] = EntityPairs(doc=doc, rel_ops=rel_ops, left_type="PERIOD", right_type="OBJECT").to_html_table()
-        results["results"].append(result)
+        # append to results
+        results["results"].append({ "identifier": identifier, "doc": doc })
 
     return results
        
@@ -360,7 +439,7 @@ if __name__ == '__main__':
     
     print(f"{__file__} writing results to files...")
     results_file_name = f"{ Path(__file__).stem }_results_{ DT.now().strftime('%Y%m%dT%H%M%S') }"    
-    #results_to_json_file(file_name=f"{ results_file_name }.json", results=test_results)
+    results_to_json_file(file_name=f"{ results_file_name }.json", results=test_results)
     results_to_text_file(file_name=f"{ results_file_name }.txt", results=test_results)
     results_to_html_file(file_name=f"{ results_file_name }.html", results=test_results)
     

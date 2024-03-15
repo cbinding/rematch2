@@ -185,7 +185,7 @@ class BaseRuler(EntityRuler):
 
 
     @staticmethod
-    def _patterns_from_json_file(file_name: str) -> MutableSequence:
+    def _get_patterns_from_json_file(file_name: str) -> MutableSequence:
         base_path = (Path(__file__).parent / "vocabularies").resolve()
         file_path = os.path.join(base_path, file_name)
         patterns = []
@@ -196,8 +196,8 @@ class BaseRuler(EntityRuler):
 
 
     @staticmethod
-    def _patterns_from_enum(vocab: VocabularyEnum) -> MutableSequence:
-        return BaseRuler._patterns_from_json_file(vocab.value)
+    def _get_patterns_from_enum(vocab: VocabularyEnum) -> MutableSequence:
+        return BaseRuler._get_patterns_from_json_file(vocab.value)
 
 
 @Language.factory(name="amcr_ruler")
@@ -206,7 +206,7 @@ def create_amcr_ruler(nlp: Language, name: str = "amcr_ruler") -> BaseRuler:
         nlp=nlp,
         name=name,
         default_label="AMCR",
-        patterns=_patterns_from_json_file()
+        patterns=_get_patterns_from_json_file()
     )
 
 @Language.factory(name="aat_activities_ruler")

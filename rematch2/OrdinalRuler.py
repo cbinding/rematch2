@@ -37,10 +37,12 @@ if __package__ is None or __package__ == '':
     # uses current directory visibility
     from spacypatterns import *
     from Util import *
+    from DocSummary import DocSummary
 else:
     # uses current package visibility
     from .spacypatterns import *
     from .Util import *
+    from .DocSummary import DocSummary
 
 
 @Language.factory("ordinal_ruler", default_config={"patterns": []})
@@ -134,7 +136,7 @@ if __name__ == "__main__":
         
         doc = nlp(text)
 
-        print("Tokens:\n" + doc_toks_to_text(doc))
-        print("Entities:\n" + doc_ents_to_text(doc))
+        print("Tokens:\n" + DocSummary(doc).tokens("text"))
+        print("Entities:\n" + DocSummary(doc).entities("text"))
 
-        print(doc_ents_to_html(doc))
+        print("Entities:\n" + DocSummary(doc).entities("html"))

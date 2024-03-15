@@ -24,17 +24,20 @@ import spacy            # NLP library
 from spacy.pipeline import EntityRuler
 from spacy.language import Language
 from spacy.lang.en import English
+from spacy.tokens import Doc, Span
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from spacypatterns import *
     from Util import *
-    from EntityPairs import EntityPairs    
+    from EntityPairs import EntityPairs
+    from DocSummary import DocSummary    
 else:
     # uses current package visibility
     from .spacypatterns import *
     from .Util import * 
     from .EntityPairs import EntityPairs    
+    from .DocSummary import DocSummary
 
 
 # NegationRuler is a specialized EntityRuler
@@ -68,15 +71,25 @@ class NegationRuler(EntityRuler):
             #print(f"{ent.start_char}, {ent.end_char - 1}, {ent.ent_id_}, {ent.text}, {ent.label_}")
         doc = EntityRuler.__call__(self, doc)
 
-        rel_ops = [ "<", ">", "<<", ">>", ".*", ";", ";*" ]        
-        entity_pairs = EntityPairs(doc=doc, rel_ops=rel_ops, left_types=["NEGATION"]).pairs
-         # here - check for negation pairs and mark negated entities...
-        for pair in entity_pairs:
-            pass
-        for ent in doc.ents:
-            pass
+        # flag any negated entities
+        # get list of types of all entities in current doc (apart from NEGATION(!))
+        unique_types = list(set(map(lambda ent: ent.label_, doc.ents)))
+        if "NEGATION" in unique_types: unique_types.remove("NEGATION")
 
+        # get negation pairs for ALL unique types
+        rel_ops = [ "<", ">", "<<", ">>", ".", ";"]              
+        entity_pairs = EntityPairs(doc=doc, rel_ops=rel_ops, left_types=["NEGATION"], right_types=unique_types).pairs        
+        negated_entity_starts = list(map(lambda pair: pair.ent2.start, entity_pairs))
+        
+        # add extension property to Span
+        Span.set_extension(name="is_negated", default=False, force=True)
+        # flag entities as is_negated (TODO: take scores into account?)        
+        for ent in doc.ents:
+            if ent.start in negated_entity_starts:
+                ent._.is_negated = True
+           
         return doc
+
 
 
 @Language.factory("negation_ruler", default_config={"patterns": []})
@@ -163,6 +176,6 @@ if __name__ == "__main__":
         print(f"-------------\n{text}\n")
         doc = nlp(text)
         
-        print("Tokens:\n" + doc_toks_to_text(doc))
-        print("Entities:\n" + doc_ents_to_text(doc))
+        print("Tokens:\n" + DocSummary(doc).tokens("text"))
+        print("Entities:\n" + DocSummary(doc).entities("text"))
 

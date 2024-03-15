@@ -47,6 +47,7 @@ if __package__ is None or __package__ == '':
     from DateSuffixRuler import create_datesuffix_ruler
     from DatePrefixRuler import create_dateprefix_ruler
     from OrdinalRuler import create_ordinal_ruler
+    from DocSummary import DocSummary
     from spacypatterns import *
     from Util import *
 else:
@@ -57,6 +58,7 @@ else:
     from .DateSuffixRuler import * #create_datesuffix_ruler
     from .DatePrefixRuler import * #create_dateprefix_ruler
     from .OrdinalRuler import * #create_ordinal_ruler
+    from .DocSummary import DocSummary
     from .spacypatterns import *
     from .Util import *
 
@@ -195,7 +197,7 @@ if __name__ == "__main__":
         # display the current pipeline components
         #print(nlp.pipe_names)
 
-        print("Tokens:\n" + doc_toks_to_text(doc))
-        print("Entities:\n" + doc_ents_to_text(doc))
+        print("Tokens:\n" + DocSummary(doc).tokens("text"))
+        print("Entities:\n" + DocSummary(doc).entities("text"))
 
         
