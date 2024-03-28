@@ -27,7 +27,7 @@ import os
 import sys
 import spacy            # NLP library
 import pandas as pd
-from spacy.pipeline import EntityRuler
+from spacy.pipeline import SpanRuler
 from spacy.tokens import Doc
 from spacy.language import Language
 
@@ -44,7 +44,7 @@ else:
 
 
 @Language.factory(name="periodo_ruler", default_config={"periodo_authority_id": None})
-def create_periodo_ruler(nlp: Language, name: str="periodo_ruler", periodo_authority_id: str="") -> EntityRuler:
+def create_periodo_ruler(nlp: Language, name: str="periodo_ruler", periodo_authority_id: str="") -> SpanRuler:
     # get terms from selected Perio.do authority as vocab
     # get as new instance, don't refresh cached data
     pd = PeriodoData(from_cache=True) #tmp...
@@ -65,17 +65,19 @@ def create_periodo_ruler(nlp: Language, name: str="periodo_ruler", periodo_autho
         default_label="PERIOD",
         lemmatize=False
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
+
+    ruler = SpanRuler(
+        nlp=nlp,        
+        name=name,
+        spans_key="custom",
         phrase_matcher_attr="LOWER",
         validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
-    
-
+        overwrite=False
+    )  
+      
+    ruler.add_patterns(normalized_patterns)
+    return ruler 
+  
 
 # test the PeriodoRuler class
 if __name__ == "__main__":
@@ -118,4 +120,6 @@ if __name__ == "__main__":
     doc = nlp(test_text)
     
     print("Tokens:\n" + DocSummary(doc).tokens("text"))
-    print("Entities:\n" + DocSummary(doc).entities("text"))
+    print("Spans:\n")
+    print([(span.text, span.label_) for span in doc.spans["custom"]])
+    

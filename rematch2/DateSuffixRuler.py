@@ -18,13 +18,14 @@ History :
 03/08/2022 CFB Initially created script
 27/10/2023 CFB type hints added for function signatures
 16/02/2024 CFB remove BaseRuler inheritance, use EntityRuler directly
+28/03/2024 CFB base on SpanRuler instead of EntityRuler
 =============================================================================
 """
 import os
 import sys
 import spacy            # NLP library
 #from collections.abc import MutableSequence
-from spacy.pipeline import EntityRuler
+from spacy.pipeline import SpanRuler
 
 from spacy.language import Language
 from spacy.lang.de import German
@@ -51,7 +52,7 @@ else:
 
 
 @Language.factory(name="datesuffix_ruler", default_config={"patterns": []})
-def create_datesuffix_ruler(nlp: Language, name: str="datesuffix_ruler", patterns: list=[]) -> EntityRuler:
+def create_datesuffix_ruler(nlp: Language, name: str="datesuffix_ruler", patterns: list=[]) -> SpanRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns,
@@ -59,61 +60,63 @@ def create_datesuffix_ruler(nlp: Language, name: str="datesuffix_ruler", pattern
         lemmatize=False,
         min_term_length=2
     )
-    #print(normalized_patterns)
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
+    
+    ruler = SpanRuler(
+        nlp=nlp,        
+        name=name,
+        spans_key="custom",
         phrase_matcher_attr="LOWER",
         validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+        overwrite=False
+    )  
+      
+    ruler.add_patterns(normalized_patterns)
+    return ruler 
     
 
 @German.factory("datesuffix_ruler")
-def create_datesuffix_ruler_de(nlp: Language, name: str = "datesuffix_ruler") -> EntityRuler:
+def create_datesuffix_ruler_de(nlp: Language, name: str = "datesuffix_ruler") -> SpanRuler:
     return create_datesuffix_ruler(nlp, name, patterns_de_DATESUFFIX)
     
 
 @English.factory("datesuffix_ruler")
-def create_datesuffix_ruler_en(nlp: Language, name: str = "datesuffix_ruler") -> EntityRuler:
+def create_datesuffix_ruler_en(nlp: Language, name: str = "datesuffix_ruler") -> SpanRuler:
    return create_datesuffix_ruler(nlp, name, patterns_en_DATESUFFIX)
 
 
 @Spanish.factory("datesuffix_ruler")
-def create_datesuffix_ruler_es(nlp: Language, name: str = "datesuffix_ruler") -> EntityRuler:
+def create_datesuffix_ruler_es(nlp: Language, name: str = "datesuffix_ruler") -> SpanRuler:
     return create_datesuffix_ruler(nlp, name, patterns_es_DATESUFFIX)
 
 
 @French.factory("datesuffix_ruler")
-def create_datesuffix_ruler_fr(nlp: Language, name: str = "datesuffix_ruler") -> EntityRuler:
+def create_datesuffix_ruler_fr(nlp: Language, name: str = "datesuffix_ruler") -> SpanRuler:
     return create_datesuffix_ruler(nlp, name, patterns_fr_DATESUFFIX)
 
 
 @Italian.factory("datesuffix_ruler")
-def create_datesuffix_ruler_it(nlp: Language, name: str = "datesuffix_ruler") -> EntityRuler:
+def create_datesuffix_ruler_it(nlp: Language, name: str = "datesuffix_ruler") -> SpanRuler:
     return create_datesuffix_ruler(nlp, name, patterns_it_DATESUFFIX)
 
 
 @Dutch.factory("datesuffix_ruler")
-def create_datesuffix_ruler_nl(nlp: Language, name: str = "datesuffix_ruler") -> EntityRuler:
+def create_datesuffix_ruler_nl(nlp: Language, name: str = "datesuffix_ruler") -> SpanRuler:
     return create_datesuffix_ruler(nlp, name, patterns_nl_DATESUFFIX)
 
 
 @Norwegian.factory("datesuffix_ruler")
-def create_datesuffix_ruler_no(nlp: Language, name: str = "datesuffix_ruler") -> EntityRuler:
+def create_datesuffix_ruler_no(nlp: Language, name: str = "datesuffix_ruler") -> SpanRuler:
     return create_datesuffix_ruler(nlp, name, patterns_no_DATESUFFIX)
 
 
 @Swedish.factory("datesuffix_ruler")
-def create_datesuffix_ruler_sv(nlp: Language, name: str = "datesuffix_ruler") -> EntityRuler:
+def create_datesuffix_ruler_sv(nlp: Language, name: str = "datesuffix_ruler") -> SpanRuler:
     return create_datesuffix_ruler(nlp, name, patterns_sv_DATESUFFIX)
 
 
 # Polish as temp experimental substitute until Czech is available
 @Polish.factory("datesuffix_ruler")
-def create_datesuffix_ruler_cs(nlp: Language, name: str = "datesuffix_ruler") -> EntityRuler:
+def create_datesuffix_ruler_cs(nlp: Language, name: str = "datesuffix_ruler") -> SpanRuler:
     return create_datesuffix_ruler(nlp, name, patterns_cs_DATESUFFIX)
 
 
@@ -142,4 +145,4 @@ if __name__ == "__main__":
         doc = nlp(text)
         
         print("Tokens:\n" + DocSummary(doc).tokens("text"))
-        print("Entities:\n" + DocSummary(doc).entities("text"))
+        print("Entities:\n" + DocSummary(doc).spans("text"))

@@ -16,13 +16,14 @@ History :
 03/08/2022 CFB Initially created script
 27/10/2023 CFB type hints added for function signatures
 16/02/2024 CFB remove BaseRuler inheritance, use EntityRuler directly
+28/03/2024 CFB base on SpanRuler instead of EntityRuler
 =============================================================================
 """
 import os
 import sys
 import spacy            # NLP library
 #from collections.abc import MutableSequence
-from spacy.pipeline import EntityRuler
+from spacy.pipeline import SpanRuler
 
 from spacy.language import Language
 #from spacy.lang.cs import Czech #doesn't exist yet..
@@ -49,7 +50,7 @@ else:
 
 
 @Language.factory("dateseparator_ruler", default_config={"patterns": []})
-def create_dateseparator_ruler(nlp: Language, name: str="dateseparator_ruler", patterns: list=[]) -> EntityRuler:
+def create_dateseparator_ruler(nlp: Language, name: str="dateseparator_ruler", patterns: list=[]) -> SpanRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns,
@@ -57,59 +58,62 @@ def create_dateseparator_ruler(nlp: Language, name: str="dateseparator_ruler", p
         lemmatize=False,
         min_term_length=2
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
+
+    ruler = SpanRuler(
+        nlp=nlp,        
+        name=name,
+        spans_key="custom",
         phrase_matcher_attr="LOWER",
         validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+        overwrite=False
+    )  
+      
+    ruler.add_patterns(normalized_patterns)
+    return ruler 
 
 
 @German.factory("dateseparator_ruler")
-def create_dateseparator_ruler_de(nlp: Language, name: str = "dateseparator_ruler") -> EntityRuler:
+def create_dateseparator_ruler_de(nlp: Language, name: str = "dateseparator_ruler") -> SpanRuler:
     return create_dateseparator_ruler(nlp, name, patterns_de_DATESEPARATOR)
 
 
 @English.factory("dateseparator_ruler")
-def create_dateseparator_ruler_en(nlp: Language, name: str = "dateseparator_ruler") -> EntityRuler:
+def create_dateseparator_ruler_en(nlp: Language, name: str = "dateseparator_ruler") -> SpanRuler:
     return create_dateseparator_ruler(nlp, name, patterns_en_DATESEPARATOR)
 
 
 @Spanish.factory("dateseparator_ruler")
-def create_dateseparator_ruler_es(nlp: Language, name: str = "dateseparator_ruler") -> EntityRuler:
+def create_dateseparator_ruler_es(nlp: Language, name: str = "dateseparator_ruler") -> SpanRuler:
     return create_dateseparator_ruler(nlp, name, patterns_es_DATESEPARATOR)
 
 
 @French.factory("dateseparator_ruler")
-def create_dateseparator_ruler_fr(nlp: Language, name: str = "dateseparator_ruler") -> EntityRuler:
+def create_dateseparator_ruler_fr(nlp: Language, name: str = "dateseparator_ruler") -> SpanRuler:
     return create_dateseparator_ruler(nlp, name, patterns_fr_DATESEPARATOR)
 
 
 @Italian.factory("dateseparator_ruler")
-def create_dateseparator_ruler_it(nlp: Language, name: str = "dateseparator_ruler") -> EntityRuler:
+def create_dateseparator_ruler_it(nlp: Language, name: str = "dateseparator_ruler") -> SpanRuler:
     return create_dateseparator_ruler(nlp, name, patterns_it_DATESEPARATOR)
 
 
 @Dutch.factory("dateseparator_ruler")
-def create_dateseparator_ruler_nl(nlp: Language, name: str = "dateseparator_ruler") -> EntityRuler:
+def create_dateseparator_ruler_nl(nlp: Language, name: str = "dateseparator_ruler") -> SpanRuler:
     return create_dateseparator_ruler(nlp, name, patterns_nl_DATESEPARATOR)
 
 
 @Norwegian.factory("dateseparator_ruler")
-def create_dateseparator_ruler_no(nlp: Language, name: str = "dateseparator_ruler") -> EntityRuler:
+def create_dateseparator_ruler_no(nlp: Language, name: str = "dateseparator_ruler") -> SpanRuler:
     return create_dateseparator_ruler(nlp, name, patterns_no_DATESEPARATOR)
 
 
 @Swedish.factory("dateseparator_ruler")
-def create_dateseparator_ruler_sv(nlp: Language, name: str = "dateseparator_ruler") -> EntityRuler:
+def create_dateseparator_ruler_sv(nlp: Language, name: str = "dateseparator_ruler") -> SpanRuler:
     return create_dateseparator_ruler(nlp, name, patterns_sv_DATESEPARATOR)
 
 # Polish as temp experimental substitute until Czech is available
 @Polish.factory("dateseparator_ruler")
-def create_dateseparator_ruler_cs(nlp: Language, name: str = "dateseparator_ruler") -> EntityRuler:
+def create_dateseparator_ruler_cs(nlp: Language, name: str = "dateseparator_ruler") -> SpanRuler:
     return create_dateseparator_ruler(nlp, name, patterns_cs_DATESEPARATOR)
 
 # test the DateSeparatorRuler class
@@ -136,4 +140,4 @@ if __name__ == "__main__":
         doc = nlp(text)
         
         print("Tokens:\n" + DocSummary(doc).tokens("text"))
-        print("Entities:\n" + DocSummary(doc).entities("text"))
+        print("Entities:\n" + DocSummary(doc).spans("text"))

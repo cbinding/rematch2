@@ -55,9 +55,9 @@ patterns_en_DATEPREFIX = [
     },
     {
         "label": "DATEPREFIX",
-        "comment": "early|earlier|lower|mid|middle|upper|late|later",
+        "comment": "early|earlier|lower|mid|middle|upper|high|late|later",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(earl(y|ier)|lower|mid(dle)?|upper|later?)$"}}
+            {"LOWER": {"REGEX": r"^(earl(y|ier)|lower|mid(dle)?|upper|high|later?)$"}}
         ]
     }
 ]

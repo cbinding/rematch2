@@ -16,12 +16,13 @@ License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History :   
 03/08/2022 CFB Initially created script
 27/10/2023 CFB type hints added for function signatures
+28/03/2024 CFB base on SpanRuler instead of EntityRuler
 =============================================================================
 """
 import spacy
 from spacy.language import Language
-from spacy.pipeline import EntityRuler
-from spacy.tokens import Doc
+from spacy.pipeline import SpanRuler
+from spacy.tokens import Doc, Token
 #from spacy.lang.cs import Czech #doesn't exist yet..
 from spacy.lang.de import German
 from spacy.lang.en import English
@@ -58,50 +59,76 @@ else:
 
 
 # YearSpanRuler is a specialized EntityRuler
-class YearSpanRuler(EntityRuler):
+class YearSpanRuler(SpanRuler):
 
     def __init__(self, nlp: Language, name: str="yearspan_ruler", patterns: list=[]) -> None:
+        
+        # setup token extensions for chained patterns to work
+        if not Token.has_extension("is_dateprefix"):
+            def is_dateprefix(tok): return is_token_within_labelled_span(tok, "DATEPREFIX")        
+            Token.set_extension(name="is_dateprefix", getter=is_dateprefix)
 
-        EntityRuler.__init__(
-            self,
-            nlp=nlp,
-            name=name,
-            phrase_matcher_attr="LOWER",
-            validate=False,
-            overwrite_ents=True,
-            ent_id_sep="||"
+        if not Token.has_extension("is_datesuffix"):
+            def is_datesuffix(tok): return is_token_within_labelled_span(tok, "DATESUFFIX")
+            Token.set_extension(name="is_datesuffix", getter=is_datesuffix)
+
+        if not Token.has_extension("is_dateseparator"):
+            def is_dateseparator(tok): return is_token_within_labelled_span(tok, "DATESEPARATOR")
+            Token.set_extension(name="is_dateseparator", getter=is_dateseparator)
+
+        if not Token.has_extension("is_ordinal"):
+            def is_ordinal(tok): return is_token_within_labelled_span(tok, "ORDINAL")
+            Token.set_extension(name="is_ordinal", getter=is_ordinal)
+
+        if not Token.has_extension("is_monthname"):
+            def is_monthname(tok): return is_token_within_labelled_span(tok, "MONTHNAME")
+            Token.set_extension(name="is_monthname", getter=is_monthname)
+
+        if not Token.has_extension("is_seasonname"):
+            def is_seasonname(tok): return is_token_within_labelled_span(tok, "SEASONNAME")
+            Token.set_extension(name="is_seasonname", getter=is_seasonname)
+
+        normalized_patterns = normalize_patterns(
+            nlp=nlp, 
+            patterns=patterns,
+            default_label="YEARSPAN",
+            lemmatize=False,
+            min_term_length=2
         )
 
-        atomic_pipe_names = [
+        for name in [
             "dateprefix_ruler",
             "datesuffix_ruler",
             "dateseparator_ruler",
             "ordinal_ruler",
             #"monthname_ruler",
             #"seasonname_ruler"
-        ]
+        ]:
+            if not name in nlp.pipe_names:
+                nlp.add_pipe(name, last=True)
 
-        for n in atomic_pipe_names:
-            if not n in nlp.pipe_names:
-                nlp.add_pipe(n, last=True)
-
-        normalized_patterns = normalize_patterns(
-            nlp=nlp, 
-            patterns=patterns,
-            default_label="YEARSPAN",
-            lemmatize=False
+        SpanRuler.__init__(
+            self,
+            nlp=nlp,        
+            name=name,
+            spans_key="custom",
+            phrase_matcher_attr="LOWER",
+            validate=False,
+            overwrite=False
         )
+
         # add patterns to this pipeline component
         self.add_patterns(normalized_patterns)
 
 
     def __call__(self, doc: Doc) -> Doc:
 
-        doc = EntityRuler.__call__(self, doc)
+        doc = SpanRuler.__call__(self, doc)
 
-        filtered = [ent for ent in doc.ents if ent.label_ not in [
+        # filter out 'atomic' entities only used to determine yearspan entities
+        '''filtered = [ent for ent in doc.ents if ent.label_ not in [
             "ORDINAL", "DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "MONTHNAME", "SEASONNAME"]]
-        doc.ents = filtered
+        doc.ents = filtered'''
         return doc
 
 
@@ -160,7 +187,7 @@ if __name__ == "__main__":
 
     tests = [
         {"lang": "de", "text": "Das Artefakt wurde von 1650 bis 1800 n. Chr. datiert und war korrodiert"},
-        {"lang": "en", "text": "The artefact was dated from 1650 to 1800 AD and was corroded"},
+        {"lang": "en", "text": "The artefact was dated from 1650 to 1800 AD and was corroded. possibly from start of March 1715 AD"},
         {"lang": "es", "text": "El artefacto estaba fechado entre 1650 y 1800 d. C. y estaba corroído."},
         {"lang": "fr", "text": "L'artefact était daté de 1650 à 1800 après JC et a été corrodé"},
         {"lang": "it", "text": "Il manufatto fu datato dal 1650 al 1800 d.C. e fu corroso"},
@@ -183,5 +210,5 @@ if __name__ == "__main__":
         doc = nlp(text)
         
         print("Tokens:\n" + DocSummary(doc).tokens("text"))
-        print("Entities:\n" + DocSummary(doc).entities("text"))
+        print("Spans:\n" + DocSummary(doc).spans("text"))
 

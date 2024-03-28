@@ -5,15 +5,16 @@ Module  :   NegationRuler.py
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
-Summary :   spaCy custom pipeline component (specialized EntityRuler)
+Summary :   spaCy custom pipeline component (specialized SpanRuler)
             Language-sensitive component to identify negation phrases
-            in free text. Entity type added will be "NEGATION"
-Imports :   os, sys, spacy, Language, EntityRuler, Doc
+            in free text. type added will be "NEGATION"
+Imports :   os, sys, spacy, Language, SpanRuler, Doc
 Example :   nlp.add_pipe("negation_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History :   
 28/02/2024 CFB Initially created script
+28/03/2024 CFB base on SpanRuler instead of EntityRuler
 =============================================================================
 """
 import os
@@ -21,7 +22,7 @@ import sys
 from pathlib import Path
 import json
 import spacy            # NLP library
-from spacy.pipeline import EntityRuler
+from spacy.pipeline import SpanRuler
 from spacy.language import Language
 from spacy.lang.en import English
 from spacy.tokens import Doc, Span
@@ -30,18 +31,18 @@ if __package__ is None or __package__ == '':
     # uses current directory visibility
     from spacypatterns import *
     from Util import *
-    from EntityPairs import EntityPairs
+    from SpanPairs import SpanPairs
     from DocSummary import DocSummary    
 else:
     # uses current package visibility
     from .spacypatterns import *
     from .Util import * 
-    from .EntityPairs import EntityPairs    
+    from .SpanPairs import SpanPairs    
     from .DocSummary import DocSummary
 
 
-# NegationRuler is a specialized EntityRuler
-class NegationRuler(EntityRuler):
+# NegationRuler is a specialized SpanRuler
+class NegationRuler(SpanRuler):
 
     def __init__(self, nlp: Language, name: str="negation_ruler", patterns: list=[]) -> None:
         normalized_patterns = normalize_patterns(
@@ -52,41 +53,42 @@ class NegationRuler(EntityRuler):
             min_term_length=2
         )        
 
-        EntityRuler.__init__(
+        SpanRuler.__init__(
             self,
-            nlp=nlp,
-            name=name,            
+            nlp=nlp,        
+            name=name,
+            spans_key="custom",
             phrase_matcher_attr="LOWER",
             validate=False,
-            overwrite_ents=True,
-            ent_id_sep="||"
+            overwrite=False
         )
         
         # add negation patterns to this pipeline component
         self.add_patterns(normalized_patterns)
-        # print(normalized_patterns)        
+        # print(normalized_patterns)   
+        # add extension property to Span
+        Span.set_extension(name="is_negated", default=False, force=True)     
+    
     
     def __call__(self, doc: Doc) -> Doc:
         #for ent in doc.ents:
             #print(f"{ent.start_char}, {ent.end_char - 1}, {ent.ent_id_}, {ent.text}, {ent.label_}")
-        doc = EntityRuler.__call__(self, doc)
+        doc = SpanRuler.__call__(self, doc)
 
         # flag any negated entities
         # get list of types of all entities in current doc (apart from NEGATION(!))
-        unique_types = list(set(map(lambda ent: ent.label_, doc.ents)))
+        unique_types = list(set(map(lambda span: span.label_, doc.spans["custom"])))
         if "NEGATION" in unique_types: unique_types.remove("NEGATION")
 
         # get negation pairs for ALL unique types
         rel_ops = [ "<", ">", "<<", ">>", ".", ";"]              
-        entity_pairs = EntityPairs(doc=doc, rel_ops=rel_ops, left_types=["NEGATION"], right_types=unique_types).pairs        
-        negated_entity_starts = list(map(lambda pair: pair.ent2.start, entity_pairs))
+        span_pairs = SpanPairs(doc=doc, rel_ops=rel_ops, left_types=["NEGATION"], right_types=unique_types).pairs        
+        negated_span_starts = list(map(lambda pair: pair.span2.start, span_pairs))
         
-        # add extension property to Span
-        Span.set_extension(name="is_negated", default=False, force=True)
         # flag entities as is_negated (TODO: take scores into account?)        
-        for ent in doc.ents:
-            if ent.start in negated_entity_starts:
-                ent._.is_negated = True
+        for span in doc.spans["custom"]:
+            if span.start in negated_span_starts:
+                span._.is_negated = True
            
         return doc
 
@@ -96,32 +98,13 @@ class NegationRuler(EntityRuler):
 def create_negation_ruler(nlp: Language, name: str = "negation_ruler", patterns: list=[]) -> NegationRuler:
     return NegationRuler(nlp, name, patterns)
 
-'''
-@Language.factory("negation_ruler", default_config={"patterns": []})
-def create_negation_ruler(nlp: Language, name: str="negation_ruler", patterns: list=[]) -> EntityRuler:
-    normalized_patterns = normalize_patterns(
-        nlp=nlp, 
-        patterns=patterns,
-        default_label="NEGATION",
-        lemmatize=False,
-        min_term_length=3
-    )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
- '''   
 
 @English.factory("negation_ruler")
-def create_negation_ruler_en(nlp: Language, name: str = "negation_ruler") -> EntityRuler:
+def create_negation_ruler_en(nlp: Language, name: str = "negation_ruler") -> NegationRuler:
     return create_negation_ruler(nlp, name, patterns_en_NEGATION)
 
 '''
+# patterns for other languages not yet implemented
 @Spanish.factory("negation_ruler")
 def create_negation_ruler_es(nlp: Language, name: str = "negation_ruler") -> EntityRuler:
     return create_negation_ruler(nlp, name, patterns_es_NEGATION)
@@ -177,5 +160,5 @@ if __name__ == "__main__":
         doc = nlp(text)
         
         print("Tokens:\n" + DocSummary(doc).tokens("text"))
-        print("Entities:\n" + DocSummary(doc).entities("text"))
+        print("Spans:\n" + DocSummary(doc).spans("text"))
 

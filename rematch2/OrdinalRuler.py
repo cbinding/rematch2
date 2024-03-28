@@ -15,11 +15,12 @@ History :
 03/08/2022 CFB Initially created script
 27/10/2023 CFB type hints added for function signatures
 16/02/2024 CFB remove BaseRuler inheritance, use EntityRuler directly
+28/03/2024 CFB base on SpanRuler instead of EntityRuler
 =============================================================================
 """
 # Third party imports
 import spacy
-from spacy.pipeline import EntityRuler
+from spacy.pipeline import SpanRuler
 
 from spacy.language import Language
 #from spacy.lang.cs import Czech #doesn't exist yet..
@@ -46,7 +47,7 @@ else:
 
 
 @Language.factory("ordinal_ruler", default_config={"patterns": []})
-def create_ordinal_ruler(nlp: Language, name: str="ordinal_ruler", patterns: list=[]) -> EntityRuler:
+def create_ordinal_ruler(nlp: Language, name: str="ordinal_ruler", patterns: list=[]) -> SpanRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns,
@@ -54,61 +55,63 @@ def create_ordinal_ruler(nlp: Language, name: str="ordinal_ruler", patterns: lis
         lemmatize=False,
         min_term_length=2
     )
-    #print(normalized_patterns)
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
+
+    ruler = SpanRuler(
+        nlp=nlp,        
+        name=name,
+        spans_key="custom",
         phrase_matcher_attr="LOWER",
         validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+        overwrite=False
+    )  
+      
+    ruler.add_patterns(normalized_patterns)
+    return ruler 
 
 
 @German.factory("ordinal_ruler")
-def create_ordinal_ruler_de(nlp: Language, name: str = "ordinal_ruler") -> EntityRuler:
+def create_ordinal_ruler_de(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
     return create_ordinal_ruler(nlp, name, patterns_de_ORDINAL)
 
 
 @English.factory("ordinal_ruler")
-def create_ordinal_ruler_en(nlp: Language, name: str = "ordinal_ruler") -> EntityRuler:
+def create_ordinal_ruler_en(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
     return create_ordinal_ruler(nlp, name, patterns_en_ORDINAL)
 
 
 @Spanish.factory("ordinal_ruler")
-def create_ordinal_ruler_es(nlp: Language, name: str = "ordinal_ruler") -> EntityRuler:
+def create_ordinal_ruler_es(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
     return create_ordinal_ruler(nlp, name, patterns_es_ORDINAL)
 
 
 @French.factory("ordinal_ruler")
-def create_ordinal_ruler_fr(nlp: Language, name: str = "ordinal_ruler") -> EntityRuler:
+def create_ordinal_ruler_fr(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
     return create_ordinal_ruler(nlp, name, patterns_fr_ORDINAL)
 
 
 @Italian.factory("ordinal_ruler")
-def create_ordinal_ruler_it(nlp: Language, name: str = "ordinal_ruler") -> EntityRuler:
+def create_ordinal_ruler_it(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
     return create_ordinal_ruler(nlp, name, patterns_it_ORDINAL)
 
 
 @Dutch.factory("ordinal_ruler")
-def create_ordinal_ruler_nl(nlp: Language, name: str = "ordinal_ruler") -> EntityRuler:
+def create_ordinal_ruler_nl(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
     return create_ordinal_ruler(nlp, name, patterns_nl_ORDINAL)
 
 
 @Norwegian.factory("ordinal_ruler")
-def create_ordinal_ruler_no(nlp: Language, name: str = "ordinal_ruler") -> EntityRuler:
+def create_ordinal_ruler_no(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
     return create_ordinal_ruler(nlp, name, patterns_no_ORDINAL)
 
 
 @Swedish.factory("ordinal_ruler")
-def create_ordinal_ruler_sv(nlp: Language, name: str = "ordinal_ruler") -> EntityRuler:
+def create_ordinal_ruler_sv(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
     return create_ordinal_ruler(nlp, name, patterns_sv_ORDINAL)
 
 
 # Polish as temp experimental substitute until Czech is available
 @Polish.factory("ordinal_ruler")
-def create_ordinal_ruler_cs(nlp: Language, name: str = "ordinal_ruler") -> EntityRuler:
+def create_ordinal_ruler_cs(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
     return create_ordinal_ruler(nlp, name, patterns_cs_ORDINAL)
 
 
@@ -138,5 +141,5 @@ if __name__ == "__main__":
 
         print("Tokens:\n" + DocSummary(doc).tokens("text"))
         print("Entities:\n" + DocSummary(doc).entities("text"))
-
-        print("Entities:\n" + DocSummary(doc).entities("html"))
+        print("Spanss:\n" + DocSummary(doc).spans("text"))
+        #print("Entities:\n" + DocSummary(doc).entities("html"))

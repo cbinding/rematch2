@@ -1,6 +1,7 @@
 import spacy
 import json
 from spacy.language import Language
+from spacy.tokens import Token
 
 # get suitable spaCy NLP pipeline for given ISO639-1 (2-char) language code
 def get_pipeline_for_language(language: str="") -> Language:
@@ -49,6 +50,14 @@ def _get_patterns_from_json_file(file_path: str) -> list:
 
     return patterns
 
+# determine whether a token is within a previously labelled span
+# used for extension functions
+def is_token_within_labelled_span(tok: Token, label: str="DATEPREFIX", spans_key: str="custom"):
+    # list any previously identified spans with this label in the document
+    spans = list(filter(lambda span: span.label_ == label, tok.doc.spans[spans_key]))
+    # is this token inside any of them?
+    return any(span.start <= tok.i and span.end >= tok.i for span in spans) 
+
 
 # normalize input patterns with Language pipeline
 # as used for custom rulers, for consistency
@@ -95,7 +104,7 @@ def normalize_patterns(
                     continue
 
                 # first tokenize the phrase
-                doc = nlp(clean_phrase)
+                doc = nlp(clean_phrase.lower())
                 phrase_length = len(doc)
                     
                 # build a new token pattern for this phrase

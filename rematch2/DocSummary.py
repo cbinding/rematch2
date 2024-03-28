@@ -6,11 +6,11 @@ Classes   : DocSummary
 Project   : Any
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
-Summary   : Wrapper to summarise spaCy Doc entities, tokens & entity pairs 
-            in various output formats. use to improve consistency in output
+Summary   : Wrapper to summarise spaCy Doc spans, tokens & span pairs in
+            various output formats. use to improve consistency in output
             TODO: to replace code in find_pairs.py & EntityPairs.py
 Imports   : escape, DataFrame, Doc
-Example   : as_html = DocSummary(doc).entities("html")
+Example   : as_html = DocSummary(doc).spans("html")
 License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
@@ -26,10 +26,10 @@ from spacy import displacy
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
-    from EntityPairs import EntityPairs
+    from SpanPairs import SpanPairs
 else:
     # uses current package visibility
-    from .EntityPairs import EntityPairs
+    from .SpanPairs import SpanPairs
 
 class DocSummary:
 
@@ -47,43 +47,43 @@ class DocSummary:
 
     def doctext(self, format: str="text") -> str: 
         match format.strip().lower():  
-            case "html": return self._doctext_to_html(self._doc)      
+            case "html": return self._doctext_to_html(self._doc)
             case _: return self._doc.text
 
     #sentences?
 
-    def entities(self, format: str="text") -> str|list:
-        ents = self._doc.ents
+    def spans(self, format: str="text") -> str|list:
+        spans = self._doc.spans["custom"]
         match format.strip().lower():
-            case "csv": return self._entities_to_csv(ents)
-            case "html": return self._entities_to_html(ents)
-            case "htmll": return self._entities_to_html_list(ents)
-            case "json": return self._entities_to_json(ents)
-            case "text": return self._entities_to_text(ents)
-            case _: return ents
+            case "csv": return self._spans_to_csv(spans)
+            case "html": return self._spans_to_html(spans)
+            case "htmll": return self._spans_to_html_list(spans)
+            case "json": return self._spans_to_json(spans)
+            case "text": return self._spans_to_text(spans)
+            case _: return spans
 
 
-    def entpairs(self, format: str="text", left_types: list=[], right_types: list=[], rel_ops: list=[]) -> str|list:
-        pairs = EntityPairs(doc=self._doc, rel_ops=rel_ops, left_types=left_types, right_types=right_types).pairs
+    def spanpairs(self, format: str="text", left_types: list=[], right_types: list=[], rel_ops: list=[]) -> str|list:
+        pairs = SpanPairs(doc=self._doc, rel_ops=rel_ops, left_types=left_types, right_types=right_types).pairs
         match format.strip().lower():
-            case "csv": return self._entpairs_to_csv(pairs)
-            case "html": return self._entpairs_to_html(pairs)   # render as a table
-            case "htmll": return self._entpairs_to_html_list(pairs) # render as a list
-            case "htmlc": return self._entpairs_to_html_custom(pairs) # rendering from find_pairs.py
-            case "json": return self._entpairs_to_json(pairs)
-            case "text": return self._entpairs_to_text(pairs)
+            case "csv": return self._spanpairs_to_csv(pairs)
+            case "html": return self._spanpairs_to_html(pairs)   # render as a table
+            case "htmll": return self._spanpairs_to_html_list(pairs) # render as a list
+            case "htmlc": return self._spanpairs_to_html_custom(pairs) # rendering from find_pairs.py
+            case "json": return self._spanpairs_to_json(pairs)
+            case "text": return self._spanpairs_to_text(pairs)
             case _: return pairs
 
-
-    def entcounts(self, format: str="text") -> str|list:
-        counts = self._get_entity_counts_by_id(self._doc.ents)
+    
+    def spancounts(self, format: str="text") -> str|list:
+        counts = self._get_span_counts_by_id(self._doc.spans["custom"])
         match format.strip().lower():
-            case "csv": return self._entcounts_to_csv(counts)
-            case "html": return self._entcounts_to_html(counts) # render as a table
-            case "htmll": return self._entcounts_to_html_list(counts) # render as a list
-            case "htmlc": return self._entcounts_to_html_custom(counts) # rendering from find_pairs.py
-            case "json": return self._entcounts_to_json(counts)
-            case "text": return self._entcounts_to_text(counts)
+            case "csv": return self._spancounts_to_csv(counts)
+            case "html": return self._spancounts_to_html(counts) # render as a table
+            case "htmll": return self._spancounts_to_html_list(counts) # render as a list
+            case "htmlc": return self._spancounts_to_html_custom(counts) # rendering from find_pairs.py
+            case "json": return self._spancounts_to_json(counts)
+            case "text": return self._spancounts_to_text(counts)
             case _: return counts
 
 
@@ -101,8 +101,11 @@ class DocSummary:
     @staticmethod
     def _doctext_to_html(doc: Doc, options=None) -> str:
         opts = { 
-            "ents": None, # display all
+            "spans_key": "subset",
             "colors": { 
+                #"DATEPREFIX": "lightgray",
+                #"DATESUFFIX": "lightgray",
+                #"ORDINAL": "lightgray",
                 "NEGATION": "lightgray",
                 "PERIOD": "yellow", 
                 "YEARSPAN": "moccasin", 
@@ -113,43 +116,50 @@ class DocSummary:
                 "MATERIAL": "antiquewhite",
                 "EVENTTYPE": "coral"
             } 
-        } if options == None else options        
-        return displacy.render(doc, style="ent", minify=True, options=opts) 
+        } if options == None else options 
+
+        # create temporary subset as options don't allow us to specify which spans to show/exclude
+        def to_display(span): return span.label_ not in ["DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "ORDINAL"]
+        doc.spans["subset"] = list(filter(to_display, doc.spans["custom"]))         
+        #return displacy.render(doc, style="ent", minify=True, options=opts) 
+        html = displacy.render(doc, style="span", page=False, minify=False, jupyter=False, options=opts) 
+        del doc.spans["subset"]
+        return html
    
 
     @staticmethod
-    def _entpairs_to_df(pairs: list = []) -> DataFrame:
+    def _spanpairs_to_df(pairs: list = []) -> DataFrame:
         return DataFrame([{
-            "ent1_id": pair.ent1.id_,
-            "ent1_type": pair.ent1.label_,
-            "ent1_text": pair.ent1.text,
+            "span1_id": pair.span1.id_,
+            "span1_type": pair.span1.label_,
+            "span1_text": pair.span1.text,
             "rel_op": pair.rel_op,
-            "ent2_id": pair.ent2.id_,
-            "ent2_type": pair.ent2.label_,
-            "ent2_text": pair.ent2.text,
+            "span2_id": pair.span2.id_,
+            "span2_type": pair.span2.label_,
+            "span2_text": pair.span2.text,
             "score": pair.score
         } for pair in pairs])
         
 
     @staticmethod
-    def _entpairs_to_csv(pairs: list = [], sep=",") -> str:
-        df = DocSummary._entpairs_to_df(pairs)
+    def _spanpairs_to_csv(pairs: list = [], sep=",") -> str:
+        df = DocSummary._spanpairs_to_df(pairs)
         return df.to_csv(sep=sep)
 
 
     @staticmethod
-    def _entpairs_to_html(pairs: list = []) -> str:
-        df = DocSummary._entpairs_to_df(pairs)
+    def _spanpairs_to_html(pairs: list = []) -> str:
+        df = DocSummary._spanpairs_to_df(pairs)
         return(df.to_html(index=False, border=0)) # renders html table
 
 
     @staticmethod
-    def _entpairs_to_htmll(pairs: list = []) -> str:
+    def _spanpairs_to_htmll(pairs: list = []) -> str:
         pass
 
     # custom table render from find_pairs.py 
     @staticmethod
-    def _entpairs_to_html_custom(pairs: list = []) -> str:
+    def _spanpairs_to_html_custom(pairs: list = []) -> str:
         html = []
         if len(pairs) == 0:
             html.append("<p>NONE FOUND</p>")
@@ -158,18 +168,18 @@ class DocSummary:
             for pair in pairs:
                 html.append("<tr>")
                 html.append("<td style='text-align:right; vertical-align: middle;'>")
-                html.append(f"<div class='entity {escape(pair.ent1.label_.lower())}'>")
-                if(pair.ent1.ent_id_.startswith("http")):
-                    html.append(f"<a href='{pair.ent1.ent_id_}'>{escape(pair.ent1.text)}</a>")
+                html.append(f"<div class='entity {escape(pair.span1.label_.lower())}'>")
+                if(pair.span1.id_.startswith("http")):
+                    html.append(f"<a href='{pair.span1.id_}'>{escape(pair.span1.text)}</a>")
                 else:
-                    html.append(f"{escape(pair.ent1.text)}")
+                    html.append(f"{escape(pair.span1.text)}")
                 html.append("</div></td>")                    
                 html.append(f"<td style='text-align:left; vertical-align: middle'>")
-                html.append(f"<div class='entity {escape(pair.ent2.label_.lower())}'>")
-                if(pair.ent2.ent_id_.startswith("http")):
-                    html.append(f"<a href='{pair.ent2.ent_id_}'>{escape(pair.ent2.text)}</a>")
+                html.append(f"<div class='entity {escape(pair.span2.label_.lower())}'>")
+                if(pair.span2.id_.startswith("http")):
+                    html.append(f"<a href='{pair.span2.id_}'>{escape(pair.span2.text)}</a>")
                 else:
-                    html.append(f"{escape(pair.ent2.text)}")
+                    html.append(f"{escape(pair.span2.text)}")
                 html.append("</div></td>")
                 html.append(f"<td>({pair.score})</td>")
                 html.append("</tr>")
@@ -178,20 +188,20 @@ class DocSummary:
 
 
     @staticmethod
-    def _entpairs_to_json(pairs: list = []) -> str:
-        df = DocSummary._entpairs_to_df(pairs)
+    def _spanpairs_to_json(pairs: list = []) -> str:
+        df = DocSummary._spanpairs_to_df(pairs)
         return df.to_json(orient="records")
 
 
     @staticmethod
-    def _entpairs_to_text(pairs: list = []) -> str:
-        df = DocSummary._entpairs_to_df(pairs)
+    def _spanpairs_to_text(pairs: list = []) -> str:
+        df = DocSummary._spanpairs_to_df(pairs)
         pd.set_option('display.max_colwidth', None)
         return(df.to_string(index=False))
 
 
     @staticmethod
-    def _entcounts_to_df(counts: list = []) -> DataFrame: 
+    def _spancounts_to_df(counts: list = []) -> DataFrame: 
         return DataFrame([{
             "id": item["id"],
             "type": item["type"],
@@ -201,20 +211,20 @@ class DocSummary:
 
 
     @staticmethod
-    def _entcounts_to_csv(counts: list = [], sep=",") -> str:
-        df = DocSummary._entcounts_to_df(counts)
+    def _spancounts_to_csv(counts: list = [], sep=",") -> str:
+        df = DocSummary._spancounts_to_df(counts)
         return df.to_csv(sep=sep)
 
 
     @staticmethod
-    def _entcounts_to_html(counts: list = []) -> str:
-        df = DocSummary._entcounts_to_df(counts)
+    def _spancounts_to_html(counts: list = []) -> str:
+        df = DocSummary._spancounts_to_df(counts)
         return(df.to_html(index=False, border=0)) # renders html table
 
     # table rendering from find_pairs.py
     @staticmethod
-    def _entcounts_to_html_custom(counts: list = []) -> str:
-        html = []
+    def _spancounts_to_html_custom(counts: list = []) -> str:
+        html = []        
         if len(counts) == 0:
             html.append("<p>NONE FOUND</p>")
         else:
@@ -236,25 +246,25 @@ class DocSummary:
 
 
     @staticmethod
-    def _entcounts_to_htmll(counts: list = []) -> str:
+    def _spancounts_to_htmll(counts: list = []) -> str:
         pass
 
 
     @staticmethod
-    def _entcounts_to_json(counts: list = []) -> str:
-        df = DocSummary._entcounts_to_df(counts)
+    def _spancounts_to_json(counts: list = []) -> str:
+        df = DocSummary._spancounts_to_df(counts)
         return df.to_json(orient="records")
 
 
     @staticmethod
-    def _entcounts_to_text(counts: list = []) -> str:
-        df = DocSummary._entcounts_to_df(counts)
+    def _spancounts_to_text(counts: list = []) -> str:
+        df = DocSummary._spancounts_to_df(counts)
         pd.set_option('display.max_colwidth', None)
         return(df.to_string(index=False))
 
 
     @staticmethod
-    def _entcounts_to_text_custom(counts: list = []) -> str:
+    def _spancounts_to_text_custom(counts: list = []) -> str:
         lines = []
         for item in counts:                    
             lines.append("[{type}] {id:<60} {text:>20} ({count})".format(
@@ -268,41 +278,41 @@ class DocSummary:
     
 
     @staticmethod
-    def _entities_to_df(ents: list = []) -> DataFrame:    
+    def _spans_to_df(spans: list = []) -> DataFrame:    
         return DataFrame([{
-            "start": ent.start_char + 1,
-            "end": ent.end_char,
-            "type": ent.label_,
-            "id": ent.ent_id_,
-            "text": ent.text
-            } for ent in ents]) 
+            "start": span.start_char + 1,
+            "end": span.end_char,
+            "type": span.label_,
+            "id": span.ent_id_,
+            "text": span.text
+            } for span in spans]) 
 
 
     @staticmethod
-    def _entities_to_csv(ents: list = [], sep=",") -> str:
-        df = DocSummary._entities_to_df(ents)
+    def _spans_to_csv(ents: list = [], sep=",") -> str:
+        df = DocSummary._spans_to_df(spans)
         return df.to_csv(sep=sep)
 
 
     @staticmethod
-    def _entities_to_html(ents: list = []) -> str:
-        df = DocSummary._entities_to_df(ents)
+    def _spans_to_html(spans: list = []) -> str:
+        df = DocSummary._spans_to_df(ents)
         return(df.to_html(index=False, border=0)) # renders html table
 
 
     @staticmethod
-    def _entities_to_html_list(ents: list = []) -> str:
+    def _spans_to_html_list(spans: list = []) -> str:
         html = []
         html.append("<details>")
-        html.append(f"<summary>Entities ({len(entities)})</summary>")
+        html.append(f"<summary>Entities ({len(spans)})</summary>")
         html.append("<ul class='entities'>") 
-        for ent in ents:
+        for span in spans:
             html.append(f"<li class='entity {type.lower()}'>({start}&#8594;{end}) [{type}] {id} \"{text}\"</li>".format(
-                start = ent.start_char + 1,
-                end = ent.end_char,
-                type = ent.label_,
-                id = ent.ent_id_,
-                text = ent.text
+                start = span.start_char + 1,
+                end = span.end_char,
+                type = span.label_,
+                id = span.ent_id_,
+                text = span.text
             ))        
         html.append("</ul>") 
         html.append("</details>")
@@ -310,14 +320,14 @@ class DocSummary:
 
 
     @staticmethod
-    def _entities_to_json(ents: list = []) -> str:
-        df = DocSummary._entities_to_df(ents)
+    def _spans_to_json(spans: list = []) -> str:
+        df = DocSummary._spans_to_df(spans)
         return df.to_json(orient="records")
 
 
     @staticmethod
-    def _entities_to_text(ents: list = []) -> str:
-        df = DocSummary._entities_to_df(ents)
+    def _spans_to_text(spans: list = []) -> str:
+        df = DocSummary._spans_to_df(spans)
         pd.set_option('display.max_colwidth', None)
         return(df.to_string(index=False))
 
@@ -329,7 +339,8 @@ class DocSummary:
             "start": tok.idx + 1,
             "end": tok.idx + len(tok.text),
             "pos": tok.pos_,
-            "text": tok.text
+            "text": tok.text,
+            "lemma": tok.lemma_,
             } for tok in toks])  
     
 
@@ -348,8 +359,6 @@ class DocSummary:
     @staticmethod
     def _tokens_to_html_list(toks: list = []) -> str:
         html = []
-        html.append("<details>")
-        html.append(f"<summary>Tokens ({len(toks)})</summary>")
         html.append("<ul class='tokens'>")
         for tok in toks:
             html.append("<li class='token'>[{index}] ({start}&#8594;{end}) {pos:<4} \"{text}\"</li>".format(
@@ -360,7 +369,6 @@ class DocSummary:
                 text = escape(tok.text)                
             ))
         html.append("</ul>")
-        html.append("</details>")
         return "\n".join(html)   
 
 
@@ -389,31 +397,33 @@ class DocSummary:
         return "\n".join(lines)
 
 
-    # count entities by id, return list [{id, type, text, count}, {id, type, text, count}, ...] 
+    # count spans by id, return list [{id, type, text, count}, {id, type, text, count}, ...] 
     # returned in descending count order - note there is probably a more elegant way to do this 
     @staticmethod   
-    def _get_entity_counts_by_id(ents: list = []) -> list:
+    def _get_span_counts_by_id(spans: list = []) -> list:
         counts = {}
 
-        for ent in ents:
-            # don't include NEGATION in summary counts?
-            if ent.label_ == "NEGATION":
+        for span in spans:
+            # don't include these in summary counts?
+            if span.label_ in ["NEGATION", "DATEPREFIX", "DATESEPARATOR", "DATESUFFIX", "ORDINAL"]:
                 continue
 
             # get suitable identifier to aggregate counts
             id=""
-            if ent.ent_id_:
-                id = ent.ent_id_
-            elif ent.lemma_:
-                id = ent.lemma_
-            elif ent.text:
-                id = ent.text
+            if span.id_:
+                id = span.id_
+            elif span.ent_id_:
+                id = span.ent_id_
+            elif span.lemma_:
+                id = span.lemma_
+            elif span.text:
+                id = span.text
             else:
                 id = "other"
             
             # create a new record if not encountered before, or increment the count
             if id not in counts:
-                counts[id] = { "id": id, "type": ent.label_, "text": ent.lemma_, "count": 1 } 
+                counts[id] = { "id": id, "type": span.label_, "text": span.lemma_, "count": 1 } 
             else:
                 counts[id]["count"] += 1            
         
@@ -436,17 +446,17 @@ class DocSummary:
                 "label": None
             }
 
-        def ent_for_render(ent):
+        def span_for_render(span):
             return {
-                "index": ent.start,
-                "text": ent.text,
-                "label": ent.label_
+                "index": span.start,
+                "text": span.text,
+                "label": span.label_
             }
 
-        toks_outside_entities = list(filter(lambda t: t.ent_iob_ not in ['B', 'I'], doc)) 
-        toks_for_render = list(map(tok_for_render, toks_outside_entities))
-        ents_for_render = list(map(ent_for_render, doc.ents))
-        items_for_render = sorted(toks_for_render + ents_for_render, key=lambda x: x.get("index", 0))
+        toks_outside_spans = list(filter(lambda t: t.ent_iob_ not in ['B', 'I'], doc)) 
+        toks_for_render = list(map(tok_for_render, toks_outside_spans))
+        spans_for_render = list(map(span_for_render, doc.spans["custom"]))
+        items_for_render = sorted(toks_for_render + spans_for_render, key=lambda x: x.get("index", 0))
 
         html = "<div>"
         for item in items_for_render:

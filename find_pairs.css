@@ -7,10 +7,10 @@ a:hover {
 }
 
 .entity {
-    padding: 0.35em 0.35em;
+    padding: 0.2em 0.2em;
     margin: 0 0.2em;
     line-height: 1;
-    border-radius: 0.35em;
+    border-radius: 0.2em;
     vertical-align: middle; 
     border: 2px solid gray;   
 }

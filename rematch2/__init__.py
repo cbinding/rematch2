@@ -13,8 +13,8 @@ from .TemporalAnnotator import TemporalAnnotator
 from .VocabularyAnnotator import VocabularyAnnotator
 from .VocabularyEnum import VocabularyEnum
 from .VocabularyRuler import *
-from .EntityPair import EntityPair
-from .EntityPairs import EntityPairs
+from .SpanPair import SpanPair
+from .SpanPairs import SpanPairs
 from .DocSummary import DocSummary
 from .Util import *
 #from .LogFile import LogFile # not currently used

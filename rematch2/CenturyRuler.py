@@ -17,6 +17,7 @@ History :
 03/08/2022 CFB Initially created script
 27/10/2023 CFB type hints added for function signatures
 16/02/2024 CFB remove BaseRuler inheritance, use EntityRuler directly
+28/03/2024 CFB base on SpanRuler instead of EntityRuler
 =============================================================================
 """
 #from collections.abc import MutableSequence
@@ -32,7 +33,7 @@ from spacy.lang.en import English
 from spacy.lang.de import German
 from spacy.lang.pl import Polish # use as experimental substitute for Czech as it doesn't exist yet..
 from spacy.tokens import Doc
-from spacy.pipeline import EntityRuler
+from spacy.pipeline import SpanRuler
 from spacy.language import Language
 import os
 import sys
@@ -64,7 +65,7 @@ else:
 
 
 # CenturyRuler is a specialized EntityRuler
-class CenturyRuler(EntityRuler):
+class CenturyRuler(SpanRuler):
 
     def __init__(self, nlp: Language, name: str="century_ruler", patterns: list=[]) -> None:
         normalized_patterns = normalize_patterns(
@@ -74,6 +75,7 @@ class CenturyRuler(EntityRuler):
             lemmatize=False,
             min_term_length=2
         )
+
         for name in [
             "ordinal_ruler",
             "monthname_ruler",
@@ -85,14 +87,14 @@ class CenturyRuler(EntityRuler):
             if not name in nlp.pipe_names:
                 nlp.add_pipe(name, last=True)
 
-        EntityRuler.__init__(
+        SpanRuler.__init__(
             self,
-            nlp=nlp,
-            name=name,            
+            nlp=nlp,        
+            name=name,
+            spans_key="custom",
             phrase_matcher_attr="LOWER",
             validate=False,
-            overwrite_ents=True,
-            ent_id_sep="||"
+            overwrite=False
         )
         
         #print(nlp.pipe_names)
@@ -104,17 +106,18 @@ class CenturyRuler(EntityRuler):
     Note see https://github.com/explosion/spaCy/discussions/6309
     "The EntityRuler is a wrapper around the Matcher and PhraseMatcher, so if you need more control of how overlapping matches are managed, 
     you may want to use the Matcher directly instead of using the EntityRuler. 
-    As a starting point, you could have a look at EntityRuler.__call__ to see how entities are matched and filtered."
+    As a starting point, you could have a look at EntityRuler.__call__ to see how entities are matched and filtered." CB - also use of SpanGroup??
     []...] If you need to store overlapping spans, you can use custom Doc or Token extensions, see: https://spacy.io/usage/processing-pipelines#custom-components-attributes
+    CB - also use of SpanGroup for overlapping spans??
     """
 
     def __call__(self, doc: Doc) -> Doc:
-        for ent in doc.ents:
-            print(f"{ent.start_char}, {ent.end_char - 1}, {ent.ent_id_}, {ent.text}, {ent.label_}")
-        doc = EntityRuler.__call__(self, doc)
-        filtered = [ent for ent in doc.ents if ent.label_ not in [
-            "ORDINAL", "DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "MONTHNAME", "SEASONNAME"]]
-        doc.ents = filtered       
+        for span in doc.spans:
+            print(f"{span.start_char}, {span.end_char - 1}, {span.ent_id_}, {span.text}, {span.label_}")
+        doc = SpanRuler.__call__(self, doc)
+        #filtered = [span for span in doc.spans if span.label_ not in [
+            #"ORDINAL", "DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "MONTHNAME", "SEASONNAME"]]
+        #doc.ents = filtered       
         return doc
 
 
@@ -198,6 +201,8 @@ if __name__ == "__main__":
         #print(nlp.pipe_names)
 
         print("Tokens:\n" + DocSummary(doc).tokens("text"))
-        print("Entities:\n" + DocSummary(doc).entities("text"))
+        #print("Entities:\n" + DocSummary(doc).entities("text"))
+        print("Spans:\n" + DocSummary(doc).spans("text"))
+        #print([(span.text, span.label_) for span in doc.spans["custom"]])
 
         

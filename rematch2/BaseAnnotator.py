@@ -42,7 +42,7 @@ class BaseAnnotator():
 
         # append any additional patterns passed in (for local customisation)
         if (len(patterns or []) > 0):
-            ruler = self._pipeline.add_pipe("entity_ruler", last=True)
+            ruler = self._pipeline.add_pipe("span_ruler", last=True)
             ruler.initialize(lambda: [], nlp=self._pipeline, patterns=patterns)
 
 
@@ -81,15 +81,15 @@ class BaseAnnotator():
             #case "ttl":
                 #output = self.__doc_to_ttl(doc)
             case "json":
-                output = DocSummary(doc).entities(format="json") #self.__doc_to_json(doc)
+                output = DocSummary(doc).spans(format="json") #self.__doc_to_json(doc)
             case "text":
-                output = DocSummary(doc).entities(format="text")
+                output = DocSummary(doc).spans(format="text")
             #case "dataframe":
                 #output = DocSummary(doc).entities("html") #self.__doc_to_dataframe(doc)
             case "csv":
-                output = DocSummary(doc).entities(format="csv") #self.__doc_to_csv(doc)
+                output = DocSummary(doc).spans(format="csv") #self.__doc_to_csv(doc)
             case _:
-                output = DocSummary(doc).entities()
+                output = DocSummary(doc).spans()
 
         return output
 

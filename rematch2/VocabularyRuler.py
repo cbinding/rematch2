@@ -13,11 +13,13 @@ License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History :   
 10/10/2023 CFB Added language factory function
 27/10/2023 CFB type hints added for function signatures
+28/03/2024 CFB base on SpanRuler instead of EntityRuler
 =============================================================================
 """
 import spacy
 import json
 from spacy.pipeline import EntityRuler
+from spacy.pipeline import SpanRuler
 from spacy.tokens import Doc
 from spacy.language import Language
 from pprint import pprint
@@ -47,154 +49,111 @@ def patterns_from_json_file(file_name: str) -> list:
         return patterns
 
 
+def create_vocabulary_ruler(nlp: Language, name: str = "vocabulary_ruler", patterns: list = []) -> SpanRuler:
+    ruler = SpanRuler(
+        nlp=nlp,        
+        name=name,
+        spans_key="custom",
+        phrase_matcher_attr="LOWER",
+        validate=False,
+        overwrite=False
+    )    
+    ruler.add_patterns(patterns)
+    return ruler 
+
+
 @Language.factory(name="amcr_ruler")
-def create_amcr_ruler(nlp: Language, name: str = "amcr_ruler") -> EntityRuler:
+def create_amcr_ruler(nlp: Language, name: str = "amcr_ruler") -> SpanRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_cs_AMCR_20221208.json"),
         default_label="AMCR"
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler    
     
 
 @Language.factory(name="aat_activities_ruler")
-def create_aat_activities_ruler(nlp: Language, name: str = "aat_activities_ruler") -> EntityRuler:
+def create_aat_activities_ruler(nlp: Language, name: str = "aat_activities_ruler") -> SpanRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_AAT_ACTIVITIES_20231018.json"),
         default_label="ACTIVITY"
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
 
 
 @Language.factory("aat_agents_ruler")
-def create_aat_agents_ruler(nlp: Language, name: str="aat_agents_ruler") -> EntityRuler:
+def create_aat_agents_ruler(nlp: Language, name: str="aat_agents_ruler") -> SpanRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_AAT_AGENTS_20231018.json"),
         pos=["NOUN", "PROPN"],
         default_label="AGENT",
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
     
 
 @Language.factory("aat_associated_concepts_ruler")
-def create_aat_associated_concepts_ruler(nlp: Language, name: str="aat_associated_concepts_ruler") -> EntityRuler:    
+def create_aat_associated_concepts_ruler(nlp: Language, name: str="aat_associated_concepts_ruler") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_AAT_ASSOCIATED_CONCEPTS_20231018.json"),
         default_label="ASSOCIATED_CONCEPT",
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
 
 
 @Language.factory("aat_materials_ruler")
-def create_aat_materials_ruler(nlp: Language, name: str="aat_materials_ruler") -> EntityRuler:    
+def create_aat_materials_ruler(nlp: Language, name: str="aat_materials_ruler") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_AAT_MATERIALS_20231018.json"),
         default_label="MATERIAL",
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
 
 
 @Language.factory("aat_objects_ruler")
-def create_aat_objects_ruler(nlp: Language, name: str="aat_objects_ruler") -> EntityRuler:
+def create_aat_objects_ruler(nlp: Language, name: str="aat_objects_ruler") -> SpanRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         pos=["NOUN", "PROPN"],
         patterns=patterns_from_json_file("patterns_en_AAT_OBJECTS_20231018.json"),
         default_label="OBJECT",
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
 
 
 @Language.factory("aat_physical_attributes_ruler")
-def create_aat_physical_attributes_ruler(nlp: Language, name: str="aat_physical_attributes_ruler") -> EntityRuler:    
+def create_aat_physical_attributes_ruler(nlp: Language, name: str="aat_physical_attributes_ruler") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_AAT_PHYSICAL_ATTRIBUTES_20231018.json"),
         default_label="PHYSICAL_ATTRIBUTE",
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
 
 
 @Language.factory("aat_styleperiods_ruler")
-def create_aat_styleperiods_ruler(nlp: Language, name: str="aat_styleperiods_ruler") -> EntityRuler:    
+def create_aat_styleperiods_ruler(nlp: Language, name: str="aat_styleperiods_ruler") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_AAT_STYLEPERIODS_20231018.json"),
         default_label="STYLEPERIOD",
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
 
 
-@Language.factory("fish_archobjects_ruler")
-def create_fish_archobjects_ruler(nlp: Language, name: str="fish_archobjects_ruler") -> EntityRuler:    
+@Language.factory("fish_archobjects_ruler_old")
+def create_fish_archobjects_ruler_old(nlp: Language, name: str="fish_archobjects_ruler_old") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         pos=["NOUN", "PROPN"],
@@ -202,127 +161,93 @@ def create_fish_archobjects_ruler(nlp: Language, name: str="fish_archobjects_rul
         patterns=patterns_from_json_file("patterns_en_FISH_ARCHOBJECTS_20210921.json"),
         default_label="OBJECT",
     )
-    return EntityRuler(
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
+
+
+@Language.factory("fish_archobjects_ruler")
+def create_fish_archobjects_ruler(nlp: Language, name: str="fish_archobjects_ruler") -> SpanRuler:    
+    normalized_patterns = normalize_patterns(
         nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=False
+        pos=["NOUN", "PROPN"],
+        min_lemmatize_length=3,
+        patterns=patterns_from_json_file("patterns_en_FISH_ARCHOBJECTS_20210921.json"),
+        default_label="OBJECT",
     )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
 
 
 @Language.factory("fish_archsciences_ruler")
-def create_fish_archsciences_ruler(nlp: Language, name: str="fish_archsciences_ruler") -> EntityRuler:    
+def create_fish_archsciences_ruler(nlp: Language, name: str="fish_archsciences_ruler") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_FISH_ARCHSCIENCES_20210921.json"),
         default_label="ARCHSCIENCE",
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
 
 
 @Language.factory("fish_building_materials_ruler")
-def create_fish_building_materials_ruler(nlp: Language, name: str="fish_building_materials_ruler") -> EntityRuler:    
+def create_fish_building_materials_ruler(nlp: Language, name: str="fish_building_materials_ruler") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_FISH_BUILDING_MATERIALS_20210921.json"),
         default_label="MATERIAL",
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
 
 
 @Language.factory("fish_components_ruler")
-def create_fish_components_ruler(nlp: Language, name: str="fish_components_ruler") -> EntityRuler:
+def create_fish_components_ruler(nlp: Language, name: str="fish_components_ruler") -> SpanRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_FISH_COMPONENTS_20210921.json"),
         pos=["NOUN", "PROPN"],
         default_label="OBJECT",
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
 
 
 @Language.factory("fish_event_types_ruler")
-def create_fish_event_types_ruler(nlp: Language, name: str="fish_event_types_ruler") -> EntityRuler:    
+def create_fish_event_types_ruler(nlp: Language, name: str="fish_event_types_ruler") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_FISH_EVENT_TYPES_20210921.json"),
         default_label="EVENT",
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
 
 
 @Language.factory("fish_evidence_ruler")
-def create_fish_evidence_ruler(nlp: Language, name: str="fish_evidence_ruler") -> EntityRuler:    
+def create_fish_evidence_ruler(nlp: Language, name: str="fish_evidence_ruler") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_FISH_EVIDENCE_20210921.json"),
         default_label="EVIDENCE",
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
 
 
 @Language.factory("fish_maritime_craft_ruler")
-def create_fish_maritime_craft_ruler(nlp: Language, name: str="fish_maritime_craft_ruler") -> EntityRuler:    
+def create_fish_maritime_craft_ruler(nlp: Language, name: str="fish_maritime_craft_ruler") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_FISH_MARITIME_CRAFT_20221104.json"),
         pos=["NOUN", "PROPN"],
         default_label="OBJECT",
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True
-    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
 
 
 @Language.factory("fish_monument_types_ruler")
-def create_fish_monument_types_ruler(nlp: Language, name: str="fish_monument_types_ruler") -> EntityRuler:
+def create_fish_monument_types_ruler(nlp: Language, name: str="fish_monument_types_ruler") -> SpanRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         min_lemmatize_length=3,
@@ -332,39 +257,24 @@ def create_fish_monument_types_ruler(nlp: Language, name: str="fish_monument_typ
     )    
 
     # temp diagnostics - write normalized_patterns to a file for review
-    with open("fish_monument_types_ruler_patterns.py", "w") as f:
+    '''with open("fish_monument_types_ruler_patterns.py", "w") as f:
         f.write("x = [\n")
         for pattern in normalized_patterns:
             f.write(f"{pattern},\n") 
-        f.write("]")   
-
-
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=False
-    )
+        f.write("]") '''  
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
 
 
 @Language.factory("fish_periods_ruler")
-def create_fish_periods_ruler(nlp: Language, name: str="fish_periods_ruler") -> EntityRuler:    
+def create_fish_periods_ruler(nlp: Language, name: str="fish_periods_ruler") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_FISH_PERIODS_20211011.json"),
         default_label="PERIOD",
     )
-    return EntityRuler(
-        nlp=nlp, 
-        name=name, 
-        patterns=normalized_patterns,
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite_ents=True,
-        ent_id_sep="||"
-    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
 
 
 # test the BaseRuler class
@@ -383,7 +293,9 @@ if __name__ == "__main__":
     en_test_text4 = '''
     in autumn 2008 a programme of archaeological excavation was undertaken  at titnore lane, goring-by-sea.  the excavation was conducted across the full area of the 2.2 hectare site.    a wide range of periods were represented on site, incorporating the mesolithic, neolithic, bronze age, iron age, romano-british, medieval, and later post-medeival activity. the features and finds assemblage associated with the mesolithic and neolithic were limited, representing only a periodic use of the site. the key feature associated with mid to late bronze age activity was a c.3.5m wide trackway identified as running north-south across the site. by the late bronze age/early iron age period the first evidence of settlement was identified, formed of a roundhouse, pits and a possible livestock corral. the mid to late iron age period saw a growth in settlement with several phases of roundhouse construction associated with boundary ditches, pitting, further possible corrals and  the creation of an artificial pond adjacent to the settlement. the settlement had disappeared by the 1st century ad replaced by a series of field boundaries and rubbish pits thought to part of the villa complex known immediately to the south of the site. romano-british activity did not survive beyond the early to mid 2nd century. a large enclosure and field boudary were found on site dated to the 12th to 14th century. post-medeival and modern activity were limited on site. overall, a high density of archaeologicaly significant features were identified during the course of the excavation from a wide range of periods.
     '''
-    
+    en_test_text5 = '''
+    During the burial ground survey, evidence of a late Roman fort was located near the earlier Neolithic flint knapping site. Fragments of a roofing nail were found.
+    '''
     # Czech test (using Polish spaCy language model as Czech not available)
     # https://digiarchiv.aiscr.cz/id/C-201806206A-K02
     cs_test_text1 = '''
@@ -450,7 +362,8 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     # nlp.add_pipe("fish_maritime_craft_ruler", last=True)
     # nlp.add_pipe("fish_periods_ruler", last=True)
 
-    doc = nlp(en_test_text3)
+    doc = nlp(en_test_text1)
     # explacy.print_parse_info(nlp, en_test_text.lower())
     print("Tokens:\n" + DocSummary(doc).tokens("text"))
     print("Entities:\n" + DocSummary(doc).entities("text"))
+    print("Spans:\n" + DocSummary(doc).spans("text"))
