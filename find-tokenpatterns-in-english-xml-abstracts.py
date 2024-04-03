@@ -42,7 +42,6 @@ def writeEntitiesToDelimitedFile(doc, targetFileNameWithPath="", delimiter="\t",
 def writeEntitiesToHtmlFile(doc, targetFileNameWithPath=""):
     options = {
         "ents": [
-            "CENTURY",
             "YEARSPAN",
             "PERIOD",
             "MONUMENT",
@@ -53,7 +52,6 @@ def writeEntitiesToHtmlFile(doc, targetFileNameWithPath=""):
             "EVENTTYPE"
         ],
         "colors": {
-            "CENTURY": "lightgreen",
             "YEARSPAN": "moccasin",
             "PERIOD": "yellow",
             "MONUMENT": "cyan",
@@ -74,7 +72,7 @@ def writeEntitiesToHtmlFile(doc, targetFileNameWithPath=""):
 def main(sourceFilePath):
     print(f"running main({sourceFilePath})")
     annotator = VocabularyAnnotator(
-        language="en", periodo_authority_id="p0kh9ds", entity_types=["OBJECT", "MONUMENT", "PERIOD"])
+        language="en", periodo_authority_id="p0kh9ds", entity_labels=["OBJECT", "MONUMENT", "PERIOD"])
 
     results = defaultdict(dict)
     sourceFileDirectory = os.path.dirname(sourceFilePath)
@@ -147,7 +145,7 @@ def main(sourceFilePath):
                 "text": ent.text,
                 "start": ent.start_char,
                 "end": ent.end_char,
-                "type": ent.label_
+                "label": ent.label_
             })
         results[identifier]["source"] = sourceFilePath
         results[identifier]["identifier"] = identifier

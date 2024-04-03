@@ -7,7 +7,7 @@ Contact :   ceri.binding@southwales.ac.uk
 Project :   
 Summary :   spaCy custom pipeline component (specialized SpanRuler)
             Language-sensitive component to identify negation phrases
-            in free text. type added will be "NEGATION"
+            in free text. span label added will be "NEGATION"
 Imports :   os, sys, spacy, Language, SpanRuler, Doc
 Example :   nlp.add_pipe("negation_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
@@ -76,13 +76,13 @@ class NegationRuler(SpanRuler):
         doc = SpanRuler.__call__(self, doc)
 
         # flag any negated entities
-        # get list of types of all entities in current doc (apart from NEGATION(!))
-        unique_types = list(set(map(lambda span: span.label_, doc.spans["custom"])))
-        if "NEGATION" in unique_types: unique_types.remove("NEGATION")
+        # get list of labels of all entities in current doc (apart from NEGATION(!))
+        unique_labels = list(set(map(lambda span: span.label_, doc.spans.get("custom",[]))))
+        if "NEGATION" in unique_labels: unique_labels.remove("NEGATION")
 
-        # get negation pairs for ALL unique types
+        # get negation pairs for ALL unique labels
         rel_ops = [ "<", ">", "<<", ">>", ".", ";"]              
-        span_pairs = SpanPairs(doc=doc, rel_ops=rel_ops, left_types=["NEGATION"], right_types=unique_types).pairs        
+        span_pairs = SpanPairs(doc=doc, rel_ops=rel_ops, left_labels=["NEGATION"], right_labels=unique_labels).pairs        
         negated_span_starts = list(map(lambda pair: pair.span2.start, span_pairs))
         
         # flag entities as is_negated (TODO: take scores into account?)        
@@ -106,37 +106,37 @@ def create_negation_ruler_en(nlp: Language, name: str = "negation_ruler") -> Neg
 '''
 # patterns for other languages not yet implemented
 @Spanish.factory("negation_ruler")
-def create_negation_ruler_es(nlp: Language, name: str = "negation_ruler") -> EntityRuler:
+def create_negation_ruler_es(nlp: Language, name: str = "negation_ruler") -> NegationRuler:
     return create_negation_ruler(nlp, name, patterns_es_NEGATION)
 
 
 @French.factory("negation_ruler")
-def create_negation_ruler_fr(nlp: Language, name: str = "negation_ruler") -> EntityRuler:
+def create_negation_ruler_fr(nlp: Language, name: str = "negation_ruler") -> NegationRuler:
     return create_negation_ruler(nlp, name, patterns_fr_NEGATION)
 
 
 @Italian.factory("negation_ruler")
-def create_negation_ruler_it(nlp: Language, name: str = "negation_ruler") -> EntityRuler:
+def create_negation_ruler_it(nlp: Language, name: str = "negation_ruler") -> NegationRuler:
     return create_negation_ruler(nlp, name, patterns_it_NEGATION)
 
 
 @Dutch.factory("negation_ruler")
-def create_negation_ruler_nl(nlp: Language, name: str = "negation_ruler") -> EntityRuler:
+def create_negation_ruler_nl(nlp: Language, name: str = "negation_ruler") -> NegationRuler:
     return create_negation_ruler(nlp, name, patterns_nl_NEGATION)
 
 
 @Norwegian.factory("negation_ruler")
-def create_negation_ruler_no(nlp: Language, name: str = "negation_ruler") -> EntityRuler:
+def create_negation_ruler_no(nlp: Language, name: str = "negation_ruler") -> NegationRuler:
     return create_negation_ruler(nlp, name, patterns_no_NEGATION)
 
 
 @Swedish.factory("negation_ruler")
-def create_negation_ruler_sv(nlp: Language, name: str = "negation_ruler") -> EntityRuler:
+def create_negation_ruler_sv(nlp: Language, name: str = "negation_ruler") -> NegationRuler:
     return create_negation_ruler(nlp, name, patterns_sv_NEGATION)
 
 # Polish as temp experimental substitute until Czech is available
 @Polish.factory("negation_ruler")
-def create_negation_ruler_cs(nlp: Language, name: str = "negation_ruler") -> EntityRuler:
+def create_negation_ruler_cs(nlp: Language, name: str = "negation_ruler") -> NegationRuler:
     return create_negation_ruler(nlp, name, patterns_cs_NEGATION)
 '''
 

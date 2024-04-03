@@ -5,8 +5,8 @@ Module  :   DateSuffixRuler.py
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
-Summary :   spaCy custom pipeline component (specialized EntityRuler)
-Imports :   os, sys, spacy, EntityRuler, Language
+Summary :   spaCy custom pipeline component (specialized SpanRuler)
+Imports :   os, sys, spacy, SpanRuler, Language
 Example :   
     nlp = spacy.load("en_core_web_sm", disable=['ner'])
     nlp.add_pipe("datesuffix_ruler", last=True)  

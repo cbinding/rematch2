@@ -6,10 +6,10 @@ Version :   20231027
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
-Summary :   spaCy custom pipeline component (specialized EntityRuler)
+Summary :   spaCy custom pipeline component (specialized SpanRuler)
             Language-sensitive component to identify and tag ordinal centuries
-            in free text. Entity type added will be "YEARSPAN"
-Imports :   Language, Doc
+            in free text. Span label will be "YEARSPAN"
+Imports :   spacy, Language, Doc, Token, SpanRuler
 Example :   nlp.add_pipe("yearspan_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
@@ -58,35 +58,31 @@ else:
     from .DocSummary import DocSummary
 
 
-# YearSpanRuler is a specialized EntityRuler
+# YearSpanRuler is a specialized SpanRuler
 class YearSpanRuler(SpanRuler):
 
     def __init__(self, nlp: Language, name: str="yearspan_ruler", patterns: list=[]) -> None:
-        
-        # setup token extensions for chained patterns to work
+        # setup token extensions for YearSpan patterns to work
         if not Token.has_extension("is_dateprefix"):
-            def is_dateprefix(tok): return is_token_within_labelled_span(tok, "DATEPREFIX")        
             Token.set_extension(name="is_dateprefix", getter=is_dateprefix)
 
         if not Token.has_extension("is_datesuffix"):
-            def is_datesuffix(tok): return is_token_within_labelled_span(tok, "DATESUFFIX")
             Token.set_extension(name="is_datesuffix", getter=is_datesuffix)
 
         if not Token.has_extension("is_dateseparator"):
-            def is_dateseparator(tok): return is_token_within_labelled_span(tok, "DATESEPARATOR")
             Token.set_extension(name="is_dateseparator", getter=is_dateseparator)
 
         if not Token.has_extension("is_ordinal"):
-            def is_ordinal(tok): return is_token_within_labelled_span(tok, "ORDINAL")
             Token.set_extension(name="is_ordinal", getter=is_ordinal)
 
         if not Token.has_extension("is_monthname"):
-            def is_monthname(tok): return is_token_within_labelled_span(tok, "MONTHNAME")
             Token.set_extension(name="is_monthname", getter=is_monthname)
 
         if not Token.has_extension("is_seasonname"):
-            def is_seasonname(tok): return is_token_within_labelled_span(tok, "SEASONNAME")
             Token.set_extension(name="is_seasonname", getter=is_seasonname)
+        
+        if not Token.has_extension("labels"):
+            Token.set_extension(name="labels", getter=get_labels_for_token)
 
         normalized_patterns = normalize_patterns(
             nlp=nlp, 
@@ -97,10 +93,10 @@ class YearSpanRuler(SpanRuler):
         )
 
         for name in [
+            "ordinal_ruler",            
             "dateprefix_ruler",
             "datesuffix_ruler",
             "dateseparator_ruler",
-            "ordinal_ruler",
             #"monthname_ruler",
             #"seasonname_ruler"
         ]:
@@ -126,9 +122,10 @@ class YearSpanRuler(SpanRuler):
         doc = SpanRuler.__call__(self, doc)
 
         # filter out 'atomic' entities only used to determine yearspan entities
-        '''filtered = [ent for ent in doc.ents if ent.label_ not in [
+        filtered = [span for span in doc.spans["custom"] if span.label_ not in [
             "ORDINAL", "DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "MONTHNAME", "SEASONNAME"]]
-        doc.ents = filtered'''
+        doc.spans["custom"] = filtered
+        #TODO - filter out 'sub-spans' encompassed by others?
         return doc
 
 

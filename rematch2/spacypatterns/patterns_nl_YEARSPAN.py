@@ -6,7 +6,7 @@ Version :   20240125
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
-Summary :   spaCy patterns for use with EntityRuler pipeline components            
+Summary :   spaCy patterns for use with SpanRuler pipeline components            
 Imports :   
 Example :           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
@@ -17,59 +17,94 @@ patterns_nl_YEARSPAN = [
     { 
         "label": "YEARSPAN",
 		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
-            {"ENT_TYPE": "MONTHNAME"},
+            {"OP": "*", "_": {"is_dateprefix": True}}, 
+            {"_": {"is_monthname": True}},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+            {"OP": "*", "_": {"is_datesuffix": True}}
         ]
     },
     { 
         "label": "YEARSPAN", 
 		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
-            {"ENT_TYPE": "SEASONNAME"},
+            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"_": {"is_seasonname": True}},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
+            {"OP": "*", "_": {"is_datesuffix": True}}
         ]
     },
     { 
         "label": "YEARSPAN",
 		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"OP": "*", "_": {"is_dateprefix": True}},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"ENT_TYPE": "DATESUFFIX"}
+            {"_": {"is_datesuffix": True}}
         ] 
     },
     { 
         "label": "YEARSPAN", 
 		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"OP": "*", "_": {"is_dateprefix": True}},
             {"LOWER": {"REGEX": r"^\d+[\–\-/]\d+$"}},
-            {"ENT_TYPE": "DATESUFFIX"}
+            {"OP": "*", "_": {"is_datesuffix": True}}
         ] 
     },
     { 
         "label": "YEARSPAN", 
 		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "*", "_": {"is_dateprefix": True}},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "?", "ENT_TYPE": "DATESUFFIX"}, 
-            {"ENT_TYPE": "DATESEPARATOR"}, 
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "*", "_": {"is_datesuffix": True}},
+            {"_": {"is_dateseparator": True}}, 
+            {"OP": "*", "_": {"is_dateprefix": True}},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"ENT_TYPE": "DATESUFFIX"}
+            {"_": {"is_datesuffix": True}}
         ] 
     },
     { 
         "label": "YEARSPAN", 
 		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "*", "_": {"is_dateprefix": True}},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"ENT_TYPE": "DATESUFFIX"}, 
-            {"ENT_TYPE": "DATESEPARATOR"}, 
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "*", "_": {"is_datesuffix": True}},
+            {"_": {"is_dateseparator": True}}, 
+            {"OP": "*", "_": {"is_dateprefix": True}}, 
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "?", "ENT_TYPE": "DATESUFFIX"}
+            {"OP": "*", "_": {"is_datesuffix": True}}
         ] 
+    },
+    { 
+        "label": "YEARSPAN",         
+        "comment": "e.g. vijfde eeuw na Christus",
+		"pattern": [
+            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"_": {"is_ordinal": True}},
+            {"LOWER": {"REGEX": r"^(eeuw|millennium)$"}},
+            {"OP": "*", "_": {"is_datesuffix": True}}
+        ]
+    },
+    { 
+        "label": "YEARSPAN",         
+        "comment": "e.g. vijfde eeuw na Christus",
+		"pattern": [
+            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"LOWER": {"REGEX": r"\d+e/\d+e"}},
+            {"LOWER": {"REGEX": r"^(eeuw|millennium)$"}},
+            {"OP": "*", "_": {"is_datesuffix": True}},
+        ]
+    },
+    { 
+        "label": "YEARSPAN",        
+        "comment": "e.g. 14e - 15e eeuw",
+		"pattern": [
+            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"_": {"is_ordinal": True}},
+            {"OP": "?", "LOWER": {"REGEX": r"^(eeuw|millennium)$"}},
+            {"OP": "*", "_": {"is_datesuffix": True}},
+            {"_": {"is_dateseparator": True}},
+            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"_": {"is_ordinal": True}},
+            {"LOWER": {"REGEX": r"^(eeuw|millennium)$"}},
+            {"OP": "*", "_": {"is_datesuffix": True}}
+        ]
     }
 ]

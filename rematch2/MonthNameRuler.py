@@ -5,10 +5,10 @@ Module  :   MonthNameRuler.py
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
-Summary :   spaCy custom pipeline component (specialized EntityRuler)
+Summary :   spaCy custom pipeline component (specialized SpanRuler)
             Language-sensitive component to identify month names
-            in free text. Entity type added will be "MONTHNAME"
-Imports :   os, sys, spacy, Language, EntityRuler, Doc
+            in free text. Span label will be "MONTHNAME"
+Imports :   os, sys, spacy, Language, SpanRuler, Doc
 Example :   nlp.add_pipe("monthname_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================

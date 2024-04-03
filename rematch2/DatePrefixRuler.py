@@ -5,8 +5,8 @@ Module  :   DatePrefixRuler.py
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
-Summary :   spaCy custom pipeline component (specialized EntityRuler)
-Imports :   os, sys, spacy, EntityRuler, Language
+Summary :   spaCy custom pipeline component (specialized SpanRuler)
+Imports :   os, sys, spacy, SpanRuler, Language
 Example :   
     nlp = spacy.load("en_core_web_sm", disable=['ner'])
     nlp.add_pipe("dateprefix_ruler", last=True)  
@@ -54,7 +54,10 @@ else:
 
 @Language.factory("dateprefix_ruler", default_config={"patterns": []})
 def create_dateprefix_ruler(nlp: Language, name: str = "dateprefix_ruler", patterns: list=[]) -> SpanRuler:
-        
+    
+    if not Token.has_extension("is_ordinal"):
+        Token.set_extension(name="is_ordinal", getter=is_ordinal)
+
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns,

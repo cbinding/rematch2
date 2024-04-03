@@ -11,7 +11,6 @@
     - [ordinal_ruler](#ordinal_ruler)
     - [dateprefix_ruler](#dateprefix_ruler)
     - [datesuffix_ruler](#datesuffix_ruler)
-    - [century_ruler](#century_ruler)
     - [yearspan_ruler](#yearspan_ruler)
     - [periodo_ruler](#periodo_ruler)
     - [temporal_annotator](#temporal_annotator)
@@ -73,8 +72,7 @@ The pipeline components utilise spaCy _patterns_ located in the _spacypatterns_ 
 | [ordinal_ruler](#ordinal_ruler)       | ORDINAL     | Expressions of ordinals (used in identifying centuries)                  |                             _1st, first, THIRD, 3RD_ |
 | [dateprefix_ruler](#dateprefix_ruler) | DATEPREFIX  | Prefixes commonly associated with years, spans and centuries             |    _Circa, Early, earlier, mid, MIDDLE, Late, later_ |
 | [datesuffix_ruler](#datesuffix_ruler) | DATESUFFIX  | Prefixes commonly associated with years, spans and centuries             |                       _A.D., AD, B.C., BC, B.P., BP_ |
-| [century_ruler](#century_ruler)       | CENTURY     | Ordinal century expression                                               | _early 15th century BC to late fifteenth century AD_ |
-| [yearspan_ruler](#yearspan_ruler)     | YEARSPAN    | Spans of years (possibly with prefixes and/or suffixes)                  |                         _early 1300 to late 1350 AD_ |
+| [yearspan_ruler](#yearspan_ruler)     | YEARSPAN    | Spans of years or centuries (possibly with prefixes and/or suffixes)     |                         _early 1300 to late 1350 AD_ |
 | [periodo_ruler](#periodo_ruler)       | PERIOD      | Period label from a specified [Perio.do](https://perio.do/en/) authority |              _Bronze Age, Early Medieval, Victorian_ |
 
 ### dayname_ruler <a class="anchor" id="dayname_ruler"></a>
@@ -100,10 +98,6 @@ Identifies typical dating prefixes in text. Used in combination with other ruler
 ### datesuffix_ruler <a class="anchor" id="datesuffix_ruler"></a>
 
 Identifies typical dating suffixes in text. Used in combination with other rulers to identify patterns of year or century followed by suffix e.g. _early 1867 AD_, _5th century BC_
-
-### century_ruler <a class="anchor" id="century_ruler"></a>
-
-Identifies typical expressions of centuries or spans of centuries in text. Utilises other rulers to identify more complex patterns e.g. _circa early 5th to late fourth century BC_
 
 ### yearspan_ruler <a class="anchor" id="yearspan_ruler"></a>
 

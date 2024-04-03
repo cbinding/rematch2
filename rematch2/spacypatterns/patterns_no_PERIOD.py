@@ -6,7 +6,7 @@ Version :   20240125
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
-Summary :   spaCy patterns for use with EntityRuler pipeline components            
+Summary :   spaCy patterns for use with SpanRuler pipeline components            
 Imports :   
 Example :           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
@@ -17,70 +17,70 @@ patterns_no_PERIOD = [
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "*", "_": {"is_dateprefix": True}},
             {"LOWER": {"REGEX": r"^steinalder(?:en)?$"}}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"OP": "*", "_": {"is_dateprefix": True}},
             {"LOWER": {"REGEX": r"^(?:tidlig|mellom|sei?n)(?:mesolitt?iske?|mesol[iuo]tikk?um)$"}}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"OP": "*", "_": {"is_dateprefix": True}},
             {"LOWER": {"REGEX": r"^(?:tidlig|mellom|sei?n)(?:neolitt?iske?|neolitikk?um)$"}}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "*", "_": {"is_dateprefix": True}},
             {"LOWER": "metalltid"}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "*", "_": {"is_dateprefix": True}}, 
             {"LOWER": {"REGEX": r"^brons(?:ea|å|aa?)lder(?:en)?$"}}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "*", "_": {"is_dateprefix": True}},
             {"LOWER": {"REGEX": r"^j[eäæ]rn(?:å|aa?)lder(?:en)?$"}}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "*", "_": {"is_dateprefix": True}},
             {"LOWER": {"REGEX": r"^romer(?:ske?|tid)$"}}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "*", "_": {"is_dateprefix": True}},
             {"LOWER": {"REGEX": r"^folkevandringstid(?:en)?$"}}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "*", "_": {"is_dateprefix": True}},
             {"LOWER": {"REGEX": r"^merovingertid(?:en)?$"}}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "*", "_": {"is_dateprefix": True}},
             {"LOWER": {"REGEX": r"^vikinge?tid(?:en)?$"}}
         ] 
     },

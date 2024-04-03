@@ -6,7 +6,7 @@ Version :   20240125
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
-Summary :   spaCy patterns for use with EntityRuler pipeline components   
+Summary :   spaCy patterns for use with SpanRuler pipeline components   
             some values from http://cokdybysme.net/pdfs/ordinalnumbers.pdf         
 Imports :   
 Example :           

@@ -33,14 +33,12 @@ import argparse                         # for argument parsing
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from BaseAnnotator import BaseAnnotator
-    from CenturyRuler import create_century_ruler
     from YearSpanRuler import create_yearspan_ruler
     from PeriodoRuler import create_periodo_ruler
     from DocSummary import DocSummary    
 else:
     # uses current package visibility
     from .BaseAnnotator import BaseAnnotator
-    from .CenturyRuler import create_century_ruler
     from .YearSpanRuler import create_yearspan_ruler
     from .PeriodoRuler import create_periodo_ruler
     from .DocSummary import DocSummary
@@ -57,7 +55,6 @@ class TemporalAnnotator(BaseAnnotator):
         # call the superclass initialisation function
         super().__init__(language=language, patterns=patterns)
 
-        self._pipeline.add_pipe("century_ruler", last=True)
         self._pipeline.add_pipe("yearspan_ruler", last=True)
         self._pipeline.add_pipe("periodo_ruler", last=True, config={
             "periodo_authority_id": periodo_authority_id})
@@ -71,13 +68,11 @@ class TemporalAnnotator(BaseAnnotator):
         # specify colours for HTML output
         options = {
             "ents": [
-                "CENTURY",
                 "YEARSPAN",
                 "PERIOD"
 
             ],
             "colors": {
-                "CENTURY": "lightgreen",
                 "YEARSPAN": "steelblue",
                 "PERIOD": "lightpink"
             }

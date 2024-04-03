@@ -42,16 +42,6 @@ from .patterns_nl_ORDINAL import patterns_nl_ORDINAL
 from .patterns_no_ORDINAL import patterns_no_ORDINAL
 from .patterns_sv_ORDINAL import patterns_sv_ORDINAL
 
-from .patterns_cs_CENTURY import patterns_cs_CENTURY
-from .patterns_de_CENTURY import patterns_de_CENTURY
-from .patterns_en_CENTURY import patterns_en_CENTURY
-from .patterns_es_CENTURY import patterns_es_CENTURY
-from .patterns_fr_CENTURY import patterns_fr_CENTURY
-from .patterns_it_CENTURY import patterns_it_CENTURY
-from .patterns_nl_CENTURY import patterns_nl_CENTURY
-from .patterns_no_CENTURY import patterns_no_CENTURY
-from .patterns_sv_CENTURY import patterns_sv_CENTURY
-
 from .patterns_cs_DATEPREFIX import patterns_cs_DATEPREFIX
 from .patterns_de_DATEPREFIX import patterns_de_DATEPREFIX
 from .patterns_en_DATEPREFIX import patterns_en_DATEPREFIX

@@ -5,10 +5,10 @@ Module  :   DayNameRuler.py
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
-Summary :   spaCy custom pipeline component (specialized EntityRuler)
+Summary :   spaCy custom pipeline component (specialized SpanRuler)
             Language-sensitive component to identify day names
-            in free text. Entity type added will be "DAYNAME"
-Imports :   os, sys, spacy, Language, EntityRuler, Doc
+            in free text. Span label will be "DAYNAME"
+Imports :   os, sys, spacy, Language, SpanRuler, Doc
 Example :   
     nlp = spacy.load("en_core_web_sm", disable=['ner'])
     nlp.add_pipe("dateprefix_ruler", last=True)  

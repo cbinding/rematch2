@@ -46,12 +46,10 @@ def writeEntitiesToDelimitedFile(doc, targetFileNameWithPath="", delimiter="\t",
 def writeEntitiesToHtmlFile(doc, targetFileNameWithPath=""):
     options = {
         "ents": [
-            "CENTURY",
             "PERIOD",
             "YEARSPAN"
         ],
         "colors": {
-            "CENTURY": "lightgreen",
             "PERIOD": "yellow",
             "YEARSPAN": "moccasin"
         }
@@ -128,7 +126,7 @@ def main(sourceFilePath):
                 "text": ent.text,
                 "start": ent.start_char,
                 "end": ent.end_char,
-                "type": ent.label_
+                "label": ent.label_
             })
         results[identifier]["source"] = sourceFilePath
         results[identifier]["identifier"] = identifier

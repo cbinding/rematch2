@@ -32,21 +32,23 @@ else:
 class SpanPairs:
 
     def __init__(self, 
-        doc: Doc, 
+        doc: Doc,
+        spans_key: str = "custom", 
         rel_ops: list = [ "<", ">", "<<", ">>", ".*", ";", ";*" ], 
-        left_types: list = [], 
-        right_types: list = []):
+        left_labels: list = [], 
+        right_labels: list = []):
   
         self.doc = doc
+        self.spans_key = spans_key.strip()
         self.rel_ops = rel_ops
-        self.left_types = list(map(lambda s: s.strip().upper(), left_types or []))
-        self.right_types = list(map(lambda s: s.strip().upper(), right_types or []))
+        self.left_labels = list(map(lambda s: s.strip().upper(), left_labels or []))
+        self.right_labels = list(map(lambda s: s.strip().upper(), right_labels or []))
         self.pairs = self._get_pairs()
 
 
     @staticmethod
-    def _filter_spans_by_types(types=[], ents=[]):
-        return filter(lambda span: any(span.label_ in t for t in types), ents)      
+    def _filter_spans_by_labels(labels=[], ents=[]):
+        return filter(lambda span: any(span.label_ in s for s in labels), ents)      
         
 
     def _get_noun_chunk_pairs(self) -> list[SpanPair]:
@@ -55,19 +57,11 @@ class SpanPairs:
         for chunk in self.doc.noun_chunks:            
 
             # get all LEFT spans in the noun chunk
-            left_spans = self._filter_spans_by_types(self.left_types, chunk.ents)
-            #if self.left_type == "*":   
-                #left_ents = filter(lambda ent: ent.label_ != self.left_type, chunk.ents)            
-            #else:
-                #left_ents = filter(lambda ent: ent.label_ == self.left_type, chunk.ents)
-
+            left_spans = self._filter_spans_by_labels(self.left_labels, chunk.ents)
+            
             # get all RIGHT spans in the noun chunk
-            right_spans = self._filter_spans_by_types(self.right_types, chunk.ents)
-            #if self.right_type == "*":   
-                #right_ents = filter(lambda ent: ent.label_ != self.right_type, chunk.ents)            
-            #else:
-                #right_ents = filter(lambda ent: ent.label_ == self.right_type, chunk.ents)
-
+            right_spans = self._filter_spans_by_labels(self.right_labels, chunk.ents)
+            
             # Use cartesian product to give all pair combinations
             for span1, span2 in itertools.product(left_spans, right_spans):
                 # using dict to eliminate duplicates with lower scores
@@ -96,33 +90,23 @@ class SpanPairs:
     # https://spacy.io/usage/rule-based-matching#dependencymatcher  
     # Allowing * as wildcard for dealing with negation span pairs      
     def _get_dependency_pairs_by_rel_op(self, rel_op: str = "") -> list[SpanPair]:
-        # so label can be seen in pattern below...
-        if not Token.has_extension("label"):
-            def get_label(token): return token.ent_type_
-            Token.set_extension(name="label", getter=get_label)
-
-            def get_labels(token): 
-                outer_spans = filter(lambda span: span.start <= token.i and span.end >= token.i, token.doc.spans["custom"])
-                return list(set(map(lambda span: span.label, outer_spans)))
-            Token.set_extension(name="labels", getter=get_labels)
-
+        
+        if not Token.has_extension("labels"):
+            Token.set_extension(name="labels", getter=get_labels_for_token)
 
         pattern = [
             {
                 "RIGHT_ID": "left",
-                #"RIGHT_ATTRS": {"_": {"label": {"IN": self.left_types}}}
-                "RIGHT_ATTRS": {"_": {"labels": {"INTERSECTS": self.left_types}}}
+                "RIGHT_ATTRS": {"_": {"labels": {"INTERSECTS": self.left_labels}}}
             },
             {
                 "LEFT_ID": "left",
                 "REL_OP": rel_op,
                 "RIGHT_ID": "right",            
-                #"RIGHT_ATTRS": {"_": {"label": {"IN": self.right_types}}}
-                "RIGHT_ATTRS": {"_": {"labels": {"INTERSECTS": self.right_types}}}
+                "RIGHT_ATTRS": {"_": {"labels": {"INTERSECTS": self.right_labels}}}
             }
         ]
         matcher = DependencyMatcher(self.doc.vocab)
-        #matcher.add(f"{self.left_type}_{self.right_type}", [pattern])
         matcher.add("pair", [pattern])
         matches = matcher(self.doc)
 
@@ -130,28 +114,13 @@ class SpanPairs:
         pairs = []
         for match_id, token_ids in matches:
             # get all LEFT side entities token_ids match
-            left_spans = self._filter_spans_by_types(self.left_types, self.doc.spans["custom"])
+            left_spans = self._filter_spans_by_labels(self.left_labels, self.doc.spans.get(self.spans_key, []))
             left_spans = filter(lambda span: any(span.start <= token_id and span.end > token_id for token_id in token_ids), left_spans)
             
             # get all RIGHT side entities token_ids match
-            right_spans = self._filter_spans_by_types(self.right_types, self.doc.spans["custom"])
+            right_spans = self._filter_spans_by_labels(self.right_labels, self.doc.spans.get(self.spans_key, []))
             right_spans = filter(lambda span: any(span.start <= token_id and span.end > token_id for token_id in token_ids), right_spans)
 
-            '''
-            if self.left_type == "*":
-                left_ents = filter(lambda ent: ent.label_ != self.left_type and any(
-                    ent.start <= id and ent.end > id for id in token_ids), self.doc.ents)
-            else:
-                left_ents = filter(lambda ent: ent.label_ == self.left_type and any(
-                    ent.start <= id and ent.end > id for id in token_ids), self.doc.ents)
-            # get all RIGHT side entities token_ids match (allowing * wildcard entity type)
-            if self.right_type == "*":
-                right_ents = filter(lambda ent: ent.label_ != self.right_type and any(
-                    ent.start <= id and ent.end > id for id in token_ids), self.doc.ents)
-            else:
-                right_ents = filter(lambda ent: ent.label_ == self.right_type and any(
-                    ent.start <= id and ent.end > id for id in token_ids), self.doc.ents)
-                    '''
             # using cartesian product to give all LEFT - RIGHT pair combinations
             for span1, span2 in itertools.product(left_spans, right_spans):
                 # ensure they are not the same entity before adding  
@@ -189,17 +158,13 @@ class SpanPairs:
 
         best_scoring_pairs = {}
         for pair in noun_chunk_pairs + dependency_pairs:
-            # if they are the same type of entity don't include them as a pair
+            # if they have the same label don't include them as a pair
             if pair.span1.label == pair.span2.label:
-                continue
-
-            # if they are actually the same entity don't include them as a pair
-            id1 = get_span_id(pair.span1)
-            id2 = get_span_id(pair.span2)
-            if id1 == id2:
                 continue
             
             # add the pair, eliminating any duplicate pairs having lower scores
+            id1 = get_span_id(pair.span1)
+            id2 = get_span_id(pair.span2)
             id = f"{id1}|{id2}"
             if (id not in best_scoring_pairs or pair.score > best_scoring_pairs[id].score):
                 best_scoring_pairs[id] = pair
@@ -219,23 +184,4 @@ class SpanPairs:
 
     def __repr__(self):
         return self.__str__()
-
-
-    #TODO - set up stylers/formatters
-    def to_html_table(self) -> str:
-        data = [{
-            "ent1_id": pair.ent1.id_,
-            "ent1_type": pair.ent1.label_,
-            "ent1_text": pair.ent1.text,
-            "rel_op": pair.rel_op,
-            "ent2_id": pair.ent2.id_,
-            "ent2_type": pair.ent2.label_,
-            "ent2_text": pair.ent2.text,
-            "score": pair.score
-        } for pair in self.pairs]
-
-        pd.set_option('display.max_colwidth', None)
-        df = pd.DataFrame(data)
-        return df.to_html(border=0)
-        
     

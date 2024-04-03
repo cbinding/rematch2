@@ -6,11 +6,12 @@ Classes   : DocSummary
 Project   : Any
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
-Summary   : Wrapper to summarise spaCy Doc spans, tokens & span pairs in
-            various output formats. use to improve consistency in output
+Summary   : Convert spaCy Doc spans, tokens, pairs, counts to
+            various output formats. use to improve consistency
             TODO: to replace code in find_pairs.py & EntityPairs.py
-Imports   : escape, DataFrame, Doc
-Example   : as_html = DocSummary(doc).spans("html")
+Imports   : escape, pandas, DataFrame, Doc, displacy
+Example   : html = DocSummary(doc).spans("html")
+    .doctext, .tokens, .spans, .spancounts, .labels, .labelcounts, .spanpairs 
 License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
@@ -33,12 +34,13 @@ else:
 
 class DocSummary:
 
-    def __init__(self, doc: Doc):
+    def __init__(self, doc: Doc, spans_key: str="custom"):
         self._doc = doc
+        self._spans_key = spans_key.strip()
     
 
     def __str__(self):
-        pass
+        return self.doctext()
 
 
     def __repr__(self):
@@ -47,13 +49,15 @@ class DocSummary:
 
     def doctext(self, format: str="text") -> str: 
         match format.strip().lower():  
-            case "html": return self._doctext_to_html(self._doc)
+            case "html": return self._doctext_to_html(self._doc, spans_key=self._spans_key)
             case _: return self._doc.text
 
-    #sentences?
+    
+    def spans(self, format: str="text", label="") -> str|list:
+        spans = self._doc.spans.get(self._spans_key, [])
+        if(label != ""):
+            spans = filter(lambda span: span.label_ == label, spans)
 
-    def spans(self, format: str="text") -> str|list:
-        spans = self._doc.spans["custom"]
         match format.strip().lower():
             case "csv": return self._spans_to_csv(spans)
             case "html": return self._spans_to_html(spans)
@@ -63,27 +67,41 @@ class DocSummary:
             case _: return spans
 
 
-    def spanpairs(self, format: str="text", left_types: list=[], right_types: list=[], rel_ops: list=[]) -> str|list:
-        pairs = SpanPairs(doc=self._doc, rel_ops=rel_ops, left_types=left_types, right_types=right_types).pairs
+    def spanpairs(self, format: str="text", left_labels: list=[], right_labels: list=[], rel_ops: list=[]) -> str|list:
+        pairs = SpanPairs(doc=self._doc, rel_ops=rel_ops, left_labels=left_labels, right_labels=right_labels).pairs
         match format.strip().lower():
             case "csv": return self._spanpairs_to_csv(pairs)
             case "html": return self._spanpairs_to_html(pairs)   # render as a table
             case "htmll": return self._spanpairs_to_html_list(pairs) # render as a list
-            case "htmlc": return self._spanpairs_to_html_custom(pairs) # rendering from find_pairs.py
+            case "htmlt": return self._spanpairs_to_html_table(pairs) # rendering from find_pairs.py
             case "json": return self._spanpairs_to_json(pairs)
             case "text": return self._spanpairs_to_text(pairs)
             case _: return pairs
 
     
     def spancounts(self, format: str="text") -> str|list:
-        counts = self._get_span_counts_by_id(self._doc.spans["custom"])
+        spans = self.spans(format="list")
+        counts = self._get_span_counts_by_id(spans)
         match format.strip().lower():
             case "csv": return self._spancounts_to_csv(counts)
             case "html": return self._spancounts_to_html(counts) # render as a table
             case "htmll": return self._spancounts_to_html_list(counts) # render as a list
-            case "htmlc": return self._spancounts_to_html_custom(counts) # rendering from find_pairs.py
+            case "htmlt": return self._spancounts_to_html_table(counts) # rendering from find_pairs.py
             case "json": return self._spancounts_to_json(counts)
             case "text": return self._spancounts_to_text(counts)
+            case _: return counts
+
+
+    def labelcounts(self, format: str="text") -> str|list:
+        spans = self.spans(format="list")
+        counts = self._get_span_counts_by_label(spans)
+        match format.strip().lower():
+            case "csv": return self._labelcounts_to_csv(counts)
+            case "html": return self._labelcounts_to_html(counts) # render as a table
+            case "htmll": return self._labelcounts_to_html_list(counts) # render as a list
+            case "htmlt": return self._labelcounts_to_html_table(counts)
+            case "json": return self._labelcounts_to_json(counts)
+            case "text": return self._labelcounts_to_text(counts)
             case _: return counts
 
 
@@ -97,14 +115,21 @@ class DocSummary:
             case "text": return self._tokens_to_text(toks)
             case _: return toks
 
-    
+
     @staticmethod
-    def _doctext_to_html(doc: Doc, options=None) -> str:
+    def _doctext_to_html(
+        doc: Doc, 
+        spans_key: str="custom", 
+        options: dict=None, 
+        exclude: list=["DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "ORDINAL"]
+        ) -> str:
+
         opts = { 
             "spans_key": "subset",
             "colors": { 
                 #"DATEPREFIX": "lightgray",
                 #"DATESUFFIX": "lightgray",
+                #"DATESEPARATOR": "lightgray",
                 #"ORDINAL": "lightgray",
                 "NEGATION": "lightgray",
                 "PERIOD": "yellow", 
@@ -118,11 +143,17 @@ class DocSummary:
             } 
         } if options == None else options 
 
-        # create temporary subset as options don't allow us to specify which spans to show/exclude
-        def to_display(span): return span.label_ not in ["DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "ORDINAL"]
-        doc.spans["subset"] = list(filter(to_display, doc.spans["custom"]))         
-        #return displacy.render(doc, style="ent", minify=True, options=opts) 
-        html = displacy.render(doc, style="span", page=False, minify=False, jupyter=False, options=opts) 
+        # create temp subset as options don't allow us to specify which spans to show/exclude
+        def to_display(span): return span.label_ not in exclude
+        doc.spans["subset"] = list(filter(to_display, doc.spans.get(spans_key, [])))        
+        html = displacy.render(
+            docs=doc, 
+            style="span", 
+            page=False, 
+            minify=False, 
+            jupyter=False, 
+            options=opts
+        ) 
         del doc.spans["subset"]
         return html
    
@@ -131,11 +162,11 @@ class DocSummary:
     def _spanpairs_to_df(pairs: list = []) -> DataFrame:
         return DataFrame([{
             "span1_id": pair.span1.id_,
-            "span1_type": pair.span1.label_,
+            "span1_label": pair.span1.label_,
             "span1_text": pair.span1.text,
             "rel_op": pair.rel_op,
             "span2_id": pair.span2.id_,
-            "span2_type": pair.span2.label_,
+            "span2_label": pair.span2.label_,
             "span2_text": pair.span2.text,
             "score": pair.score
         } for pair in pairs])
@@ -157,9 +188,10 @@ class DocSummary:
     def _spanpairs_to_htmll(pairs: list = []) -> str:
         pass
 
+
     # custom table render from find_pairs.py 
     @staticmethod
-    def _spanpairs_to_html_custom(pairs: list = []) -> str:
+    def _spanpairs_to_html_table(pairs: list = []) -> str:
         html = []
         if len(pairs) == 0:
             html.append("<p>NONE FOUND</p>")
@@ -170,14 +202,14 @@ class DocSummary:
                 html.append("<td style='text-align:right; vertical-align: middle;'>")
                 html.append(f"<div class='entity {escape(pair.span1.label_.lower())}'>")
                 if(pair.span1.id_.startswith("http")):
-                    html.append(f"<a href='{pair.span1.id_}'>{escape(pair.span1.text)}</a>")
+                    html.append(f"<a target='_blank' rel='noopener noreferrer' href='{pair.span1.id_}'>{escape(pair.span1.text)}</a>")
                 else:
                     html.append(f"{escape(pair.span1.text)}")
                 html.append("</div></td>")                    
                 html.append(f"<td style='text-align:left; vertical-align: middle'>")
                 html.append(f"<div class='entity {escape(pair.span2.label_.lower())}'>")
                 if(pair.span2.id_.startswith("http")):
-                    html.append(f"<a href='{pair.span2.id_}'>{escape(pair.span2.text)}</a>")
+                    html.append(f"<a target='_blank' rel='noopener noreferrer' href='{pair.span2.id_}'>{escape(pair.span2.text)}</a>")
                 else:
                     html.append(f"{escape(pair.span2.text)}")
                 html.append("</div></td>")
@@ -203,15 +235,15 @@ class DocSummary:
     @staticmethod
     def _spancounts_to_df(counts: list = []) -> DataFrame: 
         return DataFrame([{
-            "id": item["id"],
-            "type": item["type"],
-            "text": item["text"],
-            "count": item["count"]
+            "id": item.get("id", ""),
+            "label": item.get("label", ""),
+            "text": item.get("text", ""),
+            "count": int(item.get("count", 0))
             } for item in counts]) 
 
 
     @staticmethod
-    def _spancounts_to_csv(counts: list = [], sep=",") -> str:
+    def _spancounts_to_csv(counts: list = [], sep: str=",") -> str:
         df = DocSummary._spancounts_to_df(counts)
         return df.to_csv(sep=sep)
 
@@ -223,7 +255,7 @@ class DocSummary:
 
     # table rendering from find_pairs.py
     @staticmethod
-    def _spancounts_to_html_custom(counts: list = []) -> str:
+    def _spancounts_to_html_table(counts: list = []) -> str:
         html = []        
         if len(counts) == 0:
             html.append("<p>NONE FOUND</p>")
@@ -232,9 +264,9 @@ class DocSummary:
             for item in counts:
                 html.append("<tr>")
                 html.append("<td style='text-align:right; vertical-align: middle;'>")
-                html.append(f"<div class='entity {escape(item['type'].lower())}'>")
+                html.append(f"<div class='entity {escape(item['label'].lower())}'>")
                 if(item['id'].startswith("http")):
-                    html.append(f"<a href='{item['id']}'>{escape(item['text'])}</a>")
+                    html.append(f"<a target='_blank' rel='noopener noreferrer' href='{item['id']}'>{escape(item['text'])}</a>")
                 else:
                     html.append(f"{escape(item['text'])}")
                 html.append("</div>")
@@ -267,36 +299,115 @@ class DocSummary:
     def _spancounts_to_text_custom(counts: list = []) -> str:
         lines = []
         for item in counts:                    
-            lines.append("[{type}] {id:<60} {text:>20} ({count})".format(
-                id = item["id"],                
-                type = item["type"],
-                text = item["text"],
-                count = item["count"]
+            lines.append("[{label}] {id:<60} {text:>20} ({count})".format(
+                id = item.get("id", ""),                
+                label = item.get("label", ""),
+                text = item.get("text", ""),
+                count = int(item.get("count", 0))
                 )
             )
         return "\n".join(lines) 
     
 
     @staticmethod
+    def _labelcounts_to_df(counts: list = []) -> DataFrame: 
+        return DataFrame([{
+            "label": item.get("label", ""),
+            "count": int(item.get("count", 0))
+            } for item in counts]) 
+
+
+    @staticmethod
+    def _labelcounts_to_csv(counts: list = [], sep: str=",") -> str:
+        df = DocSummary._labelcounts_to_df(counts)
+        return df.to_csv(sep=sep)
+
+
+    @staticmethod
+    def _labelcounts_to_html(counts: list = []) -> str:
+        df = DocSummary._labelcounts_to_df(counts)
+        return(df.to_html(index=False, border=0)) # renders html table
+    
+
+    @staticmethod
+    def _labelcounts_to_html_list(counts: list = []) -> str:
+        html = []
+        html.append("<details>")
+        html.append(f"<summary>Labels ({len(counts)})</summary>")
+        html.append("<ul class='entities'>") 
+        for item in counts:
+            html.append("<li><div class='entity {label}'>&nbsp;</div>({count})</li>".format(
+                label = item.get("label", "").lower(),
+                count = item.get("count", 0)
+            ))        
+        html.append("</ul>") 
+        html.append("</details>")
+        return "\n".join(html) 
+
+
+    @staticmethod
+    def _labelcounts_to_html_table(counts: list = []) -> str:
+        html = []        
+        if len(counts) == 0:
+            html.append("<p>NONE FOUND</p>")
+        else:
+            html.append("<table><tbody>")
+            for item in counts:
+                html.append("<tr>")
+                html.append("<td style='text-align:right; vertical-align: middle;'>")
+                html.append(f"<div class='entity {escape(item['label'].lower())}'>")
+                html.append(f"{escape(item['label'])}")
+                html.append("</div>")
+                html.append("</td>")
+                html.append(f"<td>({item['count']})</td>")
+                html.append("</tr>")
+            html.append("</tbody></table>")
+        return "\n".join(html)
+
+    @staticmethod
+    def _labelcounts_to_json(counts: list = []) -> str:
+        df = DocSummary._labelcounts_to_df(counts)
+        return df.to_json(orient="records")
+
+
+    @staticmethod
+    def _labelcounts_to_text(counts: list = []) -> str:
+        df = DocSummary._labelcounts_to_df(counts)
+        pd.set_option('display.max_colwidth', None)
+        return(df.to_string(index=False))
+
+
+    @staticmethod
+    def _labelcounts_to_text_custom(counts: list = []) -> str:
+        lines = []
+        for item in counts:                    
+            lines.append("[{label}] ({count})".format(
+                label = item.get("label", ""),
+                count = int(item.get("count", 0))
+            ))
+        return "\n".join(lines) 
+
+
+    @staticmethod
     def _spans_to_df(spans: list = []) -> DataFrame:    
         return DataFrame([{
             "start": span.start_char + 1,
             "end": span.end_char,
-            "type": span.label_,
+            "label": span.label_,
             "id": span.ent_id_,
             "text": span.text
             } for span in spans]) 
 
 
     @staticmethod
-    def _spans_to_csv(ents: list = [], sep=",") -> str:
+    def _spans_to_csv(spans: list = [], sep=",") -> str:
         df = DocSummary._spans_to_df(spans)
         return df.to_csv(sep=sep)
 
 
     @staticmethod
     def _spans_to_html(spans: list = []) -> str:
-        df = DocSummary._spans_to_df(ents)
+        df = DocSummary._spans_to_df(spans)
         return(df.to_html(index=False, border=0)) # renders html table
 
 
@@ -307,10 +418,10 @@ class DocSummary:
         html.append(f"<summary>Entities ({len(spans)})</summary>")
         html.append("<ul class='entities'>") 
         for span in spans:
-            html.append(f"<li class='entity {type.lower()}'>({start}&#8594;{end}) [{type}] {id} \"{text}\"</li>".format(
+            html.append(f"<li class='entity {label.lower()}'>({start}&#8594;{end}) [{label}] {id} \"{text}\"</li>".format(
                 start = span.start_char + 1,
                 end = span.end_char,
-                type = span.label_,
+                label = span.label_,
                 id = span.ent_id_,
                 text = span.text
             ))        
@@ -351,7 +462,7 @@ class DocSummary:
             
 
     @staticmethod
-    def _tokens_to_html(toke: list = []) -> str:
+    def _tokens_to_html(toks: list = []) -> str:
         df = DocSummary._tokens_to_df(toks)
         return df.to_html(index=False, border=0) # renders html table
 
@@ -366,7 +477,7 @@ class DocSummary:
                 start = tok.idx + 1,
                 end = tok.idx + len(tok.text),
                 pos = tok.pos_,
-                text = escape(tok.text)                
+                text = escape(tok.text)         
             ))
         html.append("</ul>")
         return "\n".join(html)   
@@ -397,15 +508,19 @@ class DocSummary:
         return "\n".join(lines)
 
 
-    # count spans by id, return list [{id, type, text, count}, {id, type, text, count}, ...] 
+    # count spans by id, return list [{id, label, text, count}, {id, label, text, count}, ...] 
     # returned in descending count order - note there is probably a more elegant way to do this 
     @staticmethod   
-    def _get_span_counts_by_id(spans: list = []) -> list:
+    def _get_span_counts_by_id(
+        spans: list = [], 
+        exclude=["NEGATION", "DATEPREFIX", "DATESEPARATOR", "DATESUFFIX", "ORDINAL"]
+        ) -> list:
+
         counts = {}
 
         for span in spans:
-            # don't include these in summary counts?
-            if span.label_ in ["NEGATION", "DATEPREFIX", "DATESEPARATOR", "DATESUFFIX", "ORDINAL"]:
+            # exclude specified labels from summary counts
+            if span.label_ in exclude:
                 continue
 
             # get suitable identifier to aggregate counts
@@ -421,20 +536,45 @@ class DocSummary:
             else:
                 id = "other"
             
-            # create a new record if not encountered before, or increment the count
+            # create a new record if not encountered before, or increment the existing count
             if id not in counts:
-                counts[id] = { "id": id, "type": span.label_, "text": span.lemma_, "count": 1 } 
+                counts[id] = { "id": id, "label": span.label_, "text": span.lemma_, "count": 1 } 
             else:
                 counts[id]["count"] += 1            
         
         # return as list sorted by ascending count
         return sorted(list(counts.values()), key=lambda x: x.get("count", 0), reverse=True)
 
+    # count spans by label, return list [{label, count}, {label, count}, ...] 
+    # returned in descending count order
+    @staticmethod   
+    def _get_span_counts_by_label(
+        spans: list = [], 
+        exclude=["NEGATION", "DATEPREFIX", "DATESEPARATOR", "DATESUFFIX", "ORDINAL"]
+        ) -> list:
 
-    # custom along the lines of displacy but locally controllable styling?
+        counts = {}
+
+        for span in spans:
+            label = span.label_
+            # exclude specified labels from summary counts
+            if label in exclude:
+                continue            
+            
+            # create a new record if not encountered before, or increment the count
+            if label not in counts:
+                counts[label] = { "label": label, "count": 1 } 
+            else:
+                counts[label]["count"] += 1            
+        
+        # return as list sorted by ascending count
+        return sorted(list(counts.values()), key=lambda x: x.get("count", 0), reverse=True)
+
+
+    # custom HTML along the lines of displacy but with locally controllable styling?
     # TODO: not finished or used anywhere yet...
     @staticmethod
-    def _custom_html_rendering(doc: Doc) -> str:
+    def _custom_html_rendering(doc: Doc, spans_key="custom") -> str:
         
         def render_in_tag(tag_name: str, content: str):
             return f"<{escape(tag_name)}>{escape(content)}></{escape(tag_name)}>"
@@ -443,7 +583,7 @@ class DocSummary:
             return {
                 "index": tok.idx,
                 "text": tok.text_with_ws,
-                "label": None
+                "label": tok.ent_label_
             }
 
         def span_for_render(span):
@@ -455,7 +595,7 @@ class DocSummary:
 
         toks_outside_spans = list(filter(lambda t: t.ent_iob_ not in ['B', 'I'], doc)) 
         toks_for_render = list(map(tok_for_render, toks_outside_spans))
-        spans_for_render = list(map(span_for_render, doc.spans["custom"]))
+        spans_for_render = list(map(span_for_render, doc.spans.get(spans_key, [])))
         items_for_render = sorted(toks_for_render + spans_for_render, key=lambda x: x.get("index", 0))
 
         html = "<div>"

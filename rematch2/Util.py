@@ -51,13 +51,23 @@ def _get_patterns_from_json_file(file_path: str) -> list:
     return patterns
 
 # determine whether a token is within a previously labelled span
-# used for extension functions
-def is_token_within_labelled_span(tok: Token, label: str="DATEPREFIX", spans_key: str="custom"):
+def is_token_within_labelled_span(tok: Token, label: str="DATEPREFIX", spans_key: str="custom") -> bool:
     # list any previously identified spans with this label in the document
-    spans = list(filter(lambda span: span.label_ == label, tok.doc.spans[spans_key]))
+    spans = list(filter(lambda span: span.label_ == label, tok.doc.spans.get(spans_key, [])))
     # is this token inside any of them?
     return any(span.start <= tok.i and span.end >= tok.i for span in spans) 
 
+# get list of labels for any spans this token is within
+def get_labels_for_token(tok: Token, spans_key: str="custom") -> list: 
+    outer_spans = filter(lambda span: span.start <= tok.i and span.end >= tok.i, tok.doc.spans.get(spans_key,[]))
+    return list(set(map(lambda span: span.label, outer_spans)))
+
+def is_dateprefix(tok: Token) -> bool: return is_token_within_labelled_span(tok, "DATEPREFIX")        
+def is_datesuffix(tok: Token) -> bool: return is_token_within_labelled_span(tok, "DATESUFFIX")
+def is_dateseparator(tok: Token) -> bool: return is_token_within_labelled_span(tok, "DATESEPARATOR")
+def is_ordinal(tok: Token) -> bool: return is_token_within_labelled_span(tok, "ORDINAL")
+def is_monthname(tok: Token) -> bool: return is_token_within_labelled_span(tok, "MONTHNAME")
+def is_seasonname(tok: Token) -> bool: return is_token_within_labelled_span(tok, "SEASONNAME")
 
 # normalize input patterns with Language pipeline
 # as used for custom rulers, for consistency

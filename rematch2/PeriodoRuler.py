@@ -5,10 +5,10 @@ Module  :   PeriodoRuler.py
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
-Summary :   spaCy custom pipeline component (specialized EntityRuler) to 
+Summary :   spaCy custom pipeline component (specialized SpanRuler) to 
             identify named periods (from Perio.do) in free text. 
-            Entity type added will be "PERIOD"
-Imports :   os, sys, spacy, Language, EntityRuler, Doc, Language
+            Span label will be "PERIOD"
+Imports :   os, sys, spacy, Language, SpanRuler, Doc, Language
 Example :   
         nlp = spacy.load(pipe_name, disable=['ner'])
         nlp.add_pipe("periodo_ruler", last=True) 
@@ -21,6 +21,7 @@ History :
 27/10/2023 CFB type hints added for function signatures
 16/02/2024 CFB removed BaseRuler inheritance, use EntityRuler directly
                renamed to PeriodoRuler, and "NAMEDPERIOD" => "PERIOD"
+28/03/2024 CFB base on SpanRuler instead of EntityRuler
 =============================================================================
 """
 import os

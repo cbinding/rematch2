@@ -6,7 +6,7 @@ Version :   20240125
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
-Summary :   spaCy patterns for use with EntityRuler pipeline components            
+Summary :   spaCy patterns for use with SpanRuler pipeline components            
 Imports :   
 Example :           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
@@ -20,11 +20,11 @@ patterns_en_YEARSPAN = [
         "pattern": [
             #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"OP": "*", "_": {"is_dateprefix": True}},
-            #{"ENT_TYPE": "MONTHNAME"},
+             #{"ENT_TYPE": "MONTHNAME"},
             {"_": {"is_monthname": True}},
             {"ORTH": {"REGEX": r"^\d{4}$"}},
             #{"OP": "*", "ENT_TYPE": "DATESUFFIX"}
-            {"OP": "*", "_": {"is_datesuffix": True}},
+            {"OP": "*", "_": {"is_datesuffix": True}}
         ]
     },
     {
@@ -34,10 +34,10 @@ patterns_en_YEARSPAN = [
             #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"OP": "*", "_": {"is_dateprefix": True}},
             #{"ENT_TYPE": "SEASONNAME"},
-            {"_": {"is_seasonname": True}},
+            {"OP": "*", "_": {"is_seasonname": True}},
             {"ORTH": {"REGEX": r"^\d{4}$"}},
             #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
-            {"OP": "*", "_": {"is_datesuffix": True}},
+            {"OP": "*", "_": {"is_datesuffix": True}}
         ]
     },
     {
@@ -46,8 +46,7 @@ patterns_en_YEARSPAN = [
         "pattern": [
             {"ORTH": {"REGEX": r"^\d+±\d+$"}},
             #{"OP": "*", "ENT_TYPE": "DATESUFFIX"}
-            {"OP": "*", "_": {"is_datesuffix": True}},
-
+            {"OP": "*", "_": {"is_datesuffix": True}}
         ]
     },
     {
@@ -56,7 +55,7 @@ patterns_en_YEARSPAN = [
         "pattern": [
             {"ORTH": {"REGEX": r"^\d+\+\d+\-\d+$"}},
             #{"OP": "*", "ENT_TYPE": "DATESUFFIX"}
-            {"OP": "*", "_": {"is_datesuffix": True}},
+            {"OP": "*", "_": {"is_datesuffix": True}}
         ]
     },
     {
@@ -67,7 +66,7 @@ patterns_en_YEARSPAN = [
             {"OP": "*", "_": {"is_dateprefix": True}},
             {"ORTH": {"REGEX": r"^\d{3,4}$"}},
             #{"OP": "+", "ENT_TYPE": "DATESUFFIX"}
-            {"OP": "+", "_": {"is_datesuffix": True}},
+            {"OP": "*", "_": {"is_datesuffix": True}}
         ]
     },
     {
@@ -76,12 +75,12 @@ patterns_en_YEARSPAN = [
         "pattern": [
             {"ORTH": {"REGEX": r"^\d{3,4}$"}},
             #{"OP": "*", "ENT_TYPE": "DATESUFFIX"},
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "_": {"is_datesuffix": True}},
             #{"ENT_TYPE": "DATESEPARATOR"},
             {"_": {"is_dateseparator": True}},
             {"ORTH": {"REGEX": r"^\d{3,4}$"}},
             #{"OP": "*", "ENT_TYPE": "DATESUFFIX"}
-            {"OP": "*", "_": {"is_datesuffix": True}},
+            {"_": {"is_datesuffix": True}},
         ]
     },
     {
@@ -134,7 +133,7 @@ patterns_en_YEARSPAN = [
             {"_": {"is_ordinal": True}},
             {"LOWER": {"REGEX": r"^(century|centuries|millennium|millennia)$"}},
             #{"OP": "*", "ENT_TYPE": "DATESUFFIX"} 
-            {"OP": "*", "_": {"is_datesuffix": True}},
+            {"OP": "*", "_": {"is_datesuffix": True}}
         ]
     }
 ]

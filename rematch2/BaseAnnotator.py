@@ -32,6 +32,7 @@ if __package__ is None or __package__ == '':
     from Util import *
     from DocSummary import DocSummary
 else:
+    from .Util import *
     from .DocSummary import DocSummary
 
 # base class for VocabularyAnnotator and TemporalAnnotator
@@ -77,15 +78,15 @@ class BaseAnnotator():
         # convert the results to the required format
         match output_format.strip().lower():
             case "html":                
-                output = DocSummary(doc).doctext(format="html", options=options) #self.__doc_to_html(doc, options)
+                output = DocSummary(doc).doctext(format="html") #self.__doc_to_html(doc, options)
             #case "ttl":
                 #output = self.__doc_to_ttl(doc)
             case "json":
                 output = DocSummary(doc).spans(format="json") #self.__doc_to_json(doc)
             case "text":
                 output = DocSummary(doc).spans(format="text")
-            #case "dataframe":
-                #output = DocSummary(doc).entities("html") #self.__doc_to_dataframe(doc)
+            case "dataframe":
+                output = DocSummary(doc).spans(format="dataframe")
             case "csv":
                 output = DocSummary(doc).spans(format="csv") #self.__doc_to_csv(doc)
             case _:
@@ -115,7 +116,7 @@ class BaseAnnotator():
             "to": ent.end_char - 1,
             "id": ent.ent_id_,
             "text": ent.text,
-            "type": ent.label_
+            "label": ent.label_
         } for ent in doc.ents]
 
         pd.set_option('display.max_colwidth', None)
@@ -167,7 +168,6 @@ class BaseAnnotator():
             options = {
                 "ents": None, # so all are displayed
                 "colors": {
-                    "CENTURY": "lightgreen",
                     "YEARSPAN": "moccasin",
                     "PERIOD": "yellow",
                     "MONUMENT": "cyan",

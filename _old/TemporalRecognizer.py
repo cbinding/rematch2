@@ -26,7 +26,6 @@ import spacy            # NLP library
 from spacy import displacy
 
 from PeriodoRuler import PeriodoRuler
-from CenturyRuler import CenturyRuler
 from YearSpanRuler import YearSpanRuler
 
 
@@ -151,10 +150,9 @@ class TemporalRecognizer:
 
         # return HTML rendering of input text with entities highlighted
         options = {
-            "ents": ["YEARSPAN", "CENTURY", "PERIOD", "MONUMENT", "EVENTTYPE", "MATERIAL", "ARCHSCIENCE"],
+            "ents": ["YEARSPAN", "PERIOD", "MONUMENT", "EVENTTYPE", "MATERIAL", "ARCHSCIENCE"],
             "colors": {
                 "YEARSPAN": "lightgreen",
-                "CENTURY": "lightgreen",
                 "PERIOD": "lightgreen",
                 "MONUMENT": "lightblue",
                 "EVENTTYPE": "lightgray",

@@ -5,10 +5,10 @@ Module  :   SeasonNameRuler.py
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
-Summary :   spaCy custom pipeline component (specialized EntityRuler)
+Summary :   spaCy custom pipeline component (specialized SpanRuler)
             Language-sensitive component to identify season names
-            in free text. Entity type added will be "SEASONNAME"
-Imports :   os, sys, spacy, Language, EntityRuler, Doc
+            in free text. Span label will be "SEASONNAME"
+Imports :   os, sys, spacy, Language, SpanRuler
 Example :   nlp.add_pipe("seasonname_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================

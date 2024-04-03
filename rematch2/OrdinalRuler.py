@@ -6,8 +6,8 @@ Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
 Summary :   spaCy custom pipeline component to identify ordinals in free text 
-            Entity type added will be "ORDINAL"
-Imports :   os, sys, spacy, EntityRuler
+            SPan label will be "ORDINAL"
+Imports :   os, sys, spacy, SpanRuler
 Example :   nlp.add_pipe("ordinal_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================

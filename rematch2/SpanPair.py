@@ -40,10 +40,10 @@ class SpanPair:
         return score
 
     def __str__(self):
-        return "{id_1:<40} [{type_1:<}] {text_1:>20} {rel_op} {text_2:<20} [{type_2:>}] {id_2:<40} ({score})".format(
+        return "{id_1:<40} [{label_1:<}] {text_1:>20} {rel_op} {text_2:<20} [{label_2:>}] {id_2:<40} ({score})".format(
                 score = self.score,
-                type_1 = self.span1.label_,
-                type_2 = self.span2.label_,
+                label_1 = self.span1.label_,
+                label_2 = self.span2.label_,
                 rel_op = self.rel_op,
                 id_1 = self.span1.ent_id_,
                 id_2 = self.span2.ent_id_,                  

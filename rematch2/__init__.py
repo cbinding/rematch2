@@ -1,5 +1,4 @@
 from .BaseAnnotator import BaseAnnotator
-from .CenturyRuler import create_century_ruler
 from .DatePrefixRuler import create_dateprefix_ruler
 from .DateSeparatorRuler import create_dateseparator_ruler
 from .DateSuffixRuler import create_datesuffix_ruler

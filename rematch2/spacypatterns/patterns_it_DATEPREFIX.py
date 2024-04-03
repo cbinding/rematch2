@@ -6,7 +6,7 @@ Version :   20240125
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
-Summary :   spaCy patterns for use with EntityRuler pipeline components            
+Summary :   spaCy patterns for use with SpanRuler pipeline components            
 Imports :   
 Example :           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
@@ -51,7 +51,7 @@ patterns_it_DATEPREFIX = [
     { 
         "label": "DATEPREFIX",
 		"pattern": [
-            {"OP": "?", "ENT_TYPE": "ORDINAL"}, 
+            {"_": {"is_ordinal": True}},
             {"LOWER": "metà"},
             {"LOWER": "del"}
         ]
@@ -65,7 +65,7 @@ patterns_it_DATEPREFIX = [
     { 
         "label": "DATEPREFIX",
 		"pattern": [
-            {"ENT_TYPE": "ORDINAL"}, 
+            {"_": {"is_ordinal": True}},
             {"LOWER": {"REGEX": r"^(quarto|trimestre)$"}}, 
             {"OP": "?", "LOWER": "del"}
         ]

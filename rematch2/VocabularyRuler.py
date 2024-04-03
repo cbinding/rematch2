@@ -5,8 +5,8 @@ Module  :   VocabularyRuler.py
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
-Summary :   spaCy custom pipeline components (specialized EntityRuler)
-Imports :   EntityRuler, Language
+Summary :   spaCy custom pipeline components (specialized SpanRuler)
+Imports :   SpanRuler, Language
 Example :   N/A - superclass for more specialized components    
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
@@ -18,7 +18,6 @@ History :
 """
 import spacy
 import json
-from spacy.pipeline import EntityRuler
 from spacy.pipeline import SpanRuler
 from spacy.tokens import Doc
 from spacy.language import Language
@@ -365,5 +364,5 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     doc = nlp(en_test_text1)
     # explacy.print_parse_info(nlp, en_test_text.lower())
     print("Tokens:\n" + DocSummary(doc).tokens("text"))
-    print("Entities:\n" + DocSummary(doc).entities("text"))
+    #print("Entities:\n" + DocSummary(doc).entities("text"))
     print("Spans:\n" + DocSummary(doc).spans("text"))

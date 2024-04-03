@@ -121,34 +121,37 @@ def results_to_text_file(file_name: str="", results: dict={}):
         lines.append(f"{identifier}")
         lines.append(f"\"{input_text}\"")
             
-        # write entity counts (by desc count)             
-        lines.append("\nEntity Counts:")  
-        entity_counts = DocSummary(doc).spancounts(format="text")  
-        lines.append(entity_counts)           
+        # write label counts (by desc count)             
+        lines.append("\nLabel Counts:")  
+        label_counts = DocSummary(doc).labelcounts(format="text")  
+        lines.append(label_counts)
+
+        # write span counts (by desc count)             
+        lines.append("\nSpan Counts:")  
+        span_counts = DocSummary(doc).spancounts(format="text")  
+        lines.append(span_counts)           
                     
-        # write entity pairs as fixed width string values
-        lines.append("\nEntity Pairs:")
+        # write span pairs as fixed width string values
+        lines.append("\nSpan Pairs:")
         pairs = DocSummary(doc).spanpairs(
             format="text",
             rel_ops=[ "<", ">", "<<", ">>", ".", ";" ], 
-            left_types=["PERIOD", "YEARSPAN"], 
-            right_types=["OBJECT"]
+            left_labels=["PERIOD", "YEARSPAN"], 
+            right_labels=["OBJECT"]
         )
         lines.append(pairs)
-
-
         
         # write negated entities
         lines.append("\nNegated Entities:")
-        negated_spans = list(filter(lambda span: span._.is_negated == True, doc.spans["custom"]))
+        negated_spans = list(filter(lambda span: span._.is_negated == True, doc.spans.get("custom",[])))
         if len(negated_spans) == 0:
             lines.append("NONE FOUND")
         else:
             for span in negated_spans:
-                lines.append("({start}->{end}) [{type}] {id:<60} {text}".format(
+                lines.append("({start}->{end}) [{label}] {id:<60} {text}".format(
                     start = span.start,
                     end = span.end,
-                    type = span.label_,
+                    label = span.label_,
                     id = span.ent_id_,
                     text = span.text
                 ))
@@ -222,7 +225,7 @@ def result_to_html_string(identifier: str = "", doc: Doc = None) -> str:
     # write identifier as heading
     html.append("<h4>")
     if(identifier.startswith("http")):
-        html.append(f"<a href='{identifier}'>{identifier}</a>")
+        html.append(f"<a target='_blank' rel='noopener noreferrer' href='{identifier}'>{identifier}</a>")
     else:
         html.append(f"{escape(identifier)}")
     html.append("</h4>")
@@ -240,20 +243,26 @@ def result_to_html_string(identifier: str = "", doc: Doc = None) -> str:
     html.append(DocSummary(doc).tokens("htmll"))
     html.append("</details>")
 
-    # write entity counts
+    # write label counts
     html.append("<details>")
-    html.append(f"<summary>Counts</summary>")
-    html.append(DocSummary(doc).spancounts(format="htmlc"))
+    html.append(f"<summary>Label Counts ({len(DocSummary(doc).labelcounts('list'))})</summary>")
+    html.append(DocSummary(doc).labelcounts(format="htmlt"))
     html.append("</details>")
     
-    # get and write entity pairs
+    # write span counts
     html.append("<details>")
-    html.append(f"<summary>Pairs</summary>")
+    html.append(f"<summary>Span Counts ({len(DocSummary(doc).spancounts('list'))})</summary>")
+    html.append(DocSummary(doc).spancounts(format="htmlt"))
+    html.append("</details>")
+    
+    # get and write span pairs
+    html.append("<details>")
+    html.append(f"<summary>Span Pairs</summary>")
     pairs = DocSummary(doc).spanpairs(
-        format="htmlc", 
+        format="htmlt", 
         rel_ops=[ "<", ">", "<<", ">>", ".", ";" ], 
-        left_types=["PERIOD", "YEARSPAN"], 
-        right_types=["OBJECT"]
+        left_labels=["PERIOD", "YEARSPAN"], 
+        right_labels=["OBJECT"]
         )
     html.append(pairs)
     html.append("</details>")
@@ -261,41 +270,14 @@ def result_to_html_string(identifier: str = "", doc: Doc = None) -> str:
     html.append("<details>")
     html.append(f"<summary>Negation</summary>")
     pairs = DocSummary(doc).spanpairs(
-        format="htmlc", 
+        format="htmlt", 
         rel_ops=[ "<", ">", "<<", ">>", ".", ";" ], 
-        left_types=["NEGATION"], 
-        right_types=["YEARSPAN", "PERIOD", "OBJECT"]
+        left_labels=["NEGATION"], 
+        right_labels=["YEARSPAN", "PERIOD", "OBJECT"]
         )
     html.append(pairs)
     html.append("</details>")
-    '''
-    # write list of negated entities
-    html.append("<h3>Negations:</h3>")
-    def get_negated_spans(spans):
-        excluded =  ["DATEPREFIX", "DATESEPARATOR", "DATESUFFIX", "ORDINAL"]
-        filtered = filter(lambda span: span.label_ not in excluded, spans)
-        return list(filter(lambda span: span._.is_negated == True, filtered))
-       
-    negated_spans = get_negated_spans(doc.spans["custom"])
-    if len(negated_spans) == 0:
-        html.append("<p>NONE FOUND</p>")
-    else:
-        html.append("<table><tbody>")
-        for span in negated_spans: 
-            html.append("<tr>")
-            html.append("<td style='text-align:right; vertical-align: middle;'>")
-            html.append(f"<div class='negated entity {escape(span.label_.lower())}'>")
-            if span.id_.startswith("http"):
-                html.append(f"<a href='{span.id_}'>{escape(span.text)}</a>") 
-            else:
-                html.append(f"<span>{escape(span.text)}</span>")
-            html.append("</div>")
-            html.append("</td>")
-            html.append(f"<td>({span.start_char} &#8594; {span.end_char - 1})</td>")
-            html.append("</tr>")      
-        html.append("</tbody></table>")
-        '''
-    
+        
     # finally, return the built HTML string
     return "".join(html)
 
