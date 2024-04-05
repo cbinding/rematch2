@@ -30,6 +30,18 @@ a:hover {
     font-size: small;    
 }
 
+.monument {
+    background: lightblue;
+}
+
+.monument::after {
+    margin-left: 1em;
+    content: "MONUMENT";
+    float: right;
+    font-weight: bold;
+    font-size: small;
+}
+
 .object {
     background: plum;
 }

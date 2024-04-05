@@ -137,12 +137,12 @@ def results_to_text_file(file_name: str="", results: dict={}):
             format="text",
             rel_ops=[ "<", ">", "<<", ">>", ".", ";" ], 
             left_labels=["PERIOD", "YEARSPAN"], 
-            right_labels=["OBJECT"]
+            right_labels=["OBJECT", "MONUMENT"]
         )
         lines.append(pairs)
         
-        # write negated entities
-        lines.append("\nNegated Entities:")
+        # write negated spans
+        lines.append("\nNegated Spans:")
         negated_spans = list(filter(lambda span: span._.is_negated == True, doc.spans.get("custom",[])))
         if len(negated_spans) == 0:
             lines.append("NONE FOUND")
@@ -230,7 +230,7 @@ def result_to_html_string(identifier: str = "", doc: Doc = None) -> str:
         html.append(f"{escape(identifier)}")
     html.append("</h4>")
 
-    # write displacy HTML rendering of doc text as paragraph with highlighted entities 
+    # write displacy HTML rendering of doc text as paragraph with highlighted spans 
     html.append("<details>")
     html.append(f"<summary>Text ({len(DocSummary(doc).doctext('text'))} characters)</summary>")
     doctext = DocSummary(doc).doctext(format="html")
@@ -262,7 +262,7 @@ def result_to_html_string(identifier: str = "", doc: Doc = None) -> str:
         format="htmlt", 
         rel_ops=[ "<", ">", "<<", ">>", ".", ";" ], 
         left_labels=["PERIOD", "YEARSPAN"], 
-        right_labels=["OBJECT"]
+        right_labels=["OBJECT", "MONUMENT"]
         )
     html.append(pairs)
     html.append("</details>")
@@ -273,7 +273,7 @@ def result_to_html_string(identifier: str = "", doc: Doc = None) -> str:
         format="htmlt", 
         rel_ops=[ "<", ">", "<<", ">>", ".", ";" ], 
         left_labels=["NEGATION"], 
-        right_labels=["YEARSPAN", "PERIOD", "OBJECT"]
+        right_labels=["YEARSPAN", "PERIOD", "OBJECT", "MONUMENT"]
         )
     html.append(pairs)
     html.append("</details>")
@@ -301,7 +301,7 @@ def main(records: list=[], periodo_authority_id: str="p0kh9ds") -> dict:
     nlp.add_pipe("fish_archobjects_ruler", last=True)
     nlp.add_pipe("fish_monument_types_ruler", last=True)  
     # make sure negation_ruler is placed last in the pipeline, 
-    # as it flags "is_negated" property for existing entities
+    # as it flags "is_negated" property for existing spans
     nlp.add_pipe("negation_ruler", last=True)    
     #print(nlp.pipe_names)
 
@@ -309,7 +309,7 @@ def main(records: list=[], periodo_authority_id: str="p0kh9ds") -> dict:
     results = {
         "metadata": {
             "title": "find_pairs.py results",
-            "description": "find paired entities in text",
+            "description": "find paired spans in text",
             "timestamp": DT.now().strftime("%d/%m/%y %H:%M:%S"),
             "periodo_authority_id": periodo_authority_id,
             "input_record_count": input_record_count        

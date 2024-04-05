@@ -135,7 +135,8 @@ if __name__ == "__main__":
         {"lang": "it", "text": "costruito dall'inizio alla metà del 1480 fino alla fine del 1275 o all'inizio del 1500"},
         {"lang": "nl", "text": "gebouwd in het begin tot midden 1480 tot eind 1275, of begin 1500"},
         {"lang": "no", "text": "konstruert tidlig til midten av 1480 til slutten av 1275, eller tidlig på 1500-tallet"},
-        {"lang": "sv", "text": "byggd i början till mitten av 1480 till slutet av 1275, eller tidigt 1500-tal"}
+        {"lang": "sv", "text": "byggd i början till mitten av 1480 till slutet av 1275, eller tidigt 1500-tal"},
+        {"lang": "cs", "text": "Objekt zámku v Chanovicích (okr. Klatovy) se nalézá spolu s pozdně románským kostelem sv. Kříže na severozápadním okraji obce. Byl postaven na nevýrazné ostrožně, jejíž páteř vytvářejí výchozy žulové skály. Ze tří stran sídlo obklopuje zpustlý park s rybníkem v jeho dolní části. Na severovýchodní straně pak k zámku přiléhá areál hospodářského dvora. Nejstarším dokladem existence chanovického sídla je pozdně románský kostel Povýšení sv. Kříže. Jako vlastnický kostel se patrně vázal na zde již existující feudální sídlo. Předpokládá se, že leželo v místech pozdějšího poplužního dvora, dnes dochovaného v klasicistní přestavbě. V průběhu 13. stol. bylo sídlo přeneseno na skalnatou ostrožnu, do míst dnešního zámku. V písemných pramenech se Chanovice objevují ve 2. polovině 14. století. Z této doby pochází též nejstarší dochovaná gotická část sídla. K výrazné přestavbě objektu došlo v prvních desetiletích 16. století za Chanovských z Dlouhé Vsi, kdy stavba nabyla dnešní půdorysné podoby. Areál byl ohrazen novou, značně silnou obvodovou zdí, respektující v některých úsecích starší konstrukce. Roku 1670 byla Chanovicím odpuštěna část berní povinnosti, což snad naznačuje, že obec v této době postihla jakási živelná pohroma. Do podoby sídla výrazně zasáhla barokní přestavba, ke které došlo někdy okolo poloviny 18. století za majitele Ferdinanda Jáchyma Rumerskirchena. Dílčí zásahy do stavby nastaly patrně také po ničivém požáru roku 1781, při kterém vyhořel kostel, fara, škola a zámek spolu s hospodářskými budovami přilehlého dvora. Na přelomu 18. a 19. stol. zámek rychle střídal majitele a pustnul. Písemné prameny uvádí, že roku 1811 objekt, v té době ve velmi špatném stavu, koupil plzeňský podnikatel František Becher. Ten nechal sejmout jedno patro, zámek opravil a pokryl těžkou krytinou. Úpravám se nevyhnul ani chanovický hospodářský dvůr. Částečně ho nechal přestavět na konci 19. stol. nový majitel Eduard Rytíř z Doubků. Poslední známá úprava hospodářského dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)"}
     ]
 
     for test in tests:
@@ -147,6 +148,6 @@ if __name__ == "__main__":
         nlp.add_pipe("dateprefix_ruler", last=True)
         doc = nlp(text)
         
-        print("Tokens:\n" + DocSummary(doc).tokens("text"))
+        #print("Tokens:\n" + DocSummary(doc).tokens("text"))
         print("Spans:\n" + DocSummary(doc).spans("text"))
 

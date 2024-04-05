@@ -151,19 +151,6 @@ def create_aat_styleperiods_ruler(nlp: Language, name: str="aat_styleperiods_rul
     return ruler
 
 
-@Language.factory("fish_archobjects_ruler_old")
-def create_fish_archobjects_ruler_old(nlp: Language, name: str="fish_archobjects_ruler_old") -> SpanRuler:    
-    normalized_patterns = normalize_patterns(
-        nlp=nlp, 
-        pos=["NOUN", "PROPN"],
-        min_lemmatize_length=3,
-        patterns=patterns_from_json_file("patterns_en_FISH_ARCHOBJECTS_20210921.json"),
-        default_label="OBJECT",
-    )
-    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
-    return ruler
-
-
 @Language.factory("fish_archobjects_ruler")
 def create_fish_archobjects_ruler(nlp: Language, name: str="fish_archobjects_ruler") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
@@ -252,7 +239,7 @@ def create_fish_monument_types_ruler(nlp: Language, name: str="fish_monument_typ
         min_lemmatize_length=3,
         patterns=patterns_from_json_file("patterns_en_FISH_MONUMENT_TYPES_20210921.json"),
         pos=["NOUN", "PROPN"],
-        default_label="OBJECT",
+        default_label="MONUMENT",
     )    
 
     # temp diagnostics - write normalized_patterns to a file for review
@@ -364,5 +351,4 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     doc = nlp(en_test_text1)
     # explacy.print_parse_info(nlp, en_test_text.lower())
     print("Tokens:\n" + DocSummary(doc).tokens("text"))
-    #print("Entities:\n" + DocSummary(doc).entities("text"))
     print("Spans:\n" + DocSummary(doc).spans("text"))

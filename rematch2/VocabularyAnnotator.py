@@ -101,39 +101,15 @@ class VocabularyAnnotator(BaseAnnotator):
            
     @staticmethod
     def _to_html(doc: Doc) -> str:
-        # convert results to HTML formatted string (override and call base method)
-
-        # specify colours for HTML output
-        options = {
-            "ents": None, # so all will be displayed
-            "colors": {
-                "ACTIVITY": "lightpink",
-                "AGENT": "beige",
-                "MATERIAL": "lightgreen",
-                "OBJECT": "yellow",
-                "STYLEPERIOD": "moccasin",
-                "PERIOD": "lightgray",
-                "EVIDENCE": "beige",
-                "MARITIME": "steelblue",
-                "ARCHSCIENCE": "lightblue",
-                "EVENTTYPE": "cyan",
-                "COMPONENT": "yellow",
-                "MONUMENT": "lightsalmon"
-            }
-        }
-        return DocSummary(doc).doctext(format="html", options=options)
-        #output = super(VocabularyAnnotator, VocabularyAnnotator).__doc_to_html(doc, options=options)
-        # output = BaseAnnotator()._to_html(doc, options=options)
-        # generate and return HTML marked up text
-        # output = displacy.render(doc, style="ent", options=options)
-        #return output
-
+        # doc text to HTML formatted string with highlighted spans   
+        return DocSummary(doc).doctext(format="html")
+        
 
 if __name__ == "__main__":
     DEFAULT_FORMAT = "csv"
     # initiate the input arguments parser
     parser = argparse.ArgumentParser(
-        prog=__file__, description="Find entities in text")
+        prog=__file__, description="Find spans in text")
 
     # add long and short argument descriptions
     parser.add_argument("--inputfilename", "-n", required=False,

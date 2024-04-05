@@ -71,13 +71,12 @@ class NegationRuler(SpanRuler):
     
     
     def __call__(self, doc: Doc) -> Doc:
-        #for ent in doc.ents:
-            #print(f"{ent.start_char}, {ent.end_char - 1}, {ent.ent_id_}, {ent.text}, {ent.label_}")
         doc = SpanRuler.__call__(self, doc)
-
-        # flag any negated entities
-        # get list of labels of all entities in current doc (apart from NEGATION(!))
-        unique_labels = list(set(map(lambda span: span.label_, doc.spans.get("custom",[]))))
+        all_spans = doc.spans.get("custom",[])
+        
+        # flag any negated spans
+        # get list of unique labels of all spans in current doc (remove 'NEGATION')
+        unique_labels = list(set(map(lambda span: span.label_, all_spans)))
         if "NEGATION" in unique_labels: unique_labels.remove("NEGATION")
 
         # get negation pairs for ALL unique labels
@@ -85,13 +84,13 @@ class NegationRuler(SpanRuler):
         span_pairs = SpanPairs(doc=doc, rel_ops=rel_ops, left_labels=["NEGATION"], right_labels=unique_labels).pairs        
         negated_span_starts = list(map(lambda pair: pair.span2.start, span_pairs))
         
-        # flag entities as is_negated (TODO: take scores into account?)        
-        for span in doc.spans["custom"]:
+        # flag spans as is_negated 
+        # (TODO: take scores into account?)        
+        for span in all_spans:
             if span.start in negated_span_starts:
                 span._.is_negated = True
            
         return doc
-
 
 
 @Language.factory("negation_ruler", default_config={"patterns": []})

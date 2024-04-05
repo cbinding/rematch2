@@ -145,4 +145,4 @@ if __name__ == "__main__":
         doc = nlp(text)
         
         print("Tokens:\n" + DocSummary(doc).tokens("text"))
-        print("Entities:\n" + DocSummary(doc).spans("text"))
+        print("Spans:\n" + DocSummary(doc).spans("text"))

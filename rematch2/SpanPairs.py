@@ -1,6 +1,6 @@
 '''
 =============================================================================
-Package   : 
+Package   : rematch2
 Module    : SpanPairs.py
 Classes   : SpanPairs
 Project   : 
@@ -17,7 +17,6 @@ History
 =============================================================================
 '''
 import itertools        # for product
-import pandas as pd     # for output to HTML table
 from spacy.tokens import Doc, Span, Token
 from spacy.matcher import DependencyMatcher
 
@@ -34,7 +33,7 @@ class SpanPairs:
     def __init__(self, 
         doc: Doc,
         spans_key: str = "custom", 
-        rel_ops: list = [ "<", ">", "<<", ">>", ".*", ";", ";*" ], 
+        rel_ops: list = [ "<", ">", "<<", ">>", ".", ";", ".*", ";*" ], 
         left_labels: list = [], 
         right_labels: list = []):
   
@@ -47,26 +46,29 @@ class SpanPairs:
 
 
     @staticmethod
-    def _filter_spans_by_labels(labels=[], ents=[]):
-        return filter(lambda span: any(span.label_ in s for s in labels), ents)      
+    def _filter_spans_by_labels(labels=[], spans=[]):
+        return filter(lambda span: any(span.label_ in s for s in labels), spans)      
         
 
     def _get_noun_chunk_pairs(self) -> list[SpanPair]:
         #matched = dict()
         pairs = []
-        for chunk in self.doc.noun_chunks:            
-
-            # get all LEFT spans in the noun chunk
-            left_spans = self._filter_spans_by_labels(self.left_labels, chunk.ents)
+        all_spans = self.doc.spans.get(self.spans_key, [])
             
-            # get all RIGHT spans in the noun chunk
-            right_spans = self._filter_spans_by_labels(self.right_labels, chunk.ents)
+        for chunk in self.doc.noun_chunks:  
+            # get all spans within the noun chunk        
+            spans_in_chunk = filter(lambda span: span.start >= chunk.start and span.end <= chunk.end, all_spans)
+            
+            # get all LEFT spans within the noun chunk
+            left_spans = self._filter_spans_by_labels(self.left_labels, spans_in_chunk)
+            
+            # get all RIGHT spans within the noun chunk
+            right_spans = self._filter_spans_by_labels(self.right_labels, spans_in_chunk)
             
             # Use cartesian product to give all pair combinations
             for span1, span2 in itertools.product(left_spans, right_spans):
-                # using dict to eliminate duplicates with lower scores
-                # ensure they are not the same entity before adding  
-                if span1.start != span2.start:             
+                # ensure they are not the same span before adding  
+                if span1.orth_ != span2.orth_:             
                     pair = SpanPair(span1=span1, span2=span2, rel_op="-")
                     pairs.append(pair)
                 #id = f"{pair.ent1.id}|{pair.ent2.id}" 
@@ -112,28 +114,25 @@ class SpanPairs:
 
         #matched = dict()
         pairs = []
+        all_spans = self.doc.spans.get(self.spans_key, [])
+
         for match_id, token_ids in matches:
-            # get all LEFT side entities token_ids match
-            left_spans = self._filter_spans_by_labels(self.left_labels, self.doc.spans.get(self.spans_key, []))
+            # get all LEFT side spans token_ids match
+            left_spans = self._filter_spans_by_labels(self.left_labels, all_spans)
             left_spans = filter(lambda span: any(span.start <= token_id and span.end > token_id for token_id in token_ids), left_spans)
             
-            # get all RIGHT side entities token_ids match
-            right_spans = self._filter_spans_by_labels(self.right_labels, self.doc.spans.get(self.spans_key, []))
+            # get all RIGHT side spans token_ids match
+            right_spans = self._filter_spans_by_labels(self.right_labels, all_spans)
             right_spans = filter(lambda span: any(span.start <= token_id and span.end > token_id for token_id in token_ids), right_spans)
 
             # using cartesian product to give all LEFT - RIGHT pair combinations
             for span1, span2 in itertools.product(left_spans, right_spans):
-                # ensure they are not the same entity before adding  
-                if span1.start != span2.start:    
+                # ensure they are not the same span before adding  
+                if span1.orth_ != span2.orth_:    
                     pair = SpanPair(span1=span1, span2=span2, rel_op=rel_op)
                     pairs.append(pair)
-                #id = f"{pair.ent1.id}|{pair.ent2.id}" 
-                # using dict to eliminate duplicates with lower scores
-                #if (id not in matched or pair.score > matched[id].score):
-                    #matched[id] = pair                 
-            
+                
         # return list of result items
-        #return list(matched.values())
         return pairs
 
 

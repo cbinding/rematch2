@@ -78,17 +78,17 @@ class BaseAnnotator():
         # convert the results to the required format
         match output_format.strip().lower():
             case "html":                
-                output = DocSummary(doc).doctext(format="html") #self.__doc_to_html(doc, options)
+                output = DocSummary(doc).doctext(format="html")
             #case "ttl":
                 #output = self.__doc_to_ttl(doc)
             case "json":
-                output = DocSummary(doc).spans(format="json") #self.__doc_to_json(doc)
+                output = DocSummary(doc).spans(format="json")
             case "text":
                 output = DocSummary(doc).spans(format="text")
             case "dataframe":
                 output = DocSummary(doc).spans(format="dataframe")
             case "csv":
-                output = DocSummary(doc).spans(format="csv") #self.__doc_to_csv(doc)
+                output = DocSummary(doc).spans(format="csv")
             case _:
                 output = DocSummary(doc).spans()
 
@@ -106,79 +106,3 @@ class BaseAnnotator():
         # process text file contents
         output = self.annotateText(txt, output_format)
         return output
-
-'''
-    # convert results to pandas.DataFrame object
-    @staticmethod
-    def __doc_to_dataframe(doc: Doc) -> pd.DataFrame:
-        data = [{
-            "from": ent.start_char,
-            "to": ent.end_char - 1,
-            "id": ent.ent_id_,
-            "text": ent.text,
-            "label": ent.label_
-        } for ent in doc.ents]
-
-        pd.set_option('display.max_colwidth', None)
-        df = pd.DataFrame(data)
-        
-        return df
-
-
-    # convert results to CSV formatted string,
-    # or write to specified CSV file if name supplied
-    @staticmethod
-    def __doc_to_csv(doc: Doc, fileName: str = None) -> str:
-        df = BaseAnnotator.__doc_to_dataframe(doc)
-        return df.to_csv(fileName, index=False)
-
-
-    # convert results to JSON formatted string,
-    # or write to specified JSON file if name supplied
-    @staticmethod
-    def __doc_to_json(doc: Doc, fileName: str = None) -> str:
-        df = BaseAnnotator.__doc_to_dataframe(doc)
-        return df.to_json(fileName, orient="records")
-
-
-    # convert results to TTL (Turtle RDF) formatted string
-    @staticmethod
-    def __doc_to_ttl(doc: Doc, id: str=None) -> str:
-        ttl = ""
-        if (id is None):
-            id = "http://tempuri/mydata"
-        # TODO....
-        return ttl
-
-
-    # convert results to python dictionary
-    @staticmethod
-    def __doc_to_dict(doc: Doc) -> dict:
-        df = BaseAnnotator.__doc_to_dataframe(doc)
-        return df.to_dict(orient="records")
-
-
-    # convert results to HTML formatted string
-    @staticmethod
-    def __doc_to_html(doc: Doc, options = None) -> str:
-        # generate and return HTML marked up text
-        # options passed in to specify colours for HTML output
-        # default options if none passed in
-        if options is None:
-            options = {
-                "ents": None, # so all are displayed
-                "colors": {
-                    "YEARSPAN": "moccasin",
-                    "PERIOD": "yellow",
-                    "MONUMENT": "cyan",
-                    "OBJECT": "plum",
-                    "ARCHSCIENCE": "lightpink",
-                    "EVIDENCE": "aliceblue",
-                    "MATERIAL": "antiquewhite",
-                    "EVENTTYPE": "coral",
-                    "NEGATION": "lightgray"
-                }
-            }
-        output = displacy.render(doc, style="ent", options=options)
-        return output
-'''

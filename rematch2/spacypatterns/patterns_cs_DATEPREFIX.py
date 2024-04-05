@@ -30,7 +30,9 @@ patterns_cs_DATEPREFIX = [
         # mid
         "id": "mid",
         "label": "DATEPREFIX",
-        "pattern": "polovina"	
+        "pattern": [
+            {"LOWER": {"REGEX": r"^polovin[yaě]$"}}
+        ]
     },      
     { 
         # late
@@ -39,43 +41,54 @@ patterns_cs_DATEPREFIX = [
         "pattern": "konec"
     },
     { 
-        # first half
+        # late
+        "id": "early",
+        "label": "DATEPREFIX",
+        "pattern": "na konci"
+    },
+    { 
+        # during the
+        "id": "during",
+        "label": "DATEPREFIX",
+        "pattern": "v průběhu"
+    },
+     { 
+        # at the turn of the
+        "id": "during",
+        "label": "DATEPREFIX",
+        "pattern": "na přelomu"
+    },    
+    { 
+        # first half / first quarter
         "label": "DATEPREFIX",
 		"pattern": [
             {"LOWER": {"REGEX": r"^(1\.|první)$"}},
-            {"LOWER": "polovina"}            
+            {"LOWER": {"REGEX": r"^(polovin[yaě]|čtvrtin[yaě])$"}}           
         ]
     },
     { 
-        # second half
+        # first half / first quarter
+        "label": "DATEPREFIX",
+		"pattern": [
+            {"LOWER": {"REGEX": r"^[12]$"}},
+            {"TEXT": {"REGEX": r"^\."}},
+            {"LOWER": {"REGEX": r"^(polovin[yaě]|čtvrtin[yaě])$"}}           
+        ]
+    },
+    { 
+        # second half / second quarter
         "label": "DATEPREFIX",
 		"pattern": [
             {"LOWER": {"REGEX": r"^(2\.|druhá)$"}},
-            {"LOWER": "polovina"}            
+            {"LOWER": {"REGEX": r"^(polovin[yaě]|čtvrtin[yaě])$"}}            
         ]
-    },
-    { 
-        # first quarter
-        "label": "DATEPREFIX",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(1\.|první)$"}},
-            {"LOWER": "čtvrtina"}            
-        ]
-    },
-    { 
-        # second quarter
-        "label": "DATEPREFIX",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(2\.|druhá)$"}},
-            {"LOWER": "čtvrtina"}            
-        ]
-    },
+    },    
     { 
         # third quarter
         "label": "DATEPREFIX",
 		"pattern": [
             {"LOWER": {"REGEX": r"^(3\.|třetí)$"}},
-            {"LOWER": "čtvrtina"}            
+            {"LOWER": {"REGEX": r"^čtvrtin[yaě]$"}} 
         ]
     },
     { 
@@ -83,7 +96,16 @@ patterns_cs_DATEPREFIX = [
         "label": "DATEPREFIX",
 		"pattern": [
             {"LOWER": {"REGEX": r"^(4\.|čtvrtá)$"}},
-            {"LOWER": "čtvrtina"}            
+            {"LOWER": {"REGEX": r"^čtvrtin[yaě]$"}}        
         ]
-    }
+    },
+    { 
+        # quarters
+        "label": "DATEPREFIX",
+		"pattern": [
+            {"LOWER": {"REGEX": r"^[1234]$"}},
+            {"TEXT": {"REGEX": r"^\."}},
+            {"LOWER": "čtvrtina"}           
+        ]
+    },
 ]

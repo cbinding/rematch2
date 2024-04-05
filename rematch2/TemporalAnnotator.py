@@ -87,7 +87,7 @@ if __name__ == "__main__":
     DEFAULT_FORMAT = "csv"
     # initiate the input arguments parser
     parser = argparse.ArgumentParser(
-        prog=__file__, description="Find entities in text")
+        prog=__file__, description="Find spans in text")
 
     # add long and short argument descriptions
     parser.add_argument("--inputfilename", "-n", required=False,

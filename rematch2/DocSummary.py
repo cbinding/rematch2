@@ -7,18 +7,16 @@ Project   : Any
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
 Summary   : Convert spaCy Doc spans, tokens, pairs, counts to
-            various output formats. use to improve consistency
-            TODO: to replace code in find_pairs.py & EntityPairs.py
-Imports   : escape, pandas, DataFrame, Doc, displacy
+            various output formats. use to improve consistency            
+Imports   : escape, pandas, DataFrame, Doc, displacy, SpanPairs
 Example   : html = DocSummary(doc).spans("html")
     .doctext, .tokens, .spans, .spancounts, .labels, .labelcounts, .spanpairs 
 License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
-14/03/2024 CFB Class combines code from other scripts to tidy things up
+14/03/2024 CFB consolidated and centralized code from other scripts
 =============================================================================
 """
-#from typing import Union
 from html import escape
 import pandas as pd
 from pandas import DataFrame
@@ -31,6 +29,7 @@ if __package__ is None or __package__ == '':
 else:
     # uses current package visibility
     from .SpanPairs import SpanPairs
+
 
 class DocSummary:
 
@@ -120,12 +119,18 @@ class DocSummary:
     def _doctext_to_html(
         doc: Doc, 
         spans_key: str="custom", 
-        options: dict=None, 
-        exclude: list=["DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "ORDINAL"]
-        ) -> str:
+        options: dict={}, 
+        exclude: list=[
+            "DATEPREFIX", 
+            "DATESUFFIX", 
+            "DATESEPARATOR", 
+            "ORDINAL", 
+            "MONTHNAME", 
+            "SEASONNAME"
+        ]) -> str:
 
-        opts = { 
-            "spans_key": "subset",
+        default_options = { 
+            "spans_key": "custom",
             "colors": { 
                 #"DATEPREFIX": "lightgray",
                 #"DATESUFFIX": "lightgray",
@@ -135,26 +140,32 @@ class DocSummary:
                 "PERIOD": "yellow", 
                 "YEARSPAN": "moccasin", 
                 "OBJECT": "plum",
-                "MONUMENT": "plum",
+                "MONUMENT": "lightblue",
                 "ARCHSCIENCE": "lightpink",
+                "ACTIVITY": "lightsalmon",
                 "EVIDENCE": "aliceblue",
                 "MATERIAL": "antiquewhite",
                 "EVENTTYPE": "coral"
             } 
-        } if options == None else options 
+        }
+        #opts = options | default_options #if options == None else options 
 
-        # create temp subset as options don't allow us to specify which spans to show/exclude
-        def to_display(span): return span.label_ not in exclude
-        doc.spans["subset"] = list(filter(to_display, doc.spans.get(spans_key, [])))        
+        # create temp subset (as options don't specify what to show/exclude)
+        all_spans = doc.spans.get(spans_key, [])
+        doc.spans["temp_subset"] = list(filter(lambda span: span.label_ not in exclude, all_spans)) 
+
+        # create HTML string rendering the document text with highlighted spans       
         html = displacy.render(
-            docs=doc, 
-            style="span", 
-            page=False, 
-            minify=False, 
-            jupyter=False, 
-            options=opts
-        ) 
-        del doc.spans["subset"]
+            docs = doc, 
+            style = "span", 
+            page = False, 
+            minify = False, 
+            #jupyter = False, 
+            options = default_options | options | {"spans_key": "temp_subset"} #shallow merging
+        )
+
+        # remove the temp subset and return the HTML rendering string
+        del doc.spans["temp_subset"]
         return html
    
 
@@ -278,7 +289,7 @@ class DocSummary:
 
 
     @staticmethod
-    def _spancounts_to_htmll(counts: list = []) -> str:
+    def _spancounts_to_html_list(counts: list = []) -> str:
         pass
 
 
@@ -415,7 +426,7 @@ class DocSummary:
     def _spans_to_html_list(spans: list = []) -> str:
         html = []
         html.append("<details>")
-        html.append(f"<summary>Entities ({len(spans)})</summary>")
+        html.append(f"<summary>Spans ({len(spans)})</summary>")
         html.append("<ul class='entities'>") 
         for span in spans:
             html.append(f"<li class='entity {label.lower()}'>({start}&#8594;{end}) [{label}] {id} \"{text}\"</li>".format(
@@ -513,8 +524,15 @@ class DocSummary:
     @staticmethod   
     def _get_span_counts_by_id(
         spans: list = [], 
-        exclude=["NEGATION", "DATEPREFIX", "DATESEPARATOR", "DATESUFFIX", "ORDINAL"]
-        ) -> list:
+        exclude: list = [
+            "NEGATION", 
+            "DATEPREFIX", 
+            "DATESEPARATOR", 
+            "DATESUFFIX", 
+            "ORDINAL", 
+            "MONTHNAME", 
+            "SEASONNAME"
+        ]) -> list:
 
         counts = {}
 
@@ -550,8 +568,15 @@ class DocSummary:
     @staticmethod   
     def _get_span_counts_by_label(
         spans: list = [], 
-        exclude=["NEGATION", "DATEPREFIX", "DATESEPARATOR", "DATESUFFIX", "ORDINAL"]
-        ) -> list:
+        exclude: list = [
+            "NEGATION", 
+            "DATEPREFIX", 
+            "DATESEPARATOR", 
+            "DATESUFFIX", 
+            "ORDINAL", 
+            "MONTHNAME", 
+            "SEASONNAME"
+        ]) -> list:
 
         counts = {}
 
@@ -569,40 +594,3 @@ class DocSummary:
         
         # return as list sorted by ascending count
         return sorted(list(counts.values()), key=lambda x: x.get("count", 0), reverse=True)
-
-
-    # custom HTML along the lines of displacy but with locally controllable styling?
-    # TODO: not finished or used anywhere yet...
-    @staticmethod
-    def _custom_html_rendering(doc: Doc, spans_key="custom") -> str:
-        
-        def render_in_tag(tag_name: str, content: str):
-            return f"<{escape(tag_name)}>{escape(content)}></{escape(tag_name)}>"
-
-        def tok_for_render(tok):
-            return {
-                "index": tok.idx,
-                "text": tok.text_with_ws,
-                "label": tok.ent_label_
-            }
-
-        def span_for_render(span):
-            return {
-                "index": span.start,
-                "text": span.text,
-                "label": span.label_
-            }
-
-        toks_outside_spans = list(filter(lambda t: t.ent_iob_ not in ['B', 'I'], doc)) 
-        toks_for_render = list(map(tok_for_render, toks_outside_spans))
-        spans_for_render = list(map(span_for_render, doc.spans.get(spans_key, [])))
-        items_for_render = sorted(toks_for_render + spans_for_render, key=lambda x: x.get("index", 0))
-
-        html = "<div>"
-        for item in items_for_render:
-            if item["label"] is not None:
-                html += f"<mark class='entity {escape(item['label'].lower())}'>{escape(item['text'])}</mark>"
-            else:
-                html += item["text"] 
-        html += "</div>"
-        return html

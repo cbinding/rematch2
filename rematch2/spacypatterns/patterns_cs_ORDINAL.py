@@ -18,194 +18,201 @@ patterns_cs_ORDINAL = [
     { 
         "label": "ORDINAL",
 		"pattern": [
+            {"TEXT": {"REGEX": r"^\d+\.$"}}
+        ]
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": [
             {"TEXT": {"REGEX": r"^\d+$"}},
-            {"TEXT": "."}
+            {"TEXT": {"REGEX": r"^\.$"}}
         ]
     },
     { 
         "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(1\.|první)$"}}            
-        ]
+		"pattern": "první" #1st
     },
     { 
         "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(2\.|druhý)$"}}            
-        ]
+		"pattern": "druhý" #2nd
     },
     { 
         "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(3\.|třetí)$"}}            
-        ]
+		"pattern": "třetí" #3rd
     },
     { 
         "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(4\.|čtvrtý)$"}}            
-        ]
+		"pattern": "čtvrtý" #4th
     },
     { 
         "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(5\.|pátý)$"}}            
-        ]
+		"pattern": "pátý" #5th
     },
     { 
         "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(6\.|šestý)$"}}            
-        ]
+		"pattern": "šestý" #6th
     },    
     { 
         "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(7\.|sedmý)$"}}            
-        ]
+		"pattern": "sedmý" #7th
     },    
     { 
         "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(8\.|osmý)$"}}            
-        ]
+		"pattern": "osmý" #8th
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": "devátý" #9th
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": "desátý" #10th
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": "jedenáctý" #11th
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": "dvanáctý" #12th
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": "třináctý" #13th
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": "čtrnáctý" #14th
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": "patnáctý" #15th
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": "šestnáctý" #16th
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": "sedmnáctý" #17th
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": "osmnáctý" #18th
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": "devatenáctý" #19th
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": "dvacátý" #20th
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": "dvacátý první" #21st
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": "jedenadvacátý" #21st 
     },
     { 
         "label": "ORDINAL",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(9\.|devátý)$"}}            
+            {"LOWER": "dvacáty"},   
+            {"LOWER": "druhý"}  #22nd       
         ]
     },
     { 
         "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(10\.|desátý)$"}}            
-        ]
+		"pattern": "dvaadvacátý"  #22nd   
     },
     { 
         "label": "ORDINAL",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(11\.|jedenáctý)$"}}            
+            {"LOWER": "dvacátý"},
+            {"LOWER": "třetí"}   #23rd         
         ]
     },
     { 
         "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(12\.|dvanáctý)$"}}            
-        ]
+		"pattern": "třiadvacátý"  #23rd   
     },
     { 
         "label": "ORDINAL",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(13\.|třináctý)$"}}            
+            {"LOWER": "dvacátý"},
+            {"LOWER": "čtvrtý"} #24th           
         ]
     },
     { 
         "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(14\.|čtrnáctý)$"}}            
-        ]
+		"pattern": "čtyřiadvacátý"  #24th   
     },
     { 
         "label": "ORDINAL",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(15\.|patnáctý)$"}}            
+            {"LOWER": "dvacátý"},
+            {"LOWER": "pátý"} #25th           
         ]
     },
     { 
         "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(16\.|šestnáctý)$"}}            
-        ]
+		"pattern": "pětadvacátý"  #25th   
     },
     { 
         "label": "ORDINAL",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(17\.|sedmnáctý)$"}}            
-        ]
-    },
-     { 
-        "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(18\.|osmnáctý)$"}}            
+            {"LOWER": "dvacátý"},
+            {"LOWER": "šestý"}  #26th          
         ]
     },
     { 
         "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(19\.|devatenáctý)$"}}            
-        ]
+		"pattern": "šestadvacátý"  #26th   
     },
     { 
         "label": "ORDINAL",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(20\.|dvacátý)$"}}            
+            {"LOWER": "dvacátý"},
+            {"LOWER": "sedmý"} #27th           
         ]
     },
     { 
         "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(21\.|dvacátý první|jedenadvacátý)$"}}            
-        ]
+		"pattern": "sedmadvacátý"  #27th   
     },
     { 
         "label": "ORDINAL",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(22\.|dvacáty druhý|dvaadvacátý)$"}}            
+            {"LOWER": "dvacátý"},
+            {"LOWER": "osmý"} #28th           
         ]
     },
     { 
         "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(23\.|dvacátý třetí|třiadvacátý)$"}}            
-        ]
+		"pattern": "osmadvacátý"  #28th   
     },
     { 
         "label": "ORDINAL",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(24\.|dvacátý čtvrtý|čtyřiadvacátý)$"}}            
+            {"LOWER": "dvacátý"},
+            {"LOWER": "devátý"}  #29th          
         ]
     },
     { 
         "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(25\.|dvacátý pátý|pětadvacátý)$"}}            
-        ]
+		"pattern": "devětadvacáty"  #29th   
+    },
+    { 
+        "label": "ORDINAL",
+		"pattern": "třicátý" #30th
     },
     { 
         "label": "ORDINAL",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(26\.|dvacátý šestý|šestadvacátý)$"}}            
-        ]
-    },
-    { 
-        "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(27\.|dvacátý sedmý|sedmadvacátý)$"}}            
-        ]
-    },
-    { 
-        "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(28\.|dvacátý osmý|osmadvacátý)$"}}            
-        ]
-    },
-    { 
-        "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(29\.|dvacátý devátý|devětadvacáty)$"}}            
-        ]
-    },
-    { 
-        "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(30\.|třicátý)$"}}            
-        ]
-    },
-    { 
-        "label": "ORDINAL",
-		"pattern": [
-            {"LOWER": {"REGEX": r"^(31\.|třicátá první)$"}}            
+            {"LOWER": "třicátá"},
+            {"LOWER": "první"} #31st           
         ]
     }
 ]

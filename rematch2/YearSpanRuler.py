@@ -62,7 +62,7 @@ else:
 class YearSpanRuler(SpanRuler):
 
     def __init__(self, nlp: Language, name: str="yearspan_ruler", patterns: list=[]) -> None:
-        # setup token extensions for YearSpan patterns to work
+        # add token extensions for YearSpan patterns to work
         if not Token.has_extension("is_dateprefix"):
             Token.set_extension(name="is_dateprefix", getter=is_dateprefix)
 
@@ -97,8 +97,8 @@ class YearSpanRuler(SpanRuler):
             "dateprefix_ruler",
             "datesuffix_ruler",
             "dateseparator_ruler",
-            #"monthname_ruler",
-            #"seasonname_ruler"
+            "monthname_ruler",
+            "seasonname_ruler"
         ]:
             if not name in nlp.pipe_names:
                 nlp.add_pipe(name, last=True)
@@ -121,11 +121,35 @@ class YearSpanRuler(SpanRuler):
 
         doc = SpanRuler.__call__(self, doc)
 
-        # filter out 'atomic' entities only used to determine yearspan entities
-        filtered = [span for span in doc.spans["custom"] if span.label_ not in [
-            "ORDINAL", "DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "MONTHNAME", "SEASONNAME"]]
-        doc.spans["custom"] = filtered
-        #TODO - filter out 'sub-spans' encompassed by others?
+        # filter for 'atomic' labelled spans only used to determine yearspans
+        #filtered = [span for span in all_spans if span.label_ not in [
+        #    "ORDINAL", "DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "MONTHNAME", "SEASONNAME"]]
+        #doc.spans["custom"] = filtered
+        def not_excluded(span):
+            return span.label_ not in [
+                "ORDINAL", 
+                "DATEPREFIX", 
+                "DATESUFFIX", 
+                "DATESEPARATOR", 
+                "MONTHNAME", 
+                "SEASONNAME"
+            ]
+        # apply the filter
+        doc.spans["custom"] = list(filter(not_excluded, doc.spans.get("custom", [])))
+        
+
+        # filter for 'sub-spans' encompassed by others
+        def not_enclosed(span):
+            return not any(
+                item.orth_ != span.orth_
+                and item.label_ == "YEARSPAN" # restricted as other types may be present!
+                and item.start <= span.start 
+                and item.end >= span.end 
+                for item in doc.spans.get("custom", [])
+            )
+        # apply the filter
+        doc.spans["custom"] = list(filter(not_enclosed, doc.spans.get("custom", [])))
+
         return doc
 
 
@@ -206,6 +230,6 @@ if __name__ == "__main__":
         # run text through the pipeline
         doc = nlp(text)
         
-        print("Tokens:\n" + DocSummary(doc).tokens("text"))
+        #print("Tokens:\n" + DocSummary(doc).tokens("text"))
         print("Spans:\n" + DocSummary(doc).spans("text"))
 
