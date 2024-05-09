@@ -205,6 +205,6 @@ if __name__ == '__main__':
         sourceFilePath = args.inputfilepath.strip()
     else:
         # temp harcoded test..
-        sourceFilePath = "ner-en/oasis_descr_examples.xml"
+        sourceFilePath = "./oasis_descr_examples.xml"
 
     main(sourceFilePath)

@@ -138,7 +138,7 @@ class YearSpanRuler(SpanRuler):
         doc.spans["custom"] = list(filter(not_excluded, doc.spans.get("custom", [])))
         
 
-        # filter for 'sub-spans' encompassed by others
+        # filter out 'sub-spans' encompassed by others
         def not_enclosed(span):
             return not any(
                 item.orth_ != span.orth_

@@ -212,7 +212,7 @@ def results_to_html_file(file_name: str="", results: dict={}):
 
     # open (or create) and write to the output file
     with open(file_name, "w") as html_file:
-        html_file.write( "".join(html))
+        html_file.write("".join(html))
 
 
 # write single results as a HTML string for presentation output
@@ -349,7 +349,7 @@ if __name__ == '__main__':
     if(from_xml):
         # get list of test records to be processed [{"id", "text"},{"id", "text"}]
         # (XML file is OASIS example data received from Tim @ ADS)      
-        test_records = get_records_from_xml_file("./oasis_descr_examples.xml")
+        test_records = get_records_from_xml_file("./data/oasis_descr_examples.xml")
     else:
         # load some local tests..
         test_file_path = (Path(__file__).parent / "test_examples_english.json").resolve() 

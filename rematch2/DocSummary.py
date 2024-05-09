@@ -160,7 +160,7 @@ class DocSummary:
             style = "span", 
             page = False, 
             minify = False, 
-            #jupyter = False, 
+            jupyter = False, 
             options = default_options | options | {"spans_key": "temp_subset"} #shallow merging
         )
 

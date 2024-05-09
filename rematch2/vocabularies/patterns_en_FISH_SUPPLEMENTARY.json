@@ -1,0 +1,27 @@
+[
+  {
+    "id": "http://tempuri/supplementary/saxon",		 
+    "pattern": "Saxon",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://tempuri/supplementary/romano-british",		 
+    "pattern": "Romano-British",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://tempuri/supplementary/viking",		 
+    "pattern": "Viking",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://vocab.getty.edu/aat/300400666",		
+    "label": "OBJECT",  
+    "pattern": "post-hole"     
+  },
+  {
+    "id": "http://vocab.getty.edu/aat/300400666",		
+    "label": "OBJECT",  
+    "pattern": "post hole"     
+  }
+]

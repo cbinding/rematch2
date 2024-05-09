@@ -48,7 +48,7 @@ else:
 def create_periodo_ruler(nlp: Language, name: str="periodo_ruler", periodo_authority_id: str="") -> SpanRuler:
     # get terms from selected Perio.do authority as vocab
     # get as new instance, don't refresh cached data
-    pd = PeriodoData(from_cache=True) #tmp...
+    pd = PeriodoData() 
 
     # get periods for authority id
     periods = pd.get_period_list(periodo_authority_id)

@@ -61,6 +61,19 @@ def create_vocabulary_ruler(nlp: Language, name: str = "vocabulary_ruler", patte
     return ruler 
 
 
+@Language.factory(name="ssh_lcsh_ruler", default_config={"language": "en"})
+def create_ssh_lcsh_ruler(nlp: Language, name: str = "ssh_lcsh_ruler", language: str="en") -> SpanRuler:
+    all_patterns = patterns_from_json_file("patterns_SSH_LCSH.json")
+    patterns_for_language = list(filter(lambda x: x.language.strip().lower() == language.strip().lower(), all_patterns))
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_for_language,
+        default_label="SSH_LCSH"
+    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
+
+
 @Language.factory(name="amcr_ruler")
 def create_amcr_ruler(nlp: Language, name: str = "amcr_ruler") -> SpanRuler:
     normalized_patterns = normalize_patterns(
@@ -262,6 +275,16 @@ def create_fish_periods_ruler(nlp: Language, name: str="fish_periods_ruler") -> 
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
 
+@Language.factory("fish_supplementary_ruler")
+def create_fish_supplementary_ruler(nlp: Language, name: str="fish_supplementary_ruler") -> SpanRuler:    
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns_from_json_file("patterns_en_FISH_SUPPLEMENTARY.json"),
+        default_label="OBJECT",
+    )
+    ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
+    return ruler
+
 
 # test the BaseRuler class
 if __name__ == "__main__":
@@ -282,6 +305,10 @@ if __name__ == "__main__":
     en_test_text5 = '''
     During the burial ground survey, evidence of a late Roman fort was located near the earlier Neolithic flint knapping site. Fragments of a roofing nail were found.
     '''
+    en_test_text6 = '''
+    An archaeological excavation on land at Riverside (East of Steamer Quay Road), Totnes,  Devon (SX 8104 5981), was undertaken by AC archaeology during September 2014 and July 2015. Three areas were excavated centred on a series archaeological features identified  during previous trial trenching. Evidence for background prehistoric activity dating from the Mesolithic through to the Early  Bronze Age was identified. No in situ features were securely dated to this period, although a  number of natural tree throws could be associated with this phase of activity. A pit furnace for  iron working excavated during the earlier trial trenching has subsequently been radiocarbon  dated to the 4th-6th centuries AD. Evidence for limited agricultural activity dating from the  Romano-British through to the modern period was also recorded. Finds recovered comprise  small quantities of pottery dating from the prehistoric through to the post-medieval period,  several metal objects, ceramic building material, glass, clay tobacco pipe and prehistoric  worked flint, including a barbed and tanged arrowhead.
+    '''
+
     # Czech test (using Polish spaCy language model as Czech not available)
     # https://digiarchiv.aiscr.cz/id/C-201806206A-K02
     cs_test_text1 = '''
@@ -348,7 +375,7 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     # nlp.add_pipe("fish_maritime_craft_ruler", last=True)
     # nlp.add_pipe("fish_periods_ruler", last=True)
 
-    doc = nlp(en_test_text1)
+    doc = nlp(en_test_text6)
     # explacy.print_parse_info(nlp, en_test_text.lower())
     print("Tokens:\n" + DocSummary(doc).tokens("text"))
     print("Spans:\n" + DocSummary(doc).spans("text"))

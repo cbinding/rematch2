@@ -131,7 +131,10 @@ def normalize_patterns(
                     # IMPORTANT: lemmatization may not work if text is
                     # capitalised, as spaCy regards it as a proper Noun
                     if (lemmatize == True and len(tok.text) >= min_lemmatize_length):
-                        element["LEMMA"] = tok.lemma_.lower()
+                        # lemmatization of full text sometimes different to lemmatisation
+                        # of vocabulary term - so look for both original text OR lemma
+                        element["LEMMA"] = {"IN": [tok.lemma_.lower(), tok.text.lower() ]}
+                        #element["LEMMA"] = tok.lemma_.lower()
                     else:
                         element["LOWER"] = tok.text.lower()  
                     
