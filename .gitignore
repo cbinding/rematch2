@@ -7,4 +7,4 @@ ner-fr/*
 # output of English XML processing
 ner-en/*
 
-#data/output/*
+data/output/*
