@@ -483,12 +483,13 @@ class DocSummary:
         html = []
         html.append("<ul class='tokens'>")
         for tok in toks:
-            html.append("<li class='token'>[{index}] ({start}&#8594;{end}) {pos:<4} \"{text}\"</li>".format(
+            html.append("<li class='token'>[{index}] ({start}&#8594;{end}) pos=\"{pos:<4}\" text=\"{text}\" lemma=\"{lemma}\"</li>".format(
                 index = tok.i,
                 start = tok.idx + 1,
                 end = tok.idx + len(tok.text),
                 pos = tok.pos_,
-                text = escape(tok.text)         
+                text = escape(tok.text),
+                lemma = escape(tok.lemma_)         
             ))
         html.append("</ul>")
         return "\n".join(html)   

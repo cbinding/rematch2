@@ -90,20 +90,20 @@ def normalize_patterns(
         pattern = item.get("pattern", "")
 
         # is there even a pattern present? 
-        # (at this point it may be a list or a str)
+        # (at this point it may be either a list or a string)
         if len(pattern) > 0:
 
-            # if already a token pattern  [{}, {}, ...]
+            # if already a pre-structured token pattern  [{}, {}, ...]
             if isinstance(pattern, list):
 
-                # just add to normalized_patterns
+                # just add to normalized_patterns as it is
                 normalized_patterns.append({
                     "id": clean_id,
                     "label": clean_label,
                     "pattern":  pattern
                 })
 
-            # if phrase pattern (plain string term/phrase)
+            # if a phrase pattern (plain string term/phrase)
             elif isinstance(pattern, str):
                     
                 # normalize whitespace (inconsistent whitespace can frustrate matching)
@@ -124,27 +124,39 @@ def normalize_patterns(
                 for tok in doc:
                     element = {}
 
-                    # lemmatize term if required (and if term is long enough)
-                    # e.g. "skirting boards":
-                    # { "LEMMA": "skirt" }, { "LEMMA": "board" } or
-                    # { "LOWER": "skirt" }, { "LOWER": "board" }
-                    # IMPORTANT: lemmatization may not work if text is
-                    # capitalised, as spaCy regards it as a proper Noun
-                    if (lemmatize == True and len(tok.text) >= min_lemmatize_length):
-                        # lemmatization of full text sometimes different to lemmatisation
-                        # of vocabulary term - so look for both original text OR lemma
-                        element["LEMMA"] = {"IN": [tok.lemma_.lower(), tok.text.lower() ]}
-                        #element["LEMMA"] = tok.lemma_.lower()
+                    # lemmatize term if required (and if term long enough). Using both lemma AND original term as
+                    # lemmatization may not work if text is capitalised (spaCy may regard it as a proper Noun),
+                    # and there doesn't seem to be a way to specify a rule to match on the lowercase of the lemma
+                    # e.g. "skirting boards" - pattern built is either:
+                    # { "LEMMA": { "IN" { [ "SKIRT", "skirt", "Skirt", "SKIRTING", "skirting", "Skirting" ] },
+                    # { "LEMMA": { "IN" { [ "BOARD", "board", "Board", "BOARDS", "boards", "Boards" ] } 
+                    # or:
+                    # { "LOWER": "skirting" }, { "LOWER": "boards" }                    
+                    lemma = tok.lemma_.strip()
+                    text = tok.text.strip()
+
+                    if (lemmatize == True and len(text) >= min_lemmatize_length):
+                        # lemmatization of full text may be different to lemmatisation of vocabulary term, 
+                        # so using set to list unique case variants of either original term text OR lemma 
+                        variants = list({
+                            lemma.upper(), 
+                            lemma.lower(), 
+                            lemma.title(), 
+                            text.upper(), 
+                            text.lower(), 
+                            text.title()
+                        })                       
+                        element["LEMMA"] = { "IN": variants }   
                     else:
-                        element["LOWER"] = tok.text.lower()  
+                        # just match the term, ignore case
+                        element["LOWER"] = text.lower()
                     
-                    # add pos tags check if any passed in
-                    # note POS (was) only applied to LAST term if multi-word phrase
+                    # add pos tags restriction if any passed in
+                    # note 06/03/2024 - POS (was) only applied to LAST term if multi-word phrase
                     # e.g. { "LEMMA": "board", "POS": { "IN": ["NOUN", "PROPN"] }}
-                    # 06/03/2024 - POS now only applied to single words, but not phrases
-                    # if (len(pos) > 0 and n == phrase_length):
+                    # POS now applied ONLY to single words, but not phrases
                     if (len(pos) > 0 and phrase_length == 1):
-                        element["POS"] = {"IN": pos}
+                        element["POS"] = { "IN": pos }
 
                     new_pattern.append(element)
                     

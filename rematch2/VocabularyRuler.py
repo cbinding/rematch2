@@ -251,7 +251,7 @@ def create_fish_monument_types_ruler(nlp: Language, name: str="fish_monument_typ
         nlp=nlp, 
         min_lemmatize_length=3,
         patterns=patterns_from_json_file("patterns_en_FISH_MONUMENT_TYPES_20210921.json"),
-        pos=["NOUN", "PROPN"],
+        pos=["NOUN"], #pos=["NOUN", "PROPN"],
         default_label="MONUMENT",
     )    
 
@@ -275,6 +275,7 @@ def create_fish_periods_ruler(nlp: Language, name: str="fish_periods_ruler") -> 
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
 
+
 @Language.factory("fish_supplementary_ruler")
 def create_fish_supplementary_ruler(nlp: Language, name: str="fish_supplementary_ruler") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
@@ -282,6 +283,13 @@ def create_fish_supplementary_ruler(nlp: Language, name: str="fish_supplementary
         patterns=patterns_from_json_file("patterns_en_FISH_SUPPLEMENTARY.json"),
         default_label="OBJECT",
     )
+    # temp diagnostics - write normalized_patterns to a file for review
+    with open("fish_supplementary_ruler_patterns.py", "w") as f:
+        f.write("x = [\n")
+        for pattern in normalized_patterns:
+            f.write(f"{pattern},\n") 
+        f.write("]") 
+        
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
 

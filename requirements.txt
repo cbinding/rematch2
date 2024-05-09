@@ -10,7 +10,7 @@ sympy>=1.10.1
 ipywidgets>=7.7.0
 
 brotli # for JSON Periodo import (returns brotli compressed data)
-slugify # for constructing valid filenames from record identifiers
+python-slugify # for constructing valid filenames from record identifiers
 # additional
 spacy>=3.7.2  # for NER
 

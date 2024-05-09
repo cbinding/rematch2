@@ -1,7 +1,37 @@
 [
   {
+    "id": "http://tempuri/supplementary/pleistocene",		 
+    "pattern": "Pleistocene",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://tempuri/supplementary/holocene",		 
+    "pattern": "Holocene",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dsts5m",		 
+    "pattern": "Late Paleolithic",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dsts5m",		 
+    "pattern": "Late Palaeolithic",
+    "label": "PERIOD"
+  },
+  {
     "id": "http://tempuri/supplementary/saxon",		 
     "pattern": "Saxon",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://tempuri/supplementary/anglo-saxon",		 
+    "pattern": "Anglo Saxon",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://tempuri/supplementary/anglo-saxon",		 
+    "pattern": "Anglo-Saxon",
     "label": "PERIOD"
   },
   {
@@ -10,18 +40,78 @@
     "label": "PERIOD"
   },
   {
+    "id": "http://tempuri/supplementary/romano-british",		 
+    "pattern": "Romano British",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://tempuri/supplementary/post-medieval",		 
+    "pattern": "Post-Medieval",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://tempuri/supplementary/post-medieval",		 
+    "pattern": "Post-Mediaeval",
+    "label": "PERIOD"
+  },
+  {
     "id": "http://tempuri/supplementary/viking",		 
     "pattern": "Viking",
     "label": "PERIOD"
   },
   {
-    "id": "http://vocab.getty.edu/aat/300400666",		
-    "label": "OBJECT",  
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70403",		
+    "label": "MONUMENT",  
     "pattern": "post-hole"     
   },
   {
-    "id": "http://vocab.getty.edu/aat/300400666",		
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70403",		
+    "label": "MONUMENT",  
+    "pattern": "posthole"     
+  },
+  {
+    "id": "http://tempuri/supplementary/roundhouse",		
+    "label": "MONUMENT",  
+    "pattern": "roundhouse"     
+  },  
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70267",		
+    "label": "MONUMENT",  
+    "pattern": "hollow-way"     
+  },
+  {
+    "id": "http://tempuri/supplementary/flint",		
     "label": "OBJECT",  
-    "pattern": "post hole"     
+    "pattern": "flint"     
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96399",		
+    "label": "OBJECT",  
+    "pattern": "bladelet"     
+  },  
+  {
+    "id": "http://tempuri/supplementary/pottery",		
+    "label": "OBJECT",  
+    "pattern": "pottery"     
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97042",		
+    "label": "OBJECT",  
+    "pattern": "loom-weight"     
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97042",		
+    "label": "OBJECT",  
+    "pattern": "loom weight"     
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96961",	
+    "label"	: "OBJECT",
+    "pattern": "Quernstone"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96961",	
+    "label"	: "OBJECT",	 
+    "pattern": "Quern stone"
   }
 ]

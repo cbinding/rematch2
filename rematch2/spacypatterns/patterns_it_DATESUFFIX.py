@@ -17,29 +17,29 @@ patterns_it_DATESUFFIX = [
     {
     "id": "ad",
     "label": "DATESUFFIX",
-    "pattern": [{"LOWER": {"REGEX": "^a\.?d\.?$"}}]
+    "pattern": [{"LOWER": {"REGEX": r"^a\.?d\.?$"}}]
   },  
   {
     "id": "bc",
     "label": "DATESUFFIX",
-    "pattern": [{"LOWER": {"REGEX": "^b\.?c\.?$"}}]
+    "pattern": [{"LOWER": {"REGEX": r"^b\.?c\.?$"}}]
   }, 
   {
     "id": "ad",
     "label": "DATESUFFIX",
-    "pattern": [{"LOWER": {"REGEX": "^c\.?e\.?$"}}]
+    "pattern": [{"LOWER": {"REGEX": r"^c\.?e\.?$"}}]
   },   
   {
     "id": "bc",
     "label": "DATESUFFIX",
-    "pattern": [{"LOWER": {"REGEX": "^b\.?c\.?e\.?$"}}]
+    "pattern": [{"LOWER": {"REGEX": r"^b\.?c\.?e\.?$"}}]
   },
   {
     "id": "bp",
     "label": "DATESUFFIX",
     "pattern": [
-      {"OP": "*", "LOWER": {"REGEX": "^cal\.?$"}},
-      {"LOWER": {"REGEX": "^b\.?p\.?$"}}
+      {"OP": "*", "LOWER": {"REGEX": r"^cal\.?$"}},
+      {"LOWER": {"REGEX": r"^b\.?p\.?$"}}
     ]
   }
 ]
