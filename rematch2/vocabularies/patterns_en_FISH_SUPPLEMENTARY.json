@@ -11,6 +11,11 @@
   },
   {
     "id": "http://n2t.net/ark:/99152/p0kh9dsts5m",		 
+    "pattern": "Upper Paleolithic",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dsts5m",		 
     "pattern": "Late Paleolithic",
     "label": "PERIOD"
   },
@@ -22,6 +27,11 @@
   {
     "id": "http://tempuri/supplementary/saxon",		 
     "pattern": "Saxon",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://tempuri/supplementary/late-saxon",		 
+    "pattern": "Late Saxon",
     "label": "PERIOD"
   },
   {
@@ -45,12 +55,12 @@
     "label": "PERIOD"
   },
   {
-    "id": "http://tempuri/supplementary/post-medieval",		 
+    "id": "http://n2t.net/ark:/99152/p0kh9dsctsj",		 
     "pattern": "Post-Medieval",
     "label": "PERIOD"
   },
   {
-    "id": "http://tempuri/supplementary/post-medieval",		 
+    "id": "http://n2t.net/ark:/99152/p0kh9dsctsj",		 
     "pattern": "Post-Mediaeval",
     "label": "PERIOD"
   },
@@ -113,5 +123,39 @@
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96961",	
     "label"	: "OBJECT",	 
     "pattern": "Quern stone"
+  },
+
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/142915",	
+    "label"	: "OBJECT",	 
+    "pattern": [
+      { "POS": "ADJ", "LOWER": "alluvial" },
+      { "POS": "NOUN" }
+    ]
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/142915",	
+    "label"	: "OBJECT",	 
+    "pattern": [
+      { "POS": "ADJ" },
+      { "LOWER": "alluvium" }
+    ]
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/142920",	
+    "label"	: "OBJECT",	 
+    "pattern": [
+      { "POS": "ADJ", "LOWER": "colluvial" },
+      { "POS": "NOUN" }
+    ]
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/142920",	
+    "label"	: "OBJECT",	 
+    "pattern": [
+      { "POS": "ADJ" },
+      { "LOWER": "colluvium" }
+    ]
   }
+
 ]

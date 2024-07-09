@@ -39,7 +39,7 @@ patterns_en_DATESUFFIX = [
     "label": "DATESUFFIX",
     "pattern": [
       {"OP": "*", "LOWER": {"REGEX": r"^cal\.?$"}},
-      {"LOWER": {"REGEX": r"^b\.?p\.?$"}}
+      {"LOWER": {"REGEX": r"^b\.?[cp]\.?$"}}
     ]
   }
 ]

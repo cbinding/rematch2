@@ -94,7 +94,7 @@ patterns_en_YEARSPAN = [
             {"OP": "*", "_": {"is_datesuffix": True}},
             {"OP": "+", "_": {"is_dateseparator": True}},
             {"OP": "*", "_": {"is_dateprefix": True}},
-            {"ORTH": {"REGEX": r"^\d{3,4}}$"}},
+            {"ORTH": {"REGEX": r"^\d{3,4}$"}},
             {"OP": "*", "_": {"is_datesuffix": True}},
         ]
     },
@@ -104,6 +104,7 @@ patterns_en_YEARSPAN = [
 		"pattern": [
             {"OP": "*", "_": {"is_dateprefix": True}},
             {"OP": "+", "_": {"is_ordinal": True}},
+            {"OP": "?", "_": {"is_dateseparator": True}},
             {"LOWER": {"REGEX": r"^(century|centuries|millennium|millennia)$"}},
             {"OP": "*", "_": {"is_datesuffix": True}},
         ]
@@ -114,10 +115,12 @@ patterns_en_YEARSPAN = [
 		"pattern": [
             {"OP": "*", "_": {"is_dateprefix": True}},
             {"OP": "+", "_": {"is_ordinal": True}},
+            {"OP": "?", "_": {"is_dateseparator": True}},
             {"OP": "?", "LOWER": {"REGEX": r"^(century|centuries|millennium|millennia)$"}},            
             {"OP": "*", "_": {"is_datesuffix": True}},
             {"OP": "+", "_": {"is_dateseparator": True}},
             {"OP": "+", "_": {"is_ordinal": True}},
+            {"OP": "?", "_": {"is_dateseparator": True}},
             {"LOWER": {"REGEX": r"^(century|centuries|millennium|millennia)$"}},
             {"OP": "*", "_": {"is_datesuffix": True}}
         ]

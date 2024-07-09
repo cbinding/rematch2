@@ -39,13 +39,13 @@ else:
 
 
 def patterns_from_json_file(file_name: str) -> list:
-        base_path = (Path(__file__).parent / "vocabularies").resolve()
-        file_path = os.path.join(base_path, file_name)
-        patterns = []
-        with open(file_path, "r") as f:
-            patterns = json.load(f)
+    base_path = (Path(__file__).parent / "vocabularies").resolve()
+    file_path = os.path.join(base_path, file_name)
+    patterns = []
+    with open(file_path, "r") as f:
+        patterns = json.load(f)
 
-        return patterns
+    return patterns
 
 
 def create_vocabulary_ruler(nlp: Language, name: str = "vocabulary_ruler", patterns: list = []) -> SpanRuler:
@@ -168,7 +168,7 @@ def create_aat_styleperiods_ruler(nlp: Language, name: str="aat_styleperiods_rul
 def create_fish_archobjects_ruler(nlp: Language, name: str="fish_archobjects_ruler") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
-        pos=["NOUN", "PROPN"],
+        pos=["NOUN"], #pos=["NOUN", "PROPN"],
         min_lemmatize_length=3,
         patterns=patterns_from_json_file("patterns_en_FISH_ARCHOBJECTS_20210921.json"),
         default_label="OBJECT",

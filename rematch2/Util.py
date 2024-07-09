@@ -55,7 +55,7 @@ def is_token_within_labelled_span(tok: Token, label: str="DATEPREFIX", spans_key
     # list any previously identified spans with this label in the document
     spans = list(filter(lambda span: span.label_ == label, tok.doc.spans.get(spans_key, [])))
     # is this token inside any of them?
-    return any(span.start <= tok.i and span.end >= tok.i for span in spans) 
+    return any(span.start <= tok.i and span.end > tok.i for span in spans) 
 
 # get list of labels for any spans this token is within
 def get_labels_for_token(tok: Token, spans_key: str="custom") -> list: 
@@ -103,7 +103,7 @@ def normalize_patterns(
                     "pattern":  pattern
                 })
 
-            # if a phrase pattern (plain string term/phrase)
+            # if a phrase pattern (plain string term or phrase)
             elif isinstance(pattern, str):
                     
                 # normalize whitespace (inconsistent whitespace can frustrate matching)
