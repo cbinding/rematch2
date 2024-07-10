@@ -89,6 +89,7 @@ def create_amcr_ruler(nlp: Language, name: str = "amcr_ruler") -> SpanRuler:
 def create_aat_activities_ruler(nlp: Language, name: str = "aat_activities_ruler") -> SpanRuler:
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
+        pos=["VERB"],
         patterns=patterns_from_json_file("patterns_en_AAT_ACTIVITIES_20231018.json"),
         default_label="ACTIVITY"
     )
@@ -181,6 +182,7 @@ def create_fish_archobjects_ruler(nlp: Language, name: str="fish_archobjects_rul
 def create_fish_archsciences_ruler(nlp: Language, name: str="fish_archsciences_ruler") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
+        pos=["VERB"],
         patterns=patterns_from_json_file("patterns_en_FISH_ARCHSCIENCES_20210921.json"),
         default_label="ARCHSCIENCE",
     )
@@ -215,6 +217,7 @@ def create_fish_components_ruler(nlp: Language, name: str="fish_components_ruler
 def create_fish_event_types_ruler(nlp: Language, name: str="fish_event_types_ruler") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
+        pos=["VERB"],
         patterns=patterns_from_json_file("patterns_en_FISH_EVENT_TYPES_20210921.json"),
         default_label="EVENT",
     )

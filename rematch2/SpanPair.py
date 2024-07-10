@@ -47,8 +47,8 @@ class SpanPair:
                 label_1 = self.span1.label_,
                 label_2 = self.span2.label_,
                 rel_op = self.rel_op,
-                id_1 = self.span1.ent_id_,
-                id_2 = self.span2.ent_id_,                  
+                id_1 = self.span1.id_,
+                id_2 = self.span2.id_,                  
                 text_1 = f"\"{self.span1.text}\"",                        
                 text_2 = f"\"{self.span2.text}\""    
             )

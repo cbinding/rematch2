@@ -402,10 +402,12 @@ class DocSummary:
     @staticmethod
     def _spans_to_df(spans: list = []) -> DataFrame:    
         return DataFrame([{
-            "start": span.start_char + 1,
+            "start": span.start_char,
             "end": span.end_char,
+            "token_start": span.start,
+            "token_end": span.end - 1,
             "label": span.label_,
-            "id": span.ent_id_,
+            "id": span.id_,
             "text": span.text
             } for span in spans]) 
 
@@ -419,7 +421,7 @@ class DocSummary:
     @staticmethod
     def _spans_to_html(spans: list = []) -> str:
         df = DocSummary._spans_to_df(spans)
-        return(df.to_html(index=False, border=0)) # renders html table
+        return(df.to_html(index=False, border=True)) # renders html table
 
 
     @staticmethod
@@ -429,11 +431,11 @@ class DocSummary:
         html.append(f"<summary>Spans ({len(spans)})</summary>")
         html.append("<ul class='entities'>") 
         for span in spans:
-            html.append(f"<li class='entity {label.lower()}'>({start}&#8594;{end}) [{label}] {id} \"{text}\"</li>".format(
-                start = span.start_char + 1,
+            html.append("<li class='entity {label}'>({start}&#8594;{end}) [{label}] {id} \"{text}\"</li>".format(
+                start = span.start_char, 
                 end = span.end_char,
                 label = span.label_,
-                id = span.ent_id_,
+                id = span.id_,
                 text = span.text
             ))        
         html.append("</ul>") 
