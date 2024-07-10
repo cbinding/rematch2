@@ -409,7 +409,7 @@ class DocSummary:
             "label": span.label_,
             "id": span.id_,
             "text": span.text
-            } for span in spans]) 
+            } for span in spans]) .drop_duplicates()
 
 
     @staticmethod
