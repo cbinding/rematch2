@@ -214,7 +214,7 @@ def create_aat_activities_ruler(nlp: Language, name: str = "aat_activities_ruler
     return BaseRuler(
         nlp=nlp,
         name=name,
-        default_label="ACTIVITY",
+        default_label="AAT_ACTIVITY",
         patterns=patterns_en_AAT_ACTIVITIES
     )
 
@@ -225,7 +225,7 @@ def create_aat_agents_ruler(nlp: Language, name: str="aat_agents_ruler") -> Base
         nlp=nlp,
         name=name,
         pos=["NOUN", "PROPN"],
-        default_label="AGENT",
+        default_label="AAT_AGENT",
         patterns=patterns_en_AAT_AGENTS
     )
 
@@ -235,7 +235,7 @@ def create_aat_associated_concepts_ruler(nlp: Language, name: str="aat_associate
     return BaseRuler(
         nlp=nlp,
         name=name,
-        default_label="ASSOCIATED_CONCEPT",
+        default_label="AAT_ASSOCIATED_CONCEPT",
         patterns=patterns_en_AAT_ASSOCIATED_CONCEPTS
     )
 
@@ -245,7 +245,7 @@ def create_aat_materials_ruler(nlp: Language, name: str="aat_materials_ruler") -
     return BaseRuler(
         nlp=nlp,
         name=name,
-        default_label="MATERIAL",
+        default_label="AAT_MATERIAL",
         patterns=patterns_en_AAT_MATERIALS
     )
 
@@ -256,7 +256,7 @@ def create_aat_objects_ruler(nlp: Language, name: str="aat_objects_ruler") -> Ba
         nlp=nlp,
         name=name,
         pos=["NOUN", "PROPN"],
-        default_label="OBJECT",
+        default_label="AAT_OBJECT",
         patterns=patterns_en_AAT_OBJECTS
     )
 
@@ -266,7 +266,7 @@ def create_aat_physical_attributes_ruler(nlp: Language, name: str="aat_physical_
     return BaseRuler(
         nlp=nlp,
         name=name,
-        default_label="PHYSICAL_ATTRIBUTE",
+        default_label="AAT_PHYSICAL_ATTRIBUTE",
         patterns=patterns_en_AAT_PHYSICAL_ATTRIBUTES
     )
 
@@ -276,7 +276,7 @@ def create_aat_styleperiods_ruler(nlp: Language, name: str="aat_styleperiods_rul
     return BaseRuler(
         nlp=nlp,
         name=name,
-        default_label="STYLEPERIOD",
+        default_label="AAT_STYLEPERIOD",
         patterns=patterns_en_AAT_STYLEPERIODS
     )
 
@@ -287,7 +287,7 @@ def create_fish_archobjects_ruler(nlp: Language, name: str="fish_archobjects_rul
         nlp=nlp,
         name=name,
         pos=["NOUN", "PROPN"],
-        default_label="OBJECT",
+        default_label="FISH_OBJECT",
         patterns=patterns_en_FISH_ARCHOBJECTS
     )
 
@@ -297,7 +297,7 @@ def create_fish_archsciences_ruler(nlp: Language, name: str="fish_archsciences_r
     return BaseRuler(
         nlp=nlp,
         name=name,
-        default_label="ARCHSCIENCE",
+        default_label="FISH_ARCHSCIENCE",
         patterns=patterns_en_FISH_ARCHSCIENCES
     )
 
@@ -318,7 +318,7 @@ def create_fish_components_ruler(nlp: Language, name: str="fish_components_ruler
         nlp=nlp,
         name=name,
         pos=["NOUN", "PROPN"],
-        default_label="OBJECT",
+        default_label="FISH_OBJECT",
         patterns=patterns_en_FISH_COMPONENTS
     )
 
@@ -328,7 +328,7 @@ def create_fish_event_types_ruler(nlp: Language, name: str="fish_event_types_rul
     return BaseRuler(
         nlp=nlp,
         name=name,
-        default_label="EVENT",
+        default_label="FISH_EVENT",
         patterns=patterns_en_FISH_EVENT_TYPES
     )
 
@@ -338,7 +338,7 @@ def create_fish_evidence_ruler(nlp: Language, name: str="fish_evidence_ruler") -
     return BaseRuler(
         nlp=nlp,
         name=name,
-        default_label="EVIDENCE",
+        default_label="FISH_EVIDENCE",
         patterns=patterns_en_FISH_EVIDENCE
     )
 
@@ -349,7 +349,7 @@ def create_fish_maritime_craft_ruler(nlp: Language, name: str="fish_maritime_cra
         nlp=nlp,
         name=name,
         pos=["NOUN", "PROPN"],
-        default_label="OBJECT",
+        default_label="FISH_OBJECT",
         patterns=patterns_en_FISH_MARITIME_CRAFT
     )
 
@@ -360,7 +360,7 @@ def create_fish_monument_types_ruler(nlp: Language, name: str="fish_monument_typ
         nlp=nlp,
         name=name,
         pos=["NOUN", "PROPN"],
-        default_label="OBJECT",
+        default_label="FISH_OBJECT",
         #min_lemmatize_length=3,
         patterns=patterns_en_FISH_MONUMENT_TYPES
     )

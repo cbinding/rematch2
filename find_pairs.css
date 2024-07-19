@@ -30,11 +30,11 @@ a:hover {
     font-size: small;    
 }
 
-.monument {
+.fish_monument {
     background: lightblue;
 }
 
-.monument::after {
+.fish_monument::after {
     margin-left: 1em;
     content: "MONUMENT";
     float: right;
@@ -42,11 +42,11 @@ a:hover {
     font-size: small;
 }
 
-.object {
+.fish_object .aat_object {
     background: plum;
 }
 
-.object::after {
+.fish_object::after .aat_object::after {
     margin-left: 1em;
     content: "OBJECT";
     float: right;

@@ -1,7 +1,7 @@
 [
     {
         "id": "https://vocab.getty.edu/aat/300054595",	
-        "label"	: "ACTIVITY",	 
+        "label"	: "AAT_ACTIVITY",	 
         "pattern": [
         { "POS": { "IN": ["ADV", "ADJ"] }},
         { "LOWER": "analysis" }
@@ -10,7 +10,7 @@
 
     {
         "id": "http://vocab.getty.edu/aat/300054714",	
-        "label"	: "ACTIVITY",	 
+        "label"	: "AAT_ACTIVITY",	 
         "pattern": [
         { "POS": { "IN": ["ADV", "ADJ"] }},
         { "LOWER": "dating" }

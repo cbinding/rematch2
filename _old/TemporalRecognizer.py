@@ -150,14 +150,14 @@ class TemporalRecognizer:
 
         # return HTML rendering of input text with entities highlighted
         options = {
-            "ents": ["YEARSPAN", "PERIOD", "MONUMENT", "EVENTTYPE", "MATERIAL", "ARCHSCIENCE"],
+            "ents": ["YEARSPAN", "PERIOD", "FISH_MONUMENT", "FISH_EVENTTYPE", "FISH_MATERIAL", "FISH_ARCHSCIENCE"],
             "colors": {
                 "YEARSPAN": "lightgreen",
                 "PERIOD": "lightgreen",
-                "MONUMENT": "lightblue",
-                "EVENTTYPE": "lightgray",
-                "MATERIAL": "steelblue",
-                "ARCHSCIENCE": "orange"
+                "FISH_MONUMENT": "lightblue",
+                "FISH_EVENTTYPE": "lightgray",
+                "FISH_MATERIAL": "steelblue",
+                "FISH_ARCHSCIENCE": "orange"
             }
         }
         html = displacy.render(

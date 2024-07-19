@@ -82,7 +82,7 @@ def create_aatactivities_ruler(nlp, name="aat_activities_ruler"):
         min_term_length=3,
         lemmatize=True,
         pos=["VERB"],
-        default_label="ACTIVITY",
+        default_label="AAT_ACTIVITY",
         default_language="en",
         vocabulary=_get_vocabulary(VocabularyEnum.AAT_ACTIVITIES)
     )
@@ -97,7 +97,7 @@ def create_aat_agents_ruler(nlp, name="aat_agents_ruler"):
         min_term_length=3,
         lemmatize=True,
         pos=["NOUN"],
-        default_label="AGENT",
+        default_label="AAT_AGENT",
         default_language="en",
         vocabulary=_get_vocabulary(VocabularyEnum.AAT_AGENTS)
     )
@@ -112,7 +112,7 @@ def create_aat_associated_concepts_ruler(nlp, name="aat_associated_concepts_rule
         min_term_length=3,
         lemmatize=True,
         pos=[],
-        default_label="ASSOCIATED_CONCEPT",
+        default_label="AAT_ASSOCIATED_CONCEPT",
         default_language="en",
         vocabulary=_get_vocabulary(VocabularyEnum.AAT_ASSOCIATED_CONCEPTS)
     )
@@ -127,7 +127,7 @@ def create_aat_materials_ruler(nlp, name="aat_materials_ruler"):
         min_term_length=3,
         lemmatize=True,
         pos=[],
-        default_label="MATERIAL",
+        default_label="AAT_MATERIAL",
         default_language="en",
         vocabulary=_get_vocabulary(VocabularyEnum.AAT_MATERIALS)
     )
@@ -142,7 +142,7 @@ def create_aat_objects_ruler(nlp, name="aat_objects_ruler"):
         min_term_length=3,
         lemmatize=True,
         pos=["NOUN"],
-        default_label="OBJECT",
+        default_label="AAT_OBJECT",
         default_language="en",
         vocabulary=_get_vocabulary(VocabularyEnum.AAT_OBJECTS)
     )
@@ -157,7 +157,7 @@ def create_aat_physical_attributes_ruler(nlp, name="aat_physical_attributes_rule
         min_term_length=3,
         lemmatize=True,
         pos=[],
-        default_label="PHYSICAL_ATTRIBUTE",
+        default_label="AAT_PHYSICAL_ATTRIBUTE",
         default_language="en",
         vocabulary=_get_vocabulary(VocabularyEnum.AAT_PHYSICAL_ATTRIBUTES)
     )
@@ -172,7 +172,7 @@ def create_aat_styleperiods_ruler(nlp, name="aat_styleperiods_ruler"):
         min_term_length=3,
         lemmatize=True,
         pos=[],
-        default_label="STYLEPERIOD",
+        default_label="AAT_STYLEPERIOD",
         default_language="en",
         vocabulary=_get_vocabulary(VocabularyEnum.AAT_STYLEPERIODS)
     )
@@ -187,7 +187,7 @@ def create_fish_archobjects_ruler(nlp, name="fish_archobjects_ruler"):
         min_term_length=3,
         lemmatize=True,
         pos=["NOUN"],
-        default_label="OBJECT",
+        default_label="FISH_OBJECT",
         default_language="en",
         vocabulary=_get_vocabulary(VocabularyEnum.FISH_ARCHOBJECTS)
     )
@@ -202,7 +202,7 @@ def create_fish_archsciences_ruler(nlp, name="fish_archsciences_ruler"):
         min_term_length=3,
         lemmatize=True,
         pos=[],
-        default_label="ARCHSCIENCE",
+        default_label="FISH_ARCHSCIENCE",
         default_language="en",
         vocabulary=_get_vocabulary(VocabularyEnum.FISH_ARCHSCIENCES)
     )
@@ -217,7 +217,7 @@ def create_fish_building_materials_ruler(nlp, name="fish_building_materials_rule
         min_term_length=3,
         lemmatize=True,
         pos=[],
-        default_label="MATERIAL",
+        default_label="FISH_MATERIAL",
         default_language="en",
         vocabulary=_get_vocabulary(VocabularyEnum.FISH_BUILDING_MATERIALS)
     )
@@ -232,7 +232,7 @@ def create_fish_components_ruler(nlp, name="fish_components_ruler"):
         min_term_length=3,
         lemmatize=True,
         pos=["NOUN"],
-        default_label="OBJECT",
+        default_label="FISH_OBJECT",
         default_language="en",
         vocabulary=_get_vocabulary(VocabularyEnum.FISH_COMPONENTS)
     )
@@ -247,7 +247,7 @@ def create_fish_event_types_ruler(nlp, name="fish_event_types_ruler"):
         min_term_length=3,
         lemmatize=True,
         pos=[],
-        default_label="EVENT",
+        default_label="FISH_EVENT",
         default_language="en",
         vocabulary=_get_vocabulary(VocabularyEnum.FISH_EVENT_TYPES)
     )
@@ -262,7 +262,7 @@ def create_fish_evidence_ruler(nlp, name="fish_evidence_ruler"):
         min_term_length=3,
         lemmatize=True,
         pos=[],
-        default_label="EVIDENCE",
+        default_label="FISH_EVIDENCE",
         default_language="en",
         vocabulary=_get_vocabulary(VocabularyEnum.FISH_EVIDENCE)
     )
@@ -277,7 +277,7 @@ def create_fish_maritime_craft_ruler(nlp, name="fish_maritime_craft_ruler"):
         min_term_length=3,
         lemmatize=True,
         pos=["NOUN"],
-        default_label="OBJECT",
+        default_label="FISH_OBJECT",
         default_language="en",
         vocabulary=_get_vocabulary(VocabularyEnum.FISH_MARITIME_CRAFT)
     )
@@ -292,7 +292,7 @@ def create_fish_monument_types_ruler(nlp, name="fish_monument_types_ruler"):
         min_term_length=3,
         lemmatize=True,
         pos=["NOUN"],
-        default_label="OBJECT",
+        default_label="FISH_MONUMENT",
         default_language="en",
         vocabulary=_get_vocabulary(VocabularyEnum.FISH_MONUMENT_TYPES)
     )

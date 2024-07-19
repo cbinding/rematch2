@@ -44,22 +44,22 @@ def writeEntitiesToHtmlFile(doc, targetFileNameWithPath=""):
         "ents": [
             "YEARSPAN",
             "PERIOD",
-            "MONUMENT",
-            "OBJECT",
-            "ARCHSCIENCE",
-            "EVIDENCE",
-            "MATERIAL",
-            "EVENTTYPE"
+            "FISH_MONUMENT",
+            "FISH_OBJECT",
+            "FISH_ARCHSCIENCE",
+            "FISH_EVIDENCE",
+            "FISH_MATERIAL",
+            "FISH_EVENTTYPE"
         ],
         "colors": {
             "YEARSPAN": "moccasin",
             "PERIOD": "yellow",
-            "MONUMENT": "cyan",
-            "OBJECT": "plum",
-            "ARCHSCIENCE": "pink",
-            "EVIDENCE": "aliceblue",
-            "MATERIAL": "antiquewhite",
-            "EVENTTYPE": "coral",
+            "FISH_MONUMENT": "cyan",
+            "FISH_OBJECT": "plum",
+            "FISH_ARCHSCIENCE": "pink",
+            "FISH_EVIDENCE": "aliceblue",
+            "FISH_MATERIAL": "antiquewhite",
+            "FISH_EVENTTYPE": "coral",
         }
     }
     html = displacy.render([doc], style="ent", page=True,

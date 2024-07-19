@@ -8,7 +8,7 @@ Contact :   ceri.binding@southwales.ac.uk
 Project :   
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
             to identify Terms from the Getty AAT Activities Facet in free text. 
-            Entity type added will be "ACTIVITY"
+            Entity type added will be "AAT_ACTIVITY"
 Imports :   os, sys, spacy, Language, PatternRuler
 Example :   nlp.add_pipe("aat_activity_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
@@ -24,7 +24,7 @@ from spacy.language import Language
 # from ..spacypatterns import patterns_en_AAT_ACTIVITIES
 from ..spacypatterns import vocab_en_AAT_ACTIVITIES
 # from .PatternRuler import PatternRuler
-from .BaseRuler import create_base-ruler
+from .BaseRuler import create_base_ruler
 
 # @Language.factory("aat_activity_ruler")
 # def create_aat_activity_ruler(nlp, name="aat_activity_ruler", patterns=patterns_en_AAT_ACTIVITIES):
@@ -33,7 +33,7 @@ from .BaseRuler import create_base-ruler
 
 @Language.factory("aat_activity_ruler")
 def create_aat_activity_ruler(nlp, name="aat_activity_ruler"):
-    return create_base-ruler(nlp, name=name, label="ACTIVITY", language="en", vocab=vocab_en_AAT_ACTIVITIES)
+    return create_base-ruler(nlp, name=name, label="AAT_ACTIVITY", language="en", vocab=vocab_en_AAT_ACTIVITIES)
 
 
 # test the AAT_ActivityRuler class

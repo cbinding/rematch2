@@ -20,7 +20,7 @@ def is_datesuffix(tok):
     return is_token_within_labelled_span(tok, "DATESUFFIX")
 
 def is_object(tok):
-    return is_token_within_labelled_span(tok, "OBJECT")
+    return is_token_within_labelled_span(tok, "FISH_OBJECT")
     
 Token.set_extension(name="is_dateprefix", getter=is_dateprefix, force=True)
 Token.set_extension(name="is_datesuffix", getter=is_datesuffix, force=True)
@@ -38,10 +38,10 @@ options = {
     "spans_key": "custom",
     "colors": {
         "DATEPREFIX": "lightgray",
-        "OBJECT": "plum", 
+        "FISH_OBJECT": "plum", 
         "PERIOD": "yellow",
-        "ACTIVITY": "lightpink",
-        "MATERIAL": "antiquewhite"
+        "FISH_ACTIVITY": "lightpink",
+        "FISH_MATERIAL": "antiquewhite"
     }
 }
 print([(span.text, span.label_) for span in doc.spans["custom"]])

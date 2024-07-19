@@ -62,6 +62,7 @@ class DocSummary:
             case "html": return self._spans_to_html(spans)
             case "htmll": return self._spans_to_html_list(spans)
             case "json": return self._spans_to_json(spans)
+            case "list": return self._spans_to_list(spans)
             case "text": return self._spans_to_text(spans)
             case _: return spans
 
@@ -139,13 +140,15 @@ class DocSummary:
                 "NEGATION": "lightgray",
                 "PERIOD": "yellow", 
                 "YEARSPAN": "moccasin", 
-                "OBJECT": "plum",
-                "MONUMENT": "lightblue",
-                "ARCHSCIENCE": "lightpink",
-                "ACTIVITY": "lightsalmon",
-                "EVIDENCE": "aliceblue",
-                "MATERIAL": "antiquewhite",
-                "EVENTTYPE": "coral"
+                "AAT_OBJECT": "plum",
+                "AAT_ACTIVITY": "lightsalmon",
+                "FISH_OBJECT": "plum",
+                "FISH_MONUMENT": "lightblue",
+                "FISH_ARCHSCIENCE": "lightpink",
+                "FISH_ACTIVITY": "lightsalmon",
+                "FISH_EVIDENCE": "aliceblue",
+                "FISH_MATERIAL": "antiquewhite",
+                "FISH_EVENTTYPE": "coral"
             } 
         }
         #opts = options | default_options #if options == None else options 
@@ -448,13 +451,18 @@ class DocSummary:
         df = DocSummary._spans_to_df(spans)
         return df.to_json(orient="records")
 
+    @staticmethod
+    def _spans_to_list(spans: list = []) -> list:
+        df = DocSummary._spans_to_df(spans)
+        return df.to_dict(orient="records")
+
 
     @staticmethod
     def _spans_to_text(spans: list = []) -> str:
         df = DocSummary._spans_to_df(spans)
         pd.set_option('display.max_colwidth', None)
         return(df.to_string(index=False))
-
+    
 
     @staticmethod
     def _tokens_to_df(toks: list = []) -> DataFrame:    

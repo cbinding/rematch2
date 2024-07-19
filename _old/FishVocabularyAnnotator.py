@@ -80,25 +80,25 @@ class FishVocabularyAnnotator(BaseAnnotator):
         options = {
             "ents": [
                 "PERIOD",
-                "EVIDENCE",
-                "MATERIAL",
-                "MARITIME",
-                "ARCHSCIENCE",
-                "EVENTTYPE",
-                "OBJECT",
-                "COMPONENT",
-                "MONUMENT"
+                "FISH_EVIDENCE",
+                "FISH_MATERIAL",
+                "FISH_MARITIME",
+                "FISH_ARCHSCIENCE",
+                "FISH_EVENTTYPE",
+                "FISH_OBJECT",
+                "FISH_COMPONENT",
+                "FISH_MONUMENT"
             ],
             "colors": {
                 "PERIOD": "lightpink",
-                "EVIDENCE": "beige",
-                "MATERIAL": "lightgreen",
-                "MARITIME": "steelblue",
-                "ARCHSCIENCE": "lightblue",
-                "EVENTTYPE": "cyan",
-                "OBJECT": "yellow",
-                "COMPONENT": "yellow",
-                "MONUMENT": "lightsalmon"
+                "FISH_EVIDENCE": "beige",
+                "FISH_MATERIAL": "lightgreen",
+                "FISH_MARITIME": "steelblue",
+                "FISH_ARCHSCIENCE": "lightblue",
+                "FISH_EVENTTYPE": "cyan",
+                "FISH_OBJECT": "yellow",
+                "FISH_COMPONENT": "yellow",
+                "FISH_MONUMENT": "lightsalmon"
             }
         }
         output = super(FishVocabularyAnnotator, FishVocabularyAnnotator)._to_html(

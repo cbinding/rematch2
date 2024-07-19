@@ -137,7 +137,7 @@ def results_to_text_file(file_name: str="", results: dict={}):
             format="text",
             rel_ops=[ "<", ">", "<<", ">>", ".", ";" ], 
             left_labels=["PERIOD", "YEARSPAN"], 
-            right_labels=["OBJECT", "MONUMENT"]
+            right_labels=["FISH_OBJECT", "FISH_MONUMENT"]
         )
         lines.append(pairs)
         
@@ -262,7 +262,7 @@ def result_to_html_string(identifier: str = "", doc: Doc = None) -> str:
         format="htmlt", 
         rel_ops=[ "<", ">", "<<", ">>", ".", ";" ], 
         left_labels=["PERIOD", "YEARSPAN"], 
-        right_labels=["OBJECT", "MONUMENT"]
+        right_labels=["FISH_OBJECT", "FISH_MONUMENT"]
         )
     html.append(pairs)
     html.append("</details>")
@@ -273,7 +273,7 @@ def result_to_html_string(identifier: str = "", doc: Doc = None) -> str:
         format="htmlt", 
         rel_ops=[ "<", ">", "<<", ">>", ".", ";" ], 
         left_labels=["NEGATION"], 
-        right_labels=["YEARSPAN", "PERIOD", "OBJECT", "MONUMENT"]
+        right_labels=["YEARSPAN", "PERIOD", "FISH_OBJECT", "FISH_MONUMENT"]
         )
     html.append(pairs)
     html.append("</details>")

@@ -91,7 +91,7 @@ def create_aat_activities_ruler(nlp: Language, name: str = "aat_activities_ruler
         nlp=nlp, 
         pos=["VERB"],
         patterns=patterns_from_json_file("patterns_en_AAT_ACTIVITIES_20231018.json"),
-        default_label="ACTIVITY"
+        default_label="AAT_ACTIVITY"
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
@@ -103,7 +103,7 @@ def create_aat_agents_ruler(nlp: Language, name: str="aat_agents_ruler") -> Span
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_AAT_AGENTS_20231018.json"),
         pos=["NOUN", "PROPN"],
-        default_label="AGENT",
+        default_label="AAT_AGENT",
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
@@ -114,7 +114,7 @@ def create_aat_associated_concepts_ruler(nlp: Language, name: str="aat_associate
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_AAT_ASSOCIATED_CONCEPTS_20231018.json"),
-        default_label="ASSOCIATED_CONCEPT",
+        default_label="AAT_ASSOCIATED_CONCEPT",
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
@@ -125,7 +125,7 @@ def create_aat_materials_ruler(nlp: Language, name: str="aat_materials_ruler") -
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_AAT_MATERIALS_20231018.json"),
-        default_label="MATERIAL",
+        default_label="AAT_MATERIAL",
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
@@ -137,7 +137,7 @@ def create_aat_objects_ruler(nlp: Language, name: str="aat_objects_ruler") -> Sp
         nlp=nlp, 
         pos=["NOUN", "PROPN"],
         patterns=patterns_from_json_file("patterns_en_AAT_OBJECTS_20231018.json"),
-        default_label="OBJECT",
+        default_label="AAT_OBJECT",
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
@@ -148,7 +148,7 @@ def create_aat_physical_attributes_ruler(nlp: Language, name: str="aat_physical_
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_AAT_PHYSICAL_ATTRIBUTES_20231018.json"),
-        default_label="PHYSICAL_ATTRIBUTE",
+        default_label="AAT_PHYSICAL_ATTRIBUTE",
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
@@ -159,7 +159,7 @@ def create_aat_styleperiods_ruler(nlp: Language, name: str="aat_styleperiods_rul
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_AAT_STYLEPERIODS_20231018.json"),
-        default_label="STYLEPERIOD",
+        default_label="AAT_STYLEPERIOD",
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
@@ -172,7 +172,7 @@ def create_fish_archobjects_ruler(nlp: Language, name: str="fish_archobjects_rul
         pos=["NOUN"], #pos=["NOUN", "PROPN"],
         min_lemmatize_length=3,
         patterns=patterns_from_json_file("patterns_en_FISH_ARCHOBJECTS_20210921.json"),
-        default_label="OBJECT",
+        default_label="FISH_OBJECT",
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
@@ -184,7 +184,7 @@ def create_fish_archsciences_ruler(nlp: Language, name: str="fish_archsciences_r
         nlp=nlp, 
         pos=["VERB"],
         patterns=patterns_from_json_file("patterns_en_FISH_ARCHSCIENCES_20210921.json"),
-        default_label="ARCHSCIENCE",
+        default_label="FISH_ARCHSCIENCE",
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
@@ -195,7 +195,7 @@ def create_fish_building_materials_ruler(nlp: Language, name: str="fish_building
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_FISH_BUILDING_MATERIALS_20210921.json"),
-        default_label="MATERIAL",
+        default_label="FISH_MATERIAL",
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
@@ -207,7 +207,7 @@ def create_fish_components_ruler(nlp: Language, name: str="fish_components_ruler
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_FISH_COMPONENTS_20210921.json"),
         pos=["NOUN", "PROPN"],
-        default_label="OBJECT",
+        default_label="FISH_OBJECT",
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
@@ -219,7 +219,7 @@ def create_fish_event_types_ruler(nlp: Language, name: str="fish_event_types_rul
         nlp=nlp, 
         pos=["VERB"],
         patterns=patterns_from_json_file("patterns_en_FISH_EVENT_TYPES_20210921.json"),
-        default_label="EVENT",
+        default_label="FISH_EVENT",
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
@@ -230,7 +230,7 @@ def create_fish_evidence_ruler(nlp: Language, name: str="fish_evidence_ruler") -
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_FISH_EVIDENCE_20210921.json"),
-        default_label="EVIDENCE",
+        default_label="FISH_EVIDENCE",
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
@@ -242,7 +242,7 @@ def create_fish_maritime_craft_ruler(nlp: Language, name: str="fish_maritime_cra
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_FISH_MARITIME_CRAFT_20221104.json"),
         pos=["NOUN", "PROPN"],
-        default_label="OBJECT",
+        default_label="FISH_OBJECT",
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
@@ -255,7 +255,7 @@ def create_fish_monument_types_ruler(nlp: Language, name: str="fish_monument_typ
         min_lemmatize_length=3,
         patterns=patterns_from_json_file("patterns_en_FISH_MONUMENT_TYPES_20210921.json"),
         pos=["NOUN"], #pos=["NOUN", "PROPN"],
-        default_label="MONUMENT",
+        default_label="FISH_MONUMENT",
     )    
 
     # temp diagnostics - write normalized_patterns to a file for review
@@ -273,7 +273,7 @@ def create_fish_periods_ruler(nlp: Language, name: str="fish_periods_ruler") -> 
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_FISH_PERIODS_20211011.json"),
-        default_label="PERIOD",
+        default_label="FISH_PERIOD",
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
@@ -284,7 +284,7 @@ def create_fish_supplementary_ruler(nlp: Language, name: str="fish_supplementary
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_FISH_SUPPLEMENTARY.json"),
-        default_label="OBJECT",
+        default_label="FISH_OBJECT",
     )
     # temp diagnostics - write normalized_patterns to a file for review
     with open("fish_supplementary_ruler_patterns.py", "w") as f:

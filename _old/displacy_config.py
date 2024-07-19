@@ -4,16 +4,16 @@
 displacy_config = {
     "ents": [
         "TEMPORAL", 
-        "MONUMENT",
-        "EVENTTYPE",
-        "MATERIAL",
-        "ARCHSCIENCE"
+        "FISH_MONUMENT",
+        "FISH_EVENTTYPE",
+        "FISH_MATERIAL",
+        "FISH_ARCHSCIENCE"
     ],
     "colors": {
         "TEMPORAL": "lightgreen", 
-        "MONUMENT": "lightblue",
-        "EVENTTYPE": "lightgray",
-        "MATERIAL": "steelblue",
-        "ARCHSCIENCE": "orange"
+        "FISH_MONUMENT": "lightblue",
+        "FISH_EVENTTYPE": "lightgray",
+        "FISH_MATERIAL": "steelblue",
+        "FISH_ARCHSCIENCE": "orange"
     }
 }

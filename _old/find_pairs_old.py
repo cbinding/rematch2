@@ -327,7 +327,7 @@ def find_period_object_pairs(nlp=None, input_text: str = "") -> dict:
     result["doc"] = doc.to_json()
 
     # write text with entities tagged
-    options = { "ents": None, "colors": { "NEGATION": "lightgray","PERIOD": "yellow", "OBJECT": "plum" } }
+    options = { "ents": None, "colors": { "NEGATION": "lightgray","PERIOD": "yellow", "FISH_OBJECT": "plum" } }
     result["displacy_ents"] = displacy.render(doc, style="ent", minify=True, options=options)           
 
     # add tokens to result
