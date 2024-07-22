@@ -25,6 +25,36 @@
     "label": "PERIOD"
   },
   {
+    "id": "http://n2t.net/ark:/99152/p0kh9dsts5m",		 
+    "pattern": "Later Paleolithic",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dsts5m",		 
+    "pattern": "Later Palaeolithic",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dscmjf",		 
+    "pattern": "Later Mesolithic",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9ds4hjq",		 
+    "pattern": "Later Neolithic",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9ds8p8k",		 
+    "pattern": "Later Bronze Age",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9ds8p8k",		 
+    "pattern": "Later Iron Age",
+    "label": "PERIOD"
+  },
+  {
     "id": "http://tempuri/supplementary/saxon",		 
     "pattern": "Saxon",
     "label": "PERIOD"
@@ -55,6 +85,16 @@
     "label": "PERIOD"
   },
   {
+    "id": "http://n2t.net/ark:/99152/p0kh9dsmf3f",		 
+    "pattern": "Early Mediaeval",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dscbkd",		 
+    "pattern": "Mediaeval",
+    "label": "PERIOD"
+  },
+  {
     "id": "http://n2t.net/ark:/99152/p0kh9dsctsj",		 
     "pattern": "Post-Medieval",
     "label": "PERIOD"
@@ -70,39 +110,89 @@
     "label": "PERIOD"
   },
   {
-    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70403",		
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96399",		
+    "label": "FISH_OBJECT",  
+    "pattern": "bladelet"     
+  }, 
+  {
+    "id": "http://tempuri/supplementary/borehole",		
     "label": "FISH_MONUMENT",  
-    "pattern": "post-hole"     
+    "pattern": "borehole"     
+  }, 
+  {
+    "id": "http://tempuri/supplementary/borehole",		
+    "label": "FISH_MONUMENT",  
+    "pattern": "bore hole"     
   },
   {
-    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70403",		
+    "id": "http://tempuri/supplementary/borehole",		
     "label": "FISH_MONUMENT",  
-    "pattern": "posthole"     
+    "pattern": "bore-hole"     
   },
   {
-    "id": "http://tempuri/supplementary/roundhouse",		
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70462",		
     "label": "FISH_MONUMENT",  
-    "pattern": "roundhouse"     
-  },  
+    "pattern": "channel"     
+  },
+  {
+    "id": "/purl.org/heritagedata/schemes/eh_tmt2/concepts/78156",		
+    "label": "FISH_MONUMENT",  
+    "pattern": "cobbles"     
+  },
+  {
+    "id": "http://tempuri/supplementary/cofferdam",		
+    "label": "FISH_MONUMENT",  
+    "pattern": "cofferdam"     
+  }, 
+  {
+    "id": "http://tempuri/supplementary/cofferdam",		
+    "label": "FISH_MONUMENT",  
+    "pattern": "coffer dam"     
+  },
+  {
+    "id": "http://tempuri/supplementary/cofferdam",		
+    "label": "FISH_MONUMENT",  
+    "pattern": "coffer-dam"     
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/71132",		
+    "label": "FISH_MONUMENT",  
+    "pattern": "corral"     
+  }, 
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/142911",		
+    "label": "FISH_OBJECT",  
+    "pattern": "deposition"     
+  }, 
+  {
+    "id": "http://tempuri/supplementary/flint",		
+    "label": "FISH_OBJECT",  
+    "pattern": "flint"     
+  },
+  {
+    "id": "http://tempuri/supplementary/floodplain",		
+    "label": "FISH_MONUMENT",  
+    "pattern": "floodplain"     
+  },
+  {
+    "id": "http://tempuri/supplementary/floodplain",		
+    "label": "FISH_MONUMENT",  
+    "pattern": "flood plain"     
+  },
+  {
+    "id": "http://tempuri/supplementary/floodplain",		
+    "label": "FISH_MONUMENT",  
+    "pattern": "flood-plain"     
+  },
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70267",		
     "label": "FISH_MONUMENT",  
     "pattern": "hollow-way"     
   },
   {
-    "id": "http://tempuri/supplementary/flint",		
-    "label": "OBJECT",  
-    "pattern": "flint"     
-  },
-  {
-    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96399",		
-    "label": "FISH_OBJECT",  
-    "pattern": "bladelet"     
-  },  
-  {
-    "id": "http://tempuri/supplementary/pottery",		
-    "label": "FISH_OBJECT",  
-    "pattern": "pottery"     
+    "id": "http://tempuri/supplementary/launchchamber",		
+    "label": "FISH_MONUMENT",  
+    "pattern": "launch chamber"     
   },
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97042",		
@@ -115,6 +205,21 @@
     "pattern": "loom weight"     
   },
   {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70403",		
+    "label": "FISH_MONUMENT",  
+    "pattern": "post-hole"     
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70403",		
+    "label": "FISH_MONUMENT",  
+    "pattern": "posthole"     
+  },
+  {
+    "id": "http://tempuri/supplementary/pottery",		
+    "label": "FISH_OBJECT",  
+    "pattern": "pottery"     
+  },
+  {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96961",	
     "label"	: "FISH_OBJECT",
     "pattern": "Quernstone"
@@ -124,7 +229,26 @@
     "label"	: "FISH_OBJECT",	 
     "pattern": "Quern stone"
   },
-
+  {
+    "id": "http://tempuri/supplementary/roundhouse",		
+    "label": "FISH_MONUMENT",  
+    "pattern": "roundhouse"     
+  }, 
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/86499",		
+    "label": "FISH_MONUMENT",  
+    "pattern": "scatter"     
+  }, 
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/94083",		
+    "label": "FISH_MONUMENT",  
+    "pattern": "stakehole"     
+  }, 
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/94083",		
+    "label": "FISH_MONUMENT",  
+    "pattern": "stake-hole"     
+  }, 
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/142915",	
     "label"	: "FISH_OBJECT",	 
@@ -157,5 +281,4 @@
       { "LOWER": "colluvium" }
     ]
   }
-
 ]
