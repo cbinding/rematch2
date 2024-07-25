@@ -1,0 +1,79 @@
+body {
+    font-family: sans-serif;
+}
+
+a:hover {
+    color: red;
+}
+
+.entity {
+    padding: 0.2em 0.2em;
+    margin: 0 0.2em;
+    line-height: 1;
+    border-radius: 0.2em;
+    vertical-align: middle; 
+    border: 2px solid gray;   
+}
+.negated {
+    border: 2px dashed red;
+}
+
+.period {
+    background: yellow;
+}
+
+.period::after {    
+    margin-left: 1em;
+    content: "PERIOD";
+    float: right;
+    font-weight: bold;
+    font-size: small;    
+}
+
+.fish_monument {
+    background: lightblue;
+}
+
+.fish_monument::after {
+    margin-left: 1em;
+    content: "MONUMENT";
+    float: right;
+    font-weight: bold;
+    font-size: small;
+}
+
+.fish_object, .aat_object {
+    background: plum;
+}
+
+.fish_object::after, .aat_object::after {
+    margin-left: 1em;
+    content: "OBJECT";
+    float: right;
+    font-weight: bold;
+    font-size: small;
+}
+
+.yearspan {
+    background: moccasin;
+}
+
+.yearspan::after {
+    margin-left: 1em;
+    content: "YEARSPAN";
+    float: right;
+    font-weight: bold;
+    font-size: small;
+}
+
+.negation {
+    background: lightgray;
+}
+
+.negation::after {
+    margin-left: 1em;
+    content: "NEGATION";
+    float: right;
+    font-weight: bold;
+    font-size: small;
+}

@@ -8,3 +8,5 @@ ner-fr/*
 ner-en/*
 
 data/output/*
+data/text extraction - pdftotext/*
+data/tmp/*

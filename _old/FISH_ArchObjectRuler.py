@@ -9,7 +9,7 @@ Project :
 Summary :   spaCy custom pipeline component (specialized EntityRuler)
             to identify Terms from the MDA Archaeological Objects Thesaurus 
             and FISH Components thesaurus in free text. 
-            Entity type added will be "OBJECT"
+            Entity type added will be "FISH_OBJECT"
 Imports :   os, sys, spacy, Language, EntityRuler
 Example :   nlp.add_pipe("fish_archobject_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt

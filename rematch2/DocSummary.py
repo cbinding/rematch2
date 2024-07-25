@@ -18,7 +18,11 @@ History
 =============================================================================
 """
 from html import escape
+import json
+import os
+from pathlib import Path
 import pandas as pd
+from html import escape # for writing escaped HTML
 from pandas import DataFrame
 from spacy.tokens import Doc
 from spacy import displacy
@@ -33,9 +37,10 @@ else:
 
 class DocSummary:
 
-    def __init__(self, doc: Doc, spans_key: str="custom"):
+    def __init__(self, doc: Doc, spans_key: str="custom", metadata: dict = {}):
         self._doc = doc
         self._spans_key = spans_key.strip()
+        self._metadata = metadata
     
 
     def __str__(self):
@@ -45,11 +50,28 @@ class DocSummary:
     def __repr__(self):
         return self.__str__()
 
+    
+    def meta(self, format: str="text") -> str:         
+        match format.strip().lower(): 
+            case "html": return self._meta_to_html(self._metadata)
+            case "json": return self._meta_to_json(self._metadata)
+            case "text": return self._meta_to_text(self._metadata)
+            case "dict": return self._metadata
+            case _: return self._metadata   
+
 
     def doctext(self, format: str="text") -> str: 
         match format.strip().lower():  
             case "html": return self._doctext_to_html(self._doc, spans_key=self._spans_key)
             case _: return self._doc.text
+
+
+    def report(self, format: str="text") -> str: 
+        match format.strip().lower():  
+            case "html": return self._report_to_html()
+            case "json": return self._report_to_json()
+            case "text": return self._report_to_text()
+            case _: return self._report_to_text()        
 
     
     def spans(self, format: str="text", label="") -> str|list:
@@ -67,8 +89,15 @@ class DocSummary:
             case _: return spans
 
 
-    def spanpairs(self, format: str="text", left_labels: list=[], right_labels: list=[], rel_ops: list=[]) -> str|list:
+    def spanpairs(self, 
+        format: str="text", 
+        left_labels: list=["PERIOD", "YEARSPAN"], 
+        right_labels: list=["FISH_OBJECT", "FISH_MONUMENT"], 
+        rel_ops: list=[ "<", ">", "<<", ">>", ".", ";" ]
+        ) -> str|list:
+
         pairs = SpanPairs(doc=self._doc, rel_ops=rel_ops, left_labels=left_labels, right_labels=right_labels).pairs
+
         match format.strip().lower():
             case "csv": return self._spanpairs_to_csv(pairs)
             case "html": return self._spanpairs_to_html(pairs)   # render as a table
@@ -76,11 +105,12 @@ class DocSummary:
             case "htmlt": return self._spanpairs_to_html_table(pairs) # rendering from find_pairs.py
             case "json": return self._spanpairs_to_json(pairs)
             case "text": return self._spanpairs_to_text(pairs)
+            case "list": return self._spanpairs_to_list(pairs)
             case _: return pairs
 
     
     def spancounts(self, format: str="text") -> str|list:
-        spans = self.spans(format="list")
+        spans = self.spans(format="default")
         counts = self._get_span_counts_by_id(spans)
         match format.strip().lower():
             case "csv": return self._spancounts_to_csv(counts)
@@ -89,11 +119,12 @@ class DocSummary:
             case "htmlt": return self._spancounts_to_html_table(counts) # rendering from find_pairs.py
             case "json": return self._spancounts_to_json(counts)
             case "text": return self._spancounts_to_text(counts)
+            case "list": return counts
             case _: return counts
 
 
     def labelcounts(self, format: str="text") -> str|list:
-        spans = self.spans(format="list")
+        spans = self.spans(format="default")
         counts = self._get_span_counts_by_label(spans)
         match format.strip().lower():
             case "csv": return self._labelcounts_to_csv(counts)
@@ -102,6 +133,7 @@ class DocSummary:
             case "htmlt": return self._labelcounts_to_html_table(counts)
             case "json": return self._labelcounts_to_json(counts)
             case "text": return self._labelcounts_to_text(counts)
+            case "list": return counts
             case _: return counts
 
 
@@ -113,7 +145,38 @@ class DocSummary:
             case "htmll": return self._tokens_to_html_list(toks) # render as a list
             case "json": return self._tokens_to_json(toks)            
             case "text": return self._tokens_to_text(toks)
+            case "list": return self._tokens_to_list(toks)
             case _: return toks
+
+
+    @staticmethod
+    def _meta_to_html(data: dict) -> str:
+        html = []
+        html.append("<ul>")
+        for key, val in data.items():
+            html.append(f"<li>")
+            html.append(f"<strong>{escape(key)}:</strong>")
+            if isinstance(val, dict):
+                html.append(DocSummary._meta_to_html(val))
+            elif isinstance(val,str):
+                html.append(escape(val))               
+            else:
+                html.append(str(val))
+            html.append('</li>')            
+        html.append("</ul>")
+
+        # finally join and return
+        return f"\n".join(html)
+
+
+    @staticmethod
+    def _meta_to_json(data: dict) -> str:
+        return json.dumps(data)
+
+
+    @staticmethod
+    def _meta_to_text(data: dict) -> str:
+        return json.dumps(data)
 
 
     @staticmethod
@@ -172,6 +235,94 @@ class DocSummary:
         return html
    
 
+    def _report_to_html(self) -> str:
+        output = []
+
+        # write header tags
+        output.append("<!DOCTYPE html>")
+        output.append("<html>")
+        output.append("<head>")
+        file_path = os.path.join(Path(__file__).parent, "DocSummary.css")
+        with open(file_path, 'r', encoding='utf8') as css_file:
+            css_text = css_file.read()
+            output.append(f'<style>{css_text}</style>')    
+    
+        output.append("</head>")
+        output.append("<body>")
+
+        # write metadata   
+        output.append("<details>")
+        output.append(f"<summary>Metadata</summary>")
+        output.append(self.meta(format='html'))
+        output.append("</details>")
+
+        # write displacy HTML rendering of doc text as paragraph with highlighted spans 
+        text = self.doctext(format="text")        
+        output.append("<details open>")
+        output.append(f"<summary>Text ({len(text)} characters)</summary>")
+        output.append(f"<p>{self.doctext(format='html')}</p>")
+        output.append("</details>")
+
+        # write tokens
+        output.append("<details>")
+        output.append(f"<summary>Tokens ({len(self.tokens('list'))})</summary>")        
+        output.append(self.tokens(format="htmll"))
+        output.append("</details>")
+
+        # write span counts
+        output.append("<details>")
+        output.append(f"<summary>Span Counts ({len(self.spancounts('list'))})</summary>")
+        output.append(self.spancounts(format="htmlt"))
+        output.append("</details>")
+
+        # write span pairs
+        output.append("<details>")
+        output.append(f"<summary>Span Pairs</summary>")
+        output.append(self.spanpairs(format="htmlt"))
+        output.append("</details>")
+
+        # write negated pairs
+        output.append("<details>")
+        output.append(f"<summary>Negated Pairs</summary>")
+        pairs = self.spanpairs(
+            format="htmlt", 
+            left_labels=["NEGATION"], 
+            right_labels=["YEARSPAN", "PERIOD", "FISH_OBJECT", "FISH_MONUMENT"]
+        )
+        output.append(pairs)
+        output.append("</details>")
+
+        # write footer tags
+        output.append("</body>")
+        output.append("</html>")
+
+        # finally join and return all
+        return f"\n".join(output)
+
+
+    def _report_to_json(self):
+        output = {
+            "text": self.doctext(format="text"),
+            "meta": self.meta(format="dict"),
+            "spans": self.spans(format="list"),
+            "tokens": self.tokens(format="list"),
+            "spanpairs": self.spanpairs(format="list"),
+            "spancounts": self.spancounts(format="list"),
+        }
+        return json.dumps(output)
+
+
+    def _report_to_text(self) -> str:
+        output = []
+        output.append(f"text:\n{self.doctext()}")
+        output.append(f"metadata:\n{self.meta(format='text')}")
+        output.append(f"spans:\n{self.spans(format='text')}")
+        output.append(f"tokens:\n{self.tokens(format='text')}")
+        output.append(f"span pairs:\n{self.spanpairs(format='text')}")
+        output.append(f"span counts:\n{self.spancounts(format='text')}")
+        return f"\n{'-' * 80}\n".join(output)
+
+
     @staticmethod
     def _spanpairs_to_df(pairs: list = []) -> DataFrame:
         return DataFrame([{
@@ -190,6 +341,12 @@ class DocSummary:
     def _spanpairs_to_csv(pairs: list = [], sep=",") -> str:
         df = DocSummary._spanpairs_to_df(pairs)
         return df.to_csv(sep=sep)
+
+
+    @staticmethod
+    def _spanpairs_to_list(pairs: list = []) -> list:
+        df = DocSummary._spanpairs_to_df(pairs)
+        return df.to_dict(orient="records")
 
 
     @staticmethod
@@ -412,7 +569,7 @@ class DocSummary:
             "label": span.label_,
             "id": span.id_,
             "text": span.text
-            } for span in spans]) .drop_duplicates()
+            } for span in spans]).drop_duplicates()
 
 
     @staticmethod
@@ -486,6 +643,12 @@ class DocSummary:
     def _tokens_to_html(toks: list = []) -> str:
         df = DocSummary._tokens_to_df(toks)
         return df.to_html(index=False, border=0) # renders html table
+
+
+    @staticmethod
+    def _tokens_to_list(toks: list = []) -> list:
+        df = DocSummary._tokens_to_df(toks)
+        return df.to_dict(orient="records")        
 
 
     @staticmethod
@@ -574,6 +737,7 @@ class DocSummary:
         # return as list sorted by ascending count
         return sorted(list(counts.values()), key=lambda x: x.get("count", 0), reverse=True)
 
+
     # count spans by label, return list [{label, count}, {label, count}, ...] 
     # returned in descending count order
     @staticmethod   
@@ -605,3 +769,4 @@ class DocSummary:
         
         # return as list sorted by ascending count
         return sorted(list(counts.values()), key=lambda x: x.get("count", 0), reverse=True)
+

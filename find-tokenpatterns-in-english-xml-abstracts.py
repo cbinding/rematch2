@@ -72,7 +72,7 @@ def writeEntitiesToHtmlFile(doc, targetFileNameWithPath=""):
 def main(sourceFilePath):
     print(f"running main({sourceFilePath})")
     annotator = VocabularyAnnotator(
-        language="en", periodo_authority_id="p0kh9ds", labels=["OBJECT", "MONUMENT", "PERIOD"])
+        language="en", periodo_authority_id="p0kh9ds", labels=["FISH_OBJECT", "FISH_MONUMENT", "PERIOD"])
 
     results = defaultdict(dict)
     sourceFileDirectory = os.path.dirname(sourceFilePath)
