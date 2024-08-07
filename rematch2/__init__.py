@@ -1,3 +1,4 @@
+#from .ReSpeller import ReSpeller
 from .BaseAnnotator import BaseAnnotator
 from .DatePrefixRuler import create_dateprefix_ruler
 from .DateSeparatorRuler import create_dateseparator_ruler
@@ -15,6 +16,7 @@ from .VocabularyRuler import *
 from .SpanPair import SpanPair
 from .SpanPairs import SpanPairs
 from .DocSummary import DocSummary
+from .StringCleaning import *
 from .Util import *
 #from .LogFile import LogFile # not currently used
 from .YearSpanRuler import create_yearspan_ruler

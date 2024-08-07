@@ -103,6 +103,7 @@ patterns_en_YEARSPAN = [
         "comment": "ordinal century e.g. beginning of the fifth century AD",
 		"pattern": [
             {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "?", "ORTH": "-"},
             {"OP": "+", "_": {"is_ordinal": True}},
             {"OP": "?", "_": {"is_dateseparator": True}},
             {"LOWER": {"REGEX": r"^(century|centuries|millennium|millennia)$"}},
@@ -114,11 +115,14 @@ patterns_en_YEARSPAN = [
         "comment": "ordinal century span e.g. start of the first to end of the 2nd century AD",
 		"pattern": [
             {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "?", "ORTH": "-"},
             {"OP": "+", "_": {"is_ordinal": True}},
             {"OP": "?", "_": {"is_dateseparator": True}},
             {"OP": "?", "LOWER": {"REGEX": r"^(century|centuries|millennium|millennia)$"}},            
             {"OP": "*", "_": {"is_datesuffix": True}},
             {"OP": "+", "_": {"is_dateseparator": True}},
+            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "?", "ORTH": "-"},
             {"OP": "+", "_": {"is_ordinal": True}},
             {"OP": "?", "_": {"is_dateseparator": True}},
             {"LOWER": {"REGEX": r"^(century|centuries|millennium|millennia)$"}},

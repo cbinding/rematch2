@@ -35,7 +35,8 @@ if __package__ is None or __package__ == '':
     from BaseAnnotator import BaseAnnotator
     from YearSpanRuler import create_yearspan_ruler
     from PeriodoRuler import create_periodo_ruler
-    from DocSummary import DocSummary    
+    from DocSummary import DocSummary  
+      
 else:
     # uses current package visibility
     from .BaseAnnotator import BaseAnnotator

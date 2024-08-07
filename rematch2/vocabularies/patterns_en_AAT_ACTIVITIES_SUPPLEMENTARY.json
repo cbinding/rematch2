@@ -1,10 +1,10 @@
 [
     {
-        "id": "https://vocab.getty.edu/aat/300054595",	
+        "id": "http://vocab.getty.edu/aat/300054595",	
         "label"	: "AAT_ACTIVITY",	 
         "pattern": [
-        { "POS": { "IN": ["ADV", "ADJ"] }},
-        { "LOWER": "analysis" }
+            { },
+            { "LEMMA": "analysis" }
         ]
     },
 
@@ -12,8 +12,8 @@
         "id": "http://vocab.getty.edu/aat/300054714",	
         "label"	: "AAT_ACTIVITY",	 
         "pattern": [
-        { "POS": { "IN": ["ADV", "ADJ"] }},
-        { "LOWER": "dating" }
+        { "POS": { "IN": ["ADJ", "ADV"] }},
+        { "POS": "VERB", "LEMMA": "dating" }
         ]
     }
 ]

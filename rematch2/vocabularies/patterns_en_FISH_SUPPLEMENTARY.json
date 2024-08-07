@@ -55,35 +55,53 @@
     "label": "PERIOD"
   },
   {
+    "id": "http://tempuri/supplementary/beaker",		 
+    "pattern": "Beaker",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://tempuri/supplementary/early-beaker",		 
+    "pattern": "Early Beaker",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://tempuri/supplementary/late-beaker",		 
+    "pattern": "Late Beaker",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://tempuri/supplementary/late-beaker",		 
+    "pattern": "Later Beaker",
+    "label": "PERIOD"
+  },
+  {
     "id": "http://tempuri/supplementary/saxon",		 
     "pattern": "Saxon",
     "label": "PERIOD"
   },
   {
-    "id": "http://tempuri/supplementary/late-saxon",		 
+    "id": "http://tempuri/supplementary/saxon",		 
     "pattern": "Late Saxon",
     "label": "PERIOD"
-  },
+  },    
   {
-    "id": "http://tempuri/supplementary/anglo-saxon",		 
-    "pattern": "Anglo Saxon",
+    "id": "http://tempuri/supplementary/saxon",		 
+    "pattern": [
+      {"LOWER": "anglo"}, 
+      {"OP": "?", "ORTH": "-"},
+      {"LOWER": "saxon"}
+    ],
     "label": "PERIOD"
-  },
+  },   
   {
-    "id": "http://tempuri/supplementary/anglo-saxon",		 
-    "pattern": "Anglo-Saxon",
+    "id": "http://n2t.net/ark:/99152/p0kh9ds9nsj",		 
+    "pattern": [
+      {"LOWER": "romano"}, 
+      {"OP": "?", "ORTH": "-"},
+      {"LOWER": "british"}
+    ],
     "label": "PERIOD"
-  },
-  {
-    "id": "http://tempuri/supplementary/romano-british",		 
-    "pattern": "Romano-British",
-    "label": "PERIOD"
-  },
-  {
-    "id": "http://tempuri/supplementary/romano-british",		 
-    "pattern": "Romano British",
-    "label": "PERIOD"
-  },
+  },    
   {
     "id": "http://n2t.net/ark:/99152/p0kh9dsmf3f",		 
     "pattern": "Early Mediaeval",
@@ -92,6 +110,26 @@
   {
     "id": "http://n2t.net/ark:/99152/p0kh9dscbkd",		 
     "pattern": "Mediaeval",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dscbkd",		 
+    "pattern": "High Mediaeval",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dscbkd",		 
+    "pattern": "High Medieval",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dscbkd",		 
+    "pattern": "Late Mediaeval",
+    "label": "PERIOD"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dscbkd",		 
+    "pattern": "Late Medieval",
     "label": "PERIOD"
   },
   {

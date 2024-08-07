@@ -2,11 +2,11 @@
 .ipynb_checkpoints
 # python cache files
 *.pyc
-# output of French XML processing
-ner-fr/*
-# output of English XML processing
-ner-en/*
-
-data/output/*
-data/text extraction - pdftotext/*
-data/tmp/*
+# local testing data input and output
+/data/compound_terms
+/data/journal_metadata
+/data/oasis_descr_examples
+/data/report_metadata
+/data/test_examples
+/data/text extraction - pdftotext
+!data/athena/output/*

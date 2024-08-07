@@ -79,6 +79,8 @@ class DocSummary:
         if(label != ""):
             spans = filter(lambda span: span.label_ == label, spans)
 
+
+
         match format.strip().lower():
             case "csv": return self._spans_to_csv(spans)
             case "html": return self._spans_to_html(spans)
@@ -158,7 +160,7 @@ class DocSummary:
             html.append(f"<strong>{escape(key)}:</strong>")
             if isinstance(val, dict):
                 html.append(DocSummary._meta_to_html(val))
-            elif isinstance(val,str):
+            elif isinstance(val, str):
                 html.append(escape(val))               
             else:
                 html.append(str(val))
@@ -176,7 +178,16 @@ class DocSummary:
 
     @staticmethod
     def _meta_to_text(data: dict) -> str:
-        return json.dumps(data)
+        text = []
+        for key, val in data.items():
+            if isinstance(val, dict):
+                text.append(f"* {key}:")
+                text.append(DocSummary._meta_to_text(val))
+            else:
+                text.append(f"* {key}: {str(val)}")
+            
+        # finally join and return
+        return f"\n".join(text)
 
 
     @staticmethod
@@ -250,6 +261,16 @@ class DocSummary:
         output.append("</head>")
         output.append("<body>")
 
+        # write identifier as heading
+        identifier = self._metadata.get("identifier", "").strip()
+        if len(identifier) > 0:
+            output.append("<h3>")        
+            if(identifier.startswith("http")):
+                output.append(f"<a target='_blank' rel='noopener noreferrer' href='{identifier}'>{escape(identifier)}</a>")
+            else:
+                output.append(f"{escape(identifier)}")
+            output.append("</h3>")
+
         # write metadata   
         output.append("<details>")
         output.append(f"<summary>Metadata</summary>")
@@ -265,13 +286,13 @@ class DocSummary:
 
         # write tokens
         output.append("<details>")
-        output.append(f"<summary>Tokens ({len(self.tokens('list'))})</summary>")        
+        output.append(f"<summary>Tokens ({len(self.tokens(format='list'))})</summary>")        
         output.append(self.tokens(format="htmll"))
         output.append("</details>")
 
         # write span counts
         output.append("<details>")
-        output.append(f"<summary>Span Counts ({len(self.spancounts('list'))})</summary>")
+        output.append(f"<summary>Span Counts ({len(self.spancounts(format='list'))})</summary>")
         output.append(self.spancounts(format="htmlt"))
         output.append("</details>")
 
@@ -302,24 +323,24 @@ class DocSummary:
 
     def _report_to_json(self):
         output = {
-            "text": self.doctext(format="text"),
             "meta": self.meta(format="dict"),
+            "text": self.doctext(format="text"),
+            "tokens": self.tokens(format="list"),            
             "spans": self.spans(format="list"),
-            "tokens": self.tokens(format="list"),
-            "spanpairs": self.spanpairs(format="list"),
             "spancounts": self.spancounts(format="list"),
+            "spanpairs": self.spanpairs(format="list"),            
         }
         return json.dumps(output)
 
 
     def _report_to_text(self) -> str:
         output = []
+        output.append(f"metadata:\n{self.meta(format='text')}")        
         output.append(f"text:\n{self.doctext()}")
-        output.append(f"metadata:\n{self.meta(format='text')}")
-        output.append(f"spans:\n{self.spans(format='text')}")
         output.append(f"tokens:\n{self.tokens(format='text')}")
-        output.append(f"span pairs:\n{self.spanpairs(format='text')}")
+        output.append(f"spans:\n{self.spans(format='text')}")        
         output.append(f"span counts:\n{self.spancounts(format='text')}")
+        output.append(f"span pairs:\n{self.spanpairs(format='text')}")        
         return f"\n{'-' * 80}\n".join(output)
 
 
@@ -376,7 +397,7 @@ class DocSummary:
                     html.append(f"<a target='_blank' rel='noopener noreferrer' href='{pair.span1.id_}'>{escape(pair.span1.text)}</a>")
                 else:
                     html.append(f"{escape(pair.span1.text)}")
-                html.append("</div></td>")                    
+                html.append("</div></td>")
                 html.append(f"<td style='text-align:left; vertical-align: middle'>")
                 html.append(f"<div class='entity {escape(pair.span2.label_.lower())}'>")
                 if(pair.span2.id_.startswith("http")):
@@ -565,7 +586,7 @@ class DocSummary:
             "start": span.start_char,
             "end": span.end_char,
             "token_start": span.start,
-            "token_end": span.end - 1,
+            "token_end": span.end - 1,            
             "label": span.label_,
             "id": span.id_,
             "text": span.text
@@ -607,6 +628,7 @@ class DocSummary:
     def _spans_to_json(spans: list = []) -> str:
         df = DocSummary._spans_to_df(spans)
         return df.to_json(orient="records")
+
 
     @staticmethod
     def _spans_to_list(spans: list = []) -> list:

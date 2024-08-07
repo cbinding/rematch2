@@ -27,7 +27,7 @@ from html import escape
 from pathlib import Path
 from spacy import displacy
 from spacy.tokens import Doc #, Span, Token
-from rematch2 import SpanPair, SpanPairs, PeriodoRuler, VocabularyRuler, NegationRuler, DocSummary
+from rematch2 import SpanPair, SpanPairs, PeriodoRuler, VocabularyRuler, NegationRuler, DocSummary, StringCleaning
 from rematch2.Util import *
 from decorators import run_timed # form local run timing
 
@@ -328,7 +328,7 @@ def main(records: list=[], periodo_authority_id: str="p0kh9ds") -> dict:
     
         # normalise white space prior to annotation
         # (extra spaces frustrate pattern matching)
-        cleaned = normalize_whitespace(input_text)
+        cleaned = StringCleaning.normalize_whitespace(input_text)
 
         # perform the annotation
         doc = nlp(cleaned)

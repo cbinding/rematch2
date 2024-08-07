@@ -31,11 +31,13 @@ if __package__ is None or __package__ == '':
     from spacypatterns import *
     from Util import *
     from DocSummary import DocSummary
+    #from ReSpeller import ReSpeller
 else:
     # uses current package visibility
     from .spacypatterns import *
     from .Util import *
     from .DocSummary import DocSummary
+    #from .ReSpeller import ReSpeller
 
 
 def patterns_from_json_file(file_name: str) -> list:
@@ -87,10 +89,13 @@ def create_amcr_ruler(nlp: Language, name: str = "amcr_ruler") -> SpanRuler:
 
 @Language.factory(name="aat_activities_ruler")
 def create_aat_activities_ruler(nlp: Language, name: str = "aat_activities_ruler") -> SpanRuler:
+    patts1=patterns_from_json_file("patterns_en_AAT_ACTIVITIES_20231018.json")
+    patts2=patterns_from_json_file("patterns_en_AAT_ACTIVITIES_SUPPLEMENTARY.json")
+
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         pos=["VERB"],
-        patterns=patterns_from_json_file("patterns_en_AAT_ACTIVITIES_20231018.json"),
+        patterns=patts1 + patts2,
         default_label="AAT_ACTIVITY"
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
@@ -169,7 +174,7 @@ def create_aat_styleperiods_ruler(nlp: Language, name: str="aat_styleperiods_rul
 def create_fish_archobjects_ruler(nlp: Language, name: str="fish_archobjects_ruler") -> SpanRuler:    
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
-        pos=["NOUN"], #pos=["NOUN", "PROPN"],
+        pos=["NOUN"], 
         min_lemmatize_length=3,
         patterns=patterns_from_json_file("patterns_en_FISH_ARCHOBJECTS_20210921.json"),
         default_label="FISH_OBJECT",
@@ -206,7 +211,7 @@ def create_fish_components_ruler(nlp: Language, name: str="fish_components_ruler
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_FISH_COMPONENTS_20210921.json"),
-        pos=["NOUN", "PROPN"],
+        pos=["NOUN"],
         default_label="FISH_OBJECT",
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
@@ -241,7 +246,7 @@ def create_fish_maritime_craft_ruler(nlp: Language, name: str="fish_maritime_cra
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_from_json_file("patterns_en_FISH_MARITIME_CRAFT_20221104.json"),
-        pos=["NOUN", "PROPN"],
+        pos=["NOUN"],
         default_label="FISH_OBJECT",
     )
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
@@ -254,7 +259,7 @@ def create_fish_monument_types_ruler(nlp: Language, name: str="fish_monument_typ
         nlp=nlp, 
         min_lemmatize_length=3,
         patterns=patterns_from_json_file("patterns_en_FISH_MONUMENT_TYPES_20210921.json"),
-        pos=["NOUN"], #pos=["NOUN", "PROPN"],
+        pos=["NOUN"],
         default_label="FISH_MONUMENT",
     )    
 
@@ -304,7 +309,7 @@ if __name__ == "__main__":
     # from rematch2.spacypatterns import vocab_en_AAT_OBJECTS
     # from ..spacypatterns import vocab_en_AAT_OBJECTS
 
-    en_test_text1 = '''Aside from three residual flints, none closely datable, the earliest remains comprised a small assemblage of Roman pottery and ceramic building material, also residual and most likely derived from a Roman farmstead found immediately to the north within the Phase II excavation area. A single sherd of Anglo-Saxon grass-tempered pottery was also residual. The earliest features, which accounted for the majority of the remains on site, relate to medieval agricultural activity focused within a large enclosure. There was little to suggest domestic occupation within the site: the pottery assemblage was modest and well abraded, whilst charred plant remains were sparse, and, as with some metallurgical residues, point to waste disposal rather than the locations of processing or consumption. A focus of occupation within the Rodley Manor site, on higher ground 160m to the north-west, seems likely, with the currently site having lain beyond this and providing agricultural facilities, most likely corrals and pens for livestock. Animal bone was absent, but the damp, low-lying ground would have been best suited to cattle. An assemblage of medieval coins recovered from the subsoil during a metal detector survey may represent a dispersed hoard.'''
+    en_test_text1 = '''Aside from three residual flints, none closely datable, the earliest remains from the archeomagnetism comprised a small assemblage of Roman pottery and Lower Paleolithic or Lower Palaeolithic ceramic building material, also residual and most likely derived from a Roman farmstead found immediately to the north within the Phase II excavation area. A single sherd of Anglo-Saxon grass-tempered pottery was also residual. The earliest features, which accounted for the majority of the remains on site, relate to medieval agricultural activity focused within a large enclosure. There was little to suggest domestic occupation within the site: the pottery assemblage was modest and well abraded, whilst charred plant remains were sparse, and, as with some metallurgical residues, point to waste disposal rather than the locations of processing or consumption. A focus of occupation within the Rodley Manor site, on higher ground 160m to the north-west, seems likely, with the currently site having lain beyond this and providing agricultural facilities, most likely corrals and pens for livestock. Animal bone was absent, but the damp, low-lying ground would have been best suited to cattle. An assemblage of medieval coins recovered from the subsoil during a metal detector survey may represent a dispersed hoard.'''
     en_test_text2 = '''
     mola conducted an archaeological desk-based heritage assessment of land at fakenham road, great ryburgh, norfolk. the earliest archaeological evidence found dates from the mesolithic period. neolithic flint tools have been found close to the west and north-west of the site. a possible bronze age ring ditch has been identified to the north-east and finds dating to the period have been discovered through metal detecting surveys. iron age remains including pits and pottery have been found within the area of proposed development through trial trenching. the site lies between two roman settlements on the south-western banks of the river wensum. one lies nearby to the north-west of the site and numerous finds including coins have been discovered during a fieldwalking survey. a further roman settlement lies to the south-east where two enclosures, two kilns and two burials have recently been excavated. a middle saxon cemetery, drainage ditches, an enclosure, land divisions and a substantial boundary ditch have also recently been discovered to the south-east of the site. metal finds dating to the period have also been found to the north-west and to the east of the site during metal detecting surveys. the site lies beyond the historic core of great ryburgh. the medieval settlement developed around the junction of fakenham road and bridge road to the west of the river wensum, flanked by the medieval moated manor of ryburgh at the northern end and by st andrew's church to the south. cartographic evidence suggests that the site lay to the rear of properties fronting fakenham road during the post-medieval period and had remained as undeveloped farmland.'''
     en_test_text3 = '''
@@ -375,18 +380,18 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     # nlp.add_pipe("aat_styleperiods_ruler", last=True)
     # FISH vocabulary pipeline components
 
-    nlp.add_pipe("fish_archobjects_ruler", last=True)
-    nlp.add_pipe("fish_monument_types_ruler", last=True)
-
-    #nlp.add_pipe("fish_archsciences_ruler", last=True)
+    #nlp.add_pipe("fish_archobjects_ruler", last=True)
+    #nlp.add_pipe("fish_monument_types_ruler", last=True)
+    #nlp.add_pipe("respeller", before="tagger")
+    nlp.add_pipe("fish_archsciences_ruler", last=True)
     # nlp.add_pipe("fish_building_materials_ruler", last=True)
     # nlp.add_pipe("fish_components_ruler", last=True)
     # nlp.add_pipe("fish_event_types_ruler", last=True)
     # nlp.add_pipe("fish_evidence_ruler", last=True)
     # nlp.add_pipe("fish_maritime_craft_ruler", last=True)
-    # nlp.add_pipe("fish_periods_ruler", last=True)
+    nlp.add_pipe("fish_periods_ruler", last=True)
 
-    doc = nlp(en_test_text6)
+    doc = nlp(en_test_text1)
     # explacy.print_parse_info(nlp, en_test_text.lower())
     print("Tokens:\n" + DocSummary(doc).tokens("text"))
     print("Spans:\n" + DocSummary(doc).spans("text"))
