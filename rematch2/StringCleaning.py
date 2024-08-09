@@ -27,8 +27,11 @@ import regex
     
 # normalize whitespace - multiple whitespace chars reduced to single
 # e.g. "This  is a\n  test" => "this is a test"
-def normalize_whitespace(text: str) -> str:
-    return " ".join(text.split())
+def normalize_whitespace(text: str, preserve_line_breaks: bool=True) -> str:
+    if preserve_line_breaks: # normalize only spaces, not line or paragraph breaks
+        return regex.sub(pattern=r"\p{Separator}+", repl=" ", string=text).strip()
+    else:
+        return " ".join(text.split())
     
 
 def normalize_spelling(text: str) -> str:    
@@ -85,10 +88,10 @@ def normalize_slashes(text: str) -> str:
 # e.g. "the(quick)brown fox" => "the (quick) brown fox"
 def normalize_brackets(text: str) -> str:
     result = text
-    # normalize spacing before open bracket character "{[("
-    result = regex.sub(pattern=r"(\w)\s*(\p{Ps})\s*(\w)", repl=r"\1 \2\3", string=result)
-    # normalize spacing after close bracket character "}])"
-    result = regex.sub(pattern=r"(\w)\s*(\p{Pe})\s*(\w)", repl=r"\1\2 \3", string=result)
+    # normalize spacing before and after open bracket character "{[("
+    result = regex.sub(pattern=r"([^\s])\s*(\p{Ps})\s*([^\s])", repl=r"\1 \2\3", string=result)
+    # normalize spacing before and after close bracket character "}])"
+    result = regex.sub(pattern=r"([^\s])\s*(\p{Pe})\s*([^\s])", repl=r"\1\2 \3", string=result)
     return result
 
 
@@ -213,4 +216,4 @@ if __name__ == "__main__":
     print(f"Normalized text:\n\"{clean}\"")
     print(f"Tokenization:")
     doc = nlp(clean)
-    print(list(map(lambda tok: tok.text, doc)))
+    print(list(map(lambda tok: tok.text, doc)))    

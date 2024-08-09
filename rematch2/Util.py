@@ -142,8 +142,9 @@ def normalize_patterns(
                     text = tok.text.strip()
                     
                     if (lemmatize == True and len(text) >= min_lemmatize_length):
-                        # lemmatization of full text may be different to lemmatisation of vocabulary term, 
-                        # so using set to list unique case variants of either original term text OR lemma 
+                        # lemmatization of full text may be different to lemmatisation of vocabulary term,
+                        # and cannot use "LOWER" in conjunction with lemma in spaCy patterns here, so  
+                        # using a set to list unique case variants of either original term text OR lemma 
                         variants = {
                             lemma.upper(), 
                             lemma.lower(), 

@@ -18,12 +18,22 @@ patterns_en_YEARSPAN = [
         "label": "YEARSPAN",
         "comment": "Month and year e.g. start of March 1715 AD",
         "pattern": [
-            #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"OP": "*", "_": {"is_dateprefix": True}},
-             #{"ENT_TYPE": "MONTHNAME"},
             {"_": {"is_monthname": True}},
             {"ORTH": {"REGEX": r"^\d{4}$"}},
-            #{"OP": "*", "ENT_TYPE": "DATESUFFIX"}
+            {"OP": "*", "_": {"is_datesuffix": True}}
+        ]
+    },
+    { 
+        "label": "YEARSPAN",        
+        "comment": "e.g. June to September 1715 AD",
+		"pattern": [
+            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"_": {"is_monthname": True}},
+            {"OP": "?", "_": {"is_dateseparator": True}},
+            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"_": {"is_monthname": True}},
+            {"ORTH": {"REGEX": r"^\d+$"}},
             {"OP": "*", "_": {"is_datesuffix": True}}
         ]
     },
@@ -31,12 +41,22 @@ patterns_en_YEARSPAN = [
         "label": "YEARSPAN",
         "comment": "Season and year e.g. mid autumn 1715 AD",
         "pattern": [
-            #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"OP": "*", "_": {"is_dateprefix": True}},
-            #{"ENT_TYPE": "SEASONNAME"},
             {"_": {"is_seasonname": True}},
             {"ORTH": {"REGEX": r"^\d{4}$"}},
-            #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"OP": "*", "_": {"is_datesuffix": True}}
+        ]
+    },
+    {
+        "label": "YEARSPAN",
+        "comment": "Season and year e.g. mid spring to autumn 1715 AD",
+        "pattern": [
+            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"_": {"is_seasonname": True}},
+            {"OP": "?", "_": {"is_dateseparator": True}},
+            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"_": {"is_seasonname": True}},
+            {"ORTH": {"REGEX": r"^\d{4}$"}},
             {"OP": "*", "_": {"is_datesuffix": True}}
         ]
     },

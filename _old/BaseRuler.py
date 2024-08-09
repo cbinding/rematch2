@@ -35,10 +35,11 @@ if __package__ is None or __package__ == '':
     # uses current directory visibility
     from VocabularyEnum import VocabularyEnum
     from spacypatterns import *
+    
 else:
     # uses current package visibility
     from .VocabularyEnum import VocabularyEnum
-    from .spacypatterns import *
+    from .spacypatterns import *    
 
 
 class BaseRuler(EntityRuler):

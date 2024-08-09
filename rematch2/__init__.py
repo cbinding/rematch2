@@ -13,10 +13,13 @@ from .TemporalAnnotator import TemporalAnnotator
 from .VocabularyAnnotator import VocabularyAnnotator
 from .VocabularyEnum import VocabularyEnum
 from .VocabularyRuler import *
+from .ChildSpanRemover import child_span_remover
+from .NegationRuler import NegationRuler
 from .SpanPair import SpanPair
 from .SpanPairs import SpanPairs
 from .DocSummary import DocSummary
 from .StringCleaning import *
+
 from .Util import *
 #from .LogFile import LogFile # not currently used
 from .YearSpanRuler import create_yearspan_ruler

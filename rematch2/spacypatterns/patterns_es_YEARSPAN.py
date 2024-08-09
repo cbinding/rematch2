@@ -23,7 +23,7 @@ patterns_es_YEARSPAN = [
             {"ORTH": {"REGEX": r"^\d+$"}},
             {"OP": "*", "_": {"is_datesuffix": True}}
         ]
-    },
+    },    
     { 
         "label": "YEARSPAN",        
         "comment": "e.g. mid autumn 1715 AD",

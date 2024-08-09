@@ -19,7 +19,7 @@ patterns_en_MONTHNAME = [
         "id": "http://vocab.getty.edu/aat/300410290",
         "label": "MONTHNAME",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(jan(uary|\.)?)$"}}            
+            {"POS": "PROPN", "LOWER": {"REGEX": r"^(jan(uary|\.)?)$"}}            
         ]
     },
     { 
@@ -27,7 +27,7 @@ patterns_en_MONTHNAME = [
         "id": "http://vocab.getty.edu/aat/300410291",
         "label": "MONTHNAME",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(feb(ruary|\.)?)$"}}            
+            {"POS": "PROPN", "LOWER": {"REGEX": r"^(feb(ruary|\.)?)$"}}            
         ]
     },
     { 
@@ -35,7 +35,7 @@ patterns_en_MONTHNAME = [
         "id": "http://vocab.getty.edu/aat/300410292",
         "label": "MONTHNAME",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(mar(ch|\.)?)$"}}            
+            {"POS": "PROPN", "LOWER": {"REGEX": r"^(mar(ch|\.)?)$"}}            
         ]
     },
     { 
@@ -43,7 +43,7 @@ patterns_en_MONTHNAME = [
         "id": "http://vocab.getty.edu/aat/300410293",
         "label": "MONTHNAME",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(apr(il|\.)?)$"}}            
+            {"POS": "PROPN", "LOWER": {"REGEX": r"^(apr(il|\.)?)$"}}            
         ]
     },
     { 
@@ -51,7 +51,7 @@ patterns_en_MONTHNAME = [
         "id": "http://vocab.getty.edu/aat/300410294",
         "label": "MONTHNAME",
 		"pattern": [
-            {"LOWER": "may"}            
+            {"POS": "PROPN", "LOWER": "may"}            
         ]
     },
     { 
@@ -59,7 +59,7 @@ patterns_en_MONTHNAME = [
         "id": "http://vocab.getty.edu/aat/300410295",
         "label": "MONTHNAME",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(jun(e|\.)?)$"}}            
+            {"POS": "PROPN", "LOWER": {"REGEX": r"^(jun(e|\.)?)$"}}            
         ]
     },
     { 
@@ -67,7 +67,7 @@ patterns_en_MONTHNAME = [
         "id": "http://vocab.getty.edu/aat/300410296",
         "label": "MONTHNAME",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(jul(y|\.)?)$"}}            
+            {"POS": "PROPN", "LOWER": {"REGEX": r"^(jul(y|\.)?)$"}}            
         ]
     },
     { 
@@ -75,7 +75,7 @@ patterns_en_MONTHNAME = [
         "id": "http://vocab.getty.edu/aat/300410297",
         "label": "MONTHNAME",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(aug(ust|\.)?)$"}}            
+            {"POS": "PROPN", "LOWER": {"REGEX": r"^(aug(ust|\.)?)$"}}            
         ]
     },
     { 
@@ -83,7 +83,7 @@ patterns_en_MONTHNAME = [
         "id": "http://vocab.getty.edu/aat/300410298",
         "label": "MONTHNAME",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(sep(t\.?|tember|\.)?)$"}}            
+            {"POS": "PROPN", "LOWER": {"REGEX": r"^(sep(t\.?|tember|\.)?)$"}}            
         ]
     },
     { 
@@ -91,7 +91,7 @@ patterns_en_MONTHNAME = [
         "id": "http://vocab.getty.edu/aat/300410299",
         "label": "MONTHNAME",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(oct(ober|\.)?)$"}}            
+            {"POS": "PROPN", "LOWER": {"REGEX": r"^(oct(ober|\.)?)$"}}            
         ]
     },
     { 
@@ -99,7 +99,7 @@ patterns_en_MONTHNAME = [
         "id": "http://vocab.getty.edu/aat/300410300",
         "label": "MONTHNAME",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(nov(ember|\.)?)$"}}            
+            {"POS": "PROPN", "LOWER": {"REGEX": r"^(nov(ember|\.)?)$"}}            
         ]
     },
     { 
@@ -107,7 +107,7 @@ patterns_en_MONTHNAME = [
         "id": "http://vocab.getty.edu/aat/300410301",
         "label": "MONTHNAME",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(dec(ember|\.)?)$"}}            
+            {"POS": "PROPN", "LOWER": {"REGEX": r"^(dec(ember|\.)?)$"}}            
         ]
     }
 ]
