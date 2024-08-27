@@ -9,9 +9,9 @@ Contact   : ceri.binding@southwales.ac.uk
 Summary   : 
     Functions for performing string cleaning and normalisation operations on 
     text, prior to any NER work. Mostly based on regex replacement patterns. 
-    Functions allow chaining and pipelining f(text: str) -> str
+    Functions allow chaining and pipelining: f(text: str) -> str
     NOTE: using 'regex' library rather than 're' - to support Unicode category groups 
-    e.g. r"\p{Pd}" (any hyphenation character)
+    e.g. r"\p{Dash_Punctuation}" (any hyphenation character)
     for list of unicode categories see https://www.regular-expressions.info/unicode.html
     TODO (possibly): normalize_case, normalize_diacritics, normalize_contractions
     # (wasn't, couldn't i'm etc.) - probably rare but note how they get tokenized
@@ -70,14 +70,15 @@ def normalize_spelling(text: str) -> str:
 # e.g. "dating from -500" => "dating from -500"  (unaffected)
 def normalize_hyphens(text: str) -> str:
     result = text
-    result = regex.sub(pattern=r"\b\s*(\p{Pd})\s*(?=[^\p{N}])", repl=r" - ", string=result)
-    result = regex.sub(pattern=r"\b(\p{Pd})\b", repl=r" - ", string=result)
+    result = regex.sub(pattern=r"\b\s*(\p{Dash_Punctuation})\s*(?=[^\p{Number}])", repl=r" - ", string=result)
+    result = regex.sub(pattern=r"\b(\p{Dash_Punctuation})\b", repl=r" - ", string=result)
     return result
 
 
-# normalize spacing on forward and back slashes
+# normalize spacing of forward and back slashes
 # e.g. "Georgian/Victorian" => "Georgian / Victoria"
 # e.g. "Georgian \Victorian" => "Georgian \ Victoria"
+# e.g. "Georgian/ Victorian" => "Georgian / Victoria"
 def normalize_slashes(text: str) -> str:
     result = text
     result = regex.sub(pattern=r"\b\s*([\\\/])\s*\b", repl=r" \1 ", string=result)
@@ -89,25 +90,26 @@ def normalize_slashes(text: str) -> str:
 def normalize_brackets(text: str) -> str:
     result = text
     # normalize spacing before and after open bracket character "{[("
-    result = regex.sub(pattern=r"([^\s])\s*(\p{Ps})\s*([^\s])", repl=r"\1 \2\3", string=result)
+    result = regex.sub(pattern=r"([^\s])\s*(\p{Open_Punctuation})\s*([^\s])", repl=r"\1 \2\3", string=result)
     # normalize spacing before and after close bracket character "}])"
-    result = regex.sub(pattern=r"([^\s])\s*(\p{Pe})\s*([^\s])", repl=r"\1\2 \3", string=result)
+    result = regex.sub(pattern=r"([^\s])\s*(\p{Close_Punctuation})\s*([^\s])", repl=r"\1\2 \3", string=result)
     return result
 
 
 # convert ampersands to "and"
 def normalize_ampersands(text: str) -> str:
     result = text
-    result = regex.sub(pattern=r"(\w)\s+&\s+(\w)", repl=r"\1 and \2", string=result)
+    result = regex.sub(pattern=r"(\p{Letter})\s+&\s+(\p{Letter})", repl=r"\1 and \2", string=result)
     return result
 
 
-# eliminate apostrophes in "architect's plans" or "archaeologists' tools"
-# (but not in contractions e.g. "can't", "won't" etc.)
+# normalize apostrophes by eliminating them:
+# remove from "architect's plans" or "archaeologists' tools"
+# (but not from contractions e.g. "can't", "won't" etc.)
 def normalize_apostrophes(text: str) -> str:
     result = text
-    result = regex.sub(pattern=r"(\w)'s\s(\w)", repl=r"\1s \2", string=result)
-    result = regex.sub(pattern=r"(\ws)'\s(\w)", repl=r"\1 \2", string=result)
+    result = regex.sub(pattern=r"(\p{Letter})'s\s(\p{Letter})", repl=r"\1s \2", string=result)
+    result = regex.sub(pattern=r"(\p{Letter}s)'\s(\p{Letter})", repl=r"\1 \2", string=result)
     return result
 
 
@@ -117,9 +119,9 @@ def normalize_apostrophes(text: str) -> str:
 # Note not necessarily a good idea, it led to multiple ambiguous matches
 def remove_bracketed_suffix(text: str) -> str:   
     result = text
-    result = regex.sub(r"\s\<[^\>]+\>$", "", result) # remove angle bracket suffix
-    result = regex.sub(r"\s\([^\)]+\)$", "", result) # remove curve bracket suffix
-    #result = re.sub(r"\s\p{Ps}[^\p{Pe}]+\p{Pe})$", "", result) # remove ANY bracket suffix
+    result = regex.sub(r"\s\<[^\>]+\>$", "", result) # remove angle bracketed suffix
+    result = regex.sub(r"\s\([^\)]+\)$", "", result) # remove curve bracketed suffix
+    #result = re.sub(r"\s\p{Ps}[^\p{Pe}]+\p{Pe})$", "", result) # remove ANY bracketed suffix
     return result
 
 
@@ -134,12 +136,12 @@ def selection_lower_case(text: str,  pattern: str=r"*.", count: int=0, flags=Non
 
 
 def selection_snake_case(text: str,  pattern: str=r"*.", count: int=0, flags=None) -> str:
-    def repl(match: Match) -> str: return re.sub(r"\s", "_", match[0].lower()) 
+    def repl(match: Match) -> str: return re.sub(r"\s+", "_", match[0].lower()) 
     return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
 
 
 def selection_kebab_case(text: str,  pattern: str=r"*.", count: int=0, flags=None) -> str:
-    def repl(match: Match) -> str: return re.sub(r"\s", "-", match[0].lower())
+    def repl(match: Match) -> str: return re.sub(r"\s+", "-", match[0].lower())
     return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
 
 
