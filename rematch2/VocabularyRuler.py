@@ -23,6 +23,7 @@ from spacy.tokens import Doc
 from spacy.language import Language
 from pprint import pprint
 from pathlib import Path
+from spacy import displacy
 
 import pandas as pd
 
@@ -31,12 +32,14 @@ if __package__ is None or __package__ == '':
     from spacypatterns import *
     from Util import *
     from DocSummary import DocSummary
+    from ChildSpanRemover import child_span_remover
     #from ReSpeller import ReSpeller
 else:
     # uses current package visibility
     from .spacypatterns import *
     from .Util import *
     from .DocSummary import DocSummary
+    from .ChildSpanRemover import child_span_remover
     #from .ReSpeller import ReSpeller
 
 
@@ -371,7 +374,7 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     #nlp.add_pipe("amcr_ruler", last=True)
     
     # AAT vocabulary pipeline components
-    # nlp.add_pipe("aat_activities_ruler", last=True)
+    nlp.add_pipe("aat_activities_ruler", last=True)
     # nlp.add_pipe("aat_agents_ruler", last=True)
     # nlp.add_pipe("aat_associated_concepts_ruler", last=True)
     # nlp.add_pipe("aat_materials_ruler", last=True)
@@ -380,18 +383,35 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     # nlp.add_pipe("aat_styleperiods_ruler", last=True)
     # FISH vocabulary pipeline components
 
-    #nlp.add_pipe("fish_archobjects_ruler", last=True)
-    #nlp.add_pipe("fish_monument_types_ruler", last=True)
+    nlp.add_pipe("fish_archobjects_ruler", last=True)
+    nlp.add_pipe("fish_monument_types_ruler", last=True)
     #nlp.add_pipe("respeller", before="tagger")
     nlp.add_pipe("fish_archsciences_ruler", last=True)
-    # nlp.add_pipe("fish_building_materials_ruler", last=True)
+    #nlp.add_pipe("fish_building_materials_ruler", last=True)
     # nlp.add_pipe("fish_components_ruler", last=True)
-    # nlp.add_pipe("fish_event_types_ruler", last=True)
+    nlp.add_pipe("fish_event_types_ruler", last=True)
     # nlp.add_pipe("fish_evidence_ruler", last=True)
     # nlp.add_pipe("fish_maritime_craft_ruler", last=True)
     nlp.add_pipe("fish_periods_ruler", last=True)
+    nlp.add_pipe("child_span_remover", last=True) 
 
-    doc = nlp(en_test_text1)
+    doc = nlp(en_test_text5)
     # explacy.print_parse_info(nlp, en_test_text.lower())
     print("Tokens:\n" + DocSummary(doc).tokens("text"))
     print("Spans:\n" + DocSummary(doc).spans("text"))
+
+    options = {
+        "spans_key": "custom",
+        "colors": {
+            "DATEPREFIX": "lightgray",
+            "FISH_OBJECT": "plum",
+            "FISH_MONUMENT": "lightblue",
+            "FISH_ARCHSCIENCE": "lightpink",
+            "AAT_ACTIVITY": "lightsalmon",
+            "FISH_EVIDENCE": "aliceblue",
+            "FISH_MATERIAL": "antiquewhite",
+            "FISH_EVENT": "coral",
+            "FISH_PERIOD": "yellow"
+        }
+    }
+    displacy.serve(doc, style="span", options=options, auto_select_port=True)
