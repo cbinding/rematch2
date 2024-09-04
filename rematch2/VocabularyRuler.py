@@ -69,7 +69,8 @@ def create_vocabulary_ruler(nlp: Language, name: str = "vocabulary_ruler", patte
 @Language.factory(name="ssh_lcsh_ruler", default_config={"language": "en"})
 def create_ssh_lcsh_ruler(nlp: Language, name: str = "ssh_lcsh_ruler", language: str="en") -> SpanRuler:
     all_patterns = patterns_from_json_file("patterns_SSH_LCSH.json")
-    patterns_for_language = list(filter(lambda x: x.language.strip().lower() == language.strip().lower(), all_patterns))
+    clean_language =  language.strip().lower()
+    patterns_for_language = list(filter(lambda x: x.language.strip().lower() == clean_language, all_patterns))
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
         patterns=patterns_for_language,
@@ -267,11 +268,11 @@ def create_fish_monument_types_ruler(nlp: Language, name: str="fish_monument_typ
     )    
 
     # temp diagnostics - write normalized_patterns to a file for review
-    '''with open("fish_monument_types_ruler_patterns.py", "w") as f:
-        f.write("x = [\n")
-        for pattern in normalized_patterns:
-            f.write(f"{pattern},\n") 
-        f.write("]") '''  
+    #with open("fish_monument_types_ruler_patterns.py", "w") as f:
+        #f.write("x = [\n")
+        #for pattern in normalized_patterns:
+           # f.write(f"{pattern},\n") 
+        #f.write("]") 
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
 
@@ -295,11 +296,11 @@ def create_fish_supplementary_ruler(nlp: Language, name: str="fish_supplementary
         default_label="FISH_OBJECT",
     )
     # temp diagnostics - write normalized_patterns to a file for review
-    with open("fish_supplementary_ruler_patterns.py", "w") as f:
-        f.write("x = [\n")
-        for pattern in normalized_patterns:
-            f.write(f"{pattern},\n") 
-        f.write("]") 
+    #with open("fish_supplementary_ruler_patterns.py", "w") as f:
+        #f.write("x = [\n")
+        #for pattern in normalized_patterns:
+            #f.write(f"{pattern},\n") 
+        #f.write("]") 
         
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler

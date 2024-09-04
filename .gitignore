@@ -3,11 +3,5 @@
 # python cache files
 *.pyc
 # local testing data input and output
-/data/compound_terms
-/data/journal_metadata
-/data/journals_july_2024
-/data/oasis_descr_examples
-/data/report_metadata
-/data/test_examples
-/data/text extraction - pdftotext
-!data/athena/output/*
+/data/*
+!data/athena/*

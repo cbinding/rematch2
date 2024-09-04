@@ -12,10 +12,9 @@ regex
 
 brotli # for JSON Periodo import (returns brotli compressed data)
 python-slugify # for constructing valid filenames from record identifiers
-# additional
 spacy>=3.7.2  # for NER
 
 #jmespath>=1.0.1  # for JSON search
-jsonpath-ng>=1.5.3 # for JSON search (used in PeriodoData.py)
+jsonpath-ng>=1.5.3 # for JSON search (as used in PeriodoData.py)
 lxml>=4.9.1 # for parsing input XML abstracts
 
