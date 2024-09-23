@@ -38,6 +38,7 @@ def normalize_spelling(text: str) -> str:
     subs = {
         "archeo": "archaeo",
         "paleo": "palaeo",
+        r"\bdefense\b": "defence",
         r"\bpalestra\b": "palaestra",
         r"\bmediaeval\b": "medieval",
         r"(\w+)ization\b": r"\1isation",

@@ -203,7 +203,7 @@
     "pattern": "deposition"     
   }, 
   {
-    "id": "http://tempuri/supplementary/flint",		
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97566",		
     "label": "FISH_OBJECT",  
     "pattern": "flint"     
   },
@@ -243,6 +243,11 @@
     "pattern": "loom weight"     
   },
   {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/95096",		
+    "label": "FISH_OBJECT",  
+    "pattern": "mollusc"     
+  },
+  {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70403",		
     "label": "FISH_MONUMENT",  
     "pattern": "post-hole"     
@@ -253,7 +258,7 @@
     "pattern": "posthole"     
   },
   {
-    "id": "http://tempuri/supplementary/pottery",		
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/137051",		
     "label": "FISH_OBJECT",  
     "pattern": "pottery"     
   },
@@ -278,6 +283,16 @@
     "pattern": "scatter"     
   }, 
   {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97183",		
+    "label": "FISH_OBJECT",  
+    "pattern": "scraper"     
+  }, 
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/170833",		
+    "label": "FISH_OBJECT",  
+    "pattern": "shell"     
+  }, 
+  {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/94083",		
     "label": "FISH_MONUMENT",  
     "pattern": "stakehole"     
@@ -286,6 +301,11 @@
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/94083",		
     "label": "FISH_MONUMENT",  
     "pattern": "stake-hole"     
+  }, 
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96982",		
+    "label": "FISH_OBJECT",  
+    "pattern": "tool"     
   }, 
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/142915",	
