@@ -135,7 +135,7 @@ patterns_en_YEARSPAN = [
         "comment": "shorthand century e.g. C19",
         "pattern": [
             {"OP": "*", "_": {"is_dateprefix": True}},
-            {"ORTH": {"REGEX": r"C[12]\d"}},            
+            {"ORTH": {"REGEX": r"^C[12]\d$"}},            
             {"OP": "*", "_": {"is_datesuffix": True}}
         ]
     },
@@ -144,10 +144,10 @@ patterns_en_YEARSPAN = [
         "comment": "shorthand century span e.g. C19 - C20",
         "pattern": [
             {"OP": "*", "_": {"is_dateprefix": True}},
-            {"ORTH": {"REGEX": r"C[12]\d"}},
+            {"ORTH": {"REGEX": r"^C[12]\d$"}},
             {"_": {"is_dateseparator": True}},
             {"OP": "*", "_": {"is_dateprefix": True}},
-            {"ORTH": {"REGEX": r"C[12]\d"}},
+            {"ORTH": {"REGEX": r"^C[12]\d$"}},
             {"OP": "*", "_": {"is_datesuffix": True}}
         ]
     },

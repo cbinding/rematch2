@@ -6,10 +6,10 @@ from spacy.tokens import Token
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
-    from StringCleaning import normalize
+    from StringCleaning import normalize_text
 else:
     # uses current package visibility
-    from .StringCleaning import normalize
+    from .StringCleaning import normalize_text
 
 # get suitable spaCy NLP pipeline for given ISO639-1 (2-char) language code
 def get_pipeline_for_language(language: str="") -> Language:
@@ -94,6 +94,7 @@ def normalize_patterns(
         # clean values before using
         clean_id = item.get("id", "").strip()
         clean_label = item.get("label", default_label).strip()
+        clean_pos = item.get("pos", pos) # any pos present in item overrides passed arg
         pattern = item.get("pattern", "")
 
         # is a pattern present? (may be either a list or a string)
@@ -113,7 +114,7 @@ def normalize_patterns(
             elif isinstance(pattern, str):
                     
                 # get normalized clean phrase, lower case
-                clean_phrase = normalize(pattern).lower()
+                clean_phrase = normalize_text(pattern).lower()            
                 
                 # if too small don't include it at all
                 if len(clean_phrase) < min_term_length:
@@ -159,12 +160,15 @@ def normalize_patterns(
                         # just match the term, ignore case
                         element["LOWER"] = text.lower()                       
                     
-                    # add pos tags restriction if any passed in
+                    # add pos tags restriction if any passed in or any present in this item
                     # note 06/03/2024 - POS (was) only applied to LAST term if multi-word phrase
                     # e.g. { "LEMMA": "board", "POS": { "IN": ["NOUN", "PROPN"] }}
                     # POS now applied ONLY to single terms, NOT to multi-word phrases
-                    if (len(pos) > 0 and phrase_length == 1):
-                        element["POS"] = { "IN": pos }
+                    if (len(clean_pos) > 0 and phrase_length == 1):
+                        if isinstance(clean_pos, list):
+                            element["POS"] = { "IN": clean_pos }
+                        elif isinstance(clean_pos, str):
+                            element["POS"] = { "IN": [clean_pos] }
 
                     new_pattern.append(element)
                     

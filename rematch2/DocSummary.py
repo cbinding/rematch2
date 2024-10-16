@@ -41,6 +41,12 @@ class DocSummary:
         self._doc = doc
         self._spans_key = spans_key.strip()
         self._metadata = metadata
+
+        # copy any PLACE entities to spans so they can be reported and displayed
+        # in the same way as all other slans identified
+        for ent in filter(lambda x: x.label == "LOC", doc.ents):
+            doc.spans[spans_key].append(ent)
+            print(ent.text)
     
 
     def __str__(self):
@@ -211,6 +217,8 @@ class DocSummary:
                 #"DATESUFFIX": "lightgray",
                 #"DATESEPARATOR": "lightgray",
                 #"ORDINAL": "lightgray",
+                "GPE": "palegreen",
+                "PLACE": "palegreen",
                 "NEGATION": "lightgray",
                 "PERIOD": "yellow", 
                 "YEARSPAN": "moccasin", 
@@ -385,26 +393,27 @@ class DocSummary:
     @staticmethod
     def _spanpairs_to_html_table(pairs: list = []) -> str:
         html = []
+
+        def _span_to_html(span) -> str:
+            lines = []
+            lines.append(f"<div class='entity {escape(span.label_.lower())}'>")
+            if(span.id_.startswith("http")):
+                lines.append(f"<a target='_blank' rel='noopener noreferrer' href='{span.id_}'>{escape(span.text)}</a>")
+            else:
+                lines.append(f"{escape(span.text)}")
+            lines.append("</div>")
+            return "\n".join(lines)
+
+
         if len(pairs) == 0:
             html.append("<p>NONE FOUND</p>")
-        else:
+        else:            
             html.append("<table><tbody>")
             for pair in pairs:
                 html.append("<tr>")
-                html.append("<td style='text-align:right; vertical-align: middle;'>")
-                html.append(f"<div class='entity {escape(pair.span1.label_.lower())}'>")
-                if(pair.span1.id_.startswith("http")):
-                    html.append(f"<a target='_blank' rel='noopener noreferrer' href='{pair.span1.id_}'>{escape(pair.span1.text)}</a>")
-                else:
-                    html.append(f"{escape(pair.span1.text)}")
-                html.append("</div></td>")
-                html.append(f"<td style='text-align:left; vertical-align: middle'>")
-                html.append(f"<div class='entity {escape(pair.span2.label_.lower())}'>")
-                if(pair.span2.id_.startswith("http")):
-                    html.append(f"<a target='_blank' rel='noopener noreferrer' href='{pair.span2.id_}'>{escape(pair.span2.text)}</a>")
-                else:
-                    html.append(f"{escape(pair.span2.text)}")
-                html.append("</div></td>")
+                html.append(f"<td style='text-align:right; vertical-align: middle'>{_span_to_html(pair.span1)}</td>")                
+                html.append(f"<td style='text-align:center; vertical-align: middle'>{escape(pair.rel_op)}</td>")
+                html.append(f"<td style='text-align:right; vertical-align: middle'>{_span_to_html(pair.span2)}</td>")                
                 html.append(f"<td>({pair.score})</td>")
                 html.append("</tr>")
             html.append("</tbody></table>")

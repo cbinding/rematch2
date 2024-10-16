@@ -460,11 +460,7 @@ patterns_en_NEGATION = [
     { 
         "label": "NEGATION",
 		"pattern": "uncertain"
-    },
-    { 
-        "label": "NEGATION",
-		"pattern": "unidentified"
-    }, 
+    },    
     { 
         "label": "NEGATION",
 		"pattern": "unlikely"

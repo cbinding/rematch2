@@ -1,0 +1,164 @@
+"""
+=============================================================================
+Package :   rematch2
+Module  :   GeoNamesRuler.py
+Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
+Contact :   ceri.binding@southwales.ac.uk
+Project :   
+Summary :   spaCy custom pipeline component (specialized SpanRuler) to 
+            identify place names (from GeoNames) in free text. 
+            Span label will be "PLACE"
+Imports :   os, sys, spacy, Language, SpanRuler, Doc, Language
+Example :   
+        nlp = spacy.load(pipe_name, disable=['ner'])
+        nlp.add_pipe("geonames_ruler", last=True) 
+        doc = nlp(test_text)
+
+License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
+=============================================================================
+History :   
+15/10/2024 CFB Initially created script
+=============================================================================
+"""
+
+from pathlib import Path
+import requests
+import zipfile
+import os
+import sys
+import spacy            # NLP library
+import pandas as pd
+from html import escape
+from spacy.pipeline import SpanRuler
+from spacy.tokens import Doc
+from spacy.language import Language
+from pprint import pprint
+
+if __package__ is None or __package__ == '':
+    # uses current directory visibility
+    from Util import *
+    from StringCleaning import normalize_text
+    from DocSummary import DocSummary
+else:
+    # uses current package visibility
+    from .Util import *
+    from .StringCleaning import normalize_text
+    from .DocSummary import DocSummary
+
+def download_file(remote_url: str, local_file_name: str, chunk_size: int=128):    
+    response = requests.get(remote_url, timeout=30, stream=True)
+    with open(local_file_name, 'wb') as f:
+        for chunk in response.iter_content(chunk_size=chunk_size):
+            f.write(chunk)
+
+def get_geonames_data(country_codes):
+    # get (and cache) GeoNames zipped data file 
+    GEONAMES_URL = "https://download.geonames.org/export/dump/cities500.zip"
+    CACHE_FILE_PATH = (Path(__file__).parent / "vocabularies").resolve()
+    CACHE_FILE_NAME = os.path.join(CACHE_FILE_PATH, Path(GEONAMES_URL).name)
+
+    # if cache path doesn't exist, create it
+    if not os.path.exists(CACHE_FILE_PATH):
+        os.makedirs(CACHE_FILE_PATH)
+
+    # if zipped data file not already cached, get it
+    if not os.path.exists(CACHE_FILE_NAME):
+        download_file(GEONAMES_URL, CACHE_FILE_NAME)
+
+        # extract zipped data file contents to cache path
+        with zipfile.ZipFile(CACHE_FILE_NAME, 'r') as zf:
+            zf.extractall(CACHE_FILE_PATH)    
+
+    # read and parse extracted CSV data file to pandas DataFrame
+    field_names = [
+        "geoname_id",
+        "name" ,
+        "ascii_name",
+        "alternate_names",
+        "latitude",
+        "longitude",
+        "feature_class",
+        "feature_code",
+        "country_code",
+        "cc2",
+        "admin1_code",
+        "admin2_code",
+        "admin3_code",
+        "admin4_code",
+        "population",
+        "elevation",
+        "dem",
+        "timezone",
+        "modification_date"
+    ]
+
+    df = pd.read_csv(
+        CACHE_FILE_NAME, 
+        delimiter="\t", 
+        encoding="utf-8", 
+        engine="python", 
+        skip_blank_lines=True, 
+        header=None,
+        names=field_names
+    )
+
+    filtered = df[df["country_code"].isin(country_codes)]
+    return filtered.to_dict(orient="records")
+
+
+@Language.factory(name="geonames_ruler", default_config={"country_codes": ["GB"]})
+def create_geonames_ruler(nlp: Language, name: str="geonames_ruler", country_codes=["GB"]) -> SpanRuler:
+    # get terms from selected GeoNames country code as vocab
+    geonames = get_geonames_data(country_codes) 
+
+    # parse out and convert  
+    patterns = list(map(lambda item: {
+        "id": f"http://sws.geonames.org/{escape(str(item.get('geoname_id', '')))}/",
+        "label": "PLACE",
+        "pattern": str(item.get("name", ""))
+    }, geonames or []))
+
+    normalized_patterns = normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns,
+        default_label="PLACE",
+        lemmatize=False,
+        pos=["PROPN"]
+    )
+    #pprint(normalized_patterns)
+
+    ruler = SpanRuler(
+        nlp=nlp,        
+        name=name,
+        spans_key="custom",
+        phrase_matcher_attr="LOWER",
+        validate=False,
+        overwrite=False
+    )  
+      
+    ruler.add_patterns(normalized_patterns)
+    return ruler 
+  
+
+# test the PeriodoRuler class
+if __name__ == "__main__":
+
+    # import json
+    # from ..test_examples import test_examples
+    # test_file_name = "test_examples.py"
+    # tests = []
+    # with open(test_file_name, "r") as f:  # what if file doesn't exist?
+    # tests = json.load(f)
+    
+
+    # example test
+    test_text = """This collection comprises Roman site data(reports, images, spreadsheets, GIS data and site records) from two phases of archaeological evaluation undertaken by Oxford Archaeology in June 2018 (SAWR18) and February 2021 (SAWR21) at West Road, Sawbridgeworth, Hertfordshire. SAWR18 In June 2018, Oxford Archaeology were commissioned by Taylor Wimpey to undertake an archaeological evaluation on the site of a proposed housing development to the north of West Road, Sawbridgeworth(TL 47842 15448). A programme of 19 trenches was undertaken to ground truth the results of a geophysical survey and to assess the archaeological potential of the site. The evaluation confirmed the presence of archaeological remains in areas identified on the geophysics. Parts of a NW-SE‐aligned trackway were found in Trenches 1 and 2. Field boundaries identified by geophysics(also present on the 1839 tithe map) were found in Trenches 5 and 7, towards the south of the site, and in Trenches 12 and 16, in the centre of the site. Geophysical anomalies identified in the northern part of the site were investigated and identified as geological. The archaeology is consistent with the geophysical survey results and it is likely that much of it has been truncated by modern agricultural activity. SAWR21 Oxford Archaeology carried out an archaeological evaluation on the site of proposed residential development north of West Road, Sawbridgeworth, Hertfordshire, in February 2021. The fieldwork was commissioned by Taylor Wimpey as a condition of planning permission. Preceding geophysical survey of the c 5.7ha development site was undertaken in 2016 and identified a concentration of linear and curvilinear anomalies in the north-east corner of the site and two areas of several broadly NW-SE aligned anomalies in the southern half of the site. Subsequent trial trench evaluation, comprising the investigation of 19 trenches, was undertaken by Oxford Archaeology in 2018, targeted upon the geophysical survey results. The evaluation revealed a small number of ditches in the centre and south of the site, correlating with the geophysical anomalies. Although generally undated, the ditches were suggestive of a trackway and associated enclosure/field boundaries. Other ditches encountered on site correlated with post-medieval field boundaries depicted on 19th century mapping. Given the results of the 2018 evaluation, in conjunction with those of the 2018 investigations at nearby Chalk's Farm, which uncovered the remains of Late Bronze Age-early Iron Age and early Roman settlement and agricultural activity, it was deemed necessary to undertake a further phase of evaluation at the site. Four additional trenches were excavated in the southern half of the site to further investigate the previously revealed ditches. The continuations of the trackway ditches were revealed in the centre of the site, with remnants of a metalled surface also identified. Adjacent ditches may demonstrate the maintenance and modification of the trackway or perhaps associated enclosure/field boundaries. Artefactual dating evidence recovered from these ditches was limited and of mixed date, comprising small pottery sherds of late Bronze Age- Early Iron Age date and fragments of Roman ceramic building material. It is probable that these remains provide evidence of outlying agricultural activity associated with the later prehistoric and early Roman settlement evidence at Chalk's Farm. A further undated ditch and a parallel early Roman ditch were revealed in the south of the site, suggestive of additional land divisions, probably agricultural features. A post-medieval field boundary ditch and modern land drains are demonstrative of agricultural use of the landscape during these periods."""
+    nlp = get_pipeline_for_language("en")    
+    nlp.add_pipe("geonames_ruler", last=True, config={"country_codes": ["GB"]})
+
+    # normalise input text prior to NER processing
+    cleaned = normalize_text(test_text)
+    doc = nlp(cleaned)
+    summary = DocSummary(doc)
+    #print("\nTokens:\n" + summary.tokens("text"))
+    print("\nSpans:\n" + summary.spans("text"))    

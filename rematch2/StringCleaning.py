@@ -10,13 +10,13 @@ Summary   :
     Functions for performing string cleaning and normalisation operations on 
     text, prior to any NER work. Mostly based on regex replacement patterns. 
     Functions allow chaining and pipelining: f(text: str) -> str
-    NOTE: using 'regex' library rather than 're' - to support Unicode category groups 
-    e.g. r"\p{Dash_Punctuation}" (any hyphenation character)
+    NOTE: using 'regex' library not 're' - to support Unicode category groups 
+    e.g. r"\p{Dash_Punctuation}" (represents any hyphenation character)
     for list of unicode categories see https://www.regular-expressions.info/unicode.html
     TODO (possibly): normalize_case, normalize_diacritics, normalize_contractions
     # (wasn't, couldn't i'm etc.) - probably rare but note how they get tokenized
 Imports   : regex, spacy (for testing tokenization only)
-Example   : clean = normalize(text)
+Example   : clean = normalize_text(text)
 License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
@@ -114,10 +114,10 @@ def normalize_apostrophes(text: str) -> str:
     return result
 
 
-# remove bracketed suffixes from vocabulary terms
+# remove bracketed suffixes (usually from vocabulary terms)
 # e.g. "Visual Buildings Record (Level 1)" => "Visual Buildings Record"
 # e.g. "Weapons <by form>" => "Weapons"
-# Note not necessarily a good idea, it led to multiple ambiguous matches
+# Note not necessarily a good idea, it can produce multiple ambiguous matches
 def remove_bracketed_suffix(text: str) -> str:   
     result = text
     result = regex.sub(r"\s\<[^\>]+\>$", "", result) # remove angle bracketed suffix
@@ -126,37 +126,40 @@ def remove_bracketed_suffix(text: str) -> str:
     return result
 
 
-def selection_upper_case(text: str, pattern: str=r"*.", count: int=0, flags=None) -> str:
+def selection_upper_case(text: str, pattern: str=r".*", count: int=0, flags=None) -> str:
+    #default_config = { pattern: r".*", count: 0, flags: None }
+    #merged_config = default_config | config
     def repl(match: Match) -> str: return match[0].upper()
     return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
 
 
-def selection_lower_case(text: str,  pattern: str=r"*.", count: int=0, flags=None) -> str:
+def selection_lower_case(text: str, pattern: str=r".*", count: int=0, flags=None) -> str:
     def repl(match: Match) -> str: return match[0].lower()
     return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
 
 
-def selection_snake_case(text: str,  pattern: str=r"*.", count: int=0, flags=None) -> str:
+def selection_snake_case(text: str, pattern: str=r".*", count: int=0, flags=None) -> str:
     def repl(match: Match) -> str: return re.sub(r"\s+", "_", match[0].lower()) 
     return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
 
 
-def selection_kebab_case(text: str,  pattern: str=r"*.", count: int=0, flags=None) -> str:
+# note this won't account for text already being eg snake case as it's only replacing spaces
+def selection_kebab_case(text: str, pattern: str=r".*", count: int=0, flags=None) -> str:
     def repl(match: Match) -> str: return re.sub(r"\s+", "-", match[0].lower())
     return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
 
 
-def selection_title_case(text: str,  pattern: str=r"*.", count: int=0, flags=None) -> str:
+def selection_title_case(text: str, pattern: str=r".*", count: int=0, flags=None) -> str:
     def repl(match: Match) -> str: return match[0].title()
     return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
 
 
-def selection_sentence_case(text: str,  pattern: str=r"*.", count: int=0, flags=None) -> str:
+def selection_sentence_case(text: str, pattern: str=r".*", count: int=0, flags=None) -> str:
     def repl(match: Match) -> str: return match[0].capitalize()
     return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
 
 
-#see https://dzone.com/articles/python-function-pipelines-streamlining-data-proces
+#see https://dzone.com/articles/python-function-pipelines-streamlining-data-proces (sic)
 def pipeline(*functions):
     
     def inner(data):
@@ -169,7 +172,7 @@ def pipeline(*functions):
 
 
 # normalize text for NER
-normalize = pipeline(
+normalize_text = pipeline(
     normalize_whitespace,
     normalize_hyphens, 
     normalize_slashes, 
@@ -177,7 +180,8 @@ normalize = pipeline(
     normalize_spelling,
     normalize_ampersands,
     normalize_apostrophes,
-    normalize_whitespace
+    normalize_whitespace,
+    remove_bracketed_suffix
 )
 
 r"""
@@ -208,14 +212,14 @@ if __name__ == "__main__":
     import spacy
 
     nlp = spacy.load("en_core_web_sm")
-    text = f"archeological work indicated  an Iron Age/ Romano- British  /Roman\npost -hole, in( low -lying)ground near(vandalized)\n  Mediaeval/post-medieval(15th-17th century? )footings"
-
+    text2 = f"archeological work indicated  an Iron Age/ Romano- British  /Roman\npost -hole, in( low -lying)ground near(vandalized)\n  Mediaeval/post-medieval(15th-17th century? )footings"
+    text = f"clay pipes (smoking)"
     print(f"Original text:\n\"{text}\"")
     print(f"Tokenization:")
     doc = nlp(text)
     print(list(map(lambda tok: tok.text, doc)))
     print(f"\n")
-    clean = normalize(text)
+    clean = normalize_text(text)
     print(f"Normalized text:\n\"{clean}\"")
     print(f"Tokenization:")
     doc = nlp(clean)

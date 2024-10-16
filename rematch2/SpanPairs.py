@@ -56,16 +56,16 @@ class SpanPairs:
         all_spans = self.doc.spans.get(self.spans_key, [])
             
         for chunk in self.doc.noun_chunks:  
-            # get all spans within the noun chunk        
+            # get all identified spans within this noun chunk        
             spans_in_chunk = filter(lambda span: span.start >= chunk.start and span.end <= chunk.end, all_spans)
             
-            # get all LEFT spans within the noun chunk
+            # get all LEFT spans within this noun chunk
             left_spans = self._filter_spans_by_labels(self.left_labels, spans_in_chunk)
             
-            # get all RIGHT spans within the noun chunk
+            # get all RIGHT spans within this noun chunk
             right_spans = self._filter_spans_by_labels(self.right_labels, spans_in_chunk)
             
-            # Use cartesian product to give all pair combinations
+            # Use cartesian product to give all left/right pair combinations
             for span1, span2 in itertools.product(left_spans, right_spans):
                 # ensure they are not the same span before adding  
                 if span1.orth_ != span2.orth_:             
@@ -142,7 +142,7 @@ class SpanPairs:
         
         def get_span_id(span):
             # get a suitable identifier
-            id=""
+            id = ""
             if span.id_:
                 id = span.id_
             elif span.ent_id_:
@@ -156,14 +156,20 @@ class SpanPairs:
             return id
 
         best_scoring_pairs = {}
-        for pair in noun_chunk_pairs + dependency_pairs:
+        for pair in noun_chunk_pairs + dependency_pairs:            
             # if they have the same label don't include them as a pair
             if pair.span1.label == pair.span2.label:
                 continue
             
-            # add the pair, eliminating any duplicate pairs having lower scores
+            # get identifier for each span
             id1 = get_span_id(pair.span1)
             id2 = get_span_id(pair.span2)
+
+            # if they have the same id don't include them as a pair
+            if id1 == id2:
+                continue
+
+            # add the pair, overriding any pair having same id but lower score            
             id = f"{id1}|{id2}"
             if (id not in best_scoring_pairs or pair.score > best_scoring_pairs[id].score):
                 best_scoring_pairs[id] = pair

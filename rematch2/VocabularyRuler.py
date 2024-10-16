@@ -183,6 +183,13 @@ def create_fish_archobjects_ruler(nlp: Language, name: str="fish_archobjects_rul
         patterns=patterns_from_json_file("patterns_en_FISH_ARCHOBJECTS_20210921.json"),
         default_label="FISH_OBJECT",
     )
+    # temp diagnostics - write normalized_patterns to a file for review
+    #with open("fish_archobjects_ruler_patterns.py", "w") as f:
+        #f.write("x = [\n")
+        #for pattern in normalized_patterns:
+            #f.write(f"{pattern},\n") 
+        #f.write("]") 
+
     ruler = create_vocabulary_ruler(nlp=nlp, name=name, patterns=normalized_patterns)
     return ruler
 

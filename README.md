@@ -15,6 +15,8 @@
     - [periodo_ruler](#periodo_ruler)
     - [temporal_annotator](#temporal_annotator)
     - [Temporal component usage](#component_usage)
+  - [Geographical components](#geographical_components)  
+    - [geonames_ruler](#geonames_ruler)
   - [Vocabulary components](#vocabulary_components)
     - [AAT vocabulary components](#aat_vocabulary_components)
       - [aat_activities_ruler](#aat_activities_ruler)
@@ -43,7 +45,7 @@
 
 ### Supported Languages <a class="anchor" id="languages"></a>
 
-The languages (currently) supported by the `rematch2` pipeline components are:
+The languages (currently) supported by the `rematch2` pipeline temporal components are:
 
 - German
 - English
@@ -53,6 +55,8 @@ The languages (currently) supported by the `rematch2` pipeline components are:
 - Dutch
 - Norwegian
 - Swedish
+
+For the vocabulary-driven components the language supported is English as the vocabularies currently used are expressed in English.
 
 ## Patterns <a class="anchor" id="patterns"></a>
 
@@ -107,7 +111,7 @@ Identifies typical expressions of years or spans of years in text. Utilises othe
 
 The periodo ruler component utilises the [Perio.do](https://perio.do/) dataset. When configured with a valid Perio.do authority identifier e.g. `'p0xxt6t'` [Scottish Archaeological Periods & Ages (ScAPA)](http://n2t.net/ark:/99152/p0xxt6t), the component will match against the labels of periods contained within the specified authority. e.g. _Chalcolithic, \_Early Bronze Age_, _Antonine_
 
-## Usage <a class="anchor" id="component_usage"></a>
+## Usage <a class="anchor" id="temporal_component_usage"></a>
 
 Example Python script to perform NER using a `rematch2` pipeline component:
 
@@ -158,7 +162,11 @@ return results
 
 Other practical (interactive) examples of usage are found in the accompanying Python notebooks.
 
-### Vocabulary Components <a class="anchor" id="vocabulary_components"></a>
+## Geographical components <a class="anchor" id="geographical_components"></a>
+### GeoNames ruler <a class="anchor" id="geonames_ruler"></a>
+The geonames_ruler component performs a lookup on place names originating from the [GeoNames](https://www.geonames.org/) dataset. In order to enable sufficient performance and reduce the potential for ambiguities, the component configuration accepts one or more country codes.
+
+## Vocabulary Components <a class="anchor" id="vocabulary_components"></a>
 
 ### Vocabulary Annotator <a class="anchor" id="vocabulary_annotator"></a>
 
@@ -195,24 +203,25 @@ return results
 
 `rematch2` also implements specialised spaCy pipeline components to identify terms from the following pre-defined vocabularies in free text:
 
-| Component Name                                                  | Entity Type        | Description | Examples |
-| --------------------------------------------------------------- | ------------------ | ----------- | -------: |
-| [aat_activities_ruler](#aat_activities_ruler)                   | ACTIVITY           |             |          |
-| [aat_agents_ruler](#aat_agents_ruler)                           | AGENT              |             |          |
-| [aat_associated_concepts_ruler](#aat_associated_concepts_ruler) | ASSOCIATED_CONCEPT |             |          |
-| [aat_materials_ruler](#aat_materials_ruler)                     | MATERIAL           |             |          |
-| [aat_objects_ruler](#aat_objects_ruler)                         | OBJECT             |             |          |
-| [aat_physical_attributes_ruler](#aat_physical_attributes_ruler) | PHYSICAL_ATTRIBUTE |             |          |
-| [aat_styleperiods_ruler](#aat_styleperiods_ruler)               | STYLEPERIOD        |             |          |
-| [fish_archobjects_ruler](#fish_archobjects_ruler)               | OBJECT             |             |          |
-| [fish_archsciences_ruler](#fish_archsciences_ruler)             | ARCHSCIENCE        |             |          |
-| [fish_building_materials_ruler](#fish_building_materials_ruler) | MATERIAL           |             |          |
-| [fish_components_ruler](#fish_components_ruler)                 | OBJECT             |             |          |
-| [fish_event_types_ruler](#fish_event_types_ruler)               | EVENT              |             |          |
-| [fish_evidence_ruler](#fish_evidence_ruler)                     | ARCHSCIENCE        |             |          |
-| [fish_maritime_craft_ruler](#fish_maritime_craft_ruler)         | OBJECT             |             |          |
-| [fish_monument_types_ruler](#fish_monument_types_ruler)         | OBJECT             |             |          |
-| [fish_periods_ruler](#fish_periods_ruler)                       | PERIOD             |             |          |
+| Component Name                                                  | Entity Type             | Description | Examples |
+| --------------------------------------------------------------- | ----------------------- | ----------- | -------: |
+| [aat_activities_ruler](#aat_activities_ruler)                   | AAT_ACTIVITY            |             |          |
+| [aat_agents_ruler](#aat_agents_ruler)                           | AAT_AGENT               |             |          |
+| [aat_associated_concepts_ruler](#aat_associated_concepts_ruler) | AAT_ASSOCIATED_CONCEPT  |             |          |
+| [aat_materials_ruler](#aat_materials_ruler)                     | AAT_MATERIAL            |             |          |
+| [aat_objects_ruler](#aat_objects_ruler)                         | AAT_OBJECT              |             |          |
+| [aat_physical_attributes_ruler](#aat_physical_attributes_ruler) | AAT_PHYSICAL_ATTRIBUTE  |             |          |
+| [aat_styleperiods_ruler](#aat_styleperiods_ruler)               | AAT_STYLEPERIOD         |             |          |
+| [fish_archobjects_ruler](#fish_archobjects_ruler)               | AAT_OBJECT              |             |          |
+| [fish_archsciences_ruler](#fish_archsciences_ruler)             | FISH_ARCHSCIENCE        |             |          |
+| [fish_building_materials_ruler](#fish_building_materials_ruler) | FISH_MATERIAL           |             |          |
+| [fish_components_ruler](#fish_components_ruler)                 | FISH_OBJECT             |             |          |
+| [fish_event_types_ruler](#fish_event_types_ruler)               | FISH_EVENT              |             |          |
+| [fish_evidence_ruler](#fish_evidence_ruler)                     | FISH_ARCHSCIENCE        |             |          |
+| [fish_maritime_craft_ruler](#fish_maritime_craft_ruler)         | FISH_OBJECT             |             |          |
+| [fish_monument_types_ruler](#fish_monument_types_ruler)         | FISH_OBJECT             |             |          |
+| [fish_periods_ruler](#fish_periods_ruler)                       | FISH_PERIOD             |             |          |
+| [geonames_ruler](#geonames_ruler)                               | PLACE                   |             |          |
 
 ## Getty Art &amp; Architecture Thesaurus (AAT) vocabulary components <a class="anchor" id="aat_vocabulary_components"></a>
 
@@ -286,9 +295,9 @@ Identifies terms from the [FISH 'Monument Types' thesaurus](http://purl.org/heri
 
 Identifies terms from the [FISH 'Historic England Periods' thesaurus](http://purl.org/heritagedata/schemes/eh_period)
 
-## Usage <a class="anchor" id="vocabulary_component_usage"></a>
+## Usage <a class="anchor" id="component_usage"></a>
 
-Example Python script to perform NER using the vocabulary ruler components:
+Example Python script to perform NER using the components:
 
 ```python
 # Using specialised VocabularyRuler pipeline components

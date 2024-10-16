@@ -24,12 +24,15 @@ def is_within(spanA: Span, spanB: Span)-> bool:
     return span_starts(spanA, spanB) or span_finishes(spanA, spanB) or span_within(spanA, spanB)
     
 
-# is span 'contained' by any other span in the list (not by itself)?
+# is span 'contained' by any other span in the list and not equal start & end
 def is_contained(index: int, spans: SpanGroup) -> bool:
     span = spans[index]
-    return any([True for i, s in enumerate(spans) if i != index and span.label == s.label and is_within(span, s)])
+    #return any([True for i, s in enumerate(spans) if i != index and span.label == s.label and is_within(span, s)])
+    # 04/10/24 CFB remove ANY contained spans - e.g. "post" within "post-medieval"
+    return any([True for i, s in enumerate(spans) if i != index and is_within(span, s)])
         
 
+# remove spans contained by any other span
 @Language.component("child_span_remover")
 def child_span_remover(doc: Doc, spans_key: str="custom") -> Doc:
     spans = doc.spans.get(spans_key, [])    
@@ -45,7 +48,7 @@ def dummy_span_creator(doc: Doc, spans_key: str="custom") -> Doc:
     doc.spans[spans_key] = [x, y, z]
     return doc
 
-
+# testing the component
 if __name__ == "__main__":
     nlp = spacy.blank("en")
     nlp.add_pipe("dummy_span_creator", last=True)

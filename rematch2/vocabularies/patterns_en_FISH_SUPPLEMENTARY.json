@@ -2,310 +2,290 @@
   {
     "id": "http://tempuri/supplementary/pleistocene",		 
     "pattern": "Pleistocene",
-    "label": "PERIOD"
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
   },
   {
     "id": "http://tempuri/supplementary/holocene",		 
     "pattern": "Holocene",
-    "label": "PERIOD"
-  },
-  {
-    "id": "http://n2t.net/ark:/99152/p0kh9dsts5m",		 
-    "pattern": "Upper Paleolithic",
-    "label": "PERIOD"
-  },
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
+  },  
   {
     "id": "http://n2t.net/ark:/99152/p0kh9dsts5m",		 
     "pattern": "Late Paleolithic",
-    "label": "PERIOD"
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
   },
   {
     "id": "http://n2t.net/ark:/99152/p0kh9dsts5m",		 
     "pattern": "Late Palaeolithic",
-    "label": "PERIOD"
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
   },
   {
     "id": "http://n2t.net/ark:/99152/p0kh9dsts5m",		 
     "pattern": "Later Paleolithic",
-    "label": "PERIOD"
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
   },
   {
     "id": "http://n2t.net/ark:/99152/p0kh9dsts5m",		 
     "pattern": "Later Palaeolithic",
-    "label": "PERIOD"
-  },
-  {
-    "id": "http://n2t.net/ark:/99152/p0kh9dscmjf",		 
-    "pattern": "Later Mesolithic",
-    "label": "PERIOD"
-  },
-  {
-    "id": "http://n2t.net/ark:/99152/p0kh9ds4hjq",		 
-    "pattern": "Later Neolithic",
-    "label": "PERIOD"
-  },
-  {
-    "id": "http://n2t.net/ark:/99152/p0kh9ds8p8k",		 
-    "pattern": "Later Bronze Age",
-    "label": "PERIOD"
-  },
-  {
-    "id": "http://n2t.net/ark:/99152/p0kh9ds8p8k",		 
-    "pattern": "Later Iron Age",
-    "label": "PERIOD"
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
   },
   {
     "id": "http://tempuri/supplementary/beaker",		 
     "pattern": "Beaker",
-    "label": "PERIOD"
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
   },
   {
     "id": "http://tempuri/supplementary/early-beaker",		 
     "pattern": "Early Beaker",
-    "label": "PERIOD"
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
   },
   {
     "id": "http://tempuri/supplementary/late-beaker",		 
     "pattern": "Late Beaker",
-    "label": "PERIOD"
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
   },
   {
     "id": "http://tempuri/supplementary/late-beaker",		 
     "pattern": "Later Beaker",
-    "label": "PERIOD"
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
   },
   {
     "id": "http://tempuri/supplementary/saxon",		 
     "pattern": "Saxon",
-    "label": "PERIOD"
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
   },
   {
     "id": "http://tempuri/supplementary/saxon",		 
     "pattern": "Late Saxon",
-    "label": "PERIOD"
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
   },    
-  {
-    "id": "http://tempuri/supplementary/saxon",		 
-    "pattern": [
-      {"LOWER": "anglo"}, 
-      {"OP": "?", "ORTH": "-"},
-      {"LOWER": "saxon"}
-    ],
-    "label": "PERIOD"
-  },   
-  {
-    "id": "http://n2t.net/ark:/99152/p0kh9ds9nsj",		 
-    "pattern": [
-      {"LOWER": "romano"}, 
-      {"OP": "?", "ORTH": "-"},
-      {"LOWER": "british"}
-    ],
-    "label": "PERIOD"
-  },    
-  {
-    "id": "http://n2t.net/ark:/99152/p0kh9dsmf3f",		 
-    "pattern": "Early Mediaeval",
-    "label": "PERIOD"
-  },
-  {
-    "id": "http://n2t.net/ark:/99152/p0kh9dscbkd",		 
-    "pattern": "Mediaeval",
-    "label": "PERIOD"
-  },
   {
     "id": "http://n2t.net/ark:/99152/p0kh9dscbkd",		 
     "pattern": "High Mediaeval",
-    "label": "PERIOD"
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
   },
   {
     "id": "http://n2t.net/ark:/99152/p0kh9dscbkd",		 
     "pattern": "High Medieval",
-    "label": "PERIOD"
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
   },
   {
     "id": "http://n2t.net/ark:/99152/p0kh9dscbkd",		 
     "pattern": "Late Mediaeval",
-    "label": "PERIOD"
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
   },
   {
     "id": "http://n2t.net/ark:/99152/p0kh9dscbkd",		 
     "pattern": "Late Medieval",
-    "label": "PERIOD"
-  },
-  {
-    "id": "http://n2t.net/ark:/99152/p0kh9dsctsj",		 
-    "pattern": "Post-Medieval",
-    "label": "PERIOD"
-  },
-  {
-    "id": "http://n2t.net/ark:/99152/p0kh9dsctsj",		 
-    "pattern": "Post-Mediaeval",
-    "label": "PERIOD"
-  },
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
+  },  
   {
     "id": "http://tempuri/supplementary/viking",		 
     "pattern": "Viking",
-    "label": "PERIOD"
+    "label": "PERIOD",
+    "pos": ["ADJ", "PROPN"]
   },
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96399",		
     "label": "FISH_OBJECT",  
-    "pattern": "bladelet"     
+    "pattern": "bladelet",
+    "pos": "NOUN"      
   }, 
   {
     "id": "http://tempuri/supplementary/borehole",		
     "label": "FISH_MONUMENT",  
-    "pattern": "borehole"     
+    "pattern": "borehole",
+    "pos": "NOUN"       
   }, 
   {
     "id": "http://tempuri/supplementary/borehole",		
     "label": "FISH_MONUMENT",  
-    "pattern": "bore hole"     
+    "pattern": "bore hole",
+    "pos": "NOUN"       
   },
   {
     "id": "http://tempuri/supplementary/borehole",		
     "label": "FISH_MONUMENT",  
-    "pattern": "bore-hole"     
+    "pattern": "bore-hole",
+    "pos": "NOUN"       
   },
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70462",		
     "label": "FISH_MONUMENT",  
-    "pattern": "channel"     
+    "pattern": "channel",
+    "pos": "NOUN"       
   },
   {
     "id": "/purl.org/heritagedata/schemes/eh_tmt2/concepts/78156",		
     "label": "FISH_MONUMENT",  
-    "pattern": "cobbles"     
+    "pattern": "cobbles",
+    "pos": "NOUN"       
   },
   {
     "id": "http://tempuri/supplementary/cofferdam",		
     "label": "FISH_MONUMENT",  
-    "pattern": "cofferdam"     
+    "pattern": "cofferdam",
+    "pos": "NOUN"       
   }, 
   {
     "id": "http://tempuri/supplementary/cofferdam",		
     "label": "FISH_MONUMENT",  
-    "pattern": "coffer dam"     
+    "pattern": "coffer dam",
+    "pos": "NOUN"       
   },
   {
     "id": "http://tempuri/supplementary/cofferdam",		
     "label": "FISH_MONUMENT",  
-    "pattern": "coffer-dam"     
+    "pattern": "coffer-dam",
+    "pos": "NOUN"       
   },
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/71132",		
     "label": "FISH_MONUMENT",  
-    "pattern": "corral"     
+    "pattern": "corral",
+    "pos": "NOUN"       
   }, 
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/142911",		
     "label": "FISH_OBJECT",  
-    "pattern": "deposition"     
+    "pattern": "deposition" ,
+    "pos": "NOUN"      
   }, 
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97566",		
     "label": "FISH_OBJECT",  
-    "pattern": "flint"     
+    "pattern": "flint",
+    "pos": "NOUN"     
   },
   {
     "id": "http://tempuri/supplementary/floodplain",		
     "label": "FISH_MONUMENT",  
-    "pattern": "floodplain"     
+    "pattern": "floodplain",
+    "pos": "NOUN"       
   },
   {
     "id": "http://tempuri/supplementary/floodplain",		
     "label": "FISH_MONUMENT",  
-    "pattern": "flood plain"     
+    "pattern": "flood plain",
+    "pos": "NOUN"      
   },
   {
     "id": "http://tempuri/supplementary/floodplain",		
     "label": "FISH_MONUMENT",  
-    "pattern": "flood-plain"     
+    "pattern": "flood-plain",
+    "pos": "NOUN"       
   },
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70267",		
     "label": "FISH_MONUMENT",  
-    "pattern": "hollow-way"     
+    "pattern": "hollow-way",
+    "pos": "NOUN"       
   },
   {
     "id": "http://tempuri/supplementary/launchchamber",		
     "label": "FISH_MONUMENT",  
-    "pattern": "launch chamber"     
+    "pattern": "launch chamber",
+    "pos": "NOUN"       
   },
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97042",		
     "label": "FISH_OBJECT",  
-    "pattern": "loom-weight"     
+    "pattern": "loom-weight",
+    "pos": "NOUN"       
   },
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97042",		
     "label": "FISH_OBJECT",  
-    "pattern": "loom weight"     
+    "pattern": "loom weight",
+    "pos": "NOUN"       
   },
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/95096",		
     "label": "FISH_OBJECT",  
-    "pattern": "mollusc"     
+    "pattern": "mollusc",
+    "pos": "NOUN"      
   },
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70403",		
     "label": "FISH_MONUMENT",  
-    "pattern": "post-hole"     
+    "pattern": "post-hole",
+    "pos": "NOUN"       
   },
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70403",		
     "label": "FISH_MONUMENT",  
-    "pattern": "posthole"     
+    "pattern": "posthole",
+    "pos": "NOUN"      
   },
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/137051",		
     "label": "FISH_OBJECT",  
-    "pattern": "pottery"     
+    "pattern": "pottery",
+    "pos": "NOUN"       
   },
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96961",	
     "label"	: "FISH_OBJECT",
-    "pattern": "Quernstone"
+    "pattern": "quernstone",
+    "pos": "NOUN"  
   },
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96961",	
     "label"	: "FISH_OBJECT",	 
-    "pattern": "Quern stone"
-  },
-  {
-    "id": "http://tempuri/supplementary/roundhouse",		
-    "label": "FISH_MONUMENT",  
-    "pattern": "roundhouse"     
-  }, 
+    "pattern": "quern stone",
+    "pos": "NOUN"  
+  },  
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/86499",		
     "label": "FISH_MONUMENT",  
-    "pattern": "scatter"     
+    "pattern": "scatter",
+    "pos": "NOUN"       
   }, 
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97183",		
     "label": "FISH_OBJECT",  
-    "pattern": "scraper"     
+    "pattern": "scraper",
+    "pos": "NOUN"       
   }, 
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/170833",		
     "label": "FISH_OBJECT",  
-    "pattern": "shell"     
+    "pattern": "shell",
+    "pos": "NOUN"       
   }, 
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/94083",		
     "label": "FISH_MONUMENT",  
-    "pattern": "stakehole"     
+    "pattern": "stakehole",
+    "pos": "NOUN"       
   }, 
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/94083",		
     "label": "FISH_MONUMENT",  
-    "pattern": "stake-hole"     
+    "pattern": "stake-hole",
+    "pos": "NOUN"       
   }, 
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96982",		
     "label": "FISH_OBJECT",  
-    "pattern": "tool"     
+    "pattern": "tool",
+    "pos": "NOUN"      
   }, 
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/142915",	
