@@ -32,7 +32,7 @@ class SpanPairs:
 
     def __init__(self, 
         doc: Doc,
-        spans_key: str = "custom", 
+        spans_key: str = "rematch", 
         rel_ops: list = [ "<", ">", "<<", ">>", ".", ";", ".*", ";*" ], 
         left_labels: list = [], 
         right_labels: list = []):

@@ -8,17 +8,17 @@ Project :
 Summary :   spaCy custom pipeline component (specialized SpanRuler)
 Imports :   os, sys, spacy, SpanRuler, Language
 Example :   
-    nlp = spacy.load("en_core_web_sm", disable=['ner'])
+    nlp = spacy.load("en_core_web_sm")
     nlp.add_pipe("dateprefix_ruler", last=True)  
     doc = nlp("constructed in early to mid 1480 to late 1275, or early 1500s")   
-    # tags ["early", "mid", "lateP"] as "DATEPREFIX"      
+    # output: ["early", "mid", "late"] labelled as "DATEPREFIX"      
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History :   
 03/08/2022 CFB Initially created script
 27/10/2023 CFB type hints added for function signatures
 16/02/2024 CFB remove BaseRuler inheritance, use EntityRuler directly
-28/03/2024 CFB base on SpanRuler instead of EntityRuler
+28/03/2024 CFB based on SpanRuler instead of EntityRuler
 =============================================================================
 """
 import os
@@ -69,7 +69,7 @@ def create_dateprefix_ruler(nlp: Language, name: str = "dateprefix_ruler", patte
     ruler = SpanRuler(
         nlp=nlp,        
         name=name,
-        spans_key="custom",
+        spans_key="rematch",
         phrase_matcher_attr="LOWER",
         validate=False,
         overwrite=False

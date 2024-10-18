@@ -57,7 +57,7 @@ def create_vocabulary_ruler(nlp: Language, name: str = "vocabulary_ruler", patte
     ruler = SpanRuler(
         nlp=nlp,        
         name=name,
-        spans_key="custom",
+        spans_key="rematch",
         phrase_matcher_attr="LOWER",
         validate=False,
         overwrite=False
@@ -409,7 +409,7 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     print("Spans:\n" + DocSummary(doc).spans("text"))
 
     options = {
-        "spans_key": "custom",
+        "spans_key": "rematch",
         "colors": {
             "DATEPREFIX": "lightgray",
             "FISH_OBJECT": "plum",

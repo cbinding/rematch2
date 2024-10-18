@@ -73,7 +73,7 @@ def create_periodo_ruler(nlp: Language, name: str="periodo_ruler", periodo_autho
     ruler = SpanRuler(
         nlp=nlp,        
         name=name,
-        spans_key="custom",
+        spans_key="rematch",
         phrase_matcher_attr="LOWER",
         validate=False,
         overwrite=False
@@ -125,5 +125,5 @@ if __name__ == "__main__":
     summary = DocSummary(doc)
     print("\nTokens:\n" + summary.tokens("text"))
     print("\nSpans:\n" + summary.spans("text"))
-    #print([f"\"{span.text}\"\t{span.label_}\n" for span in doc.spans["custom"]])
+    #print([f"\"{span.text}\"\t{span.label_}\n" for span in doc.spans["rematch"]])
     

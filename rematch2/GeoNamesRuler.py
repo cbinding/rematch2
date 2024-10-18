@@ -25,6 +25,7 @@ from pathlib import Path
 import requests
 import zipfile
 import os
+from pathlib import Path
 import sys
 import spacy            # NLP library
 import pandas as pd
@@ -45,31 +46,105 @@ else:
     from .StringCleaning import normalize_text
     from .DocSummary import DocSummary
 
-def download_file(remote_url: str, local_file_name: str, chunk_size: int=128):    
-    response = requests.get(remote_url, timeout=30, stream=True)
-    with open(local_file_name, 'wb') as f:
-        for chunk in response.iter_content(chunk_size=chunk_size):
-            f.write(chunk)
 
-def get_geonames_data(country_codes):
-    # get (and cache) GeoNames zipped data file 
-    GEONAMES_URL = "https://download.geonames.org/export/dump/cities500.zip"
-    CACHE_FILE_PATH = (Path(__file__).parent / "vocabularies").resolve()
-    CACHE_FILE_NAME = os.path.join(CACHE_FILE_PATH, Path(GEONAMES_URL).name)
+def download_file(remote_url: str, local_name: str, chunk_size: int=128, overwrite: bool=False):  
+     # if local directory does not exist create it
+    directory = Path(local_name).parent
+    if not os.path.exists(directory):
+        os.makedirs(directory, exist_ok=True)
 
-    # if cache path doesn't exist, create it
-    if not os.path.exists(CACHE_FILE_PATH):
-        os.makedirs(CACHE_FILE_PATH)
+     # if local file not already cached (or overwrite is requested), get it
+    if overwrite==True or not os.path.exists(local_name):
+        # download the remote file 
+        response = requests.get(remote_url, timeout=30, stream=True)
+        # write to the local file
+        with open(local_name, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=chunk_size):
+                f.write(chunk)
 
-    # if zipped data file not already cached, get it
-    if not os.path.exists(CACHE_FILE_NAME):
-        download_file(GEONAMES_URL, CACHE_FILE_NAME)
 
-        # extract zipped data file contents to cache path
-        with zipfile.ZipFile(CACHE_FILE_NAME, 'r') as zf:
-            zf.extractall(CACHE_FILE_PATH)    
+def get_geonames_admin1_data(country_codes: list=[]) -> list:
+    # get (and cache) GeoNames 'admin1CodesASCII.txt' data file
+    REMOTE_URL = "https://download.geonames.org/export/dump/admin1CodesASCII.txt"
+    LOCAL_PATH = (Path(__file__).parent / "vocabularies").resolve()
+    LOCAL_NAME = os.path.join(LOCAL_PATH, Path(REMOTE_URL).name )     
+    download_file(REMOTE_URL, LOCAL_NAME, overwrite=False)
+
+    # fields names in the input tab-delimited data file
+    field_names = [
+        "admin_code",
+        "name" ,
+        "ascii_name",
+        "geoname_id"
+    ]
 
     # read and parse extracted CSV data file to pandas DataFrame
+    df = pd.read_csv(
+        LOCAL_NAME, 
+        delimiter="\t", 
+        encoding="utf-8", 
+        engine="python", 
+        skip_blank_lines=True, 
+        header=None,
+        names=field_names
+    )
+
+    # filter records for specified country code(s) only
+    myfilter = lambda x: x.partition(".")[0].upper() in country_codes
+    filtered = df[df["admin_code"].apply(myfilter)] 
+    
+    # return data as an array of dict items   
+    return filtered.to_dict(orient="records")
+
+
+def get_geonames_admin2_data(country_codes: list=[]) -> list:
+    # get (and cache) GeoNames 'admin2Codes.txt' data 
+    REMOTE_URL = "https://download.geonames.org/export/dump/admin2Codes.txt"
+    LOCAL_PATH = (Path(__file__).parent / "vocabularies").resolve()
+    LOCAL_NAME = os.path.join(LOCAL_PATH, Path(REMOTE_URL).name )    
+    
+    download_file(REMOTE_URL, LOCAL_NAME, overwrite=False)
+
+    # fields names in the input tab-delimited data file
+    field_names = [
+        "admin_code",
+        "name" ,
+        "ascii_name",
+        "geoname_id"
+    ]
+
+    # read and parse extracted CSV data file to pandas DataFrame
+    df = pd.read_csv(
+        LOCAL_NAME, 
+        delimiter="\t", 
+        encoding="utf-8", 
+        engine="python", 
+        skip_blank_lines=True, 
+        header=None,
+        names=field_names
+    )
+
+    # filter records for specified country code(s) only
+    myfilter = lambda x: x.partition(".")[0].upper() in country_codes
+    filtered = df[df["admin_code"].apply(myfilter)] 
+    
+    # return data as an array of dict items   
+    return filtered.to_dict(orient="records")
+
+
+
+def get_geonames_city_data(country_codes: list=[]) -> list:
+    # get (and cache) GeoNames 'cities500.zip' data file 
+    REMOTE_URL = "https://download.geonames.org/export/dump/cities500.zip"
+    LOCAL_PATH = (Path(__file__).parent / "vocabularies").resolve()
+    LOCAL_NAME = os.path.join(LOCAL_PATH, Path(REMOTE_URL).name)
+    download_file(REMOTE_URL, LOCAL_NAME, overwrite=False)
+   
+    # extract zipped data file contents to cache path
+    #with zipfile.ZipFile(LOCAL_NAME, 'r') as zf:
+        #zf.extractall(LOCAL_PATH)    
+
+    # anticipated fields names in the input delimited data
     field_names = [
         "geoname_id",
         "name" ,
@@ -92,8 +167,9 @@ def get_geonames_data(country_codes):
         "modification_date"
     ]
 
+    # read and parse extracted CSV data file to pandas DataFrame
     df = pd.read_csv(
-        CACHE_FILE_NAME, 
+        LOCAL_NAME, 
         delimiter="\t", 
         encoding="utf-8", 
         engine="python", 
@@ -102,21 +178,29 @@ def get_geonames_data(country_codes):
         names=field_names
     )
 
-    filtered = df[df["country_code"].isin(country_codes)]
+    # filter down to records for specified country codes
+    filtered = df[df["country_code"].isin(country_codes)] 
+
+    # return data as a list of dict items   
     return filtered.to_dict(orient="records")
 
 
 @Language.factory(name="geonames_ruler", default_config={"country_codes": ["GB"]})
 def create_geonames_ruler(nlp: Language, name: str="geonames_ruler", country_codes=["GB"]) -> SpanRuler:
-    # get terms from selected GeoNames country code as vocab
-    geonames = get_geonames_data(country_codes) 
 
-    # parse out and convert  
+    # get records for selected GeoNames country codes
+    geonames_admin1 = get_geonames_admin1_data(country_codes) 
+    geonames_admin2 = get_geonames_admin2_data(country_codes) 
+    geonames_cities = get_geonames_city_data(country_codes) 
+    
+    geonames_data = (geonames_admin1 or []) +  (geonames_admin2 or []) + (geonames_cities or [])
+    
+    # convert all geonames records to required 'patterns' format 
     patterns = list(map(lambda item: {
         "id": f"http://sws.geonames.org/{escape(str(item.get('geoname_id', '')))}/",
         "label": "PLACE",
         "pattern": str(item.get("name", ""))
-    }, geonames or []))
+    }, geonames_data))    
 
     normalized_patterns = normalize_patterns(
         nlp=nlp, 
@@ -125,13 +209,12 @@ def create_geonames_ruler(nlp: Language, name: str="geonames_ruler", country_cod
         lemmatize=False,
         pos=["PROPN"]
     )
-    #pprint(normalized_patterns)
-
+    
     ruler = SpanRuler(
         nlp=nlp,        
         name=name,
-        spans_key="custom",
-        phrase_matcher_attr="LOWER",
+        spans_key="rematch",
+        #phrase_matcher_attr="LOWER",
         validate=False,
         overwrite=False
     )  

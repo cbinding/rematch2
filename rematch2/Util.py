@@ -55,7 +55,7 @@ def _get_patterns_from_json_file(file_path: str) -> list:
 
 
 # determine whether a token is within a previously labelled span
-def is_token_within_labelled_span(tok: Token, label: str="DATEPREFIX", spans_key: str="custom") -> bool:
+def is_token_within_labelled_span(tok: Token, label: str="DATEPREFIX", spans_key: str="rematch") -> bool:
     # list any previously identified spans with this label in the document
     spans = list(filter(lambda span: span.label_ == label, tok.doc.spans.get(spans_key, [])))
     # is this token inside any of them?
@@ -63,7 +63,7 @@ def is_token_within_labelled_span(tok: Token, label: str="DATEPREFIX", spans_key
 
 
 # get list of labels for any spans this token is within
-def get_labels_for_token(tok: Token, spans_key: str="custom") -> list: 
+def get_labels_for_token(tok: Token, spans_key: str="rematch") -> list: 
     outer_spans = filter(lambda span: span.start <= tok.i and span.end >= tok.i, tok.doc.spans.get(spans_key,[]))
     return list(set(map(lambda span: span.label, outer_spans)))
 
@@ -131,20 +131,22 @@ def normalize_patterns(
                 for tok in doc:
                     element = {}
 
-                    # lemmatize term if required (and if term long enough). Using both lemma AND original term,
-                    # as lemmatization won't work if text is capitalised (spaCy may regard it as a proper Noun),
-                    # and there doesn't seem to be a way to specify a rule to match on the lowercase of the lemma
-                    # e.g. "skirting boards" - so pattern built is either:
-                    # { "LEMMA": { "IN" { [ "SKIRT", "skirt", "Skirt", "SKIRTING", "skirting", "Skirting" ] },
-                    # { "LEMMA": { "IN" { [ "BOARD", "board", "Board", "BOARDS", "boards", "Boards" ] } 
+                    # lemmatize term if required (and if term long enough). Uses both lemma AND original term,
+                    # lemmatization may not work on capitalised text (spaCy may regard it as a proper noun),
+                    # and there doesn't seem a way to specify a rule to match on the lowercase of the lemma,
+                    # so pattern built is either:
+                    # [
+                    # { "LEMMA": { "IN" { [ "SKIRT", "skirt", "Skirt", "SKIRTING", "skirting", "Skirting" ]}}},
+                    # { "LEMMA": { "IN" { [ "BOARD", "board", "Board", "BOARDS", "boards", "Boards" ]}}}
+                    # ] 
                     # or:
-                    # { "LOWER": "skirting" }, { "LOWER": "boards" }                    
-                    lemma = tok.lemma_.strip()
-                    text = tok.text.strip()
+                    # [{ "LOWER": "skirting" }, { "LOWER": "boards" }]                    
+                    lemma = (tok.lemma_ or "").strip()
+                    text = (tok.text or "").strip()
                     
                     if (lemmatize == True and len(text) >= min_lemmatize_length):
                         # lemmatization of full text may be different to lemmatisation of vocabulary term,
-                        # and cannot use "LOWER" in conjunction with lemma in spaCy patterns here, so  
+                        # and cannot use "LOWER" in conjunction with "LEMMA" in spaCy patterns here, so  
                         # using a set to list unique case variants of either original term text OR lemma 
                         variants = {
                             lemma.upper(), 
@@ -160,10 +162,11 @@ def normalize_patterns(
                         # just match the term, ignore case
                         element["LOWER"] = text.lower()                       
                     
-                    # add pos tags restriction if any passed in or any present in this item
+                    # add POS restriction if any passed in or any present in this item
                     # note 06/03/2024 - POS (was) only applied to LAST term if multi-word phrase
                     # e.g. { "LEMMA": "board", "POS": { "IN": ["NOUN", "PROPN"] }}
-                    # POS now applied ONLY to single terms, NOT to multi-word phrases
+                    # POS now applied ONLY to single terms, NOT to multi-word phrases, which
+                    # are regarded more likely to be correct matches without POS restriction
                     if (len(clean_pos) > 0 and phrase_length == 1):
                         if isinstance(clean_pos, list):
                             element["POS"] = { "IN": clean_pos }

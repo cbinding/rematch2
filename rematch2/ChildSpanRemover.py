@@ -34,14 +34,14 @@ def is_contained(index: int, spans: SpanGroup) -> bool:
 
 # remove spans contained by any other span
 @Language.component("child_span_remover")
-def child_span_remover(doc: Doc, spans_key: str="custom") -> Doc:
+def child_span_remover(doc: Doc, spans_key: str="rematch") -> Doc:
     spans = doc.spans.get(spans_key, [])    
     doc.spans[spans_key] = [span for index, span in enumerate(spans) if not is_contained(index, spans)]  
     return doc
 
 
 @Language.component("dummy_span_creator")
-def dummy_span_creator(doc: Doc, spans_key: str="custom") -> Doc:
+def dummy_span_creator(doc: Doc, spans_key: str="rematch") -> Doc:
     x = doc[3:4]
     y = doc[1:4]
     z = doc[4:5]
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     nlp.add_pipe("child_span_remover", last=True)
     text = "the quick brown fox jumped over the lazy dog"
     doc = nlp(text)
-    spans = doc.spans["custom"]
+    spans = doc.spans["rematch"]
     x = spans[0]
     y = spans[1]
     z = spans[2]    

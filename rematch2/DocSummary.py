@@ -37,7 +37,7 @@ else:
 
 class DocSummary:
 
-    def __init__(self, doc: Doc, spans_key: str="custom", metadata: dict = {}):
+    def __init__(self, doc: Doc, spans_key: str="rematch", metadata: dict = {}):
         self._doc = doc
         self._spans_key = spans_key.strip()
         self._metadata = metadata
@@ -199,7 +199,7 @@ class DocSummary:
     @staticmethod
     def _doctext_to_html(
         doc: Doc, 
-        spans_key: str="custom", 
+        spans_key: str="rematch", 
         options: dict={}, 
         exclude: list=[
             "DATEPREFIX", 
@@ -211,7 +211,7 @@ class DocSummary:
         ]) -> str:
 
         default_options = { 
-            "spans_key": "custom",
+            "spans_key": "rematch",
             "colors": { 
                 #"DATEPREFIX": "lightgray",
                 #"DATESUFFIX": "lightgray",

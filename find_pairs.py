@@ -143,7 +143,7 @@ def results_to_text_file(file_name: str="", results: dict={}):
         
         # write negated spans
         lines.append("\nNegated Spans:")
-        negated_spans = list(filter(lambda span: span._.is_negated == True, doc.spans.get("custom",[])))
+        negated_spans = list(filter(lambda span: span._.is_negated == True, doc.spans.get("rematch",[])))
         if len(negated_spans) == 0:
             lines.append("NONE FOUND")
         else:

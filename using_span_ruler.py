@@ -8,7 +8,7 @@ from Util import *
 from spacy import displacy
 
 # determine whether a token is within a previously labelled span
-def is_token_within_labelled_span(tok: Token, label: str="DATEPREFIX", spans_key: str="custom"):
+def is_token_within_labelled_span(tok: Token, label: str="DATEPREFIX", spans_key: str="rematch"):
     # list any previously identified spans with this label in the document
     spans = list(filter(lambda span: span.label_ == label, tok.doc.spans[spans_key]))
     # is this token inside any of them?
@@ -39,7 +39,7 @@ text = "During the burial ground survey, evidence of a late Roman fort was locat
 doc = nlp(text.lower())
 
 options = {
-    "spans_key": "custom",
+    "spans_key": "rematch",
     "colors": {
         "DATEPREFIX": "lightgray",
         "FISH_OBJECT": "plum", 
@@ -48,5 +48,5 @@ options = {
         "FISH_MATERIAL": "antiquewhite"
     }
 }
-print([(span.text, span.label_) for span in doc.spans["custom"]])
+print([(span.text, span.label_) for span in doc.spans["rematch"]])
 displacy.serve(doc, style="span", options=options, auto_select_port=True)

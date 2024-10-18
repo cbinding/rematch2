@@ -107,7 +107,7 @@ class YearSpanRuler(SpanRuler):
             self,
             nlp=nlp,        
             name=name,
-            spans_key="custom",
+            spans_key="rematch",
             phrase_matcher_attr="LOWER",
             validate=False,
             overwrite=False
@@ -124,7 +124,7 @@ class YearSpanRuler(SpanRuler):
         # filter for 'atomic' labelled spans only used to determine yearspans
         #filtered = [span for span in all_spans if span.label_ not in [
         #    "ORDINAL", "DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "MONTHNAME", "SEASONNAME"]]
-        #doc.spans["custom"] = filtered
+        #doc.spans["rematch"] = filtered
         def not_excluded(span):
             return span.label_ not in [
                 "ORDINAL", 
@@ -135,7 +135,7 @@ class YearSpanRuler(SpanRuler):
                 "SEASONNAME"
             ]
         # apply the filter
-        doc.spans["custom"] = list(filter(not_excluded, doc.spans.get("custom", [])))
+        doc.spans["rematch"] = list(filter(not_excluded, doc.spans.get("rematch", [])))
         
         # filter out 'sub-spans' encompassed by others
         def not_enclosed(span):
@@ -144,10 +144,10 @@ class YearSpanRuler(SpanRuler):
                 and item.label_ == "YEARSPAN" # restricted as other types may be present!
                 and item.start <= span.start 
                 and item.end >= span.end 
-                for item in doc.spans.get("custom", [])
+                for item in doc.spans.get("rematch", [])
             )
         # apply the filter
-        doc.spans["custom"] = list(filter(not_enclosed, doc.spans.get("custom", [])))
+        doc.spans["rematch"] = list(filter(not_enclosed, doc.spans.get("rematch", [])))
 
         return doc
 
