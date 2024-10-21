@@ -32,6 +32,7 @@ import argparse                         # for argument parsing
 # this resolves the relative imports issue
 if __package__ is None or __package__ == '':
     # uses current directory visibility
+    from ChildSpanRemover import child_span_remover
     from BaseAnnotator import BaseAnnotator
     from YearSpanRuler import create_yearspan_ruler
     from PeriodoRuler import create_periodo_ruler
@@ -39,6 +40,7 @@ if __package__ is None or __package__ == '':
       
 else:
     # uses current package visibility
+    from .ChildSpanRemover import child_span_remover
     from .BaseAnnotator import BaseAnnotator
     from .YearSpanRuler import create_yearspan_ruler
     from .PeriodoRuler import create_periodo_ruler
@@ -59,7 +61,7 @@ class TemporalAnnotator(BaseAnnotator):
         self._pipeline.add_pipe("yearspan_ruler", last=True)
         self._pipeline.add_pipe("periodo_ruler", last=True, config={
             "periodo_authority_id": periodo_authority_id})
-
+        self._pipeline.add_pipe("child_span_remover", last=True)
 
     # convert results to HTML formatted string
     # override and call base method

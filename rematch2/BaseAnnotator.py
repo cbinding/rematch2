@@ -31,9 +31,12 @@ if __package__ is None or __package__ == '':
     # uses current directory visibility
     from Util import *
     from DocSummary import DocSummary
+    from StringCleaning import normalize_text
+
 else:
     from .Util import *
     from .DocSummary import DocSummary
+    from .StringCleaning import normalize_text
 
 # base class for VocabularyAnnotator and TemporalAnnotator
 class BaseAnnotator():
@@ -70,7 +73,8 @@ class BaseAnnotator():
 
         # normalise white space before annotation
         # (extra spaces frustrate pattern matching)
-        cleaned = normalize_whitespace(input_text)
+        #cleaned = normalize_whitespace(input_text)
+        cleaned = normalize_text(input_text)
 
         # perform the annotation
         doc = self.__annotate(cleaned)
