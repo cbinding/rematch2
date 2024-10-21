@@ -41,7 +41,7 @@
 
 ## Introduction <a class="anchor" id="introduction"></a>
 
-`rematch2` is an experimental [spaCy](https://spacy.io) open-source library and associated tools for performing multilingual rule-based Named Entity Recognition (NER) on abstracts and texts relating to archaeological investigations. The library and tools were created by [University of South Wales Hypermedia Research Group](https://hypermedia.research.southwales.ac.uk/) as part of the [ARIADNEplus project](https://ariadne-infrastructure.eu/).
+`rematch2` is an experimental [spaCy](https://spacy.io) open-source library and associated tools for performing multilingual rule-based Named Entity Recognition (NER) on abstracts and texts relating to archaeological investigations. The library and tools were created by [University of South Wales Hypermedia Research Group](https://hypermedia.research.southwales.ac.uk/) as part of the [ARIADNEplus project](https://ariadne-infrastructure.eu/), and improved and extended as part of the [ATRIUM project](https://atrium-research.eu/).
 
 ### Supported Languages <a class="anchor" id="languages"></a>
 
@@ -56,7 +56,7 @@ The languages (currently) supported by the `rematch2` pipeline temporal componen
 - Norwegian
 - Swedish
 
-For the vocabulary-driven components the language supported is English as the vocabularies currently used are expressed in English.
+For the vocabulary-driven components the language supported is English - as the vocabularies currently used are expressed in English.
 
 ## Patterns <a class="anchor" id="patterns"></a>
 
@@ -81,7 +81,7 @@ The pipeline components utilise spaCy _patterns_ located in the _spacypatterns_ 
 
 ### dayname_ruler <a class="anchor" id="dayname_ruler"></a>
 
-Identifies day names or their abbreviations in text. Not currently used by other rulers, but remains present and usable as a concrete example showing how to implement a custom multilingual entity recognition pattern ruler.
+Identifies day names or their abbreviations in text. Not currently used by other rulers, but remains present and usable as a concrete example showing how to implement a custom multilingual pattern-based ruler.
 
 ### monthname_ruler <a class="anchor" id="monthname_ruler"></a>
 
@@ -109,7 +109,7 @@ Identifies typical expressions of years or spans of years in text. Utilises othe
 
 ### periodo_ruler <a class="anchor" id="periodo_ruler"></a>
 
-The periodo ruler component utilises the [Perio.do](https://perio.do/) dataset. When configured with a valid Perio.do authority identifier e.g. `'p0xxt6t'` [Scottish Archaeological Periods & Ages (ScAPA)](http://n2t.net/ark:/99152/p0xxt6t), the component will match against the labels of periods contained within the specified authority. e.g. _Chalcolithic, \_Early Bronze Age_, _Antonine_
+The periodo ruler component utilises the [Perio.do](https://perio.do/) dataset. When configured with a valid Perio.do authority identifier e.g. `'p0xxt6t'` [Scottish Archaeological Periods & Ages (ScAPA)](http://n2t.net/ark:/99152/p0xxt6t), the component will match against the labels of periods contained within the specified authority. e.g. _Chalcolithic, Early Bronze Age, Antonine_
 
 ## Usage <a class="anchor" id="temporal_component_usage"></a>
 
@@ -125,9 +125,9 @@ nlp = spacy.load("en_core_web_sm", disable=["ner"])
 nlp.add_pipe("century_ruler", last=True)
 # process some example text using the modified pipeline
 doc = nlp("A late twelfth century AD or early 13th century weapon.")
-# display the entities located in the text
-for ent in doc.ents:
-  print(ent.text)
+# display the spans located in the text
+for span in doc.spans.get("rematch", []):
+  print(span.text)
 
 # results:
 # late twelfth century AD
@@ -163,8 +163,9 @@ return results
 Other practical (interactive) examples of usage are found in the accompanying Python notebooks.
 
 ## Geographical components <a class="anchor" id="geographical_components"></a>
+
 ### GeoNames ruler <a class="anchor" id="geonames_ruler"></a>
-The geonames_ruler component performs a lookup on place names originating from the [GeoNames](https://www.geonames.org/) dataset. In order to enable sufficient performance and reduce the potential for ambiguities, the component configuration accepts one or more country codes.
+The geonames_ruler component performs a lookup on place names originating from the [GeoNames](https://www.geonames.org/) dataset. In order to enable sufficient performance and reduce the potential for ambiguities, the component configuration accepts one or more ISO country codes.
 
 ## Vocabulary Components <a class="anchor" id="vocabulary_components"></a>
 
@@ -333,18 +334,20 @@ nlp.add_pipe("fish_monument_types_ruler", last=True)
 # nlp.add_pipe("fish_periods_ruler", last=True)
 
 doc = nlp(test_text)
+spans = doc.spans.get("rematch", [])
 
-results = [{
-  "from": ent.start_char,
-  "to": ent.end_char - 1,
-  "id": ent.ent_id_,
-  "text": ent.text,
-  "type": ent.label_
-} for ent in doc.ents]
+# create DataFrame with required columns
+df = pd.DataFrame([{
+  "start": span.start_char,
+  "end": span.end_char,
+  "token_start": span.start,
+  "token_end": span.end - 1,            
+  "label": span.label_,
+  "id": span.id_,
+  "text": span.text
+  } for span in spans])
 
-# load results into a DataFrame object:
-df = pd.DataFrame(results)
 print(df)
 ```
 
-Other practical (interactive) examples of usage are found in the accompanying Python notebooks.
+Other practical examples of usage are found in the accompanying Python notebooks.
