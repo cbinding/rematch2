@@ -14,7 +14,7 @@ from .VocabularyAnnotator import VocabularyAnnotator
 from .VocabularyEnum import VocabularyEnum
 from .VocabularyRuler import *
 from .GeoNamesRuler import create_geonames_ruler
-from .ChildSpanRemover import child_span_remover
+from .SpanRemover import child_span_remover, stop_list_span_remover
 from .NegationRuler import NegationRuler
 from .SpanPair import SpanPair
 from .SpanPairs import SpanPairs

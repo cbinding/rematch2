@@ -21473,7 +21473,8 @@
   },
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/140500",		 
-    "pattern": "Pillbox (Air Ministry Pattern)"
+    "pattern": "Pillbox (Air Ministry Pattern)",
+    "ignore": "true"
   },
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/140502",		 

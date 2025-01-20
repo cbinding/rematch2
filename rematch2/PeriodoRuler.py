@@ -22,6 +22,7 @@ History :
 16/02/2024 CFB removed BaseRuler inheritance, use EntityRuler directly
                renamed to PeriodoRuler, and "NAMEDPERIOD" => "PERIOD"
 28/03/2024 CFB base on SpanRuler instead of EntityRuler
+08/01/2025 CFB Add supp_list and stop_list, use create_vocabulary_ruler
 =============================================================================
 """
 import os
@@ -38,15 +39,23 @@ if __package__ is None or __package__ == '':
     from PeriodoData import PeriodoData
     from Util import *
     from DocSummary import DocSummary
+    from VocabularyRuler import create_vocabulary_ruler
 else:
     # uses current package visibility
     from .PeriodoData import PeriodoData
     from .Util import *
     from .DocSummary import DocSummary
+    from .VocabularyRuler import create_vocabulary_ruler
 
 
-@Language.factory(name="periodo_ruler", default_config={"periodo_authority_id": None})
-def create_periodo_ruler(nlp: Language, name: str="periodo_ruler", periodo_authority_id: str="") -> SpanRuler:
+@Language.factory(name="periodo_ruler", default_config={"periodo_authority_id": None, "supp_list": [], "stop_list": []})
+def create_periodo_ruler(
+    nlp: Language, 
+    name: str="periodo_ruler", 
+    periodo_authority_id: str="", 
+    supp_list: list=[], 
+    stop_list: list=[]
+    ) -> SpanRuler:
     # get terms from selected Perio.do authority as vocab
     # get as new instance, don't refresh cached data
     pd = PeriodoData() 
@@ -61,25 +70,18 @@ def create_periodo_ruler(nlp: Language, name: str="periodo_ruler", periodo_autho
         "pattern": item.get("label", "")
     }, periods or []))
 
-    normalized_patterns = normalize_patterns(
+    
+    ruler = create_vocabulary_ruler(
         nlp=nlp, 
-        patterns=patterns,
-        default_label="PERIOD",
+        name=name, 
+        default_label="PERIOD", 
         lemmatize=False,
-        pos=["ADJ", "PROPN"]
+        pos=["ADJ", "PROPN"],
+        patterns=patterns + supp_list,
+        stop_list=stop_list
     )
-    #pprint(normalized_patterns)
-
-    ruler = SpanRuler(
-        nlp=nlp,        
-        name=name,
-        spans_key="rematch",
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite=False
-    )  
-      
-    ruler.add_patterns(normalized_patterns)
+          
+    ruler.add_patterns(patterns)
     return ruler 
   
 

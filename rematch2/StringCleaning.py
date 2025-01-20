@@ -181,7 +181,7 @@ normalize_text = pipeline(
     normalize_ampersands,
     normalize_apostrophes,
     normalize_whitespace,
-    remove_bracketed_suffix
+    #remove_bracketed_suffix
 )
 
 r"""

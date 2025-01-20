@@ -1,0 +1,70 @@
+[
+  {
+    "id": "http://tempuri/supplementary/pleistocene",		 
+    "pattern": "Pleistocene"
+  },
+  {
+    "id": "http://tempuri/supplementary/holocene",		 
+    "pattern": "Holocene"
+  },  
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dsts5m",		 
+    "pattern": "Late Paleolithic"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dsts5m",		 
+    "pattern": "Late Palaeolithic"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dsts5m",		 
+    "pattern": "Later Paleolithic"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dsts5m",		 
+    "pattern": "Later Palaeolithic"
+  },
+  {
+    "id": "http://tempuri/supplementary/beaker",		 
+    "pattern": "Beaker"
+  },
+  {
+    "id": "http://tempuri/supplementary/early-beaker",		 
+    "pattern": "Early Beaker"
+  },
+  {
+    "id": "http://tempuri/supplementary/late-beaker",		 
+    "pattern": "Late Beaker"
+  },
+  {
+    "id": "http://tempuri/supplementary/late-beaker",		 
+    "pattern": "Later Beaker"
+  },
+  {
+    "id": "http://tempuri/supplementary/saxon",		 
+    "pattern": "Saxon"
+  },
+  {
+    "id": "http://tempuri/supplementary/saxon",		 
+    "pattern": "Late Saxon"
+  },    
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dscbkd",		 
+    "pattern": "High Mediaeval"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dscbkd",		 
+    "pattern": "High Medieval"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dscbkd",		 
+    "pattern": "Late Mediaeval"
+  },
+  {
+    "id": "http://n2t.net/ark:/99152/p0kh9dscbkd",		 
+    "pattern": "Late Medieval"
+  },  
+  {
+    "id": "http://tempuri/supplementary/viking",		 
+    "pattern": "Viking"
+  }
+]

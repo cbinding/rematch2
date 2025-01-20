@@ -1,0 +1,90 @@
+[
+  {
+    "id": "http://tempuri/supplementary/borehole",		
+    "pattern": "borehole"
+  }, 
+  {
+    "id": "http://tempuri/supplementary/borehole",		
+    "pattern": "bore hole"
+  },
+  {
+    "id": "http://tempuri/supplementary/borehole",		
+    "pattern": "bore-hole"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70462",		
+    "pattern": "channel"
+  },
+  {
+    "id": "/purl.org/heritagedata/schemes/eh_tmt2/concepts/78156",		
+    "pattern": "cobbles"
+  },
+  {
+    "id": "http://tempuri/supplementary/cofferdam",		
+    "pattern": "cofferdam"
+  }, 
+  {
+    "id": "http://tempuri/supplementary/cofferdam",		
+    "pattern": "coffer dam"
+  },
+  {
+    "id": "http://tempuri/supplementary/cofferdam",		
+    "pattern": "coffer-dam"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/71132",		
+    "pattern": "corral" 
+  },   
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412",		
+    "pattern": "cropmark" 
+  },
+  {
+    "id": "http://tempuri/supplementary/floodplain",		
+    "pattern": "floodplain"
+  },
+  {
+    "id": "http://tempuri/supplementary/floodplain",		
+    "pattern": "flood plain"
+  },
+  {
+    "id": "http://tempuri/supplementary/floodplain",		
+    "pattern": "flood-plain"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70267",		
+    "pattern": "hollow-way"
+  },
+  {
+    "id": "http://tempuri/supplementary/launchchamber",		
+    "pattern": "launch chamber"
+  }, 
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70403",		
+    "pattern": "post-hole"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70403",		
+    "pattern": "posthole"
+  },  
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70407",	
+    "pattern": "ring-ditch"
+  },  
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/94036",	
+    "pattern": "roundhouse"
+  },  
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/86499",		
+    "pattern": "scatter"
+  }, 
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/94083",		
+    "pattern": "stakehole"
+  }, 
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/94083",		
+    "pattern": "stake-hole"
+  } 
+]

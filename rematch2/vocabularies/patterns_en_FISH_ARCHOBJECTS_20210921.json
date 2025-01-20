@@ -2229,15 +2229,18 @@
   },
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/139085",		 
-    "pattern": "Coin (Contemporary Imitation)"
+    "pattern": "Coin (Contemporary Imitation)",
+    "ignore": true
   },
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/139087",		 
-    "pattern": "Coin (Modern Forgery)"
+    "pattern": "Coin (Modern Forgery)",
+    "ignore": true
   },
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/139086",		 
-    "pattern": "Coin (Modern Imitation)"
+    "pattern": "Coin (Modern Imitation)",
+    "ignore": true    
   },
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/136753",		 
