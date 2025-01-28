@@ -11,7 +11,7 @@ Summary :   spaCy custom pipeline component (specialized SpanRuler) to
 Imports :   os, sys, spacy, Language, SpanRuler, Doc, Language
 Example :   
         nlp = spacy.load(pipe_name, disable=['ner'])
-        nlp.add_pipe("geonames_ruler", last=True) 
+        nlp.add_pipe("geonames_ruler", last=True, config={"country_codes": ["GB"]}) 
         doc = nlp(test_text)
 
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
@@ -193,7 +193,7 @@ def create_geonames_ruler(nlp: Language, name: str="geonames_ruler", country_cod
     geonames_admin2 = get_geonames_admin2_data(country_codes) 
     geonames_cities = get_geonames_city_data(country_codes) 
     
-    geonames_data = (geonames_admin1 or []) +  (geonames_admin2 or []) + (geonames_cities or [])
+    geonames_data = (geonames_admin1 or []) + (geonames_admin2 or []) + (geonames_cities or [])
     
     # convert all geonames records to required 'patterns' format 
     patterns = list(map(lambda item: {
