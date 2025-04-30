@@ -1,5 +1,9 @@
 [
   {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/141190",		
+    "pattern": "CBM"
+  },
+  {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96399",		
     "pattern": "bladelet"
   },
@@ -10,6 +14,10 @@
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97566",		
     "pattern": "flint"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97566",		
+    "pattern": "lithics"
   },
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97042",		

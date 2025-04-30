@@ -8,7 +8,7 @@ Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
 Summary   : for use in identifying 'paired' spans
             e.g. "Medieval furrow", "Iron Age barrow", "Roman villa" etc.
-Imports   : itertools, Doc, Span, Token, DependencyMatcher
+Imports   : itertools, Doc, Span, Token, DependencyMatcher, SpanPair
 Example   : 
 License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================

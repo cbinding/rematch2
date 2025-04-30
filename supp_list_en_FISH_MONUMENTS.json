@@ -40,6 +40,14 @@
     "pattern": "cropmark" 
   },
   {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68580",		
+    "pattern": "crop dryer" 
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68580",		
+    "pattern": "crop-dryer" 
+  },
+  {
     "id": "http://tempuri/supplementary/floodplain",		
     "pattern": "floodplain"
   },
@@ -59,6 +67,10 @@
     "id": "http://tempuri/supplementary/launchchamber",		
     "pattern": "launch chamber"
   }, 
+   {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68975",		
+    "pattern": "midden pit"
+  },
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70403",		
     "pattern": "post-hole"
@@ -70,6 +82,14 @@
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70407",	
     "pattern": "ring-ditch"
+  },  
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70407",	
+    "pattern": "ring-gully"
+  },
+   {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70407",	
+    "pattern": "ring gully"
   },  
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/94036",	

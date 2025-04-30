@@ -24,7 +24,7 @@ from pathlib import Path
 import pandas as pd
 from html import escape # for writing escaped HTML
 from pandas import DataFrame
-from spacy.tokens import Doc
+from spacy.tokens import Doc, Span
 from spacy import displacy
 
 if __package__ is None or __package__ == '':
@@ -47,6 +47,9 @@ class DocSummary:
         for ent in filter(lambda x: x.label == "LOC", doc.ents):
             doc.spans[spans_key].append(ent)
             print(ent.text)
+
+        # calculate and attach concept frequency (similar to term frequency)
+        self._calculate_concept_frequency()
     
 
     def __str__(self):
@@ -65,6 +68,34 @@ class DocSummary:
             case "dict": return self._metadata
             case _: return self._metadata   
 
+
+    def _calculate_concept_frequency(self):
+        spans = self._doc.spans.get(self._spans_key, [])
+        label_count = {}
+        id_count = {}
+        for span in spans:
+            # increment counter of spans for this label 
+            # (number of concepts of this type in the document)
+            label = (span.label_ or "nothing")
+            if len(label) > 0:
+                if label not in label_count:
+                    label_count[label] = 1
+                else:
+                    label_count[label] += 1
+            # increment counter of spans for this id 
+            # (number of times this concept appears in the document)
+            id = (span.id_ or "nothing")
+            if len(id) > 0:
+                if id not in id_count:
+                    id_count[id] = 1
+                else:
+                    id_count[id] += 1
+        
+        # casting to floats to ensure the result is float; 
+        # default denominator of 1 prevents divide by zero errors
+        cf_value = lambda span: float(id_count.get(span.id_, 0)) / float(label_count.get(span.label_, 1))
+        Span.set_extension("cf_value", getter = cf_value, force=True)
+        
 
     def doctext(self, format: str="text") -> str: 
         match format.strip().lower():  
@@ -439,7 +470,8 @@ class DocSummary:
             "id": item.get("id", ""),
             "label": item.get("label", ""),
             "text": item.get("text", ""),
-            "count": int(item.get("count", 0))
+            "count": int(item.get("count", 0)),
+            "cf": float(item.get("cf", 0))
             } for item in counts]) 
 
 
@@ -473,6 +505,7 @@ class DocSummary:
                 html.append("</div>")
                 html.append("</td>")
                 html.append(f"<td>({item['count']})</td>")
+                html.append(f"<td>({item['cf']})</td>")
                 html.append("</tr>")
             html.append("</tbody></table>")
         return "\n".join(html)
@@ -500,11 +533,12 @@ class DocSummary:
     def _spancounts_to_text_custom(counts: list = []) -> str:
         lines = []
         for item in counts:                    
-            lines.append("[{label}] {id:<60} {text:>20} ({count})".format(
+            lines.append("[{label}] {id:<60} {text:>20} ({count}) ({cf})".format(
                 id = item.get("id", ""),                
                 label = item.get("label", ""),
                 text = item.get("text", ""),
-                count = int(item.get("count", 0))
+                count = int(item.get("count", 0)),
+                cf = float(item.get("cf", 0))
                 )
             )
         return "\n".join(lines) 
@@ -598,7 +632,8 @@ class DocSummary:
             "token_end": span.end - 1,            
             "label": span.label_,
             "id": span.id_,
-            "text": span.text
+            "text": span.text,
+            "cf": span._.cf_value
             } for span in spans]).drop_duplicates()
 
 
@@ -740,6 +775,7 @@ class DocSummary:
         ]) -> list:
 
         counts = {}
+        spans_count = len(list(filter(lambda s: s.label_ not in exclude, spans)))
 
         for span in spans:
             # exclude specified labels from summary counts
@@ -758,12 +794,12 @@ class DocSummary:
                 id = span.text
             else:
                 id = "other"
-            
+             
             # create a new record if not encountered before, or increment the existing count
             if id not in counts:
-                counts[id] = { "id": id, "label": span.label_, "text": span.lemma_, "count": 1 } 
+                counts[id] = { "id": id, "label": span.label_, "text": span.lemma_, "count": 1, "cf": span._.cf_value } 
             else:
-                counts[id]["count"] += 1            
+                counts[id]["count"] += 1                        
         
         # return as list sorted by ascending count
         return sorted(list(counts.values()), key=lambda x: x.get("count", 0), reverse=True)
