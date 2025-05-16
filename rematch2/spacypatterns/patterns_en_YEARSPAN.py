@@ -74,7 +74,6 @@ patterns_en_YEARSPAN = [
         "comment": "year with tolerance e.g. 1715±9 AD",
         "pattern": [
             {"ORTH": {"REGEX": r"^\d+±\d+$"}},
-            #{"OP": "*", "ENT_TYPE": "DATESUFFIX"}
             {"OP": "+", "_": {"is_datesuffix": True}}
         ]
     },
@@ -83,7 +82,6 @@ patterns_en_YEARSPAN = [
         "comment": "year with tolerance e.g. 1715+9-5 AD",
         "pattern": [
             {"ORTH": {"REGEX": r"^\d+\+\d+\-\d+$"}},
-            #{"OP": "*", "ENT_TYPE": "DATESUFFIX"}
             {"OP": "+", "_": {"is_datesuffix": True}}
         ]
     },
@@ -104,20 +102,46 @@ patterns_en_YEARSPAN = [
             {"ORTH": {"REGEX": r"^\d{3,4}$"}},
             {"OP": "+", "_": {"is_datesuffix": True}}
         ]
-    },    
+    }, 
     {
         "label": "YEARSPAN",
-        "comment": "year span e.g. early 100 BC to late 100 AD",
+        "comment": "year with prefix to year with prefix e.g. circa 1580 to circa 1600, maybe suffixes",
         "pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"ORTH": {"REGEX": r"^\d{3,4}$"}},            
+            {"OP": "+", "_": {"is_dateprefix": True}},
+            {"ORTH": {"REGEX": r"^\d{3,4}$"}},
             {"OP": "*", "_": {"is_datesuffix": True}},
             {"OP": "+", "_": {"is_dateseparator": True}},
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "+", "_": {"is_dateprefix": True}},
             {"ORTH": {"REGEX": r"^\d{3,4}$"}},
             {"OP": "*", "_": {"is_datesuffix": True}},
         ]
-    },
+    },   
+    {
+        "label": "YEARSPAN",
+        "comment": "year with suffix to year with suffix e.g. 1580 AD to 1600 AD, maybe prefixes",
+        "pattern": [
+            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"ORTH": {"REGEX": r"^\d{3,4}$"}},
+            {"OP": "+", "_": {"is_datesuffix": True}},
+            {"OP": "+", "_": {"is_dateseparator": True}},
+            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"ORTH": {"REGEX": r"^\d{3,4}$"}},
+            {"OP": "+", "_": {"is_datesuffix": True}},
+        ]
+    },   
+    #{
+    #    "label": "YEARSPAN",
+    #    "comment": "year span e.g. early 100 BC to late 100 AD",
+    #    "pattern": [
+    #        {"OP": "*", "_": {"is_dateprefix": True}},
+    #        {"ORTH": {"REGEX": r"^\d{3,4}$"}},            
+    #        {"OP": "*", "_": {"is_datesuffix": True}},
+    #        {"OP": "+", "_": {"is_dateseparator": True}},
+    #        {"OP": "*", "_": {"is_dateprefix": True}},
+    #        {"ORTH": {"REGEX": r"^\d{3,4}$"}},
+    #        {"OP": "*", "_": {"is_datesuffix": True}},
+    #    ]
+    #},    
     { 
         "label": "YEARSPAN",         
         "comment": "ordinal century e.g. beginning of the fifth century AD",

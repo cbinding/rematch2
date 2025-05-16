@@ -10,7 +10,7 @@ Summary :
     spaCy patterns to override default attribute_ruler POS tagging
     spaCy POS tagger is statistical and does not always get it right. 
     Correct problematic issues here. These patterns to be added to
-    the attribute_ruler component of the pipeline
+    the attribute_ruler component of the pipeline (custom_attribute_ruler)
 Imports :   
 Example :           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt

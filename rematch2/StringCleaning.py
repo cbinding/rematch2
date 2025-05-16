@@ -30,20 +30,37 @@ import regex
 def normalize_whitespace(text: str, preserve_line_breaks: bool=True) -> str:
     if preserve_line_breaks: # normalize only spaces, not line or paragraph breaks
         return regex.sub(pattern=r"\p{Separator}+", repl=" ", string=text).strip()
+        # check if any better or worse (no Unicode entities so more generalizable)
+        #return regex.sub(pattern=r"[^\S\r\n]+", repl=" ", string=text).strip()
     else:
         return " ".join(text.split())
     
+# sometimes normally single words hyphenated at line break;
+# in this case remove both the hyphen and newline character
+# e.g. "...the para-
+# "graph concludes with..." => "...the paragraph concludes with..."
+def remove_newline_hyphens(text: str) -> str:
+    return regex.sub(pattern=r"\p{Dash_Punctuation}\p{Separator}*[\r\n]([a-z])", repl=r"\1", string=text).strip()
 
+# sometimes newlines present to maintain line width.
+# retain if at the end of a sentence, otherwise
+# can be removed without altering sentence meaning 
+def remove_spurious_newlines(text: str) -> str:
+     return regex.sub(pattern=r"([^.])\p{Separator}*[\r\n]", repl=r"\1 ", string=text).strip()
+
+
+# normalise spelling (English only;  mainly US -> UK spelling)
+# controlled entry vocabulary should include these variants
+# but not guaranteed
 def normalize_spelling(text: str) -> str:    
     subs = {
-        "archeo": "archaeo",
-        "paleo": "palaeo",
+        "(a)rcheo": r"\1rchaeo",
+        "(p)aleo": r"\1alaeo",
         r"\bdefense\b": "defence",
         r"\bpalestra\b": "palaestra",
-        r"\bmediaeval\b": "medieval",
+        r"\b(m)ediaeval\b": r"\1edieval", # ignore case but retain in result
         r"(\w+)ization\b": r"\1isation",
         r"(\w+)izing\b": r"\1ising",
-        r"(\w+)ized\b": r"\1ised",
         r"(\w+)ized\b": r"\1ised",
         r"\bjewelry\b": "jewellery",
         r"\bartifact\b": "artefact",
@@ -66,6 +83,8 @@ def normalize_spelling(text: str) -> str:
 
 
 # normalize spacing on any dash/hyphen punctuation character
+# this makes subsequent tokenisation more consistent
+# so rule-based patterns can match properly
 # e.g. "post- hole" | "post -hole" | "post-hole" | "post - hole" => "post - hole" 
 # e.g. "10th-13th century" => "10th - 13th century"
 # e.g. "dating from -500" => "dating from -500"  (unaffected)
@@ -160,6 +179,7 @@ def selection_sentence_case(text: str, pattern: str=r".*", count: int=0, flags=N
 
 
 #see https://dzone.com/articles/python-function-pipelines-streamlining-data-proces (sic)
+# what if we want to pass options to functions?
 def pipeline(*functions):
     
     def inner(data):
@@ -173,6 +193,8 @@ def pipeline(*functions):
 
 # normalize text for NER
 normalize_text = pipeline(
+    remove_newline_hyphens, 
+    remove_spurious_newlines,   
     normalize_whitespace,
     normalize_hyphens, 
     normalize_slashes, 
@@ -212,15 +234,15 @@ if __name__ == "__main__":
     import spacy
 
     nlp = spacy.load("en_core_web_sm")
-    text2 = f"archeological work indicated  an Iron Age/ Romano- British  /Roman\npost -hole, in( low -lying)ground near(vandalized)\n  Mediaeval/post-medieval(15th-17th century? )footings"
-    text = f"clay pipes (smoking)"
-    print(f"Original text:\n\"{text}\"")
-    print(f"Tokenization:")
+    text = f"archeological  work indi-\ncated  an Iron Age/ Romano- British  /Roman\npost -hole, in( low -lying)ground.\nThis  was  near(vandal-\nized)\n  Mediaeval/post-medieval(15th-17th century? )foot-\nings"
+    text2 = f"clay pipes (smoking)"
+    print(f"Old text:\n\"{text}\"")
+    print(f"Old tokenization:")
     doc = nlp(text)
     print(list(map(lambda tok: tok.text, doc)))
     print(f"\n")
     clean = normalize_text(text)
-    print(f"Normalized text:\n\"{clean}\"")
-    print(f"Tokenization:")
+    print(f"New text:\n\"{clean}\"")
+    print(f"New tokenization:")
     doc = nlp(clean)
     print(list(map(lambda tok: tok.text, doc)))    
