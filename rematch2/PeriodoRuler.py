@@ -29,19 +29,21 @@ import os
 import sys
 import spacy            # NLP library
 import pandas as pd
-from spacy.pipeline import SpanRuler
+#from spacy.pipeline import SpanRuler
 from spacy.tokens import Doc
 from spacy.language import Language
 from pprint import pprint
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
+    from CustomSpanRuler import CustomSpanRuler
     from PeriodoData import PeriodoData
     from Util import *
     from DocSummary import DocSummary
     from VocabularyRuler import create_vocabulary_ruler
 else:
     # uses current package visibility
+    from .CustomSpanRuler import CustomSpanRuler
     from .PeriodoData import PeriodoData
     from .Util import *
     from .DocSummary import DocSummary
@@ -55,7 +57,7 @@ def create_periodo_ruler(
     periodo_authority_id: str="", 
     supp_list: list=[], 
     stop_list: list=[]
-    ) -> SpanRuler:
+    ) -> CustomSpanRuler:
     # get terms from selected Perio.do authority as vocab
     # get as new instance, don't refresh cached data
     pd = PeriodoData() 

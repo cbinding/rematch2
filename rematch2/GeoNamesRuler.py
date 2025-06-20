@@ -30,7 +30,7 @@ import sys
 import spacy            # NLP library
 import pandas as pd
 from html import escape
-from spacy.pipeline import SpanRuler
+#from spacy.pipeline import SpanRuler
 from spacy.tokens import Doc
 from spacy.language import Language
 from pprint import pprint
@@ -38,11 +38,13 @@ from pprint import pprint
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from Util import *
+    from CustomSpanRuler import CustomSpanRuler
     from StringCleaning import normalize_text
     from DocSummary import DocSummary
 else:
     # uses current package visibility
     from .Util import *
+    from .CustomSpanRuler import CustomSpanRuler
     from .StringCleaning import normalize_text
     from .DocSummary import DocSummary
 
@@ -186,7 +188,7 @@ def get_geonames_city_data(country_codes: list=[]) -> list:
 
 
 @Language.factory(name="geonames_ruler", default_config={"country_codes": ["GB"]})
-def create_geonames_ruler(nlp: Language, name: str="geonames_ruler", country_codes=["GB"]) -> SpanRuler:
+def create_geonames_ruler(nlp: Language, name: str="geonames_ruler", country_codes=["GB"]) -> CustomSpanRuler:
 
     # get records for selected GeoNames country codes
     geonames_admin1 = get_geonames_admin1_data(country_codes) 
@@ -210,7 +212,7 @@ def create_geonames_ruler(nlp: Language, name: str="geonames_ruler", country_cod
         pos=["PROPN"]
     )
     
-    ruler = SpanRuler(
+    ruler = CustomSpanRuler(
         nlp=nlp,        
         name=name,
         spans_key="rematch",

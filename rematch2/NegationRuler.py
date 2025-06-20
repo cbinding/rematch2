@@ -22,19 +22,23 @@ import sys
 from pathlib import Path
 import json
 import spacy            # NLP library
-from spacy.pipeline import SpanRuler
+#from spacy.pipeline import SpanRuler
 from spacy.language import Language
 from spacy.lang.en import English
 from spacy.tokens import Doc, Span
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
+    from CustomSpanRuler import CustomSpanRuler
+    from SpanRemover import child_span_remover
     from spacypatterns import *
     from Util import *
     from SpanPairs import SpanPairs
     from DocSummary import DocSummary    
 else:
     # uses current package visibility
+    from .CustomSpanRuler import CustomSpanRuler
+    from .SpanRemover import child_span_remover
     from .spacypatterns import *
     from .Util import * 
     from .SpanPairs import SpanPairs    
@@ -42,7 +46,7 @@ else:
 
 
 # NegationRuler is a specialized SpanRuler
-class NegationRuler(SpanRuler):
+class NegationRuler(CustomSpanRuler):
 
     def __init__(self, nlp: Language, name: str="negation_ruler", patterns: list=[]) -> None:
         normalized_patterns = normalize_patterns(
@@ -51,9 +55,10 @@ class NegationRuler(SpanRuler):
             default_label="NEGATION",
             lemmatize=False,
             min_term_length=2
-        )        
+        )  
+        #print(normalized_patterns)      
 
-        SpanRuler.__init__(
+        CustomSpanRuler.__init__(
             self,
             nlp=nlp,        
             name=name,
@@ -71,17 +76,16 @@ class NegationRuler(SpanRuler):
     
     
     def __call__(self, doc: Doc) -> Doc:
-        doc = SpanRuler.__call__(self, doc)
+        doc = CustomSpanRuler.__call__(self, doc)
         all_spans = doc.spans.get("rematch",[])
         
         # flag any negated spans
-        # get list of unique labels of all spans in current doc (remove 'NEGATION')
+        # get list of unique labels of all spans in current doc (except 'NEGATION')
         unique_labels = list(set(map(lambda span: span.label_, all_spans)))
         if "NEGATION" in unique_labels: unique_labels.remove("NEGATION")
 
         # get negation pairs for ALL unique labels
-        rel_ops = [ "<", ">", "<<", ">>", ".", ";"]              
-        span_pairs = SpanPairs(doc=doc, rel_ops=rel_ops, left_labels=["NEGATION"], right_labels=unique_labels).pairs        
+        span_pairs = SpanPairs(doc=doc, rel_ops=[ "<", "."], left_labels=["NEGATION"], right_labels=unique_labels).pairs        
         negated_span_starts = list(map(lambda pair: pair.span2.start, span_pairs))
         
         # flag spans as is_negated 
@@ -143,13 +147,14 @@ def create_negation_ruler_cs(nlp: Language, name: str = "negation_ruler") -> Neg
 if __name__ == "__main__":
     tests = []
     # load some local test texts from JSON file..    
-    test_file_path = (Path(__file__).parent.parent / "test_examples_english.json").resolve()    
+    test_file_path = (Path(__file__).parent.parent / "data/ner-input/test-examples/test_examples_english.json").resolve()    
     with open(test_file_path, "r") as f:
         tests = json.load(f)
     
     # set up the spaCy pipeline
     nlp = get_pipeline_for_language("en")
     nlp.add_pipe("negation_ruler", last=True)
+    nlp.add_pipe("child_span_remover", last=True)
         
     # run using test texts
     for test in tests:

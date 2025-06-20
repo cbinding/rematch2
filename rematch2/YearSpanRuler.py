@@ -37,6 +37,7 @@ from spacy.lang.pl import Polish # experimental substitute for Czech as it doesn
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from spacypatterns import *
+    from CustomSpanRuler import CustomSpanRuler
     from OrdinalRuler import create_ordinal_ruler
     from DatePrefixRuler import create_dateprefix_ruler
     from DateSuffixRuler import create_datesuffix_ruler
@@ -48,6 +49,7 @@ if __package__ is None or __package__ == '':
 else:
     # uses current package visibility
     from .spacypatterns import *
+    from .CustomSpanRuler import CustomSpanRuler
     from .OrdinalRuler import create_ordinal_ruler
     from .DatePrefixRuler import create_dateprefix_ruler
     from .DateSuffixRuler import create_datesuffix_ruler
@@ -58,8 +60,8 @@ else:
     from .DocSummary import DocSummary
 
 
-# YearSpanRuler is a specialized SpanRuler
-class YearSpanRuler(SpanRuler):
+# YearSpanRuler is a specialized CustomSpanRuler
+class YearSpanRuler(CustomSpanRuler):
 
     def __init__(self, nlp: Language, name: str="yearspan_ruler", patterns: list=[]) -> None:
         # add token extensions for YearSpan patterns to work
@@ -103,7 +105,7 @@ class YearSpanRuler(SpanRuler):
             if not name in nlp.pipe_names:
                 nlp.add_pipe(name, last=True)
 
-        SpanRuler.__init__(
+        CustomSpanRuler.__init__(
             self,
             nlp=nlp,        
             name=name,
@@ -119,7 +121,7 @@ class YearSpanRuler(SpanRuler):
 
     def __call__(self, doc: Doc) -> Doc:
 
-        doc = SpanRuler.__call__(self, doc)
+        doc = CustomSpanRuler.__call__(self, doc)
 
         # filter for 'atomic' labelled spans only used to determine yearspans
         #filtered = [span for span in all_spans if span.label_ not in [

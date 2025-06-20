@@ -22,6 +22,7 @@ import json
 import os
 from pathlib import Path
 import pandas as pd
+import spacy
 from html import escape # for writing escaped HTML
 from pandas import DataFrame
 from spacy.tokens import Doc, Span
@@ -30,9 +31,11 @@ from spacy import displacy
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from SpanPairs import SpanPairs
+    from Decorators import run_timed
 else:
     # uses current package visibility
     from .SpanPairs import SpanPairs
+    from .Decorators import run_timed
 
 
 class DocSummary:
@@ -41,12 +44,13 @@ class DocSummary:
         self._doc = doc
         self._spans_key = spans_key.strip()
         self._metadata = metadata
-
+        
         # copy any PLACE entities to spans so they can be reported and displayed
-        # in the same way as all other slans identified
+        # in the same way as all other spans identified
+        # TODO: possibly just copy ALL ents not just LOC ?
         for ent in filter(lambda x: x.label == "LOC", doc.ents):
             doc.spans[spans_key].append(ent)
-            print(ent.text)
+            #print(ent.text)
 
         # calculate and attach concept frequency (similar to term frequency)
         self._calculate_concept_frequency()
@@ -59,7 +63,7 @@ class DocSummary:
     def __repr__(self):
         return self.__str__()
 
-    
+    @run_timed
     def meta(self, format: str="text") -> str:         
         match format.strip().lower(): 
             case "html": return self._meta_to_html(self._metadata)
@@ -69,6 +73,7 @@ class DocSummary:
             case _: return self._metadata   
 
 
+    @run_timed
     def _calculate_concept_frequency(self):
         spans = self._doc.spans.get(self._spans_key, [])
         label_count = {}
@@ -97,12 +102,14 @@ class DocSummary:
         Span.set_extension("cf_value", getter = cf_value, force=True)
         
 
+    @run_timed
     def doctext(self, format: str="text") -> str: 
         match format.strip().lower():  
             case "html": return self._doctext_to_html(self._doc, spans_key=self._spans_key)
             case _: return self._doc.text
 
 
+    @run_timed
     def report(self, format: str="text") -> str: 
         match format.strip().lower():  
             case "html": return self._report_to_html()
@@ -111,6 +118,7 @@ class DocSummary:
             case _: return self._report_to_text()        
 
     
+    @run_timed
     def spans(self, format: str="text", label="") -> str|list:
         spans = self._doc.spans.get(self._spans_key, [])
         if(label != ""):
@@ -128,6 +136,7 @@ class DocSummary:
             case _: return spans
 
 
+    @run_timed
     def spanpairs(self, 
         format: str="text", 
         left_labels: list=["PERIOD", "YEARSPAN"], 
@@ -148,6 +157,7 @@ class DocSummary:
             case _: return pairs
 
     
+    @run_timed
     def spancounts(self, format: str="text") -> str|list:
         spans = self.spans(format="default")
         counts = self._get_span_counts_by_id(spans)
@@ -162,6 +172,7 @@ class DocSummary:
             case _: return counts
 
 
+    @run_timed
     def labelcounts(self, format: str="text") -> str|list:
         spans = self.spans(format="default")
         counts = self._get_span_counts_by_label(spans)
@@ -176,6 +187,7 @@ class DocSummary:
             case _: return counts
 
 
+    @run_timed
     def tokens(self, format: str="text") -> str|list:
         toks = self._doc
         match format.strip().lower():
@@ -189,6 +201,7 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _meta_to_html(data: dict) -> str:
         html = []
         html.append("<ul>")
@@ -209,11 +222,13 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _meta_to_json(data: dict) -> str:
         return json.dumps(data)
 
 
     @staticmethod
+    @run_timed
     def _meta_to_text(data: dict) -> str:
         text = []
         for key, val in data.items():
@@ -228,6 +243,7 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _doctext_to_html(
         doc: Doc, 
         spans_key: str="rematch", 
@@ -284,7 +300,7 @@ class DocSummary:
         del doc.spans["temp_subset"]
         return html
    
-
+    @run_timed
     def _report_to_html(self) -> str:
         output = []
 
@@ -360,6 +376,7 @@ class DocSummary:
         return f"\n".join(output)
 
 
+    @run_timed
     def _report_to_json(self):
         output = {
             "meta": self.meta(format="dict"),
@@ -369,9 +386,10 @@ class DocSummary:
             "spancounts": self.spancounts(format="list"),
             "spanpairs": self.spanpairs(format="list"),            
         }
-        return json.dumps(output)
+        return json.dumps(output, default=str)
 
 
+    @run_timed
     def _report_to_text(self) -> str:
         output = []
         output.append(f"metadata:\n{self.meta(format='text')}")        
@@ -384,6 +402,7 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _spanpairs_to_df(pairs: list = []) -> DataFrame:
         return DataFrame([{
             "span1_id": pair.span1.id_,
@@ -398,30 +417,35 @@ class DocSummary:
         
 
     @staticmethod
+    @run_timed
     def _spanpairs_to_csv(pairs: list = [], sep=",") -> str:
         df = DocSummary._spanpairs_to_df(pairs)
         return df.to_csv(sep=sep)
 
 
     @staticmethod
+    @run_timed
     def _spanpairs_to_list(pairs: list = []) -> list:
         df = DocSummary._spanpairs_to_df(pairs)
         return df.to_dict(orient="records")
 
 
     @staticmethod
+    @run_timed
     def _spanpairs_to_html(pairs: list = []) -> str:
         df = DocSummary._spanpairs_to_df(pairs)
         return(df.to_html(index=False, border=0)) # renders html table
 
 
     @staticmethod
+    @run_timed
     def _spanpairs_to_htmll(pairs: list = []) -> str:
         pass
 
 
     # custom table render from find_pairs.py 
     @staticmethod
+    @run_timed
     def _spanpairs_to_html_table(pairs: list = []) -> str:
         html = []
 
@@ -452,12 +476,14 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _spanpairs_to_json(pairs: list = []) -> str:
         df = DocSummary._spanpairs_to_df(pairs)
         return df.to_json(orient="records")
 
 
     @staticmethod
+    @run_timed
     def _spanpairs_to_text(pairs: list = []) -> str:
         df = DocSummary._spanpairs_to_df(pairs)
         pd.set_option('display.max_colwidth', None)
@@ -465,6 +491,7 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _spancounts_to_df(counts: list = []) -> DataFrame: 
         return DataFrame([{
             "id": item.get("id", ""),
@@ -476,18 +503,21 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _spancounts_to_csv(counts: list = [], sep: str=",") -> str:
         df = DocSummary._spancounts_to_df(counts)
         return df.to_csv(sep=sep)
 
 
     @staticmethod
+    @run_timed
     def _spancounts_to_html(counts: list = []) -> str:
         df = DocSummary._spancounts_to_df(counts)
         return(df.to_html(index=False, border=0)) # renders html table
 
     # table rendering from find_pairs.py
     @staticmethod
+    @run_timed
     def _spancounts_to_html_table(counts: list = []) -> str:
         html = []        
         if len(counts) == 0:
@@ -512,17 +542,20 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _spancounts_to_html_list(counts: list = []) -> str:
         pass
 
 
     @staticmethod
+    @run_timed
     def _spancounts_to_json(counts: list = []) -> str:
         df = DocSummary._spancounts_to_df(counts)
         return df.to_json(orient="records")
 
 
     @staticmethod
+    @run_timed
     def _spancounts_to_text(counts: list = []) -> str:
         df = DocSummary._spancounts_to_df(counts)
         pd.set_option('display.max_colwidth', None)
@@ -530,6 +563,7 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _spancounts_to_text_custom(counts: list = []) -> str:
         lines = []
         for item in counts:                    
@@ -545,6 +579,7 @@ class DocSummary:
     
 
     @staticmethod
+    @run_timed
     def _labelcounts_to_df(counts: list = []) -> DataFrame: 
         return DataFrame([{
             "label": item.get("label", ""),
@@ -553,18 +588,21 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _labelcounts_to_csv(counts: list = [], sep: str=",") -> str:
         df = DocSummary._labelcounts_to_df(counts)
         return df.to_csv(sep=sep)
 
 
     @staticmethod
+    @run_timed
     def _labelcounts_to_html(counts: list = []) -> str:
         df = DocSummary._labelcounts_to_df(counts)
         return(df.to_html(index=False, border=0)) # renders html table
     
 
     @staticmethod
+    @run_timed
     def _labelcounts_to_html_list(counts: list = []) -> str:
         html = []
         html.append("<details>")
@@ -581,6 +619,7 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _labelcounts_to_html_table(counts: list = []) -> str:
         html = []        
         if len(counts) == 0:
@@ -600,12 +639,14 @@ class DocSummary:
         return "\n".join(html)
 
     @staticmethod
+    @run_timed
     def _labelcounts_to_json(counts: list = []) -> str:
         df = DocSummary._labelcounts_to_df(counts)
         return df.to_json(orient="records")
 
 
     @staticmethod
+    @run_timed
     def _labelcounts_to_text(counts: list = []) -> str:
         df = DocSummary._labelcounts_to_df(counts)
         pd.set_option('display.max_colwidth', None)
@@ -613,6 +654,7 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _labelcounts_to_text_custom(counts: list = []) -> str:
         lines = []
         for item in counts:                    
@@ -624,6 +666,7 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _spans_to_df(spans: list = []) -> DataFrame:    
         return DataFrame([{
             "start": span.start_char,
@@ -638,18 +681,21 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _spans_to_csv(spans: list = [], sep=",") -> str:
         df = DocSummary._spans_to_df(spans)
         return df.to_csv(sep=sep)
 
 
     @staticmethod
+    @run_timed
     def _spans_to_html(spans: list = []) -> str:
         df = DocSummary._spans_to_df(spans)
         return(df.to_html(index=False, border=True)) # renders html table
 
 
     @staticmethod
+    @run_timed
     def _spans_to_html_list(spans: list = []) -> str:
         html = []
         html.append("<details>")
@@ -669,18 +715,21 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _spans_to_json(spans: list = []) -> str:
         df = DocSummary._spans_to_df(spans)
         return df.to_json(orient="records")
 
 
     @staticmethod
+    @run_timed
     def _spans_to_list(spans: list = []) -> list:
         df = DocSummary._spans_to_df(spans)
         return df.to_dict(orient="records")
 
 
     @staticmethod
+    @run_timed
     def _spans_to_text(spans: list = []) -> str:
         df = DocSummary._spans_to_df(spans)
         pd.set_option('display.max_colwidth', None)
@@ -688,6 +737,7 @@ class DocSummary:
     
 
     @staticmethod
+    @run_timed
     def _tokens_to_df(toks: list = []) -> DataFrame:    
         return DataFrame([{
             "index": tok.i,
@@ -700,24 +750,28 @@ class DocSummary:
     
 
     @staticmethod
+    @run_timed
     def _tokens_to_csv(toks: list = [], sep=",") -> str:
         df = DocSummary._tokens_to_df(toks)
         return df.to_csv(sep=sep)
             
 
     @staticmethod
+    @run_timed
     def _tokens_to_html(toks: list = []) -> str:
         df = DocSummary._tokens_to_df(toks)
         return df.to_html(index=False, border=0) # renders html table
 
 
     @staticmethod
+    @run_timed
     def _tokens_to_list(toks: list = []) -> list:
         df = DocSummary._tokens_to_df(toks)
         return df.to_dict(orient="records")        
 
 
     @staticmethod
+    @run_timed
     def _tokens_to_html_list(toks: list = []) -> str:
         html = []
         html.append("<ul class='tokens'>")
@@ -735,12 +789,14 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _tokens_to_json(toks: list = []) -> list:
         df = DocSummary._tokens_to_df(toks)
         return df.to_json(orient="records")
 
 
     @staticmethod
+    @run_timed
     def _tokens_to_text(toks: list = []) -> str:
         df = DocSummary._tokens_to_df(toks)
         pd.set_option('display.max_colwidth', None)
@@ -748,6 +804,7 @@ class DocSummary:
 
 
     @staticmethod
+    @run_timed
     def _tokens_to_text_custom(toks: list = []) -> str:
         lines = ["[{index}] ({start}->{end}) {pos:<4} \"{text}\"".format(
             index = tok.i,
@@ -762,6 +819,7 @@ class DocSummary:
     # count spans by id, return list [{id, label, text, count}, {id, label, text, count}, ...] 
     # returned in descending count order - note there is probably a more elegant way to do this 
     @staticmethod   
+    @run_timed
     def _get_span_counts_by_id(
         spans: list = [], 
         exclude: list = [
@@ -808,6 +866,7 @@ class DocSummary:
     # count spans by label, return list [{label, count}, {label, count}, ...] 
     # returned in descending count order
     @staticmethod   
+    @run_timed
     def _get_span_counts_by_label(
         spans: list = [], 
         exclude: list = [
@@ -837,3 +896,20 @@ class DocSummary:
         # return as list sorted by ascending count
         return sorted(list(counts.values()), key=lambda x: x.get("count", 0), reverse=True)
 
+
+# test the DocSummary class
+if __name__ == "__main__":
+    import VocabularyRuler
+
+    # example test
+    test_text = """This collection comprises Roman site data(reports, images, spreadsheets, GIS data and site records) from two phases of archaeological evaluation undertaken by Oxford Archaeology in June 2018 (SAWR18) and February 2021 (SAWR21) at West Road, Sawbridgeworth, Hertfordshire. SAWR18 In June 2018, Oxford Archaeology were commissioned by Taylor Wimpey to undertake an archaeological evaluation on the site of a proposed housing development to the north of West Road, Sawbridgeworth(TL 47842 15448). A programme of 19 trenches was undertaken to ground truth the results of a geophysical survey and to assess the archaeological potential of the site. The evaluation confirmed the presence of archaeological remains in areas identified on the geophysics. Parts of a NW-SE‐aligned trackway were found in Trenches 1 and 2. Field boundaries identified by geophysics(also present on the 1839 tithe map) were found in Trenches 5 and 7, towards the south of the site, and in Trenches 12 and 16, in the centre of the site. Geophysical anomalies identified in the northern part of the site were investigated and identified as geological. The archaeology is consistent with the geophysical survey results and it is likely that much of it has been truncated by modern agricultural activity. SAWR21 Oxford Archaeology carried out an archaeological evaluation on the site of proposed residential development north of West Road, Sawbridgeworth, Hertfordshire, in February 2021. The fieldwork was commissioned by Taylor Wimpey as a condition of planning permission. Preceding geophysical survey of the c 5.7ha development site was undertaken in 2016 and identified a concentration of linear and curvilinear anomalies in the north-east corner of the site and two areas of several broadly NW-SE aligned anomalies in the southern half of the site. Subsequent trial trench evaluation, comprising the investigation of 19 trenches, was undertaken by Oxford Archaeology in 2018, targeted upon the geophysical survey results. The evaluation revealed a small number of ditches in the centre and south of the site, correlating with the geophysical anomalies. Although generally undated, the ditches were suggestive of a trackway and associated enclosure/field boundaries. Other ditches encountered on site correlated with post-medieval field boundaries depicted on 19th century mapping. Given the results of the 2018 evaluation, in conjunction with those of the 2018 investigations at nearby Chalk's Farm, which uncovered the remains of Late Bronze Age-early Iron Age and early Roman settlement and agricultural activity, it was deemed necessary to undertake a further phase of evaluation at the site. Four additional trenches were excavated in the southern half of the site to further investigate the previously revealed ditches. The continuations of the trackway ditches were revealed in the centre of the site, with remnants of a metalled surface also identified. Adjacent ditches may demonstrate the maintenance and modification of the trackway or perhaps associated enclosure/field boundaries. Artefactual dating evidence recovered from these ditches was limited and of mixed date, comprising small pottery sherds of late Bronze Age- Early Iron Age date and fragments of Roman ceramic building material. It is probable that these remains provide evidence of outlying agricultural activity associated with the later prehistoric and early Roman settlement evidence at Chalk's Farm. A further undated ditch and a parallel early Roman ditch were revealed in the south of the site, suggestive of additional land divisions, probably agricultural features. A post-medieval field boundary ditch and modern land drains are demonstrative of agricultural use of the landscape during these periods."""
+    nlp = spacy.load("en_core_web_sm")   #nlp = spacy.load("en_core_web_sm", disable=['ner']) 
+    nlp.add_pipe("fish_monument_types_ruler", last=True)
+    doc = nlp(test_text)
+    summary = DocSummary(doc)
+    data = doc.to_json() #["spans"] = doc.spans
+    
+    with open("../data/test_serialisation.json", "w") as outfile:
+        json.dump(data, outfile)
+    #print("\nTokens:\n" + summary.tokens("text"))
+    #print("\nSpans:\n" + summary.spans("text"))    

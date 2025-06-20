@@ -7,6 +7,8 @@ Project   : ATRIUM
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
 Summary   : 
+    ***** NOTE - deprecated, this code now implemented as custom pipeline components
+    see NormalizeText.py *****
     Functions for performing string cleaning and normalisation operations on 
     text, prior to any NER work. Mostly based on regex replacement patterns. 
     Functions allow chaining and pipelining: f(text: str) -> str
@@ -14,7 +16,8 @@ Summary   :
     e.g. r"\p{Dash_Punctuation}" (represents any hyphenation character)
     for list of unicode categories see https://www.regular-expressions.info/unicode.html
     TODO (possibly): normalize_case, normalize_diacritics, normalize_contractions
-    # (wasn't, couldn't i'm etc.) - probably rare but note how they get tokenized
+    # (wasn't, couldn't i'm etc.) - probably rare but note how they get tokenized - see
+    https://theslaps.medium.com/cant-stand-don-t-want-contractions-with-spacy-39715cac2ebb
 Imports   : regex, spacy (for testing tokenization only)
 Example   : clean = normalize_text(text)
 License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
@@ -115,6 +118,25 @@ def normalize_brackets(text: str) -> str:
     result = regex.sub(pattern=r"([^\s])\s*(\p{Close_Punctuation})\s*([^\s])", repl=r"\1\2 \3", string=result)
     return result
 
+# this function adapted from https://pypdf.readthedocs.io/en/stable/user/post-processing-in-text-extraction.html
+def normalize_ligatures(text: str) -> str:
+    ligatures = {
+        "ﬀ": "ff",
+        "ﬁ": "fi",
+        "ﬂ": "fl",
+        "ﬃ": "ffi",
+        "ﬄ": "ffl",
+        "ﬅ": "ft",
+        "ﬆ": "st",
+        # "Ꜳ": "AA",
+        # "Æ": "AE",
+        "ꜳ": "aa",
+    }
+    result = text
+    for search, replace in ligatures.items():
+        result = text.replace(search, replace)
+    return result
+
 
 # convert ampersands to "and"
 def normalize_ampersands(text: str) -> str:
@@ -200,6 +222,7 @@ normalize_text = pipeline(
     normalize_slashes, 
     normalize_brackets,
     normalize_spelling,
+    normalize_ligatures,
     normalize_ampersands,
     normalize_apostrophes,
     normalize_whitespace,

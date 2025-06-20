@@ -1,6 +1,8 @@
 import spacy
 import json
 import re
+import functools
+import time # For measuring elapsed time
 from spacy.language import Language
 from spacy.tokens import Token
 
@@ -10,6 +12,26 @@ if __package__ is None or __package__ == '':
 else:
     # uses current package visibility
     from .StringCleaning import normalize_text
+
+
+# custom decorator - to output execution timing information
+# based on https://realpython.com/primer-on-python-decorators/
+def run_timed(f):
+    @functools.wraps(f)
+    def wrapper_run_timed(*args, **kwargs):
+        starting = time.time()
+       
+        result = f(self, *args, **kwargs)
+        
+        finished = time.time()      
+        duration = finished - starting 
+
+        print(f"\"{self.__class__.__name__}.{f.__name__ }\" ran in {duration:.3f} seconds")
+
+        return result
+
+    return wrapper_run_timed
+    
 
 # get suitable spaCy NLP pipeline for given ISO639-1 (2-char) language code
 def get_pipeline_for_language(language: str="") -> Language:
@@ -121,7 +143,8 @@ def normalize_patterns(
                     continue
 
                 # first tokenize the phrase
-                doc = nlp(clean_phrase)
+                #doc = nlp(clean_phrase)
+                doc = nlp.make_doc(clean_phrase)
                 phrase_length = len(doc)
                     
                 # build a new token pattern for this phrase

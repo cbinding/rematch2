@@ -23,9 +23,11 @@ from spacy.matcher import DependencyMatcher
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from SpanPair import SpanPair
+    from Util import *
 else:
     # uses current package visibility
     from .SpanPair import SpanPair
+    from .Util import *
 
 
 class SpanPairs:
