@@ -28,25 +28,14 @@ from spacy.language import Language
 from spacy.lang.en import English
 from spacy.tokens import Doc, Span
 
-if __package__ is None or __package__ == '':
-    # uses current directory visibility
-    from BaseRuler import BaseRuler
-    from SpanRemover import child_span_remover
-    from spacypatterns import *
-    from Util import *
-    from SpanPairs import SpanPairs
-    from DocSummary import DocSummary    
-else:
-    # uses current package visibility
-    from .BaseRuler import BaseRuler
-    from .SpanRemover import child_span_remover
-    from .spacypatterns import *
-    from .Util import * 
-    from .SpanPairs import SpanPairs    
-    from .DocSummary import DocSummary
+from .BaseRuler import BaseRuler
+from .SpanRemover import child_span_remover
+from .spacypatterns import *
+from .Util import * 
+from .SpanPairs import SpanPairs    
+from .DocSummary import DocSummary
 
 
-# NegationRuler is a specialized SpanRuler
 class NegationRuler(BaseRuler):
 
     def __init__(self, nlp: Language, name: str="negation_ruler", patterns: list=[]) -> None:

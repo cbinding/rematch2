@@ -40,18 +40,10 @@ from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 from spacy.lang.pl import Polish # experimental substitute for Czech as it doesn't exist yet..
 
-if __package__ is None or __package__ == '':
-    # uses current directory visibility
-    from spacypatterns import *
-    from Util import *
-    from BaseRuler import BaseRuler
-    from DocSummary import DocSummary
-else:
-    # uses current package visibility
-    from .spacypatterns import *
-    from .Util import *
-    from .BaseRuler import BaseRuler
-    from .DocSummary import DocSummary
+from .spacypatterns import *
+from .Util import *
+from .BaseRuler import BaseRuler
+from .DocSummary import DocSummary
 
 
 @Language.factory("dayname_ruler", default_config={"patterns": []})

@@ -33,18 +33,10 @@ from spacy.tokens import Doc
 from spacy.language import Language
 from pprint import pprint
 
-if __package__ is None or __package__ == '':
-    # uses current directory visibility
-    from Util import *
-    from BaseRuler import BaseRuler
-    from StringCleaning import normalize_text
-    from DocSummary import DocSummary
-else:
-    # uses current package visibility
-    from .Util import *
-    from .BaseRuler import BaseRuler
-    from .StringCleaning import normalize_text
-    from .DocSummary import DocSummary
+from .Util import *
+from .BaseRuler import BaseRuler
+from .StringCleaning import normalize_text
+from .DocSummary import DocSummary
 
 
 def download_file(remote_url: str, local_name: str, chunk_size: int=128, overwrite: bool=False):  

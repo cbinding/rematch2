@@ -23,9 +23,6 @@ import functools
 import time
 
 
-
-
-
 class BaseRuler(SpanRuler):
 
     def run_timed(f):

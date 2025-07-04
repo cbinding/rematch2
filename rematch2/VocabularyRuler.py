@@ -27,23 +27,13 @@ from pprint import pprint
 from pathlib import Path
 from spacy import displacy
 
-
 import pandas as pd
 
-if __package__ is None or __package__ == '':
-    # uses current directory visibility
-    from spacypatterns import *
-    from Util import *
-    from DocSummary import DocSummary
-    from SpanRemover import child_span_remover
-    from BaseRuler import BaseRuler
-else:
-    # uses current package visibility
-    from .spacypatterns import *
-    from .Util import *
-    from .DocSummary import DocSummary
-    from .SpanRemover import child_span_remover
-    from .BaseRuler import BaseRuler
+from .spacypatterns import *
+from .Util import *
+from .DocSummary import DocSummary
+from .SpanRemover import child_span_remover
+from .BaseRuler import BaseRuler
     
 
 def patterns_from_json_file(file_name: str) -> list:

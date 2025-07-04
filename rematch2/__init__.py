@@ -1,4 +1,5 @@
-#from .ReSpeller import ReSpeller
+__version__ = "0.2.0"
+
 from .BaseAnnotator import BaseAnnotator
 from .DatePrefixRuler import create_dateprefix_ruler
 from .DateSeparatorRuler import create_dateseparator_ruler
@@ -21,16 +22,13 @@ from .SpanPairs import SpanPairs
 from .DocSummary import DocSummary
 from .Decorators import run_timed
 from .TextNormalizer import *
-#from .StringCleaning import *
-
 from .Util import *
-#from .LogFile import LogFile # not currently used
 from .YearSpanRuler import create_yearspan_ruler
 
-__version__ = "0.2.0"
 
-# For relative imports to work in Python 3.6
-import os
-import sys
+# This was a workaround for relative imports in Python 3.6
+# but instead use e.g. 'python rematch2.TextNormalizer' from package root
+# import os
+# import sys
 # sys.path.append(os.path.dirname(os.path.realpath(__file__)))
-sys.path.insert(0, os.path.realpath(os.path.dirname(__file__)))
+# sys.path.insert(0, os.path.realpath(os.path.dirname(__file__)))

@@ -29,18 +29,10 @@ from os.path import exists
 #from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
 
-if __package__ is None or __package__ == '':
-    # uses current directory visibility
-    from BaseAnnotator import BaseAnnotator
-    from VocabularyEnum import VocabularyEnum
-    from VocabularyRuler import *
-    from DocSummary import DocSummary
-else:
-    # uses current package visibility
-    from .BaseAnnotator import BaseAnnotator
-    from .VocabularyEnum import VocabularyEnum
-    from .VocabularyRuler import *
-    from .DocSummary import DocSummary
+from .BaseAnnotator import BaseAnnotator
+from .VocabularyEnum import VocabularyEnum
+from .VocabularyRuler import *
+from .DocSummary import DocSummary
 
 # TODO: formats and vocabularies as enums??
 

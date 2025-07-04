@@ -29,22 +29,11 @@ from spacy.tokens import Doc
 from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
 
-# this resolves the relative imports issue
-if __package__ is None or __package__ == '':
-    # uses current directory visibility
-    from SpanRemover import child_span_remover
-    from BaseAnnotator import BaseAnnotator
-    from YearSpanRuler import create_yearspan_ruler
-    from PeriodoRuler import create_periodo_ruler
-    from DocSummary import DocSummary  
-      
-else:
-    # uses current package visibility
-    from .SpanRemover import child_span_remover
-    from .BaseAnnotator import BaseAnnotator
-    from .YearSpanRuler import create_yearspan_ruler
-    from .PeriodoRuler import create_periodo_ruler
-    from .DocSummary import DocSummary
+from .SpanRemover import child_span_remover
+from .BaseAnnotator import BaseAnnotator
+from .YearSpanRuler import create_yearspan_ruler
+from .PeriodoRuler import create_periodo_ruler
+from .DocSummary import DocSummary
 
 
 # default Perio.do authority ("p0kh9ds") is Historic England periods list..

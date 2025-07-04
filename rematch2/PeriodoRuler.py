@@ -35,20 +35,11 @@ from spacy.tokens import Doc
 from spacy.language import Language
 from pprint import pprint
 
-if __package__ is None or __package__ == '':
-    # uses current directory visibility
-    from BaseRuler import BaseRuler
-    from PeriodoData import PeriodoData
-    from Util import *
-    from DocSummary import DocSummary
-    from VocabularyRuler import create_vocabulary_ruler
-else:
-    # uses current package visibility
-    from .BaseRuler import BaseRuler
-    from .PeriodoData import PeriodoData
-    from .Util import *
-    from .DocSummary import DocSummary
-    from .VocabularyRuler import create_vocabulary_ruler
+from .BaseRuler import BaseRuler
+from .PeriodoData import PeriodoData
+from .Util import *
+from .DocSummary import DocSummary
+from .VocabularyRuler import create_vocabulary_ruler
 
 
 @Language.factory(name="periodo_ruler", default_config={"periodo_authority_id": None, "supp_list": [], "stop_list": []})

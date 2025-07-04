@@ -34,30 +34,16 @@ from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 from spacy.lang.pl import Polish # experimental substitute for Czech as it doesn't exist yet..
 
-if __package__ is None or __package__ == '':
-    # uses current directory visibility
-    from spacypatterns import *
-    from BaseRuler import BaseRuler
-    from OrdinalRuler import create_ordinal_ruler
-    from DatePrefixRuler import create_dateprefix_ruler
-    from DateSuffixRuler import create_datesuffix_ruler
-    from DateSeparatorRuler import create_dateseparator_ruler
-    from MonthNameRuler import create_monthname_ruler
-    from SeasonNameRuler import create_seasonname_ruler
-    from Util import *
-    from DocSummary import DocSummary
-else:
-    # uses current package visibility
-    from .spacypatterns import *
-    from .BaseRuler import BaseRuler
-    from .OrdinalRuler import create_ordinal_ruler
-    from .DatePrefixRuler import create_dateprefix_ruler
-    from .DateSuffixRuler import create_datesuffix_ruler
-    from .DateSeparatorRuler import create_dateseparator_ruler
-    from .MonthNameRuler import create_monthname_ruler
-    from .SeasonNameRuler import create_seasonname_ruler
-    from .Util import *
-    from .DocSummary import DocSummary
+from .spacypatterns import *
+from .BaseRuler import BaseRuler
+from .OrdinalRuler import create_ordinal_ruler
+from .DatePrefixRuler import create_dateprefix_ruler
+from .DateSuffixRuler import create_datesuffix_ruler
+from .DateSeparatorRuler import create_dateseparator_ruler
+from .MonthNameRuler import create_monthname_ruler
+from .SeasonNameRuler import create_seasonname_ruler
+from .Util import *
+from .DocSummary import DocSummary
 
 
 # YearSpanRuler is a specialized BaseRuler

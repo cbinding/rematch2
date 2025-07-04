@@ -41,18 +41,10 @@ from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 from spacy.lang.pl import Polish # experimental substitute for Czech as it doesn't exist yet..
 
-if __package__ is None or __package__ == '':
-    # uses current directory visibility
-    from spacypatterns import *
-    from Util import *
-    from BaseRuler import BaseRuler
-    from DocSummary import DocSummary
-else:
-    # uses current package visibility
-    from .spacypatterns import *
-    from .Util import *
-    from .BaseRuler import BaseRuler
-    from .DocSummary import DocSummary
+from .spacypatterns import *
+from .Util import *
+from .BaseRuler import BaseRuler
+from .DocSummary import DocSummary
 
 
 @Language.factory("dateprefix_ruler", default_config={"patterns": []})
@@ -128,7 +120,8 @@ def create__dateprefix_ruler_cs(nlp: Language, name: str = "dateprefix_ruler") -
     return create_dateprefix_ruler(nlp, name, patterns_cs_DATEPREFIX)
 
 
-# test the component
+# to test this module, run from package root:
+# python -m rematch2.DatePrefixRuler
 if __name__ == "__main__":
 
     tests = [

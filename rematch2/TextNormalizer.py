@@ -20,22 +20,16 @@ import spacy
 from spacy.tokens import Doc
 from spacy.pipeline import Pipe
 from spacy.language import Language
-
-if __package__ is None or __package__ == '':
-    # uses current directory visibility
-    from Decorators import run_timed    
-else:
-    # uses current package visibility
-    from .Decorators import run_timed    
+from .Decorators import run_timed    
 
 
 class TextNormalizer(Pipe):
     
-    def __init__(self, nlp: Language, subs: list = []):
+    def __init__(self, nlp: Language, subs: dict = None):
         self.nlp = nlp
-        self.subs = subs
+        self.subs = subs or {}
 
-    #@run_timed
+    @run_timed
     def __call__(self, doc: Doc) -> Doc:
         text = doc.text
         
@@ -46,10 +40,13 @@ class TextNormalizer(Pipe):
         # retokenize and return the Doc
         disabled = self.nlp.select_pipes(disable=["ner"])
         newDoc = self.nlp.make_doc(text)
+        newDoc.user_data = doc.user_data.copy()  # copy user data from original doc
         disabled.restore()
         return newDoc
+        
 
-
+# Register the TextNormalizer as a spaCy pipeline component
+# Factory function to create a text normalizer with specified substitutions
 @Language.factory("normalize_text", retokenizes=True, default_config={ "subs": []})
 def normalize_text(nlp: Language, name: str, subs: list=[]) -> Pipe:
     return TextNormalizer(nlp, subs)
@@ -95,9 +92,10 @@ def normalize_spelling_en(nlp: Language, name: str) -> Pipe:
         "Æ": "AE",
         "ꜳ": "aa",
     }
-    return normalize_text(nlp, name, subs)
+    return normalize_text(nlp, subs)
 
 
+# Register the normalization functions for whitespace and punctuation
 @Language.factory(name="normalize_whitespace", retokenizes=True)
 def normalize_whitespace_en(nlp: Language, name: str) -> Pipe:
     subs = { 
@@ -110,9 +108,10 @@ def normalize_whitespace_en(nlp: Language, name: str) -> Pipe:
         # convert multi-whitespace to single space (preserving line-breaks)
         r"\p{Separator}+" : " " 
     }
-    return normalize_text(nlp, name, subs)
+    return normalize_text(nlp, subs)
 
 
+# Register the punctuation normalization function
 @Language.factory("normalize_punctuation", retokenizes=True)
 def normalize_punctuation_en(nlp: Language, name: str) -> Pipe:
     subs = {
@@ -132,11 +131,18 @@ def normalize_punctuation_en(nlp: Language, name: str) -> Pipe:
         # spacing after commas
         r"(\p{Letter}),(\p{Letter})" : r"\1, \2"
     }
-    return normalize_text(nlp, name, subs)
+    return normalize_text(nlp, subs)
 
 
+# to run directly, run from package root to enable relative imports to work
+# i.e. /workspaces/rematch2 $ python -m rematch2.TextNormalizer
 if __name__ == "__main__":
-    
+    # this is for local testing of script only, not production use
+    import sys
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).resolve().parent.parent))
+
+
     # usage example
     text = f"archeological  work indi-\ncated  an Iron Age/ Romano- British  /Roman\npost -hole, in( low -lying)ground.\nThis  was  near(vandal-\nized)\n  Mediaeval/post-medieval(15th-17th century? )foot-\nings. Items of Mediaeval &  paleolithic(archeological)jewelry were  located in the New Harbor area.  Gray colored,oxidized,aluminum artifacts were   found near the theater."
     
@@ -146,8 +152,7 @@ if __name__ == "__main__":
     nlp.add_pipe("normalize_whitespace", before = "tagger")
     nlp.add_pipe("normalize_punctuation", before = "tagger")
     nlp.add_pipe("normalize_spelling", before = "tagger")
-    
-    
+       
     
     print(f"\nBefore:\n\"{text}\"")
     doc = nlp(text)

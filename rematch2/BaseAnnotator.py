@@ -100,7 +100,7 @@ class BaseAnnotator():
 
 
     # process single text file
-    def annotateFile(inputFileNameWithPath: str = "", output_format: str = "csv", encoding: str = "utf-8-sig"):
+    def annotateFile(self, inputFileNameWithPath: str = "", output_format: str = "csv", encoding: str = "utf-8-sig"):
         txt = ""
 
         # open and read text file
