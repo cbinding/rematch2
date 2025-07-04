@@ -23,6 +23,7 @@ History :
                renamed to PeriodoRuler, and "NAMEDPERIOD" => "PERIOD"
 28/03/2024 CFB base on SpanRuler instead of EntityRuler
 08/01/2025 CFB Add supp_list and stop_list, use create_vocabulary_ruler
+02/07/2025 CFB based on BaseRuler instead of SpanRuler(!)
 =============================================================================
 """
 import os
@@ -36,14 +37,14 @@ from pprint import pprint
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
-    from CustomSpanRuler import CustomSpanRuler
+    from BaseRuler import BaseRuler
     from PeriodoData import PeriodoData
     from Util import *
     from DocSummary import DocSummary
     from VocabularyRuler import create_vocabulary_ruler
 else:
     # uses current package visibility
-    from .CustomSpanRuler import CustomSpanRuler
+    from .BaseRuler import BaseRuler
     from .PeriodoData import PeriodoData
     from .Util import *
     from .DocSummary import DocSummary
@@ -57,7 +58,7 @@ def create_periodo_ruler(
     periodo_authority_id: str="", 
     supp_list: list=[], 
     stop_list: list=[]
-    ) -> CustomSpanRuler:
+    ) -> BaseRuler:
     # get terms from selected Perio.do authority as vocab
     # get as new instance, don't refresh cached data
     pd = PeriodoData() 

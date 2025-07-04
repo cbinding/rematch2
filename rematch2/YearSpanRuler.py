@@ -37,7 +37,7 @@ from spacy.lang.pl import Polish # experimental substitute for Czech as it doesn
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from spacypatterns import *
-    from CustomSpanRuler import CustomSpanRuler
+    from BaseRuler import BaseRuler
     from OrdinalRuler import create_ordinal_ruler
     from DatePrefixRuler import create_dateprefix_ruler
     from DateSuffixRuler import create_datesuffix_ruler
@@ -49,7 +49,7 @@ if __package__ is None or __package__ == '':
 else:
     # uses current package visibility
     from .spacypatterns import *
-    from .CustomSpanRuler import CustomSpanRuler
+    from .BaseRuler import BaseRuler
     from .OrdinalRuler import create_ordinal_ruler
     from .DatePrefixRuler import create_dateprefix_ruler
     from .DateSuffixRuler import create_datesuffix_ruler
@@ -60,8 +60,8 @@ else:
     from .DocSummary import DocSummary
 
 
-# YearSpanRuler is a specialized CustomSpanRuler
-class YearSpanRuler(CustomSpanRuler):
+# YearSpanRuler is a specialized BaseRuler
+class YearSpanRuler(BaseRuler):
 
     def __init__(self, nlp: Language, name: str="yearspan_ruler", patterns: list=[]) -> None:
         # add token extensions for YearSpan patterns to work
@@ -86,14 +86,6 @@ class YearSpanRuler(CustomSpanRuler):
         if not Token.has_extension("labels"):
             Token.set_extension(name="labels", getter=get_labels_for_token)
 
-        normalized_patterns = normalize_patterns(
-            nlp=nlp, 
-            patterns=patterns,
-            default_label="YEARSPAN",
-            lemmatize=False,
-            min_term_length=2
-        )
-
         for name in [
             "ordinal_ruler",            
             "dateprefix_ruler",
@@ -105,7 +97,7 @@ class YearSpanRuler(CustomSpanRuler):
             if not name in nlp.pipe_names:
                 nlp.add_pipe(name, last=True)
 
-        CustomSpanRuler.__init__(
+        BaseRuler.__init__(
             self,
             nlp=nlp,        
             name=name,
@@ -115,13 +107,21 @@ class YearSpanRuler(CustomSpanRuler):
             overwrite=False
         )
 
+        normalized_patterns = BaseRuler.normalize_patterns(
+            nlp=nlp, 
+            patterns=patterns,
+            default_label="YEARSPAN",
+            lemmatize=False,
+            min_term_length=2
+        )
+
         # add patterns to this pipeline component
         self.add_patterns(normalized_patterns)
 
 
     def __call__(self, doc: Doc) -> Doc:
 
-        doc = CustomSpanRuler.__call__(self, doc)
+        doc = BaseRuler.__call__(self, doc)
 
         # filter for 'atomic' labelled spans only used to determine yearspans
         #filtered = [span for span in all_spans if span.label_ not in [
@@ -139,7 +139,7 @@ class YearSpanRuler(CustomSpanRuler):
         # apply the filter
         doc.spans["rematch"] = list(filter(not_excluded, doc.spans.get("rematch", [])))
         
-        # filter out 'sub-spans' encompassed by others
+        # filter out 'sub-spans' encompassed by others (e.g. "BRONZE AGE" in "EARLY BRONZE AGE")
         def not_enclosed(span):
             return not any(
                 item.orth_ != span.orth_

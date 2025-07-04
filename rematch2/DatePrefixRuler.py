@@ -19,13 +19,14 @@ History :
 27/10/2023 CFB type hints added for function signatures
 16/02/2024 CFB remove BaseRuler inheritance, use EntityRuler directly
 28/03/2024 CFB based on SpanRuler instead of EntityRuler
+02/07/2025 CFB based on BaseRuler instead of SpanRuler(!)
 =============================================================================
 """
 import os
 import sys
 import spacy            # NLP library
 #from collections.abc import MutableSequence
-from spacy.pipeline import SpanRuler
+#from spacy.pipeline import SpanRuler
 
 # Language-specific pipelines
 from spacy.language import Language
@@ -44,29 +45,24 @@ if __package__ is None or __package__ == '':
     # uses current directory visibility
     from spacypatterns import *
     from Util import *
+    from BaseRuler import BaseRuler
     from DocSummary import DocSummary
 else:
     # uses current package visibility
     from .spacypatterns import *
     from .Util import *
+    from .BaseRuler import BaseRuler
     from .DocSummary import DocSummary
 
 
 @Language.factory("dateprefix_ruler", default_config={"patterns": []})
-def create_dateprefix_ruler(nlp: Language, name: str = "dateprefix_ruler", patterns: list=[]) -> SpanRuler:
+def create_dateprefix_ruler(nlp: Language, name: str = "dateprefix_ruler", patterns: list=[]) -> BaseRuler:
     
     if not Token.has_extension("is_ordinal"):
         Token.set_extension(name="is_ordinal", getter=is_ordinal)
 
-    normalized_patterns = normalize_patterns(
-        nlp=nlp, 
-        patterns=patterns,
-        default_label="DATEPREFIX",
-        lemmatize=False,
-        min_term_length=2
-    )
-
-    ruler = SpanRuler(
+    
+    ruler = BaseRuler(
         nlp=nlp,        
         name=name,
         spans_key="rematch",
@@ -75,52 +71,60 @@ def create_dateprefix_ruler(nlp: Language, name: str = "dateprefix_ruler", patte
         overwrite=False
     )  
       
+    normalized_patterns = BaseRuler.normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns,
+        default_label="DATEPREFIX",
+        lemmatize=False,
+        min_term_length=2
+    )
+
     ruler.add_patterns(normalized_patterns)
     return ruler 
 
 
 @German.factory("dateprefix_ruler")
-def create_dateprefix_ruler_de(nlp: Language, name: str = "dateprefix_ruler") -> SpanRuler:
+def create_dateprefix_ruler_de(nlp: Language, name: str = "dateprefix_ruler") -> BaseRuler:
     return create_dateprefix_ruler(nlp, name, patterns_de_DATEPREFIX)
 
 
 @English.factory("dateprefix_ruler")
-def create_dateprefix_ruler_en(nlp: Language, name: str = "dateprefix_ruler") -> SpanRuler:
+def create_dateprefix_ruler_en(nlp: Language, name: str = "dateprefix_ruler") -> BaseRuler:
     return create_dateprefix_ruler(nlp, name, patterns_en_DATEPREFIX)
 
 
 @Spanish.factory("dateprefix_ruler")
-def create_dateprefix_ruler_es(nlp: Language, name: str = "dateprefix_ruler") -> SpanRuler:
+def create_dateprefix_ruler_es(nlp: Language, name: str = "dateprefix_ruler") -> BaseRuler:
     return create_dateprefix_ruler(nlp, name, patterns_es_DATEPREFIX)
 
 
 @French.factory("dateprefix_ruler")
-def create_dateprefix_ruler_fr(nlp: Language, name: str = "dateprefix_ruler") -> SpanRuler:
+def create_dateprefix_ruler_fr(nlp: Language, name: str = "dateprefix_ruler") -> BaseRuler:
     return create_dateprefix_ruler(nlp, name, patterns_fr_DATEPREFIX)
 
 
 @Italian.factory("dateprefix_ruler")
-def create_dateprefix_ruler_it(nlp: Language, name: str = "dateprefix_ruler") -> SpanRuler:
+def create_dateprefix_ruler_it(nlp: Language, name: str = "dateprefix_ruler") -> BaseRuler:
     return create_dateprefix_ruler(nlp, name, patterns_it_DATEPREFIX)
 
 
 @Dutch.factory("dateprefix_ruler")
-def create_dateprefix_ruler_nl(nlp: Language, name: str = "dateprefix_ruler") -> SpanRuler:
+def create_dateprefix_ruler_nl(nlp: Language, name: str = "dateprefix_ruler") -> BaseRuler:
     return create_dateprefix_ruler(nlp, name, patterns_nl_DATEPREFIX)
 
 
 @Norwegian.factory("dateprefix_ruler")
-def create_dateprefix_ruler_no(nlp: Language, name: str = "dateprefix_ruler") -> SpanRuler:
+def create_dateprefix_ruler_no(nlp: Language, name: str = "dateprefix_ruler") -> BaseRuler:
     return create_dateprefix_ruler(nlp, name, patterns_no_DATEPREFIX)
 
 
 @Swedish.factory("dateprefix_ruler")
-def create_dateprefix_ruler_sv(nlp: Language, name: str = "dateprefix_ruler") -> SpanRuler:
+def create_dateprefix_ruler_sv(nlp: Language, name: str = "dateprefix_ruler") -> BaseRuler:
     return create_dateprefix_ruler(nlp, name, patterns_sv_DATEPREFIX)
 
 # Polish as temp experimental substitute until Czech is available
 @Polish.factory("dateprefix_ruler")
-def create__dateprefix_ruler_cs(nlp: Language, name: str = "dateprefix_ruler") -> SpanRuler:
+def create__dateprefix_ruler_cs(nlp: Language, name: str = "dateprefix_ruler") -> BaseRuler:
     return create_dateprefix_ruler(nlp, name, patterns_cs_DATEPREFIX)
 
 

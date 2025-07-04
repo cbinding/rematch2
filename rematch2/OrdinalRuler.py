@@ -15,12 +15,13 @@ History :
 03/08/2022 CFB Initially created script
 27/10/2023 CFB type hints added for function signatures
 16/02/2024 CFB remove BaseRuler inheritance, use EntityRuler directly
-28/03/2024 CFB base on SpanRuler instead of EntityRuler
+28/03/2024 CFB based on SpanRuler instead of EntityRuler
+02/07/2025 CFB based on BaseRuler instead of SpanRuler(!)
 =============================================================================
 """
 # Third party imports
 import spacy
-from spacy.pipeline import SpanRuler
+#from spacy.pipeline import SpanRuler
 
 from spacy.language import Language
 #from spacy.lang.cs import Czech #doesn't exist yet..
@@ -38,17 +39,30 @@ if __package__ is None or __package__ == '':
     # uses current directory visibility
     from spacypatterns import *
     from Util import *
+    from BaseRuler import BaseRuler
     from DocSummary import DocSummary
 else:
     # uses current package visibility
     from .spacypatterns import *
     from .Util import *
+    from .BaseRuler import BaseRuler
     from .DocSummary import DocSummary
 
 
 @Language.factory("ordinal_ruler", default_config={"patterns": []})
-def create_ordinal_ruler(nlp: Language, name: str="ordinal_ruler", patterns: list=[]) -> SpanRuler:
-    normalized_patterns = normalize_patterns(
+def create_ordinal_ruler(nlp: Language, name: str="ordinal_ruler", patterns: list=[]) -> BaseRuler:
+    
+
+    ruler = BaseRuler(
+        nlp=nlp,        
+        name=name,
+        spans_key="rematch",
+        phrase_matcher_attr="LOWER",
+        validate=False,
+        overwrite=False
+    ) 
+
+    normalized_patterns = BaseRuler.normalize_patterns(
         nlp=nlp, 
         patterns=patterns,
         default_label="ORDINAL",
@@ -56,62 +70,53 @@ def create_ordinal_ruler(nlp: Language, name: str="ordinal_ruler", patterns: lis
         min_term_length=2
     )
 
-    ruler = SpanRuler(
-        nlp=nlp,        
-        name=name,
-        spans_key="rematch",
-        phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite=False
-    )  
-      
     ruler.add_patterns(normalized_patterns)
     return ruler 
 
 
 @German.factory("ordinal_ruler")
-def create_ordinal_ruler_de(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
+def create_ordinal_ruler_de(nlp: Language, name: str = "ordinal_ruler") -> BaseRuler:
     return create_ordinal_ruler(nlp, name, patterns_de_ORDINAL)
 
 
 @English.factory("ordinal_ruler")
-def create_ordinal_ruler_en(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
+def create_ordinal_ruler_en(nlp: Language, name: str = "ordinal_ruler") -> BaseRuler:
     return create_ordinal_ruler(nlp, name, patterns_en_ORDINAL)
 
 
 @Spanish.factory("ordinal_ruler")
-def create_ordinal_ruler_es(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
+def create_ordinal_ruler_es(nlp: Language, name: str = "ordinal_ruler") -> BaseRuler:
     return create_ordinal_ruler(nlp, name, patterns_es_ORDINAL)
 
 
 @French.factory("ordinal_ruler")
-def create_ordinal_ruler_fr(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
+def create_ordinal_ruler_fr(nlp: Language, name: str = "ordinal_ruler") -> BaseRuler:
     return create_ordinal_ruler(nlp, name, patterns_fr_ORDINAL)
 
 
 @Italian.factory("ordinal_ruler")
-def create_ordinal_ruler_it(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
+def create_ordinal_ruler_it(nlp: Language, name: str = "ordinal_ruler") -> BaseRuler:
     return create_ordinal_ruler(nlp, name, patterns_it_ORDINAL)
 
 
 @Dutch.factory("ordinal_ruler")
-def create_ordinal_ruler_nl(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
+def create_ordinal_ruler_nl(nlp: Language, name: str = "ordinal_ruler") -> BaseRuler:
     return create_ordinal_ruler(nlp, name, patterns_nl_ORDINAL)
 
 
 @Norwegian.factory("ordinal_ruler")
-def create_ordinal_ruler_no(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
+def create_ordinal_ruler_no(nlp: Language, name: str = "ordinal_ruler") -> BaseRuler:
     return create_ordinal_ruler(nlp, name, patterns_no_ORDINAL)
 
 
 @Swedish.factory("ordinal_ruler")
-def create_ordinal_ruler_sv(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
+def create_ordinal_ruler_sv(nlp: Language, name: str = "ordinal_ruler") -> BaseRuler:
     return create_ordinal_ruler(nlp, name, patterns_sv_ORDINAL)
 
 
 # Polish as temp experimental substitute until Czech is available
 @Polish.factory("ordinal_ruler")
-def create_ordinal_ruler_cs(nlp: Language, name: str = "ordinal_ruler") -> SpanRuler:
+def create_ordinal_ruler_cs(nlp: Language, name: str = "ordinal_ruler") -> BaseRuler:
     return create_ordinal_ruler(nlp, name, patterns_cs_ORDINAL)
 
 

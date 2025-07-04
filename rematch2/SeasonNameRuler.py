@@ -16,13 +16,14 @@ History :
 03/08/2022 CFB Initially created script
 27/10/2023 CFB type hints added for function signatures
 16/02/2024 CFB remove BaseRuler inheritance, use EntityRuler directly
-28/03/2024 CFB base on SpanRuler instead of EntityRuler
+28/03/2024 CFB based on SpanRuler instead of EntityRuler
+02/07/2025 CFB based on BaseRuler instead of SpanRuler(!)
 =============================================================================
 """
 import os
 import sys
 import spacy            # NLP library
-from spacy.pipeline import SpanRuler
+#from spacy.pipeline import SpanRuler
 
 from spacy.language import Language
 #from spacy.lang.cs import Czech #doesn't exist yet..
@@ -41,25 +42,20 @@ if __package__ is None or __package__ == '':
     # uses current directory visibility
     from spacypatterns import *
     from Util import *
+    from BaseRuler import BaseRuler
     from DocSummary import DocSummary
 else:
     # uses current package visibility
     from .spacypatterns import *
     from .Util import *
+    from .BaseRuler import BaseRuler
     from .DocSummary import DocSummary
 
 
 @Language.factory("seasonname_ruler", default_config={"patterns": []})
-def create_seasonname_ruler(nlp: Language, name: str = "seasonname_ruler", patterns: list=[]) -> SpanRuler:
-    normalized_patterns = normalize_patterns(
-        nlp=nlp, 
-        patterns=patterns,
-        default_label="SEASONNAME",
-        lemmatize=False,
-        min_term_length=3
-    )
-
-    ruler = SpanRuler(
+def create_seasonname_ruler(nlp: Language, name: str = "seasonname_ruler", patterns: list=[]) -> BaseRuler:
+    
+    ruler = BaseRuler(
         nlp=nlp,        
         name=name,
         spans_key="rematch",
@@ -67,53 +63,61 @@ def create_seasonname_ruler(nlp: Language, name: str = "seasonname_ruler", patte
         validate=False,
         overwrite=False
     )  
+
+    normalized_patterns = BaseRuler.normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns,
+        default_label="SEASONNAME",
+        lemmatize=False,
+        min_term_length=3
+    )
       
     ruler.add_patterns(normalized_patterns)
     return ruler 
 
 
 @German.factory("seasonname_ruler")
-def create_seasonname_ruler_de(nlp: Language, name: str = "seasonname_ruler") -> SpanRuler:
+def create_seasonname_ruler_de(nlp: Language, name: str = "seasonname_ruler") -> BaseRuler:
     return create_seasonname_ruler(nlp, name, patterns_de_SEASONNAME)
 
 
 @English.factory("seasonname_ruler")
-def create_seasonname_ruler_en(nlp: Language, name: str = "seasonname_ruler") -> SpanRuler:
+def create_seasonname_ruler_en(nlp: Language, name: str = "seasonname_ruler") -> BaseRuler:
     return create_seasonname_ruler(nlp, name, patterns_en_SEASONNAME)
 
 
 @Spanish.factory("seasonname_ruler")
-def create_seasonname_ruler_es(nlp: Language, name: str = "seasonname_ruler") -> SpanRuler:
+def create_seasonname_ruler_es(nlp: Language, name: str = "seasonname_ruler") -> BaseRuler:
     return create_seasonname_ruler(nlp, name, patterns_es_SEASONNAME)
 
 
 @French.factory("seasonname_ruler")
-def create_seasonname_ruler_fr(nlp: Language, name: str = "seasonname_ruler") -> SpanRuler:
+def create_seasonname_ruler_fr(nlp: Language, name: str = "seasonname_ruler") -> BaseRuler:
     return create_seasonname_ruler(nlp, name, patterns_fr_SEASONNAME)
 
 
 @Italian.factory("seasonname_ruler")
-def create_seasonname_ruler_it(nlp: Language, name: str = "seasonname_ruler") -> SpanRuler:
+def create_seasonname_ruler_it(nlp: Language, name: str = "seasonname_ruler") -> BaseRuler:
     return create_seasonname_ruler(nlp, name, patterns_it_SEASONNAME)
 
 
 @Dutch.factory("seasonname_ruler")
-def create_seasonname_ruler_nl(nlp: Language, name: str = "seasonname_ruler") -> SpanRuler:
+def create_seasonname_ruler_nl(nlp: Language, name: str = "seasonname_ruler") -> BaseRuler:
     return create_seasonname_ruler(nlp, name, patterns_nl_SEASONNAME)
 
 
 @Norwegian.factory("seasonname_ruler")
-def create_seasonname_ruler_no(nlp: Language, name: str = "seasonname_ruler") -> SpanRuler:
+def create_seasonname_ruler_no(nlp: Language, name: str = "seasonname_ruler") -> BaseRuler:
     return create_seasonname_ruler(nlp, name, patterns_no_SEASONNAME)
 
 
 @Swedish.factory("seasonname_ruler")
-def create_seasonname_ruler_sv(nlp: Language, name: str = "seasonname_ruler") -> SpanRuler:
+def create_seasonname_ruler_sv(nlp: Language, name: str = "seasonname_ruler") -> BaseRuler:
     return create_seasonname_ruler(nlp, name, patterns_sv_SEASONNAME)
 
 # Polish as temp experimental substitute until Czech is available
 @Polish.factory("seasonname_ruler")
-def create_seasonname_ruler_cs(nlp: Language, name: str = "seasonname_ruler") -> SpanRuler:
+def create_seasonname_ruler_cs(nlp: Language, name: str = "seasonname_ruler") -> BaseRuler:
     return create_seasonname_ruler(nlp, name, patterns_cs_SEASONNAME)
 
 # test the SeasonNameRuler class

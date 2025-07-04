@@ -8,7 +8,7 @@ Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
 Summary   : 
     ***** NOTE - deprecated, this code now implemented as custom pipeline components
-    see NormalizeText.py *****
+    see TextNormalizer.py *****
     Functions for performing string cleaning and normalisation operations on 
     text, prior to any NER work. Mostly based on regex replacement patterns. 
     Functions allow chaining and pipelining: f(text: str) -> str

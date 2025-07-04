@@ -36,14 +36,14 @@ if __package__ is None or __package__ == '':
     from Util import *
     from DocSummary import DocSummary
     from SpanRemover import child_span_remover
-    from CustomSpanRuler import CustomSpanRuler
+    from BaseRuler import BaseRuler
 else:
     # uses current package visibility
     from .spacypatterns import *
     from .Util import *
     from .DocSummary import DocSummary
     from .SpanRemover import child_span_remover
-    from .CustomSpanRuler import CustomSpanRuler
+    from .BaseRuler import BaseRuler
     
 
 def patterns_from_json_file(file_name: str) -> list:
@@ -70,10 +70,10 @@ def create_vocabulary_ruler(
         pos: list=[],        
         patterns: list = [],    # list of match patterns
         stop_list: list = []     # identifers not to be matched, to exclude specific concepts from results
-    ) -> CustomSpanRuler:
+    ) -> BaseRuler:
 
     # create the SpanRuler to use
-    ruler = CustomSpanRuler(
+    ruler = BaseRuler(
         nlp=nlp,        
         name=name,
         spans_key=spans_key,
@@ -83,7 +83,7 @@ def create_vocabulary_ruler(
     )      
 
     # get normalized patterns    
-    normalized_patterns = normalize_patterns(
+    normalized_patterns = BaseRuler.normalize_patterns(
         nlp=nlp, 
         patterns=patterns,
         default_label=default_label,
@@ -106,7 +106,7 @@ def create_ssh_lcsh_ruler(
     language: str="en", 
     supp_list: list=[], 
     stop_list: list=[]
-    ) -> CustomSpanRuler:
+    ) -> BaseRuler:
     
     patterns = patterns_from_json_file("patterns_SSH_LCSH.json")
     clean_language =  language.strip().lower()
@@ -128,7 +128,7 @@ def create_amcr_ruler(
     name: str="amcr_ruler",
     supp_list: list=[], 
     stop_list: list=[]
-    ) -> CustomSpanRuler:
+    ) -> BaseRuler:
     
     patterns=patterns_from_json_file("patterns_cs_AMCR_20221208.json")
     
@@ -148,7 +148,7 @@ def create_aat_activities_ruler(
     name: str="aat_activities_ruler", 
     supp_list: list=[], 
     stop_list: list=[]
-    ) -> CustomSpanRuler:
+    ) -> BaseRuler:
     
     patterns=patterns_from_json_file("patterns_en_AAT_ACTIVITIES_20231018.json")
     #patts2=patterns_from_json_file("patterns_en_AAT_ACTIVITIES_SUPPLEMENTARY.json")
@@ -170,7 +170,7 @@ def create_aat_agents_ruler(
     name: str="aat_agents_ruler", 
     supp_list: list=[], 
     stop_list: list=[]
-    ) -> CustomSpanRuler:
+    ) -> BaseRuler:
 
     patterns=patterns_from_json_file("patterns_en_AAT_AGENTS_20231018.json")
     
@@ -191,7 +191,7 @@ def create_aat_associated_concepts_ruler(
     name: str="aat_associated_concepts_ruler", 
     supp_list: list=[], 
     stop_list: list=[]
-    ) -> CustomSpanRuler:   
+    ) -> BaseRuler:   
 
     patterns=patterns_from_json_file("patterns_en_AAT_ASSOCIATED_CONCEPTS_20231018.json")
     
@@ -211,7 +211,7 @@ def create_aat_materials_ruler(
     name: str="aat_materials_ruler", 
     supp_list: list=[], 
     stop_list: list=[]
-    ) -> CustomSpanRuler:   
+    ) -> BaseRuler:   
 
     patterns=patterns_from_json_file("patterns_en_AAT_MATERIALS_20231018.json")
     
@@ -231,7 +231,7 @@ def create_aat_objects_ruler(
     name: str="aat_objects_ruler", 
     supp_list: list=[],
     stop_list: list=[]
-    ) -> CustomSpanRuler:
+    ) -> BaseRuler:
 
     patterns=patterns_from_json_file("patterns_en_AAT_OBJECTS_20231018.json")
         
@@ -252,7 +252,7 @@ def create_aat_physical_attributes_ruler(
     name: str="aat_physical_attributes_ruler", 
     supp_list: list=[],
     stop_list: list=[]
-    ) -> CustomSpanRuler: 
+    ) -> BaseRuler: 
 
     patterns=patterns_from_json_file("patterns_en_AAT_PHYSICAL_ATTRIBUTES_20231018.json")
     
@@ -272,7 +272,7 @@ def create_aat_styleperiods_ruler(
     name: str="aat_styleperiods_ruler", 
     supp_list: list=[],
     stop_list: list=[]
-    ) -> CustomSpanRuler: 
+    ) -> BaseRuler: 
 
     patterns=patterns_from_json_file("patterns_en_AAT_STYLEPERIODS_20231018.json")
     
@@ -292,7 +292,7 @@ def create_fish_archobjects_ruler(
     name: str="fish_archobjects_ruler", 
     supp_list: list=[],
     stop_list: list=[]
-    ) -> CustomSpanRuler: 
+    ) -> BaseRuler: 
 
     patterns = patterns_from_json_file("patterns_en_FISH_ARCHOBJECTS_20210921.json")
     
@@ -314,7 +314,7 @@ def create_fish_archsciences_ruler(
     name: str="fish_archsciences_ruler", 
     supp_list: list=[],
     stop_list: list=[]
-    ) -> CustomSpanRuler: 
+    ) -> BaseRuler: 
 
     patterns=patterns_from_json_file("patterns_en_FISH_ARCHSCIENCES_20210921.json")
    
@@ -335,7 +335,7 @@ def create_fish_building_materials_ruler(
     name: str="fish_building_materials_ruler", 
     supp_list: list=[],
     stop_list: list=[]
-    ) -> CustomSpanRuler:  
+    ) -> BaseRuler:  
 
     patterns=patterns_from_json_file("patterns_en_FISH_BUILDING_MATERIALS_20210921.json")
     
@@ -355,7 +355,7 @@ def create_fish_components_ruler(
     name: str="fish_components_ruler", 
     supp_list: list=[],
     stop_list: list=[]
-    ) -> CustomSpanRuler:
+    ) -> BaseRuler:
 
     patterns=patterns_from_json_file("patterns_en_FISH_COMPONENTS_20210921.json")
     
@@ -376,7 +376,7 @@ def create_fish_event_types_ruler(
     name: str="fish_event_types_ruler", 
     supp_list: list=[],
     stop_list: list=[]
-    ) -> CustomSpanRuler:    
+    ) -> BaseRuler:    
 
     patterns=patterns_from_json_file("patterns_en_FISH_EVENT_TYPES_20210921.json")
     
@@ -397,7 +397,7 @@ def create_fish_evidence_ruler(
     name: str="fish_evidence_ruler", 
     supp_list: list=[],
     stop_list: list=[]
-    ) -> CustomSpanRuler: 
+    ) -> BaseRuler: 
 
     patterns=patterns_from_json_file("patterns_en_FISH_EVIDENCE_20210921.json")
     
@@ -417,7 +417,7 @@ def create_fish_maritime_craft_ruler(
     name: str="fish_maritime_craft_ruler", 
     supp_list: list=[],
     stop_list: list=[]
-    ) -> CustomSpanRuler: 
+    ) -> BaseRuler: 
 
     patterns=patterns_from_json_file("patterns_en_FISH_MARITIME_CRAFT_20221104.json")
     
@@ -438,7 +438,7 @@ def create_fish_monument_types_ruler(
     name: str="fish_monument_types_ruler", 
     supp_list: list=[],
     stop_list: list=[]
-    ) -> CustomSpanRuler:
+    ) -> BaseRuler:
     
     patterns = patterns_from_json_file("patterns_en_FISH_MONUMENT_TYPES_20210921.json")
     #patts2 = patterns_from_json_file("patterns_en_FISH_MONUMENT_TYPES_SUPPLEMENTARY.json")
@@ -461,7 +461,7 @@ def create_fish_periods_ruler(
     name: str="fish_periods_ruler", 
     supp_list: list=[],
     stop_list: list=[]
-    ) -> CustomSpanRuler:  
+    ) -> BaseRuler:  
 
     patterns=patterns_from_json_file("patterns_en_FISH_PERIODS_20211011.json")
     
@@ -481,7 +481,7 @@ def create_fish_supplementary_ruler(
     name: str="fish_supplementary_ruler", 
     supp_list: list=[],
     stop_list: list=[]
-    ) -> CustomSpanRuler:    
+    ) -> BaseRuler:    
 
     patterns=patterns_from_json_file("patterns_en_FISH_SUPPLEMENTARY.json")
     

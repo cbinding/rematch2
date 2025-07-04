@@ -1,14 +1,14 @@
 """
 =============================================================================
 Package :   rematch2
-Module  :   NormalizeText.py
+Module  :   TextNormalizer.py
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   ATRIUM
 Summary :   spaCy custom pipeline components for text normalisation -
-            this can improve subsequent NLP and NER results            
-Imports :   regex, spacy, Doc, Language
-Example :   nlp.add_pipe("normalize_spelling", before = "tagger")         
+            this can improve subsequent NLP tokenisation and NER results            
+Imports :   regex, spacy, Doc, Pipe, Language
+Example :   nlp.add_pipe("normalize_spelling", before = "tagger")
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History :   
@@ -18,6 +18,7 @@ History :
 import regex
 import spacy
 from spacy.tokens import Doc
+from spacy.pipeline import Pipe
 from spacy.language import Language
 
 if __package__ is None or __package__ == '':
@@ -28,7 +29,7 @@ else:
     from .Decorators import run_timed    
 
 
-class NormalizeText:
+class TextNormalizer(Pipe):
     
     def __init__(self, nlp: Language, subs: list = []):
         self.nlp = nlp
@@ -43,18 +44,21 @@ class NormalizeText:
             text = regex.sub(pattern=key, repl=val, string=text, flags=regex.IGNORECASE | regex.MULTILINE)
 
         # retokenize and return the Doc
-        return self.nlp.make_doc(text)
+        disabled = self.nlp.select_pipes(disable=["ner"])
+        newDoc = self.nlp.make_doc(text)
+        disabled.restore()
+        return newDoc
 
 
 @Language.factory("normalize_text", retokenizes=True, default_config={ "subs": []})
-def normalize_text(nlp: Language, name: str, subs: list=[]):
-    return NormalizeText(nlp, subs)
+def normalize_text(nlp: Language, name: str, subs: list=[]) -> Pipe:
+    return TextNormalizer(nlp, subs)
 
 
 # Only implemented for English as default here but other @Language.factory 
 # functions can be added e.g. Swedish.factory("normalize_spelling", ...)
 @Language.factory("normalize_spelling", retokenizes=True)
-def normalize_spelling_en(nlp: Language, name: str):
+def normalize_spelling_en(nlp: Language, name: str) -> Pipe:
     subs = {
         # US English -> English spelling
         r"\b(a)rcheo": r"\1rchaeo", # ignore case but retain capitalisation 
@@ -95,7 +99,7 @@ def normalize_spelling_en(nlp: Language, name: str):
 
 
 @Language.factory(name="normalize_whitespace", retokenizes=True)
-def normalize_whitespace_en(nlp: Language, name: str):
+def normalize_whitespace_en(nlp: Language, name: str) -> Pipe:
     subs = { 
         # words hyphenated at line break -
         # remove both hyphen and newline character
@@ -110,7 +114,7 @@ def normalize_whitespace_en(nlp: Language, name: str):
 
 
 @Language.factory("normalize_punctuation", retokenizes=True)
-def normalize_punctuation_en(nlp: Language, name: str):
+def normalize_punctuation_en(nlp: Language, name: str) -> Pipe:
     subs = {
         # any dash character to single standard hyphen
         r"\b\s*(\p{Dash_Punctuation})\s*(?=[^\p{Number}])" : " - ",
@@ -136,10 +140,14 @@ if __name__ == "__main__":
     # usage example
     text = f"archeological  work indi-\ncated  an Iron Age/ Romano- British  /Roman\npost -hole, in( low -lying)ground.\nThis  was  near(vandal-\nized)\n  Mediaeval/post-medieval(15th-17th century? )foot-\nings. Items of Mediaeval &  paleolithic(archeological)jewelry were  located in the New Harbor area.  Gray colored,oxidized,aluminum artifacts were   found near the theater."
     
+    # Note: order can make a difference, fix
+    # whitespace & punctuation before spelling
     nlp = spacy.load("en_core_web_sm", disable=["ner"]) 
-    nlp.add_pipe("normalize_spelling", before = "tagger")
     nlp.add_pipe("normalize_whitespace", before = "tagger")
     nlp.add_pipe("normalize_punctuation", before = "tagger")
+    nlp.add_pipe("normalize_spelling", before = "tagger")
+    
+    
     
     print(f"\nBefore:\n\"{text}\"")
     doc = nlp(text)

@@ -20,7 +20,7 @@ from .SpanPair import SpanPair
 from .SpanPairs import SpanPairs
 from .DocSummary import DocSummary
 from .Decorators import run_timed
-from .NormalizeText import *
+from .TextNormalizer import *
 #from .StringCleaning import *
 
 from .Util import *

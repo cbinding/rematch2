@@ -20,13 +20,13 @@ History :
 03/08/2022 CFB Initially created script
 27/10/2023 CFB type hints added for function signatures
 16/02/2024 CFB remove BaseRuler inheritance, use EntityRuler directly
-28/03/2024 CFB base on SpanRuler instead of EntityRuler
+28/03/2024 CFB based on SpanRuler instead of EntityRuler
+02/07/2025 CFB based on BaseRuler instead of SpanRuler(!)
 =============================================================================
 """
 import os
 import sys
 import spacy            # NLP library
-from spacy.pipeline import SpanRuler
 
 from spacy.language import Language
 #from spacy.lang.cs import Czech #doesn't exist yet..
@@ -44,25 +44,20 @@ if __package__ is None or __package__ == '':
     # uses current directory visibility
     from spacypatterns import *
     from Util import *
+    from BaseRuler import BaseRuler
     from DocSummary import DocSummary
 else:
     # uses current package visibility
     from .spacypatterns import *
     from .Util import *
+    from .BaseRuler import BaseRuler
     from .DocSummary import DocSummary
 
 
 @Language.factory("dayname_ruler", default_config={"patterns": []})
-def create_dayname_ruler(nlp: Language, name: str="dayname_ruler", patterns: list=[]) -> SpanRuler:
-    normalized_patterns = normalize_patterns(
-        nlp=nlp, 
-        patterns=patterns,
-        default_label="DAYNAME",
-        lemmatize=False,
-        min_term_length=3
-    )
-
-    ruler = SpanRuler(
+def create_dayname_ruler(nlp: Language, name: str="dayname_ruler", patterns: list=[]) -> BaseRuler:
+    
+    ruler = BaseRuler(
         nlp=nlp,        
         name=name,
         spans_key="rematch",
@@ -70,53 +65,61 @@ def create_dayname_ruler(nlp: Language, name: str="dayname_ruler", patterns: lis
         validate=False,
         overwrite=False
     )  
+
+    normalized_patterns = BaseRuler.normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns,
+        default_label="DAYNAME",
+        lemmatize=False,
+        min_term_length=3
+    )
       
     ruler.add_patterns(normalized_patterns)
     return ruler 
     
 
 @German.factory("dayname_ruler")
-def create_dayname_ruler_de(nlp: Language, name: str = "dayname_ruler") -> SpanRuler:
+def create_dayname_ruler_de(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
     return create_dayname_ruler(nlp, name, patterns_de_DAYNAME)
 
 
 @English.factory("dayname_ruler")
-def create_dayname_ruler_en(nlp: Language, name: str = "dayname_ruler") -> SpanRuler:
+def create_dayname_ruler_en(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
     return create_dayname_ruler(nlp, name, patterns_en_DAYNAME)
 
 
 @Spanish.factory("dayname_ruler")
-def create_dayname_ruler_es(nlp: Language, name: str = "dayname_ruler") -> SpanRuler:
+def create_dayname_ruler_es(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
     return create_dayname_ruler(nlp, name, patterns_es_DAYNAME)
 
 
 @French.factory("dayname_ruler")
-def create_dayname_ruler_fr(nlp: Language, name: str = "dayname_ruler") -> SpanRuler:
+def create_dayname_ruler_fr(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
     return create_dayname_ruler(nlp, name, patterns_fr_DAYNAME)
 
 
 @Italian.factory("dayname_ruler")
-def create_dayname_ruler_it(nlp: Language, name: str = "dayname_ruler") -> SpanRuler:
+def create_dayname_ruler_it(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
     return create_dayname_ruler(nlp, name, patterns_it_DAYNAME)
 
 
 @Dutch.factory("dayname_ruler")
-def create_dayname_ruler_nl(nlp: Language, name: str = "dayname_ruler") -> SpanRuler:
+def create_dayname_ruler_nl(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
     return create_dayname_ruler(nlp, name, patterns_nl_DAYNAME)
 
 
 @Norwegian.factory("dayname_ruler")
-def create_dayname_ruler_no(nlp: Language, name: str = "dayname_ruler") -> SpanRuler:
+def create_dayname_ruler_no(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
     return create_dayname_ruler(nlp, name, patterns_no_DAYNAME)
 
 
 @Swedish.factory("dayname_ruler")
-def create_dayname_ruler_sv(nlp: Language, name: str = "dayname_ruler") -> SpanRuler:
+def create_dayname_ruler_sv(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
     return create_dayname_ruler(nlp, name, patterns_sv_DAYNAME)
 
 # Using Polish as temp experimental substitute until Czech is available
 @Polish.factory("dayname_ruler")
-def create_dayname_ruler_cs(nlp: Language, name: str = "dayname_ruler") -> SpanRuler:
+def create_dayname_ruler_cs(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
     return create_dayname_ruler(nlp, name, patterns_cs_DAYNAME)
 
 # test the DayNameRuler class

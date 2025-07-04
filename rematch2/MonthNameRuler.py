@@ -16,13 +16,14 @@ History :
 03/08/2022 CFB Initially created script
 27/10/2023 CFB type hints added for function signatures
 16/02/2024 CFB remove BaseRuler inheritance, use EntityRuler directly
-28/03/2024 CFB base on SpanRuler instead of EntityRuler
+28/03/2024 CFB based on SpanRuler instead of EntityRuler
+02/07/2025 CFB based on BaseRuler instead of SpanRuler(!)
 =============================================================================
 """
 import os
 import sys
 import spacy            # NLP library
-from spacy.pipeline import SpanRuler
+#from spacy.pipeline import SpanRuler
 
 from spacy.language import Language
 #from spacy.lang.cs import Czech # doesn't exist yet..
@@ -40,25 +41,20 @@ if __package__ is None or __package__ == '':
     # uses current directory visibility
     from spacypatterns import *
     from Util import *
+    from BaseRuler import BaseRuler
     from DocSummary import DocSummary
 else:
     # uses current package visibility
     from .spacypatterns import *
     from .Util import *
+    from .BaseRuler import BaseRuler
     from .DocSummary import DocSummary
 
 
 @Language.factory("monthname_ruler", default_config={"patterns": []})
-def create_monthname_ruler(nlp: Language, name: str="monthname_ruler", patterns: list=[]) -> SpanRuler:
-    normalized_patterns = normalize_patterns(
-        nlp=nlp, 
-        patterns=patterns,
-        default_label="MONTHNAME",
-        lemmatize=False,
-        min_term_length=3
-    )
-
-    ruler = SpanRuler(
+def create_monthname_ruler(nlp: Language, name: str="monthname_ruler", patterns: list=[]) -> BaseRuler:
+    
+    ruler = BaseRuler(
         nlp=nlp,        
         name=name,
         spans_key="rematch",
@@ -66,53 +62,61 @@ def create_monthname_ruler(nlp: Language, name: str="monthname_ruler", patterns:
         validate=False,
         overwrite=False
     )  
-      
+
+    normalized_patterns = BaseRuler.normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns,
+        default_label="MONTHNAME",
+        lemmatize=False,
+        min_term_length=3
+    )
+
     ruler.add_patterns(normalized_patterns)
     return ruler 
     
 
 @German.factory("monthname_ruler")
-def create_monthname_ruler_de(nlp: Language, name: str = "monthname_ruler") -> SpanRuler:
+def create_monthname_ruler_de(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_de_MONTHNAME)
 
 
 @English.factory("monthname_ruler")
-def create_monthname_ruler_en(nlp: Language, name: str = "monthname_ruler") -> SpanRuler:
+def create_monthname_ruler_en(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_en_MONTHNAME)
 
 
 @Spanish.factory("monthname_ruler")
-def create_monthname_ruler_es(nlp: Language, name: str = "monthname_ruler") -> SpanRuler:
+def create_monthname_ruler_es(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_es_MONTHNAME)
 
 
 @French.factory("monthname_ruler")
-def create_monthname_ruler_fr(nlp: Language, name: str = "monthname_ruler") -> SpanRuler:
+def create_monthname_ruler_fr(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_fr_MONTHNAME)
 
 
 @Italian.factory("monthname_ruler")
-def create_monthname_ruler_it(nlp: Language, name: str = "monthname_ruler") -> SpanRuler:
+def create_monthname_ruler_it(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_it_MONTHNAME)
 
 
 @Dutch.factory("monthname_ruler")
-def create_monthname_ruler_nl(nlp: Language, name: str = "monthname_ruler") -> SpanRuler:
+def create_monthname_ruler_nl(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_nl_MONTHNAME)
 
 
 @Norwegian.factory("monthname_ruler")
-def create_monthname_ruler_no(nlp: Language, name: str = "monthname_ruler") -> SpanRuler:
+def create_monthname_ruler_no(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_no_MONTHNAME)
 
 
 @Swedish.factory("monthname_ruler")
-def create_monthname_ruler_sv(nlp: Language, name: str = "monthname_ruler") -> SpanRuler:
+def create_monthname_ruler_sv(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_sv_MONTHNAME)
 
 # Polish as temp experimental substitute until Czech is available
 @Polish.factory("monthname_ruler")
-def create_monthname_ruler_cs(nlp: Language, name: str = "monthname_ruler") -> SpanRuler:
+def create_monthname_ruler_cs(nlp: Language, name: str = "monthname_ruler") -> BaseRuler:
     return create_monthname_ruler(nlp, name, patterns_cs_MONTHNAME)
 
 

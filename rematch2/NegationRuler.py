@@ -14,7 +14,8 @@ License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History :   
 28/02/2024 CFB Initially created script
-28/03/2024 CFB base on SpanRuler instead of EntityRuler
+28/03/2024 CFB based on SpanRuler instead of EntityRuler
+02/07/2025 CFB based on BaseRuler instead of SpanRuler(!)
 =============================================================================
 """
 import os
@@ -29,7 +30,7 @@ from spacy.tokens import Doc, Span
 
 if __package__ is None or __package__ == '':
     # uses current directory visibility
-    from CustomSpanRuler import CustomSpanRuler
+    from BaseRuler import BaseRuler
     from SpanRemover import child_span_remover
     from spacypatterns import *
     from Util import *
@@ -37,7 +38,7 @@ if __package__ is None or __package__ == '':
     from DocSummary import DocSummary    
 else:
     # uses current package visibility
-    from .CustomSpanRuler import CustomSpanRuler
+    from .BaseRuler import BaseRuler
     from .SpanRemover import child_span_remover
     from .spacypatterns import *
     from .Util import * 
@@ -46,19 +47,11 @@ else:
 
 
 # NegationRuler is a specialized SpanRuler
-class NegationRuler(CustomSpanRuler):
+class NegationRuler(BaseRuler):
 
     def __init__(self, nlp: Language, name: str="negation_ruler", patterns: list=[]) -> None:
-        normalized_patterns = normalize_patterns(
-            nlp=nlp, 
-            patterns=patterns,
-            default_label="NEGATION",
-            lemmatize=False,
-            min_term_length=2
-        )  
-        #print(normalized_patterns)      
-
-        CustomSpanRuler.__init__(
+        
+        BaseRuler.__init__(
             self,
             nlp=nlp,        
             name=name,
@@ -67,6 +60,14 @@ class NegationRuler(CustomSpanRuler):
             validate=False,
             overwrite=False
         )
+
+        normalized_patterns = BaseRuler.normalize_patterns(
+            nlp=nlp, 
+            patterns=patterns,
+            default_label="NEGATION",
+            lemmatize=False,
+            min_term_length=2
+        )  
         
         # add negation patterns to this pipeline component
         self.add_patterns(normalized_patterns)
@@ -76,7 +77,7 @@ class NegationRuler(CustomSpanRuler):
     
     
     def __call__(self, doc: Doc) -> Doc:
-        doc = CustomSpanRuler.__call__(self, doc)
+        doc = BaseRuler.__call__(self, doc)
         all_spans = doc.spans.get("rematch",[])
         
         # flag any negated spans

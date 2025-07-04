@@ -301,7 +301,7 @@ class DocSummary:
         return html
    
     @run_timed
-    def _report_to_html(self) -> str:
+    def _report_to_html(self, include_tokens: bool = False) -> str:
         output = []
 
         # write header tags
@@ -340,10 +340,11 @@ class DocSummary:
         output.append("</details>")
 
         # write tokens
-        output.append("<details>")
-        output.append(f"<summary>Tokens ({len(self.tokens(format='list'))})</summary>")        
-        output.append(self.tokens(format="htmll"))
-        output.append("</details>")
+        if(include_tokens):
+            output.append("<details>")
+            output.append(f"<summary>Tokens ({len(self.tokens(format='list'))})</summary>")        
+            output.append(self.tokens(format="htmll"))
+            output.append("</details>")
 
         # write span counts
         output.append("<details>")
@@ -377,11 +378,11 @@ class DocSummary:
 
 
     @run_timed
-    def _report_to_json(self):
+    def _report_to_json(self, include_tokens: bool=False):
         output = {
             "meta": self.meta(format="dict"),
             "text": self.doctext(format="text"),
-            "tokens": self.tokens(format="list"),            
+            "tokens": self.tokens(format="list") if include_tokens else [],            
             "spans": self.spans(format="list"),
             "spancounts": self.spancounts(format="list"),
             "spanpairs": self.spanpairs(format="list"),            
@@ -390,11 +391,12 @@ class DocSummary:
 
 
     @run_timed
-    def _report_to_text(self) -> str:
+    def _report_to_text(self, include_tokens: bool=False) -> str:
         output = []
         output.append(f"metadata:\n{self.meta(format='text')}")        
         output.append(f"text:\n{self.doctext()}")
-        output.append(f"tokens:\n{self.tokens(format='text')}")
+        if include_tokens:
+            output.append(f"tokens:\n{self.tokens(format='text')}")
         output.append(f"spans:\n{self.spans(format='text')}")        
         output.append(f"span counts:\n{self.spancounts(format='text')}")
         output.append(f"span pairs:\n{self.spanpairs(format='text')}")        

@@ -20,12 +20,10 @@ History :
 15/10/2024 CFB Initially created script
 =============================================================================
 """
-
 from pathlib import Path
 import requests
 import zipfile
 import os
-from pathlib import Path
 import sys
 import spacy            # NLP library
 import pandas as pd
@@ -38,13 +36,13 @@ from pprint import pprint
 if __package__ is None or __package__ == '':
     # uses current directory visibility
     from Util import *
-    from CustomSpanRuler import CustomSpanRuler
+    from BaseRuler import BaseRuler
     from StringCleaning import normalize_text
     from DocSummary import DocSummary
 else:
     # uses current package visibility
     from .Util import *
-    from .CustomSpanRuler import CustomSpanRuler
+    from .BaseRuler import BaseRuler
     from .StringCleaning import normalize_text
     from .DocSummary import DocSummary
 
@@ -188,7 +186,7 @@ def get_geonames_city_data(country_codes: list=[]) -> list:
 
 
 @Language.factory(name="geonames_ruler", default_config={"country_codes": ["GB"]})
-def create_geonames_ruler(nlp: Language, name: str="geonames_ruler", country_codes=["GB"]) -> CustomSpanRuler:
+def create_geonames_ruler(nlp: Language, name: str="geonames_ruler", country_codes=["GB"]) -> BaseRuler:
 
     # get records for selected GeoNames country codes
     geonames_admin1 = get_geonames_admin1_data(country_codes) 
@@ -204,22 +202,22 @@ def create_geonames_ruler(nlp: Language, name: str="geonames_ruler", country_cod
         "pattern": str(item.get("name", ""))
     }, geonames_data))    
 
-    normalized_patterns = normalize_patterns(
-        nlp=nlp, 
-        patterns=patterns,
-        default_label="PLACE",
-        lemmatize=False,
-        pos=["PROPN"]
-    )
-    
-    ruler = CustomSpanRuler(
+    ruler = BaseRuler(
         nlp=nlp,        
         name=name,
         spans_key="rematch",
         #phrase_matcher_attr="LOWER",
         validate=False,
         overwrite=False
-    )  
+    ) 
+
+    normalized_patterns = BaseRuler.normalize_patterns(
+        nlp=nlp, 
+        patterns=patterns,
+        default_label="PLACE",
+        lemmatize=False,
+        pos=["PROPN"]
+    ) 
       
     ruler.add_patterns(normalized_patterns)
     return ruler 
