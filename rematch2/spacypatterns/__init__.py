@@ -90,4 +90,4 @@ from .patterns_en_ATTRIBUTE_RULES import patterns_en_ATTRIBUTE_RULES
 from .patterns_no_PERIOD import patterns_no_PERIOD
 from .patterns_sv_PERIOD import patterns_sv_PERIOD
 
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+#sys.path.append(os.path.dirname(os.path.realpath(__file__)))

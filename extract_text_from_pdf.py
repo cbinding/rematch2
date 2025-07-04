@@ -1,7 +1,7 @@
 # extracting text from a PDF file using pypdf
 import argparse                         # for argument parsing
 from pypdf import PdfReader
-from rematch2.StringCleaning import normalize_whitespace 
+
 
 def extract_text_from_pdf(inputFileName: str = "", options={}) -> str:
     reader = PdfReader(inputFileName)

@@ -6,12 +6,6 @@ import time # For measuring elapsed time
 from spacy.language import Language
 from spacy.tokens import Token
 
-#if __package__ is None or __package__ == '':
-    # uses current directory visibility
-    #from StringCleaning import normalize_text
-#else:
-    # uses current package visibility
-    #from .StringCleaning import normalize_text
 
 # get suitable spaCy NLP pipeline for given ISO639-1 (2-char) language code
 def get_pipeline_for_language(language: str="") -> Language:

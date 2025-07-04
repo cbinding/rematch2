@@ -16,10 +16,11 @@ History :
 =============================================================================
 """
 import regex
-import spacy
+
 from spacy.tokens import Doc
 from spacy.pipeline import Pipe
 from spacy.language import Language
+
 from .Decorators import run_timed    
 
 
@@ -27,38 +28,33 @@ class TextNormalizer(Pipe):
     
     def __init__(self, nlp: Language, subs: dict = None):
         self.nlp = nlp
-        self.subs = subs or {}
+        self.subs = {regex.compile(key, regex.IGNORECASE | regex.MULTILINE): val for key, val in (subs or {}).items()}        
+
 
     @run_timed
     def __call__(self, doc: Doc) -> Doc:
         text = doc.text
         
         # perform text replacement for each of the subs
-        for key, val in self.subs.items():
-            text = regex.sub(pattern=key, repl=val, string=text, flags=regex.IGNORECASE | regex.MULTILINE)
+        for pattern, val in self.subs.items():
+            text = pattern.sub(val, text)
 
         # retokenize and return the Doc
         disabled = self.nlp.select_pipes(disable=["ner"])
         newDoc = self.nlp.make_doc(text)
-        newDoc.user_data = doc.user_data.copy()  # copy user data from original doc
+        newDoc.user_data = doc.user_data.copy()  # copy over user data from original doc
         disabled.restore()
         return newDoc
         
 
-# Register the TextNormalizer as a spaCy pipeline component
-# Factory function to create a text normalizer with specified substitutions
-@Language.factory("normalize_text", retokenizes=True, default_config={ "subs": []})
-def normalize_text(nlp: Language, name: str, subs: list=[]) -> Pipe:
-    return TextNormalizer(nlp, subs)
-
-
+# Register as a spaCy pipeline component with specified substitutions
 # Only implemented for English as default here but other @Language.factory 
-# functions can be added e.g. Swedish.factory("normalize_spelling", ...)
+# functions may be added e.g. @Swedish.factory("normalize_spelling", retokenizes=True)
 @Language.factory("normalize_spelling", retokenizes=True)
-def normalize_spelling_en(nlp: Language, name: str) -> Pipe:
+def normalize_spelling_en(nlp: Language, name: str="normalize_spelling") -> Pipe:
     subs = {
         # US English -> English spelling
-        r"\b(a)rcheo": r"\1rchaeo", # ignore case but retain capitalisation 
+        r"\b(a)rcheo": r"\1rchaeo", # ignores case but retains capitalisation 
         r"\b(p)aleo": r"\1alaeo",
         r"\b(d)efense(s)?\b": r"\1efence\2",
         r"\b(c)olor(s)?\b": r"\1olour\2",
@@ -92,12 +88,12 @@ def normalize_spelling_en(nlp: Language, name: str) -> Pipe:
         "Æ": "AE",
         "ꜳ": "aa",
     }
-    return normalize_text(nlp, subs)
+    return TextNormalizer(nlp, subs=subs)
 
 
 # Register the normalization functions for whitespace and punctuation
 @Language.factory(name="normalize_whitespace", retokenizes=True)
-def normalize_whitespace_en(nlp: Language, name: str) -> Pipe:
+def normalize_whitespace_en(nlp: Language, name: str="normalize_whitespace") -> Pipe:
     subs = { 
         # words hyphenated at line break -
         # remove both hyphen and newline character
@@ -108,12 +104,12 @@ def normalize_whitespace_en(nlp: Language, name: str) -> Pipe:
         # convert multi-whitespace to single space (preserving line-breaks)
         r"\p{Separator}+" : " " 
     }
-    return normalize_text(nlp, subs)
+    return TextNormalizer(nlp, subs=subs)
 
 
 # Register the punctuation normalization function
 @Language.factory("normalize_punctuation", retokenizes=True)
-def normalize_punctuation_en(nlp: Language, name: str) -> Pipe:
+def normalize_punctuation_en(nlp: Language, name: str="normalize_punctuation") -> Pipe:
     subs = {
         # any dash character to single standard hyphen
         r"\b\s*(\p{Dash_Punctuation})\s*(?=[^\p{Number}])" : " - ",
@@ -131,18 +127,14 @@ def normalize_punctuation_en(nlp: Language, name: str) -> Pipe:
         # spacing after commas
         r"(\p{Letter}),(\p{Letter})" : r"\1, \2"
     }
-    return normalize_text(nlp, subs)
+    return TextNormalizer(nlp, subs=subs)
 
 
 # to run directly, run from package root to enable relative imports to work
 # i.e. /workspaces/rematch2 $ python -m rematch2.TextNormalizer
-if __name__ == "__main__":
-    # this is for local testing of script only, not production use
-    import sys
-    from pathlib import Path
-    sys.path.append(str(Path(__file__).resolve().parent.parent))
-
-
+if __name__ == "__main__":   
+    import spacy
+    
     # usage example
     text = f"archeological  work indi-\ncated  an Iron Age/ Romano- British  /Roman\npost -hole, in( low -lying)ground.\nThis  was  near(vandal-\nized)\n  Mediaeval/post-medieval(15th-17th century? )foot-\nings. Items of Mediaeval &  paleolithic(archeological)jewelry were  located in the New Harbor area.  Gray colored,oxidized,aluminum artifacts were   found near the theater."
     
@@ -153,7 +145,6 @@ if __name__ == "__main__":
     nlp.add_pipe("normalize_punctuation", before = "tagger")
     nlp.add_pipe("normalize_spelling", before = "tagger")
        
-    
     print(f"\nBefore:\n\"{text}\"")
     doc = nlp(text)
     print(f"\nAfter:\n\"{doc.text}\"")   

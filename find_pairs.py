@@ -27,7 +27,7 @@ from html import escape
 from pathlib import Path
 from spacy import displacy
 from spacy.tokens import Doc #, Span, Token
-from rematch2 import SpanPair, SpanPairs, PeriodoRuler, VocabularyRuler, NegationRuler, DocSummary, StringCleaning
+from rematch2 import SpanPair, SpanPairs, PeriodoRuler, VocabularyRuler, NegationRuler, DocSummary, TextNormalizer, StringCleaning
 from rematch2.Util import *
 from decorators import run_timed # form local run timing
 
@@ -41,7 +41,7 @@ def get_records_from_xml_file(file_path: str="")-> list:
         tree = ET.parse(file_path)
         root = tree.getroot()
     except:
-        print(f"Could not read from {sourceFilePath}")
+        print(f"Could not read from {file_path}")
         return records
 
     # find rows to be processed in the XML file

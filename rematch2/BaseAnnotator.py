@@ -27,23 +27,19 @@ from spacy.tokens import Doc
 from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
 
-if __package__ is None or __package__ == '':
-    # uses current directory visibility
-    from Util import *
-    from DocSummary import DocSummary
-    from StringCleaning import normalize_text
+from .Util import *
+from .DocSummary import DocSummary
+from .TextNormalizer import *
 
-else:
-    from .Util import *
-    from .DocSummary import DocSummary
-    from .StringCleaning import normalize_text
 
 # base class for VocabularyAnnotator and TemporalAnnotator
 class BaseAnnotator():
     def __init__(self, language: str="en", patterns: list=[]) -> None:
         # start with predefined language-specific spaCy pipeline        
         self._pipeline = get_pipeline_for_language(language)
-
+        self._pipeline.add_pipe("normalize_whitespace", before="tagger")  
+        self._pipeline.add_pipe("normalize_punctuation", before="tagger")
+        self._pipeline.add_pipe("normalize_spelling", before="tagger") 
         # append any additional patterns passed in (for local customisation)
         if (len(patterns or []) > 0):
             ruler = self._pipeline.add_pipe("span_ruler", last=True)

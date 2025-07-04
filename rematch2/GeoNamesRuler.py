@@ -35,7 +35,6 @@ from pprint import pprint
 
 from .Util import *
 from .BaseRuler import BaseRuler
-from .StringCleaning import normalize_text
 from .DocSummary import DocSummary
 
 
@@ -231,9 +230,7 @@ if __name__ == "__main__":
     nlp = get_pipeline_for_language("en")    
     nlp.add_pipe("geonames_ruler", last=True, config={"country_codes": ["GB"]})
 
-    # normalise input text prior to NER processing
-    cleaned = normalize_text(test_text)
-    doc = nlp(cleaned)
+    doc = nlp(test_text)
     summary = DocSummary(doc)
     #print("\nTokens:\n" + summary.tokens("text"))
     print("\nSpans:\n" + summary.spans("text"))    

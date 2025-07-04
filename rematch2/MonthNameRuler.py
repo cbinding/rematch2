@@ -20,13 +20,7 @@ History :
 02/07/2025 CFB based on BaseRuler instead of SpanRuler(!)
 =============================================================================
 """
-import os
-import sys
-import spacy            # NLP library
-#from spacy.pipeline import SpanRuler
-
 from spacy.language import Language
-#from spacy.lang.cs import Czech # doesn't exist yet..
 from spacy.lang.de import German
 from spacy.lang.en import English
 from spacy.lang.es import Spanish
