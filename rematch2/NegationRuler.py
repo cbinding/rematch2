@@ -153,6 +153,6 @@ if __name__ == "__main__":
         print(f"-------------\n{text}\n")
         doc = nlp(text)
         
-        print("Tokens:\n" + DocSummary(doc).tokens("text"))
-        print("Spans:\n" + DocSummary(doc).spans("text"))
+        print("Tokens:\n" + DocSummary(doc).tokens_to_text())
+        print("Spans:\n" + DocSummary(doc).spans_to_text())
 

@@ -27,6 +27,7 @@ History
 =============================================================================
 """
 import regex
+from regex import Match
     
 # normalize whitespace - multiple whitespace chars reduced to single
 # e.g. "This  is a\n  test" => "this is a test"
@@ -171,33 +172,51 @@ def selection_upper_case(text: str, pattern: str=r".*", count: int=0, flags=None
     #default_config = { pattern: r".*", count: 0, flags: None }
     #merged_config = default_config | config
     def repl(match: Match) -> str: return match[0].upper()
-    return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
+    if flags is not None:
+        return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
+    else:
+        return regex.sub(pattern=pattern, repl=repl, string=text, count=count)
 
 
 def selection_lower_case(text: str, pattern: str=r".*", count: int=0, flags=None) -> str:
     def repl(match: Match) -> str: return match[0].lower()
-    return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
+    if flags is not None:
+        return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
+    else:
+        return regex.sub(pattern=pattern, repl=repl, string=text, count=count)
 
 
 def selection_snake_case(text: str, pattern: str=r".*", count: int=0, flags=None) -> str:
-    def repl(match: Match) -> str: return re.sub(r"\s+", "_", match[0].lower()) 
-    return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
+    def repl(match: Match) -> str: return regex.sub(r"\s+", "_", match[0].lower()) 
+    if flags is not None:
+        return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
+    else:
+        return regex.sub(pattern=pattern, repl=repl, string=text, count=count)
 
 
 # note this won't account for text already being eg snake case as it's only replacing spaces
 def selection_kebab_case(text: str, pattern: str=r".*", count: int=0, flags=None) -> str:
-    def repl(match: Match) -> str: return re.sub(r"\s+", "-", match[0].lower())
-    return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
+    def repl(match: Match) -> str: return regex.sub(r"\s+", "-", match[0].lower())
+    if flags is not None:
+        return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
+    else:
+        return regex.sub(pattern=pattern, repl=repl, string=text, count=count)
 
 
 def selection_title_case(text: str, pattern: str=r".*", count: int=0, flags=None) -> str:
     def repl(match: Match) -> str: return match[0].title()
-    return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
+    if flags is not None:
+        return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
+    else:
+        return regex.sub(pattern=pattern, repl=repl, string=text, count=count)
 
 
 def selection_sentence_case(text: str, pattern: str=r".*", count: int=0, flags=None) -> str:
     def repl(match: Match) -> str: return match[0].capitalize()
-    return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
+    if flags is not None:
+        return regex.sub(pattern=pattern, repl=repl, string=text, count=count, flags=flags)
+    else:
+        return regex.sub(pattern=pattern, repl=repl, string=text, count=count)
 
 
 #see https://dzone.com/articles/python-function-pipelines-streamlining-data-proces (sic)

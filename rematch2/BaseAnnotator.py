@@ -18,15 +18,9 @@ History
 27/10/2023 CFB type hints added for function signatures
 =============================================================================
 """
-import os
-from os.path import exists
-#from collections.abc import MutableSequence
-import pandas as pd                     # for DataFrame output
-import spacy
-from spacy.tokens import Doc
-from spacy import displacy              # for HTML formatting results
-import argparse                         # for argument parsing
 
+from spacy.tokens import Doc
+from spacy.pipeline import SpanRuler
 from .Util import *
 from .DocSummary import DocSummary
 from .TextNormalizer import *
@@ -42,8 +36,9 @@ class BaseAnnotator():
         self._pipeline.add_pipe("normalize_spelling", before="tagger") 
         # append any additional patterns passed in (for local customisation)
         if (len(patterns or []) > 0):
-            ruler = self._pipeline.add_pipe("span_ruler", last=True)
-            ruler.initialize(lambda: [], nlp=self._pipeline, patterns=patterns)
+            self._pipeline.add_pipe("vocabulary_ruler", before="tagger", config={"patterns": patterns}) 
+            #ruler: SpanRuler = self._pipeline.add_pipe("span_ruler", last=True)
+            #ruler.add_patterns(patterns)
 
 
     # process text using the modified pipeline
@@ -56,39 +51,25 @@ class BaseAnnotator():
         return self._pipeline.pipe_names
 
     # process text and output results to specified format
-    def annotateText(self, input_text: str="", output_format: str="csv", options: dict=None) -> str|list:
-        output = ""
-
-        # data cleansing stages on input text
-        # cleaned = input_text.strip()
-        # remove any punctuation before annotation DOESN'T WORK for unicode punctuation though, only ASCII
-        # cleaned = cleaned.translate(str.maketrans("", "", string.punctuation))
-        # this does handle unicode
-        # cleaned = regex.sub('[\p{P}\p{Sm}]+', '', cleaned)
-        # problem though - if we strip punctuation here we lose crucial info before the NER e.g. full stops...
-
-        # normalise white space before annotation
-        # (extra spaces frustrate pattern matching)
-        #cleaned = normalize_whitespace(input_text)
-        cleaned = normalize_text(input_text)
-
+    def annotateText(self, input_text: str="", output_format: str="csv", options: dict={}):
+        output = ""       
+        
         # perform the annotation
-        doc = self.__annotate(cleaned)
-
-        # convert the results to the required format
+        doc = self.__annotate(input_text)
+                # convert the results to the required format
         match output_format.strip().lower():
             case "html":                
                 output = DocSummary(doc).doctext(format="html")
             #case "ttl":
                 #output = self.__doc_to_ttl(doc)
             case "json":
-                output = DocSummary(doc).spans(format="json")
+                output = DocSummary(doc).spans_to_json()
             case "text":
-                output = DocSummary(doc).spans(format="text")
+                output = DocSummary(doc).spans_to_text()
             case "dataframe":
-                output = DocSummary(doc).spans(format="dataframe")
+                output = DocSummary(doc).spans_to_df()
             case "csv":
-                output = DocSummary(doc).spans(format="csv")
+                output = DocSummary(doc).spans_to_csv()
             case _:
                 output = DocSummary(doc).spans()
 

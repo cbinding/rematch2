@@ -232,5 +232,5 @@ if __name__ == "__main__":
 
     doc = nlp(test_text)
     summary = DocSummary(doc)
-    #print("\nTokens:\n" + summary.tokens("text"))
-    print("\nSpans:\n" + summary.spans("text"))    
+    #print("\nTokens:\n" + summary.tokens_to_text())
+    print("\nSpans:\n" + summary.spans_to_text())    

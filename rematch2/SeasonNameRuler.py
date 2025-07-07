@@ -134,6 +134,6 @@ if __name__ == "__main__":
         nlp.add_pipe("seasonname_ruler", last=True)
         doc = nlp(text)
         
-        print("Tokens:\n" + DocSummary(doc).tokens("text"))
-        print("Spans:\n" + DocSummary(doc).spans("text"))
+        print("Tokens:\n" + DocSummary(doc).tokens_to_text())
+        print("Spans:\n" + DocSummary(doc).spans_to_text())
 

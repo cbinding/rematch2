@@ -48,7 +48,7 @@ def is_within(spanA: Span, spanB: Span)-> bool:
     
 
 # is span 'contained' by any other span in the list and not equal start & end
-def is_contained(index: int, spans: SpanGroup) -> bool:
+def is_contained(index: int, spans: SpanGroup|list[Span]) -> bool:
     span = spans[index]
     #return any([True for i, s in enumerate(spans) if i != index and span.label == s.label and is_within(span, s)])
     # 04/10/24 CFB remove ANY contained spans - e.g. "post" within "post-medieval"

@@ -49,6 +49,7 @@ def patterns_from_json_file(file_name: str) -> list:
 
 # stop_list is a list of identifiers that should not be matched 
 # in order to exclude specific concepts from the match results
+@Language.factory(name="vocabulary_ruler", default_config={"language": "en", "patterns": [], "supp_list": [], "stop_list": []})
 def create_vocabulary_ruler(
         nlp: Language, 
         name: str="vocabulary_ruler", 
@@ -578,8 +579,8 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
 
     doc = nlp(en_test_text2)
     # explacy.print_parse_info(nlp, en_test_text.lower())
-    print("Tokens:\n" + DocSummary(doc).tokens("text"))
-    print("Spans:\n" + DocSummary(doc).spans("text"))
+    print("Tokens:\n" + DocSummary(doc).tokens_to_text())
+    print("Spans:\n" + DocSummary(doc).spans_to_text())
 
     options = {
         "spans_key": "rematch",

@@ -22,11 +22,6 @@ History :
 02/07/2025 CFB based on BaseRuler instead of SpanRuler(!)
 =============================================================================
 """
-import os
-import sys
-import spacy            # NLP library
-#from collections.abc import MutableSequence
-#from spacy.pipeline import SpanRuler
 
 from spacy.language import Language
 from spacy.lang.de import German
@@ -141,5 +136,5 @@ if __name__ == "__main__":
         nlp.add_pipe("datesuffix_ruler", last=True)
         doc = nlp(text)
         
-        print("Tokens:\n" + DocSummary(doc).tokens("text"))
-        print("Spans:\n" + DocSummary(doc).spans("text"))
+        print("Tokens:\n" + DocSummary(doc).tokens_to_text())
+        print("Spans:\n" + DocSummary(doc).spans_to_text())

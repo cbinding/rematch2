@@ -18,8 +18,10 @@ History
 '''
 from spacy.tokens import Span
 
+
 class SpanPair:
-    def __init__(self, span1: Span = None, span2: Span = None, rel_op: str = ""):
+    
+    def __init__(self, span1: Span, span2: Span, rel_op: str = ""):
         self.rel_op = (rel_op or "").strip()
         self.span1 = span1
         self.span2 = span2

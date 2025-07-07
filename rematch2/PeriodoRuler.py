@@ -119,7 +119,7 @@ if __name__ == "__main__":
                  "periodo_authority_id": periodo_authority_id})
     doc = nlp(test_text)
     summary = DocSummary(doc)
-    print("\nTokens:\n" + summary.tokens("text"))
-    print("\nSpans:\n" + summary.spans("text"))
+    print("\nTokens:\n" + summary.tokens_to_text())
+    print("\nSpans:\n" + summary.spans_to_text())
     #print([f"\"{span.text}\"\t{span.label_}\n" for span in doc.spans["rematch"]])
     

@@ -21,25 +21,9 @@ from spacy.pipeline import SpanRuler
 from spacy.language import Language
 import functools
 import time
-
+from .Decorators import run_timed
 
 class BaseRuler(SpanRuler):
-
-    def run_timed(f):
-        @functools.wraps(f)
-        def wrapper_run_timed(self, *args, **kwargs):
-            starting = time.time()
-        
-            result = f(self, *args, **kwargs)
-            
-            finished = time.time()      
-            duration = finished - starting 
-
-            print(f"\"{self.__class__.__name__}.{f.__name__ }\" ran in {duration:.3f} seconds")
-            
-            return result
-        return wrapper_run_timed
-
 
     @run_timed
     def __call__(self, doc: Doc) -> Doc:

@@ -107,7 +107,7 @@ class PeriodoData:
 
     def count(self, pattern: str="") -> int:
         """get number of items matching the search pattern"""
-        return length(self.find(pattern))
+        return len(self.find(pattern))
 
     # specialised properties based on .find
     # returns list of authority as [{id, label}]

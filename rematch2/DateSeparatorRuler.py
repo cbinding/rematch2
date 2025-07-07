@@ -20,11 +20,6 @@ History :
 02/07/2025 CFB based on BaseRuler instead of SpanRuler(!)
 =============================================================================
 """
-import os
-import sys
-import spacy            # NLP library
-#from collections.abc import MutableSequence
-#from spacy.pipeline import SpanRuler
 
 from spacy.language import Language
 #from spacy.lang.cs import Czech #doesn't exist yet..
@@ -112,7 +107,7 @@ def create_dateseparator_ruler_sv(nlp: Language, name: str = "dateseparator_rule
 def create_dateseparator_ruler_cs(nlp: Language, name: str = "dateseparator_ruler") -> BaseRuler:
     return create_dateseparator_ruler(nlp, name, patterns_cs_DATESEPARATOR)
 
-# to test this module, run from package root:
+# to test this module independently, run from package root:
 # python -m rematch2.DateSeparatorRuler
 if __name__ == "__main__":
 
@@ -136,5 +131,5 @@ if __name__ == "__main__":
         nlp.add_pipe("dateseparator_ruler", last=True)
         doc = nlp(text)
         
-        print("Tokens:\n" + DocSummary(doc).tokens("text"))
-        print("Spans:\n" + DocSummary(doc).spans("text"))
+        print("Tokens:\n" + DocSummary(doc).tokens_to_text())
+        print("Spans:\n" + DocSummary(doc).spans_to_text())

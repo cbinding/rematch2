@@ -24,9 +24,6 @@ History :
 02/07/2025 CFB based on BaseRuler instead of SpanRuler(!)
 =============================================================================
 """
-import os
-import sys
-import spacy            # NLP library
 
 from spacy.language import Language
 #from spacy.lang.cs import Czech #doesn't exist yet..
@@ -136,6 +133,6 @@ if __name__ == "__main__":
         nlp.add_pipe("dayname_ruler", last=True)
         doc = nlp(text)
 
-        print("Tokens:\n" + DocSummary(doc).tokens("text"))
-        print("Entities:\n" + DocSummary(doc).spans("text"))
+        print("Tokens:\n" + DocSummary(doc).tokens_to_text())
+        print("Entities:\n" + DocSummary(doc).spans_to_text())
 

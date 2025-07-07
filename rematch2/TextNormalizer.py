@@ -26,7 +26,7 @@ from .Decorators import run_timed
 
 class TextNormalizer(Pipe):
     
-    def __init__(self, nlp: Language, subs: dict = None):
+    def __init__(self, nlp: Language, subs: dict = {}):
         self.nlp = nlp
         self.subs = {regex.compile(key, regex.IGNORECASE | regex.MULTILINE): val for key, val in (subs or {}).items()}        
 
