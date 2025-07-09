@@ -69,7 +69,7 @@ class TemporalAnnotator(BaseAnnotator):
                 "PERIOD": "lightpink"
             }
         }
-        return DocSummary(doc).doctext(format="html")
+        return DocSummary(doc).doctext_to_html()
         #output =  BaseAnnotator._to_html(
            # doc, options=options)
         #return output

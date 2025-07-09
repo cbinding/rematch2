@@ -6,6 +6,7 @@ import time # For measuring elapsed time
 from spacy.language import Language
 from spacy.tokens import Token
 
+DEFAULT_SPANS_KEY = "rematch" # default key for storing spans in Doc.spans
 
 # get suitable spaCy NLP pipeline for given ISO639-1 (2-char) language code
 def get_pipeline_for_language(language: str="") -> Language:
@@ -39,17 +40,17 @@ def get_pipeline_for_language(language: str="") -> Language:
         nlp = spacy.blank("xx-blank-xx")
     return nlp
 
-
 # determine whether a token is within a previously labelled span
-def is_token_within_labelled_span(tok: Token, label: str="DATEPREFIX", spans_key: str="rematch") -> bool:
+def is_token_within_labelled_span(tok: Token, label: str="DATEPREFIX", spans_key: str=DEFAULT_SPANS_KEY) -> bool:
     # list any previously identified spans with this label in the document
+    
     spans = list(filter(lambda span: span.label_ == label, tok.doc.spans.get(spans_key, [])))
     # is this token inside any of them?
     return any(span.start <= tok.i and span.end > tok.i for span in spans) 
 
 
 # get list of labels for any spans this token is within
-def get_labels_for_token(tok: Token, spans_key: str="rematch") -> list: 
+def get_labels_for_token(tok: Token, spans_key: str=DEFAULT_SPANS_KEY) -> list: 
     outer_spans = filter(lambda span: span.start <= tok.i and span.end >= tok.i, tok.doc.spans.get(spans_key,[]))
     return list(set(map(lambda span: span.label, outer_spans)))
 

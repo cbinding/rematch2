@@ -24,7 +24,7 @@ import time
 from .Decorators import run_timed
 
 class BaseRuler(SpanRuler):
-
+    
     @run_timed
     def __call__(self, doc: Doc) -> Doc:
         print(f"{self.name}")
@@ -41,7 +41,7 @@ class BaseRuler(SpanRuler):
         lemmatize: bool=True,
         min_lemmatize_length: int=4,
         min_term_length: int=3,
-        pos: list=[]
+        pos: list[str]=[]
         ) -> list:
 
         normalized_patterns = []

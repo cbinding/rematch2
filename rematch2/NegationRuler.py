@@ -44,7 +44,7 @@ class NegationRuler(BaseRuler):
             self,
             nlp=nlp,        
             name=name,
-            spans_key="rematch",
+            spans_key=DEFAULT_SPANS_KEY,
             phrase_matcher_attr="LOWER",
             validate=False,
             overwrite=False
@@ -67,7 +67,7 @@ class NegationRuler(BaseRuler):
     
     def __call__(self, doc: Doc) -> Doc:
         doc = BaseRuler.__call__(self, doc)
-        all_spans = doc.spans.get("rematch",[])
+        all_spans = doc.spans.get(DEFAULT_SPANS_KEY,[])
         
         # flag any negated spans
         # get list of unique labels of all spans in current doc (except 'NEGATION')

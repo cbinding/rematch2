@@ -19,8 +19,9 @@ History
 #import spacy       
 import spacy
 from spacy.tokens import Doc, Span, SpanGroup
+from spacy.pipeline import Pipe
 from spacy.language import Language
-
+from .Util import DEFAULT_SPANS_KEY
 
 # A equals B (position-wise)
 def span_equals(spanA: Span, spanB: Span)-> bool:
@@ -58,19 +59,22 @@ def is_contained(index: int, spans: SpanGroup|list[Span]) -> bool:
 # remove matched spans "contained" by any other matched spans
 # e.g. "post" within "post-medieval"
 @Language.component("child_span_remover")
-def child_span_remover(doc: Doc, spans_key: str="rematch") -> Doc:
+def child_span_remover(doc: Doc, spans_key: str=DEFAULT_SPANS_KEY) -> Doc:
     spans = doc.spans.get(spans_key, [])    
-    doc.spans[spans_key] = [span for index, span in enumerate(spans) if not is_contained(index, spans)]  
+    #doc.spans[spans_key] = [span for index, span in enumerate(spans) if not is_contained(index, spans)]  
+    doc.spans[spans_key] = spacy.util.filter_spans(spans)
     return doc
 
 
 # remove matched spans where the ID is in a stop list of IDs not to be matched
 # e.g. "coin" matched on both "coin" and "coin (forgery)" - ID of "coin (forgery)" can be on the stop list
 # TODO: not yet tested..
-class Stop_listSpanRemover:
-    def __init__(self, spans_key: str="rematch", stop_list: list=[]):
+class StopListSpanRemover(Pipe):
+    def __init__(self, nlp: Language, spans_key: str=DEFAULT_SPANS_KEY, stop_list: list=[]):
+        self.nlp = nlp
         self.spans_key = spans_key
         self.stop_list = stop_list        
+
 
     def __call__(self, doc: Doc) -> Doc:
         spans = doc.spans.get(self.spans_key, [])  
@@ -87,14 +91,14 @@ class Stop_listSpanRemover:
         return doc
 
 
-@Language.factory(name="stop_list_span_remover", default_config={"spans_key": "rematch", "stop_list": []})
-def stop_list_span_remover(nlp: Language, name: str="periodo_ruler", spans_key: str="rematch", stop_list: list=[]):
-    return Stop_listSpanRemover(spans_key=spans_key, stop_list=stop_list)
+@Language.factory(name="stop_list_span_remover", default_config={"spans_key": DEFAULT_SPANS_KEY, "stop_list": []})
+def stop_list_span_remover(nlp: Language, name: str="stop_list_span_remover", spans_key: str=DEFAULT_SPANS_KEY, stop_list: list=[]):
+    return StopListSpanRemover(nlp=nlp, spans_key=spans_key, stop_list=stop_list)
 
 
 # for the testing below
 @Language.component("dummy_span_creator")
-def dummy_span_creator(doc: Doc, spans_key: str="rematch") -> Doc:
+def dummy_span_creator(doc: Doc, spans_key: str=DEFAULT_SPANS_KEY) -> Doc:
     x = doc[3:4] # "fox"
     y = doc[1:4] # "quick brown fox"
     z = doc[4:5] # "jumps"
@@ -106,21 +110,22 @@ def dummy_span_creator(doc: Doc, spans_key: str="rematch") -> Doc:
 if __name__ == "__main__":
     nlp = spacy.blank("en")
     nlp.add_pipe("dummy_span_creator", last=True)
-    #nlp.add_pipe("child_span_remover", last=True)
+    nlp.add_pipe("child_span_remover", last=True)
     nlp.add_pipe("stop_list_span_remover", last=True, config={"stop_list": ["eric"]})
     text = "the quick brown fox jumps over the lazy dog called Eric"
     doc = nlp(text)
-    spans = doc.spans["rematch"]       
+    spans = doc.spans[DEFAULT_SPANS_KEY]       
     x = spans[0]
     y = spans[1]
-    z = spans[2]    
+    #z = spans[2]    
     
     print(f"\"{doc}\"")
-    print(spans)
+    print(f"{spans}")
+
     print(f"\"{x}\" is within \"{x}\"? {is_within(x, x)}")   
     print(f"\"{x}\" is within \"{y}\"? {is_within(x, y)}")    
-    print(f"\"{x}\" is within \"{z}\"? {is_within(x, z)}")  
+    #print(f"\"{x}\" is within \"{z}\"? {is_within(x, z)}")  
     print(f"\"{x}\" is contained? {is_contained(0, spans)}")
     print(f"\"{y}\" is contained? {is_contained(1, spans)}")
-    print(f"\"{z}\" is contained? {is_contained(2, spans)}")
+    #print(f"\"{z}\" is contained? {is_contained(2, spans)}")
     

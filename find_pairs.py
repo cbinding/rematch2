@@ -30,7 +30,7 @@ from spacy.tokens import Doc #, Span, Token
 from rematch2 import SpanPair, SpanPairs, PeriodoRuler, VocabularyRuler, NegationRuler, DocSummary, TextNormalizer, StringCleaning
 from rematch2.Util import *
 from decorators import run_timed # form local run timing
-
+from .Util import DEFAULT_SPANS_KEY
 
 # parse and extract list of records from source XML file 
 # returns [{"id", "text"}, {"id", "text"}, ...] for subsequent processing
@@ -143,7 +143,7 @@ def results_to_text_file(file_name: str="", results: dict={}):
         
         # write negated spans
         lines.append("\nNegated Spans:")
-        negated_spans = list(filter(lambda span: span._.is_negated == True, doc.spans.get("rematch",[])))
+        negated_spans = list(filter(lambda span: span._.is_negated == True, doc.spans.get(DEFAULT_SPANS_KEY,[])))
         if len(negated_spans) == 0:
             lines.append("NONE FOUND")
         else:
@@ -232,8 +232,8 @@ def result_to_html_string(identifier: str = "", doc: Doc = None) -> str:
 
     # write displacy HTML rendering of doc text as paragraph with highlighted spans 
     html.append("<details>")
-    html.append(f"<summary>Text ({len(DocSummary(doc).doctext('text'))} characters)</summary>")
-    doctext = DocSummary(doc).doctext(format="html")
+    html.append(f"<summary>Text ({len(DocSummary(doc).doctext())} characters)</summary>")
+    doctext = DocSummary(doc).doctext_to_html()
     html.append(f"<p>{doctext}</p>")
     html.append("</details>")
 

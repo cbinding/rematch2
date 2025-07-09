@@ -42,7 +42,7 @@ class TextNormalizer(Pipe):
         # retokenize and return the Doc
         disabled = self.nlp.select_pipes(disable=["ner"])
         newDoc = self.nlp.make_doc(text)
-        newDoc.user_data = doc.user_data.copy()  # copy over user data from original doc
+        newDoc.user_data = doc.user_data.copy()  # copy user data from original doc
         disabled.restore()
         return newDoc
         
@@ -130,13 +130,13 @@ def normalize_punctuation_en(nlp: Language, name: str="normalize_punctuation") -
     return TextNormalizer(nlp, subs=subs)
 
 
-# to run directly, run from package root to enable relative imports to work
+# to run directly, run with -m from package root to enable relative imports to work
 # i.e. /workspaces/rematch2 $ python -m rematch2.TextNormalizer
 if __name__ == "__main__":   
     import spacy
     
     # usage example
-    text = f"archeological  work indi-\ncated  an Iron Age/ Romano- British  /Roman\npost -hole, in( low -lying)ground.\nThis  was  near(vandal-\nized)\n  Mediaeval/post-medieval(15th-17th century? )foot-\nings. Items of Mediaeval &  paleolithic(archeological)jewelry were  located in the New Harbor area.  Gray colored,oxidized,aluminum artifacts were   found near the theater."
+    text = f"archeological  work indi-\ncated  an Iron Age/ Romano- British  /Roman\npost -hole, in( low -lying)ground.\nThis  was  near(vandal-\nized)\n  Mediaeval/post-medieval(15th-17th century? )foot-\nings. Items of Mediaeval &  paleolithic(archeological)jewelry were  located in the New Harbor area.  Gray colored  & oxidized,aluminum artifacts were   found near the theater."
     
     # Note: order can make a difference, fix
     # whitespace & punctuation before spelling

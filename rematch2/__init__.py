@@ -21,13 +21,14 @@ from .SpanPair import SpanPair
 from .SpanPairs import SpanPairs
 from .DocSummary import DocSummary
 from .Decorators import run_timed
-from .TextNormalizer import *
+from .TextNormalizer import TextNormalizer
 from .Util import *
 from .YearSpanRuler import create_yearspan_ruler
 
 
-# This was a workaround for relative imports in Python 3.6
-# but instead use e.g. 'python rematch2.TextNormalizer' from package root
+# This was previously a workaround for relative imports in Python 3.6
+# instead use e.g. 'python rematch2.TextNormalizer' from package root
+# to run modules directly.
 # import os
 # import sys
 # sys.path.append(os.path.dirname(os.path.realpath(__file__)))

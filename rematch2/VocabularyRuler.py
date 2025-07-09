@@ -49,18 +49,33 @@ def patterns_from_json_file(file_name: str) -> list:
 
 # stop_list is a list of identifiers that should not be matched 
 # in order to exclude specific concepts from the match results
-@Language.factory(name="vocabulary_ruler", default_config={"language": "en", "patterns": [], "supp_list": [], "stop_list": []})
+@Language.factory(
+    name="vocabulary_ruler", 
+    default_config = {
+        "name": "vocabulary_ruler",
+        "spans_key": DEFAULT_SPANS_KEY,
+        "default_label": "UNDEFINED",
+        "lemmatize": True,
+        "min_lemmatize_length": 4,
+        "min_term_length": 3,
+        "pos": [],
+        "patterns": [],         
+        "supp_list": [], 
+        "stop_list": []
+    }
+)   
 def create_vocabulary_ruler(
         nlp: Language, 
-        name: str="vocabulary_ruler", 
-        spans_key: str="rematch",
-        default_label: str="UNDEFINED",
-        lemmatize: bool=True,
+        name: str, 
+        spans_key: str = DEFAULT_SPANS_KEY,
+        default_label: str = "UNDEFINED",
+        lemmatize: bool = True,
         min_lemmatize_length: int = 4,
         min_term_length: int = 3,
-        pos: list=[],        
-        patterns: list = [],    # list of match patterns
-        stop_list: list = []     # identifers not to be matched, to exclude specific concepts from results
+        pos: list[str] = [],
+        patterns: list[dict] = [],   # list of match patterns
+        supp_list: list[dict] = [],  # additional patterns to add to the vocabulary
+        stop_list: list[str] = []   # identifers not to be matched, to exclude specific concepts from results
     ) -> BaseRuler:
 
     # create the SpanRuler to use
@@ -76,7 +91,7 @@ def create_vocabulary_ruler(
     # get normalized patterns    
     normalized_patterns = BaseRuler.normalize_patterns(
         nlp=nlp, 
-        patterns=patterns,
+        patterns=patterns + supp_list,
         default_label=default_label,
         lemmatize=lemmatize,
         min_lemmatize_length=min_lemmatize_length,
@@ -93,10 +108,10 @@ def create_vocabulary_ruler(
 @Language.factory(name="ssh_lcsh_ruler", default_config={"language": "en", "supp_list": [], "stop_list": []})
 def create_ssh_lcsh_ruler(
     nlp: Language, 
-    name: str="ssh_lcsh_ruler", 
-    language: str="en", 
-    supp_list: list=[], 
-    stop_list: list=[]
+    name: str, 
+    language: str, 
+    supp_list: list, 
+    stop_list: list
     ) -> BaseRuler:
     
     patterns = patterns_from_json_file("patterns_SSH_LCSH.json")
@@ -107,7 +122,8 @@ def create_ssh_lcsh_ruler(
         nlp=nlp, 
         name=name, 
         default_label="SSH_LCSH", 
-        patterns=patterns_for_language + supp_list, 
+        patterns=patterns_for_language, 
+        supp_list=supp_list,
         stop_list=stop_list
     )
     return ruler
@@ -116,9 +132,9 @@ def create_ssh_lcsh_ruler(
 @Language.factory(name="amcr_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_amcr_ruler(
     nlp: Language, 
-    name: str="amcr_ruler",
-    supp_list: list=[], 
-    stop_list: list=[]
+    name: str,
+    supp_list: list, 
+    stop_list: list
     ) -> BaseRuler:
     
     patterns=patterns_from_json_file("patterns_cs_AMCR_20221208.json")
@@ -127,7 +143,8 @@ def create_amcr_ruler(
         nlp=nlp, 
         name=name, 
         default_label="AMCR", 
-        patterns=patterns + supp_list,
+        patterns=patterns,
+        supp_list=supp_list,
         stop_list=stop_list
     )
     return ruler    
@@ -136,9 +153,9 @@ def create_amcr_ruler(
 @Language.factory(name="aat_activities_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_aat_activities_ruler(
     nlp: Language, 
-    name: str="aat_activities_ruler", 
-    supp_list: list=[], 
-    stop_list: list=[]
+    name: str, 
+    supp_list: list, 
+    stop_list: list
     ) -> BaseRuler:
     
     patterns=patterns_from_json_file("patterns_en_AAT_ACTIVITIES_20231018.json")
@@ -149,7 +166,8 @@ def create_aat_activities_ruler(
         name=name, 
         default_label="AAT_ACTIVITY", 
         pos=["VERB"],
-        patterns=patterns + supp_list,
+        patterns=patterns,
+        supp_list=supp_list,
         stop_list=stop_list
     )
     return ruler
@@ -158,9 +176,9 @@ def create_aat_activities_ruler(
 @Language.factory(name="aat_agents_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_aat_agents_ruler(
     nlp: Language, 
-    name: str="aat_agents_ruler", 
-    supp_list: list=[], 
-    stop_list: list=[]
+    name: str, 
+    supp_list: list, 
+    stop_list: list
     ) -> BaseRuler:
 
     patterns=patterns_from_json_file("patterns_en_AAT_AGENTS_20231018.json")
@@ -169,8 +187,9 @@ def create_aat_agents_ruler(
         nlp=nlp, 
         name=name, 
         default_label="AAT_AGENT",
-        patterns=patterns + supp_list, 
+        patterns=patterns, 
         pos=["NOUN", "PROPN"],
+        supp_list=supp_list,
         stop_list=stop_list
     )
     return ruler
@@ -179,9 +198,9 @@ def create_aat_agents_ruler(
 @Language.factory(name="aat_associated_concepts_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_aat_associated_concepts_ruler(
     nlp: Language, 
-    name: str="aat_associated_concepts_ruler", 
-    supp_list: list=[], 
-    stop_list: list=[]
+    name: str, 
+    supp_list: list, 
+    stop_list: list
     ) -> BaseRuler:   
 
     patterns=patterns_from_json_file("patterns_en_AAT_ASSOCIATED_CONCEPTS_20231018.json")
@@ -190,7 +209,8 @@ def create_aat_associated_concepts_ruler(
         nlp=nlp, 
         name=name, 
         default_label="AAT_ASSOCIATED_CONCEPT", 
-        patterns=patterns + supp_list, 
+        patterns=patterns,
+        supp_list=supp_list,
         stop_list=stop_list
     )
     return ruler
@@ -199,9 +219,9 @@ def create_aat_associated_concepts_ruler(
 @Language.factory(name="aat_materials_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_aat_materials_ruler(
     nlp: Language, 
-    name: str="aat_materials_ruler", 
-    supp_list: list=[], 
-    stop_list: list=[]
+    name: str, 
+    supp_list: list, 
+    stop_list: list
     ) -> BaseRuler:   
 
     patterns=patterns_from_json_file("patterns_en_AAT_MATERIALS_20231018.json")
@@ -210,7 +230,8 @@ def create_aat_materials_ruler(
         nlp=nlp, 
         name=name, 
         default_label="AAT_MATERIAL", 
-        patterns=patterns + supp_list, 
+        patterns=patterns,
+        supp_list=supp_list,
         stop_list=stop_list
     )
     return ruler
@@ -219,9 +240,9 @@ def create_aat_materials_ruler(
 @Language.factory(name="aat_objects_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_aat_objects_ruler(
     nlp: Language, 
-    name: str="aat_objects_ruler", 
-    supp_list: list=[],
-    stop_list: list=[]
+    name: str, 
+    supp_list: list,
+    stop_list: list
     ) -> BaseRuler:
 
     patterns=patterns_from_json_file("patterns_en_AAT_OBJECTS_20231018.json")
@@ -231,7 +252,8 @@ def create_aat_objects_ruler(
         name=name, 
         default_label="AAT_OBJECT", 
         pos=["NOUN", "PROPN"], 
-        patterns=patterns + supp_list, 
+        patterns=patterns,
+        supp_list=supp_list,
         stop_list=stop_list
     )
     return ruler
@@ -240,9 +262,9 @@ def create_aat_objects_ruler(
 @Language.factory(name="aat_physical_attributes_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_aat_physical_attributes_ruler(
     nlp: Language, 
-    name: str="aat_physical_attributes_ruler", 
-    supp_list: list=[],
-    stop_list: list=[]
+    name: str, 
+    supp_list: list,
+    stop_list: list
     ) -> BaseRuler: 
 
     patterns=patterns_from_json_file("patterns_en_AAT_PHYSICAL_ATTRIBUTES_20231018.json")
@@ -251,7 +273,8 @@ def create_aat_physical_attributes_ruler(
         nlp=nlp, 
         name=name, 
         default_label="AAT_PHYSICAL_ATTRIBUTE", 
-        patterns=patterns + supp_list, 
+        patterns=patterns,
+        supp_list=supp_list,
         stop_list=stop_list
     )
     return ruler
@@ -260,9 +283,9 @@ def create_aat_physical_attributes_ruler(
 @Language.factory(name="aat_styleperiods_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_aat_styleperiods_ruler(
     nlp: Language, 
-    name: str="aat_styleperiods_ruler", 
-    supp_list: list=[],
-    stop_list: list=[]
+    name: str, 
+    supp_list: list,
+    stop_list: list
     ) -> BaseRuler: 
 
     patterns=patterns_from_json_file("patterns_en_AAT_STYLEPERIODS_20231018.json")
@@ -271,7 +294,8 @@ def create_aat_styleperiods_ruler(
         nlp=nlp, 
         name=name, 
         default_label="AAT_STYLEPERIOD", 
-        patterns=patterns + supp_list, 
+        patterns=patterns,
+        supp_list=supp_list, 
         stop_list=stop_list
     )
     return ruler
@@ -280,9 +304,9 @@ def create_aat_styleperiods_ruler(
 @Language.factory("fish_archobjects_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_fish_archobjects_ruler(
     nlp: Language, 
-    name: str="fish_archobjects_ruler", 
-    supp_list: list=[],
-    stop_list: list=[]
+    name: str, 
+    supp_list: list,
+    stop_list: list
     ) -> BaseRuler: 
 
     patterns = patterns_from_json_file("patterns_en_FISH_ARCHOBJECTS_20210921.json")
@@ -293,7 +317,8 @@ def create_fish_archobjects_ruler(
         default_label="FISH_OBJECT", 
         pos=["NOUN"],  
         min_lemmatize_length=3,
-        patterns=patterns + supp_list, 
+        patterns=patterns,
+        supp_list=supp_list, 
         stop_list=stop_list
     )
     return ruler
@@ -302,9 +327,9 @@ def create_fish_archobjects_ruler(
 @Language.factory(name="fish_archsciences_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_fish_archsciences_ruler(
     nlp: Language, 
-    name: str="fish_archsciences_ruler", 
-    supp_list: list=[],
-    stop_list: list=[]
+    name: str, 
+    supp_list: list,
+    stop_list: list
     ) -> BaseRuler: 
 
     patterns=patterns_from_json_file("patterns_en_FISH_ARCHSCIENCES_20210921.json")
@@ -314,7 +339,8 @@ def create_fish_archsciences_ruler(
         name=name, 
         default_label="FISH_ARCHSCIENCE", 
         pos=["VERB"], 
-        patterns=patterns + supp_list, 
+        patterns=patterns,
+        supp_list=supp_list,
         stop_list=stop_list
     )
     return ruler
@@ -323,9 +349,9 @@ def create_fish_archsciences_ruler(
 @Language.factory(name="fish_building_materials_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_fish_building_materials_ruler(
     nlp: Language, 
-    name: str="fish_building_materials_ruler", 
-    supp_list: list=[],
-    stop_list: list=[]
+    name: str, 
+    supp_list: list,
+    stop_list: list
     ) -> BaseRuler:  
 
     patterns=patterns_from_json_file("patterns_en_FISH_BUILDING_MATERIALS_20210921.json")
@@ -334,7 +360,8 @@ def create_fish_building_materials_ruler(
         nlp=nlp, 
         name=name, 
         default_label="FISH_MATERIAL", 
-        patterns=patterns + supp_list, 
+        patterns=patterns,
+        supp_list=supp_list, 
         stop_list=stop_list
     )
     return ruler
@@ -343,9 +370,9 @@ def create_fish_building_materials_ruler(
 @Language.factory(name="fish_components_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_fish_components_ruler(
     nlp: Language, 
-    name: str="fish_components_ruler", 
-    supp_list: list=[],
-    stop_list: list=[]
+    name: str, 
+    supp_list: list,
+    stop_list: list
     ) -> BaseRuler:
 
     patterns=patterns_from_json_file("patterns_en_FISH_COMPONENTS_20210921.json")
@@ -355,7 +382,8 @@ def create_fish_components_ruler(
         name=name, 
         default_label="FISH_OBJECT", 
         pos=["NOUN"], 
-        patterns=patterns + supp_list, 
+        patterns=patterns,
+        supp_list=supp_list, 
         stop_list=stop_list
     )
     return ruler
@@ -364,9 +392,9 @@ def create_fish_components_ruler(
 @Language.factory(name="fish_event_types_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_fish_event_types_ruler(
     nlp: Language, 
-    name: str="fish_event_types_ruler", 
-    supp_list: list=[],
-    stop_list: list=[]
+    name: str, 
+    supp_list: list,
+    stop_list: list
     ) -> BaseRuler:    
 
     patterns=patterns_from_json_file("patterns_en_FISH_EVENT_TYPES_20210921.json")
@@ -376,7 +404,8 @@ def create_fish_event_types_ruler(
         name=name, 
         default_label="FISH_EVENT", 
         pos=["VERB"], 
-        patterns=patterns + supp_list, 
+        patterns=patterns,
+        supp_list=supp_list, 
         stop_list=stop_list
     )
     return ruler
@@ -385,9 +414,9 @@ def create_fish_event_types_ruler(
 @Language.factory("fish_evidence_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_fish_evidence_ruler(
     nlp: Language, 
-    name: str="fish_evidence_ruler", 
-    supp_list: list=[],
-    stop_list: list=[]
+    name: str, 
+    supp_list: list,
+    stop_list: list
     ) -> BaseRuler: 
 
     patterns=patterns_from_json_file("patterns_en_FISH_EVIDENCE_20210921.json")
@@ -396,7 +425,8 @@ def create_fish_evidence_ruler(
         nlp=nlp, 
         name=name, 
         default_label="FISH_EVIDENCE", 
-        patterns=patterns + supp_list, 
+        patterns=patterns, 
+        supp_list=supp_list,
         stop_list=stop_list
     )
     return ruler
@@ -405,9 +435,9 @@ def create_fish_evidence_ruler(
 @Language.factory(name="fish_maritime_craft_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_fish_maritime_craft_ruler(
     nlp: Language, 
-    name: str="fish_maritime_craft_ruler", 
-    supp_list: list=[],
-    stop_list: list=[]
+    name: str, 
+    supp_list: list,
+    stop_list: list
     ) -> BaseRuler: 
 
     patterns=patterns_from_json_file("patterns_en_FISH_MARITIME_CRAFT_20221104.json")
@@ -417,7 +447,8 @@ def create_fish_maritime_craft_ruler(
         name=name, 
         default_label="FISH_OBJECT", 
         pos=["NOUN"], 
-        patterns=patterns + supp_list, 
+        patterns=patterns,
+        supp_list=supp_list, 
         stop_list=stop_list
     )
     return ruler
@@ -426,9 +457,9 @@ def create_fish_maritime_craft_ruler(
 @Language.factory(name="fish_monument_types_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_fish_monument_types_ruler(
     nlp: Language, 
-    name: str="fish_monument_types_ruler", 
-    supp_list: list=[],
-    stop_list: list=[]
+    name: str, 
+    supp_list: list,
+    stop_list: list
     ) -> BaseRuler:
     
     patterns = patterns_from_json_file("patterns_en_FISH_MONUMENT_TYPES_20210921.json")
@@ -440,7 +471,8 @@ def create_fish_monument_types_ruler(
         default_label="FISH_MONUMENT", 
         pos=["NOUN"], 
         min_lemmatize_length=3, 
-        patterns=patterns + supp_list, 
+        patterns=patterns,
+        supp_list=supp_list,
         stop_list=stop_list
     )
     return ruler
@@ -449,9 +481,9 @@ def create_fish_monument_types_ruler(
 @Language.factory(name="fish_periods_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_fish_periods_ruler(
     nlp: Language, 
-    name: str="fish_periods_ruler", 
-    supp_list: list=[],
-    stop_list: list=[]
+    name: str, 
+    supp_list: list,
+    stop_list: list
     ) -> BaseRuler:  
 
     patterns=patterns_from_json_file("patterns_en_FISH_PERIODS_20211011.json")
@@ -460,7 +492,8 @@ def create_fish_periods_ruler(
         nlp=nlp, 
         name=name, 
         default_label="FISH_PERIOD", 
-        patterns=patterns + supp_list, 
+        patterns=patterns,
+        supp_list=supp_list,
         stop_list=stop_list
     )
     return ruler
@@ -469,9 +502,9 @@ def create_fish_periods_ruler(
 @Language.factory(name="fish_supplementary_ruler", default_config={"supp_list": [], "stop_list": []})
 def create_fish_supplementary_ruler(
     nlp: Language, 
-    name: str="fish_supplementary_ruler", 
-    supp_list: list=[],
-    stop_list: list=[]
+    name: str, 
+    supp_list: list,
+    stop_list: list
     ) -> BaseRuler:    
 
     patterns=patterns_from_json_file("patterns_en_FISH_SUPPLEMENTARY.json")
@@ -480,7 +513,8 @@ def create_fish_supplementary_ruler(
         nlp=nlp, 
         name=name, 
         default_label="FISH_OBJECT", 
-        patterns=patterns + supp_list, 
+        patterns=patterns,
+        supp_list=supp_list, 
         stop_list=stop_list
     )
     return ruler
@@ -575,7 +609,7 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     # nlp.add_pipe("fish_evidence_ruler", last=True)
     # nlp.add_pipe("fish_maritime_craft_ruler", last=True)
     #nlp.add_pipe("fish_periods_ruler", last=True)
-    #nlp.add_pipe("child_span_remover", last=True) 
+    nlp.add_pipe("child_span_remover", last=True) 
 
     doc = nlp(en_test_text2)
     # explacy.print_parse_info(nlp, en_test_text.lower())
@@ -583,7 +617,7 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     print("Spans:\n" + DocSummary(doc).spans_to_text())
 
     options = {
-        "spans_key": "rematch",
+        "spans_key": DEFAULT_SPANS_KEY,
         "colors": {
             "DATEPREFIX": "lightgray",
             "FISH_OBJECT": "plum",

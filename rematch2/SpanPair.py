@@ -34,13 +34,13 @@ class SpanPair:
         match self.rel_op:
             case "-": score = 1.0   # special case, for noun chunk matches
             case "<": score = 0.8   # A is the immediate dependent of B
-            case ">": score = 0.7   # A is the immediate head of B
+            case ">": score = 0.8   # A is the immediate head of B
             case "<<": score = 0.6  # A is the dependent in a chain to B following dep → head paths
-            case ">>": score = 0.5  # A is the head in a chain to B following head → dep paths
+            case ">>": score = 0.6  # A is the head in a chain to B following head → dep paths
             case ".": score = 0.4  # A immediately precedes B, i.e. A.i == B.i -1, and both are within the same dependency tree
-            case ";": score = 0.3  # A immediately follows B, i.e. A.i == B.i + 1, and both are within the same dependency tree
+            case ";": score = 0.4  # A immediately follows B, i.e. A.i == B.i + 1, and both are within the same dependency tree
             case ".*": score = 0.2  # A precedes B, i.e. A.i < B.i, and both are within the same dependency tree
-            case ";*": score = 0.1  # A follows B, i.e. A.i > B.i, and both are within the same dependency tree
+            case ";*": score = 0.2  # A follows B, i.e. A.i > B.i, and both are within the same dependency tree
             case _: score = 0.0
         return score
 

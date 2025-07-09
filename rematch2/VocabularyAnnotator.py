@@ -94,7 +94,7 @@ class VocabularyAnnotator(BaseAnnotator):
     @staticmethod
     def _to_html(doc: Doc) -> str:
         # doc text to HTML formatted string with highlighted spans   
-        return DocSummary(doc).doctext(format="html")
+        return DocSummary(doc).doctext_to_html()
         
 
 if __name__ == "__main__":

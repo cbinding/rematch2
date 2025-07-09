@@ -59,7 +59,7 @@ class BaseAnnotator():
                 # convert the results to the required format
         match output_format.strip().lower():
             case "html":                
-                output = DocSummary(doc).doctext(format="html")
+                output = DocSummary(doc).doctext_to_html()
             #case "ttl":
                 #output = self.__doc_to_ttl(doc)
             case "json":
