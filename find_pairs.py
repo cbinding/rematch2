@@ -123,12 +123,12 @@ def results_to_text_file(file_name: str="", results: dict={}):
             
         # write label counts (by desc count)             
         lines.append("\nLabel Counts:")  
-        label_counts = DocSummary(doc).labelcounts(format="text")  
+        label_counts = DocSummary.label_counts_to_text(results.label_counts) 
         lines.append(label_counts)
 
         # write span counts (by desc count)             
         lines.append("\nSpan Counts:")  
-        span_counts = DocSummary(doc).spancounts(format="text")  
+        span_counts = DocSummary(doc).span_counts(format="text")  
         lines.append(span_counts)           
                     
         # write span pairs as fixed width string values
@@ -219,6 +219,8 @@ def results_to_html_file(file_name: str="", results: dict={}):
 def result_to_html_string(identifier: str = "", doc: Doc = None) -> str:
 
     html = []
+    summary = DocSummary(doc)
+
     # start with horizontal line break
     html.append("<hr>") 
     
@@ -232,27 +234,30 @@ def result_to_html_string(identifier: str = "", doc: Doc = None) -> str:
 
     # write displacy HTML rendering of doc text as paragraph with highlighted spans 
     html.append("<details>")
-    html.append(f"<summary>Text ({len(DocSummary(doc).doctext())} characters)</summary>")
-    doctext = DocSummary(doc).doctext_to_html()
+    html.append(f"<summary>Text ({len(summary.doctext)} characters)</summary>")
+    doctext = summary.doctext_to_html()
     html.append(f"<p>{doctext}</p>")
     html.append("</details>")
 
     # write list of tokens
+    toks = [t for t in doc]
     html.append("<details>")
-    html.append(f"<summary>Tokens ({len(DocSummary(doc).tokens('list'))})</summary>")        
-    html.append(DocSummary(doc).tokens("htmll"))
+    html.append(f"<summary>Tokens ({len(summary.tokens_to_list(toks))})</summary>")
+    html.append(summary.tokens_to_html_list(toks))
     html.append("</details>")
 
     # write label counts
+    label_counts = summary.label_counts
     html.append("<details>")
-    html.append(f"<summary>Label Counts ({len(DocSummary(doc).labelcounts('list'))})</summary>")
-    html.append(DocSummary(doc).labelcounts(format="htmlt"))
+    html.append(f"<summary>Label Counts ({len(label_counts)})</summary>")
+    html.append(summary.label_counts_to_html_table(label_counts))
     html.append("</details>")
     
     # write span counts
+    span_counts = summary.span_counts
     html.append("<details>")
-    html.append(f"<summary>Span Counts ({len(DocSummary(doc).spancounts('list'))})</summary>")
-    html.append(DocSummary(doc).spancounts(format="htmlt"))
+    html.append(f"<summary>Span Counts ({len(span_counts)})</summary>")
+    html.append(summary.span_counts_to_html_table(span_counts))
     html.append("</details>")
     
     # get and write span pairs

@@ -10,7 +10,7 @@ Summary   : Convert spaCy Doc spans, tokens, pairs, counts to
             various output formats. use to improve consistency            
 Imports   : escape, pandas, DataFrame, Doc, displacy, SpanPairs
 Example   : html = DocSummary(doc).spans_to_html()
-    .doctext, .tokens, .spans, .spancounts, .labels, .labelcounts, .spanpairs 
+    .doctext, .tokens, .spans, .span_counts, .labels, .label_counts, .spanpairs 
 License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
@@ -28,7 +28,7 @@ from html import escape  # for writing escaped HTML
 from pandas import DataFrame
 from spacy.tokens import Doc, Span, Token, SpanGroup
 from spacy import displacy
-from SpanPair import SpanPair
+from .SpanPair import SpanPair
 from .SpanPairs import SpanPairs
 from .Decorators import run_timed
 from .Util import DEFAULT_SPANS_KEY
@@ -104,7 +104,7 @@ class DocSummary:
 
     @cached_property
     def span_pairs(self) -> list[SpanPair]:
-        pairs = DocSummary.get_span_pairs(self.spans)
+        pairs = self.get_span_pairs()
         return pairs
 
     @cached_property
@@ -118,6 +118,10 @@ class DocSummary:
         counts = self.get_span_counts_by_label()
         return counts
 
+    @cached_property
+    def negated_pairs(self) -> list[SpanPair]:
+        pairs = self.get_negated_span_pairs()
+        return pairs
 
     def __str__(self):
         return self.doctext
@@ -127,11 +131,10 @@ class DocSummary:
         return self.__str__()
 
              
-    @staticmethod
-    def metadata_to_html(data: dict[str, str]) -> str:
+    def metadata_to_html(self) -> str:
         html = []
         html.append("<ul>")
-        for key, val in data.items():
+        for key, val in self._metadata.items():
             html.append(f"<li>")
             html.append(f"<strong>{escape(key)}:</strong>")
             if isinstance(val, str):
@@ -145,26 +148,22 @@ class DocSummary:
         return f"\n".join(html)
 
 
-    @staticmethod
-    def metadata_to_json(data: dict[str, str]) -> str:
+    def metadata_to_json(self) -> str:
         return json.dumps(data)
 
 
-    @staticmethod
-    def metadata_to_text(data: dict[str, str]) -> str:
+    def metadata_to_text(self) -> str:
         text = []
-        for key, val in data.items():
+        for key, val in self._metadata.items():
             text.append(f"* {key}: {str(val)}")
             
         return f"\n".join(text)
 
     
-    @staticmethod
-    def doctext_to_text(doc: Doc) -> str: return doc.text
+    def doctext_to_text(self) -> str: return self._doc.text
 
-    @staticmethod
     def doctext_to_html(
-        doc: Doc,
+        self,
         options: dict={}, 
         exclude: list=[
             "DATEPREFIX", 
@@ -177,10 +176,6 @@ class DocSummary:
 
         default_options = { 
             "colors": { 
-                #"DATEPREFIX": "lightgray",
-                #"DATESUFFIX": "lightgray",
-                #"DATESEPARATOR": "lightgray",
-                #"ORDINAL": "lightgray",
                 "GPE": "palegreen",
                 "PLACE": "palegreen",
                 "NEGATION": "lightgray",
@@ -199,11 +194,11 @@ class DocSummary:
         }
     
         # create temp subset (as options don't specify what to show/exclude)
-        doc.spans["temp_subset"] = list(filter(lambda span: span.label_ not in exclude, doc.spans))
+        self._doc.spans["temp_subset"] = list(filter(lambda span: span.label_ not in exclude, self.spans))
 
         # create HTML string rendering the document text with highlighted spans       
         html = displacy.render(
-            docs = doc,
+            docs = self._doc,
             style = "span", 
             page = False, 
             minify = False, 
@@ -212,7 +207,7 @@ class DocSummary:
         )
 
         # remove the temp subset and return the HTML rendered string
-        del doc.spans["temp_subset"]
+        del self._doc.spans["temp_subset"]
         return html
 
 
@@ -223,11 +218,9 @@ class DocSummary:
             case "json": return self.report_to_json()
             case "text": return self.report_to_text()
             case _: return self.report_to_text()        
-
     
            
-    @staticmethod
-    def spans_to_df(spans: list[Span]) -> DataFrame: 
+    def spans_to_df(self) -> DataFrame: 
         return DataFrame([{
             "start": span.start_char,
             "end": span.end_char,
@@ -237,28 +230,33 @@ class DocSummary:
             "id": span.id_,
             "text": span.text,
             "cf": span._.cf_value
-            } for span in spans]).drop_duplicates()
+            } for span in self.spans]).drop_duplicates()
 
 
-    @staticmethod
-    def spans_to_csv(spans: list[Span], sep=",") -> str:
-        df = DocSummary.spans_to_df(spans)
+    def spans_to_csv(self, sep=",") -> str:
+        df = self.spans_to_df()
         return df.to_csv(sep=sep)
 
 
-    @staticmethod
-    def spans_to_html(spans: list[Span]) -> str:
-        df = DocSummary.spans_to_df(spans)
-        return(df.to_html(index=False, border=True)) # renders html table
+    def spans_to_html(self) -> str:
+        df = self.spans_to_df()
+        html = df.to_html(
+            border=0,
+            index=False, 
+            render_links=True, 
+            escape=True,
+            na_rep='',
+            classes='text-start table table-sm table-striped table-light table-group-divider'
+        ) 
+        return html 
 
 
-    @staticmethod
-    def spans_to_html_list(spans: list[Span]) -> str:
+    def spans_to_html_list(self) -> str:
         html = []
         html.append("<details>")
-        html.append(f"<summary>Spans ({len(spans)})</summary>")
+        html.append(f"<summary>Spans ({len(self.spans)})</summary>")
         html.append("<ul class='entities'>") 
-        for span in spans:
+        for span in self.spans:
             html.append("<li class='entity {label}'>({start}&#8594;{end}) [{label}] {id} \"{text}\"</li>".format(
                 start = span.start_char, 
                 end = span.end_char,
@@ -271,37 +269,44 @@ class DocSummary:
         return "\n".join(html) 
 
 
-    @staticmethod
-    def spans_to_json(spans: list[Span]) -> str:
-        df = DocSummary.spans_to_df(spans)
+    def spans_to_json(self) -> str:
+        df = self.spans_to_df()
         return df.to_json(orient="records")
 
 
-    @staticmethod
-    def spans_to_list(spans: list[Span]) -> list:
-        df = DocSummary.spans_to_df(spans)
+    def spans_to_list(self) -> list:
+        df = self.spans_to_df()
         return df.to_dict(orient="records")
 
 
-    @staticmethod
-    def spans_to_text(spans: list[Span]) -> str:
-        df = DocSummary.spans_to_df(spans)
+    def spans_to_text(self) -> str:
+        df = self.spans_to_df()
         pd.set_option('display.max_colwidth', None)
-        return(df.to_string(index=False))
+        return(df.to_string(index=False)) if len(df) > 0 else "NO RECORDS" 
 
 
     @run_timed
-    def get_span_pairs(self, 
+    def get_span_pairs(
+        self,
         left_labels: list=["PERIOD", "YEARSPAN"], 
         right_labels: list=["FISH_OBJECT", "FISH_MONUMENT"], 
-        #rel_ops: list=[ "<", ">", "<<", ">>", ".", ".*", ";", ";*" ]
-        rel_ops: list=[ "<", ">", ".", ";" ]
-        ) -> str|list:
+        rel_ops: list=[ "<", ">", "<<", ">>", ".", ".*", ";", ";*" ]
+        ) -> list[SpanPair]:
 
         pairs = SpanPairs(doc=self._doc, rel_ops=rel_ops, left_labels=left_labels, right_labels=right_labels).pairs
 
         return pairs
 
+
+    def get_negated_span_pairs(
+        self,
+        right_labels=["YEARSPAN", "PERIOD", "FISH_OBJECT", "FISH_MONUMENT"],
+        rel_ops=["<", ">", ".", ";"]        
+        ) -> list[SpanPair]:
+
+        pairs = SpanPairs(doc=self._doc, rel_ops=rel_ops, left_labels=["NEGATION"], right_labels=right_labels).pairs
+
+        return pairs
 
     # count spans by id, return list [{id, label, text, count}, {id, label, text, count}, ...] 
     # returned in descending count order - note there is probably a more elegant way to do this 
@@ -315,12 +320,11 @@ class DocSummary:
             "ORDINAL", 
             "MONTHNAME", 
             "SEASONNAME"
-        ]) -> list:
-        spans = self.spans()
+        ]) -> list[dict]:
         counts = {}
         #spans_count = len(list(filter(lambda s: s.label_ not in exclude, spans)))
 
-        for span in spans:
+        for span in self.spans:
             # exclude specified labels from summary counts
             if span.label_ in exclude:
                 continue
@@ -348,87 +352,87 @@ class DocSummary:
         return sorted(list(counts.values()), key=lambda x: x.get("count", 0), reverse=True)
 
 
-    @staticmethod
-    def span_counts_to_df(counts: list) -> DataFrame: 
+    def span_counts_to_df(self) -> DataFrame: 
         return DataFrame([{
             "id": item.get("id", ""),
             "label": item.get("label", ""),
             "text": item.get("text", ""),
             "count": int(item.get("count", 0)),
             "cf": float(item.get("cf", 0))
-            } for item in counts]) 
+            } for item in self.span_counts]) 
 
 
-    @staticmethod
-    def span_counts_to_csv(counts: list, sep: str=",") -> str:
-        df = DocSummary.span_counts_to_df(counts)
+    def span_counts_to_csv(self, sep: str=",") -> str:
+        df = self.span_counts_to_df()
         return df.to_csv(sep=sep)
 
 
-    @staticmethod
-    def span_counts_to_html(counts: list) -> str:
-        df = DocSummary.span_counts_to_df(counts)
-        return(df.to_html(index=False, border=0)) # renders html table
+    def span_counts_to_html(self) -> str:
+        df = self.span_counts_to_df()
+        html = df.to_html(
+            border=0,
+            index=False, 
+            render_links=True, 
+            escape=True,
+            na_rep='',
+            classes='text-start table table-sm table-striped table-light table-group-divider'
+        ) 
+        return html  
 
 
     # table rendering from find_pairs.py
-    @staticmethod
-    def span_counts_to_html_table(counts: list) -> str:
+    def span_counts_to_html_table(self) -> str:
         html = []        
-        if len(counts) == 0:
+        if len(self.span_counts) == 0:
             html.append("<p>NONE FOUND</p>")
         else:
             html.append("<table><tbody>")
-            for item in counts:
+            for item in self.span_counts:
                 html.append("<tr>")
                 html.append("<td style='text-align:right; vertical-align: middle;'>")
-                html.append(f"<div class='entity {escape(item['label'].lower())}'>")
-                if(item['id'].startswith("http")):
-                    html.append(f"<a target='_blank' rel='noopener noreferrer' href='{item['id']}'>{escape(item['text'])}</a>")
+                html.append(f"<div class='entity {escape(item.get('label','').lower())}'>")
+                if(item.get('id', '').startswith("http")):
+                    html.append(f"<a target='_blank' rel='noopener noreferrer' href='{item.get('id', '')}'>{escape(item.get('text', ''))}</a>")
                 else:
-                    html.append(f"{escape(item['text'])}")
+                    html.append(f"{escape(item.get('text', ''))}")
                 html.append("</div>")
                 html.append("</td>")
-                html.append(f"<td>({item['count']})</td>")
-                html.append(f"<td>({item['cf']})</td>")
+                html.append(f"<td>({item.get('count', 0)})</td>")
+                html.append(f"<td>({item.get('cf', 0)})</td>")
                 html.append("</tr>")
             html.append("</tbody></table>")
         return "\n".join(html)
 
 
-    @staticmethod
-    def span_counts_to_html_list(counts: list) -> str:
+    def span_counts_to_html_list(self) -> str:
         html = []
         html.append("<ul class='entities'>")
-        for item in counts:
-            html.append(f"<li class='entity {escape(item['label'].lower())}'>")
-            if(item['id'].startswith("http")):
-                html.append(f"<a target='_blank' rel='noopener noreferrer' href='{item['id']}'>{escape(item['text'])}</a>")
+        for item in self.span_counts:
+            html.append(f"<li class='entity {escape(item.get('label', '').lower())}'>")
+            if(item.get('id', '').startswith("http")):
+                html.append(f"<a target='_blank' rel='noopener noreferrer' href='{item.get('id', '')}'>{escape(item.get('text', ''))}</a>")
             else:
-                html.append(f"{escape(item['text'])}")
-            html.append(f" ({item['count']}) ({item['cf']})")
+                html.append(f"{escape(item.get('text', ''))}")
+            html.append(f" ({item.get('count', 0)}) ({item.get('cf', 0)})")
             html.append("</li>")
         html.append("</ul>")
         return "\n".join(html)
 
 
-    @staticmethod
-    def span_counts_to_json(counts: list) -> str:
-        df = DocSummary.span_counts_to_df(counts)
+    def span_counts_to_json(self) -> str:
+        df = self.span_counts_to_df()
         return df.to_json(orient="records")
 
 
-    @staticmethod
-    def span_counts_to_text(counts: list) -> str:
-        df = DocSummary.span_counts_to_df(counts)
+    def span_counts_to_text(self) -> str:
+        df = self.span_counts_to_df()
         pd.set_option('display.max_colwidth', None)
-        return(df.to_string(index=False))
+        return(df.to_string(index=False)) if len(df) > 0 else "NO RECORDS" 
 
-
-    @staticmethod
-    def span_counts_to_text_custom(counts: list) -> str:
+    
+    def span_counts_to_text_custom(self) -> str:
         lines = []
-        for item in counts:                    
+        for item in self.span_counts:                    
             lines.append("[{label}] {id:<60} {text:>20} ({count}) ({cf})".format(
                 id = item.get("id", ""),                
                 label = item.get("label", ""),
@@ -442,9 +446,8 @@ class DocSummary:
 
     # count spans by label, return list [{label, count}, {label, count}, ...] 
     # returned in descending count order
-    @staticmethod
     def get_span_counts_by_label(
-        spans: list[Span] = [],
+        self,
         exclude: list = [
             "NEGATION", 
             "DATEPREFIX", 
@@ -453,11 +456,11 @@ class DocSummary:
             "ORDINAL", 
             "MONTHNAME", 
             "SEASONNAME"
-        ]) -> list:
+        ]) -> list[dict[str, int]]:
          
         counts = {}
 
-        for span in spans:
+        for span in self.spans:
             label = span.label_
             # exclude specified labels from summary counts
             if label in exclude:
@@ -472,35 +475,40 @@ class DocSummary:
         # return as list sorted by ascending count
         return sorted(list(counts.values()), key=lambda x: x.get("count", 0), reverse=True)
 
-    @staticmethod
-    def label_counts_to_df(counts: list) -> DataFrame: 
+
+    def label_counts_to_df(self) -> DataFrame: 
         # convert to DataFrame, casting count to int
         # (in case it is a float, e.g. if cf_value was used)
         return DataFrame([{
             "label": item.get("label", ""),
             "count": int(item.get("count", 0))
-            } for item in counts]) 
+            } for item in self.label_counts]) 
 
 
-    @staticmethod
-    def label_counts_to_csv(counts: list, sep: str=",") -> str:
-        df = DocSummary.labelcounts_to_df(counts)
+    def label_counts_to_csv(self, sep: str=",") -> str:
+        df = self.label_counts_to_df()
         return df.to_csv(sep=sep)
 
 
-    @staticmethod
-    def label_counts_to_html(counts: list) -> str:
-        df = DocSummary.labelcounts_to_df(counts)
-        return(df.to_html(index=False, border=0)) # renders html table
-    
-    
-    @staticmethod
-    def label_counts_to_html_list(counts: list) -> str:
+    def label_counts_to_html(self) -> str:
+        df = self.label_counts_to_df()
+        html = df.to_html(
+            border=0,
+            index=False, 
+            render_links=True, 
+            escape=True,
+            na_rep='',
+            classes='text-start table table-sm table-striped table-light table-group-divider'
+        ) 
+        return html 
+
+
+    def label_counts_to_html_list(self) -> str:
         html = []
         html.append("<details>")
-        html.append(f"<summary>Labels ({len(counts)})</summary>")
+        html.append(f"<summary>Labels ({len(self.label_counts)})</summary>")
         html.append("<ul class='entities'>") 
-        for item in counts:
+        for item in self.label_counts:
             html.append("<li><div class='entity {label}'>&nbsp;</div>({count})</li>".format(
                 label = item.get("label", "").lower(),
                 count = item.get("count", 0)
@@ -510,14 +518,13 @@ class DocSummary:
         return "\n".join(html) 
 
     
-    @staticmethod
-    def label_counts_to_html_table(counts: list) -> str:
+    def label_counts_to_html_table(self) -> str:
         html = []        
-        if len(counts) == 0:
+        if len(self.label_counts) == 0:
             html.append("<p>NONE FOUND</p>")
         else:
             html.append("<table><tbody>")
-            for item in counts:
+            for item in self.label_counts:
                 html.append("<tr>")
                 html.append("<td style='text-align:right; vertical-align: middle;'>")
                 html.append(f"<div class='entity {escape(item['label'].lower())}'>")
@@ -529,24 +536,21 @@ class DocSummary:
             html.append("</tbody></table>")
         return "\n".join(html)
 
-   
-    @staticmethod
-    def label_counts_to_json(counts: list) -> str:
-        df = DocSummary.label_counts_to_df(counts)
+
+    def label_counts_to_json(self) -> str:
+        df = self.label_counts_to_df()
         return df.to_json(orient="records")
 
-    
-    @staticmethod
-    def label_counts_to_text(counts: list) -> str:
-        df = DocSummary.label_counts_to_df(counts)
-        pd.set_option('display.max_colwidth', None)
-        return(df.to_string(index=False))
 
-    
-    @staticmethod
-    def label_counts_to_text_custom(counts: list) -> str:
+    def label_counts_to_text(self) -> str:
+        df = self.label_counts_to_df()
+        pd.set_option('display.max_colwidth', None)
+        return(df.to_string(index=False)) if len(df) > 0 else "NO RECORDS" 
+
+
+    def label_counts_to_text_custom(self) -> str:
         lines = []
-        for item in counts:                    
+        for item in self.label_counts:                    
             lines.append("[{label}] ({count})".format(
                 label = item.get("label", ""),
                 count = int(item.get("count", 0))
@@ -554,9 +558,8 @@ class DocSummary:
         return "\n".join(lines) 
 
 
-    @staticmethod
-    def tokens_to_df(toks: list[Token]) -> DataFrame: 
-        if len(toks) == 0:
+    def tokens_to_df(self) -> DataFrame: 
+        if len(self.tokens) == 0:
             return DataFrame(columns=["index", "start", "end", "pos", "text", "lemma"])
         else:
             return DataFrame([{
@@ -566,32 +569,36 @@ class DocSummary:
                 "pos": tok.pos_,
                 "text": tok.text,
                 "lemma": tok.lemma_,
-                } for tok in toks])  
+                } for tok in self.tokens])  
     
 
-    @staticmethod
-    def tokens_to_csv(toks: list[Token], sep: str=",") -> str:
-        df = DocSummary.tokens_to_df(toks)
+    def tokens_to_csv(self, sep: str=",") -> str:
+        df = self.tokens_to_df()
         return df.to_csv(sep=sep)
             
 
-    @staticmethod
-    def tokens_to_html(toks: list[Token]) -> str:
-        df = DocSummary.tokens_to_df(toks)
-        return df.to_html(index=False, border=0) # renders html table
+    def tokens_to_html(self) -> str:
+        df = self.tokens_to_df()
+        html = df.to_html(
+            border=0,
+            index=False, 
+            render_links=True, 
+            escape=True,
+            na_rep='',
+            classes='text-start table table-sm table-striped table-light table-group-divider'
+        ) 
+        return html 
 
 
-    @staticmethod
-    def tokens_to_list(toks: list[Token]) -> list:
-        df = DocSummary.tokens_to_df(toks)
+    def tokens_to_list(self) -> list:
+        df = self.tokens_to_df()
         return df.to_dict(orient="records")
 
-    
-    @staticmethod
-    def tokens_to_html_list(toks: list[Token]) -> str:
+
+    def tokens_to_html_list(self) -> str:
         html = []
         html.append("<ul class='tokens'>")
-        for tok in toks:
+        for tok in self.tokens:
             html.append("<li class='token'>[{index}] ({start}&#8594;{end}) pos=\"{pos:<3}\" text=\"{text}\" lemma=\"{lemma}\"</li>".format(
                 index = tok.i,
                 start = tok.idx + 1,
@@ -604,33 +611,39 @@ class DocSummary:
         return "\n".join(html)   
 
 
-    @staticmethod
-    def tokens_to_json(toks: list[Token]) -> str:
-        df = DocSummary.tokens_to_df(toks)
+    def tokens_to_json(self) -> str:
+        df = self.tokens_to_df()
         return df.to_json(orient="records")
 
-    
-    @staticmethod
-    def tokens_to_text(toks: list[Token]) -> str:
-        df = DocSummary.tokens_to_df(toks)
-        pd.set_option('display.max_colwidth', None)
-        return(df.to_string(index=False))
 
-    
-    @staticmethod
-    def tokens_to_text_custom(toks: list[Token]) -> str:
+    def tokens_to_text(self) -> str:
+        df = self.tokens_to_df()
+        pd.set_option('display.max_colwidth', None)
+        return(df.to_string(index=False)) if len(df) > 0 else "NO RECORDS"
+
+
+    def tokens_to_text_custom(self) -> str:
         lines = ["[{index}] ({start}->{end}) {pos:<4} \"{text}\"".format(
             index = tok.i,
             start = tok.idx + 1,
             end = tok.idx + len(tok.text),
             pos = tok.pos_,
             text = tok.text
-            ) for tok in toks]
+            ) for tok in self.tokens]
         return "\n".join(lines)
 
    
     @run_timed
-    def report_to_html(self, include_tokens: bool = False) -> str:
+    def report_to_html(
+        self,
+        include_metadata: bool = True,
+        include_doctext: bool = True,        
+        include_tokens: bool = False,
+        include_spans: bool = False,        
+        include_span_counts: bool = True,
+        include_span_pairs: bool = True,
+        include_negated_pairs: bool = True
+        ) -> str:
         output = []
 
         # write header tags
@@ -641,64 +654,70 @@ class DocSummary:
         with open(file_path, 'r', encoding='utf8') as css_file:
             css_text = css_file.read()
             output.append(f'<style>{css_text}</style>')    
-    
+        output.append(" <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr' crossorigin='anonymous'>")
         output.append("</head>")
         output.append("<body>")
-
+        output.append("<div class='container'>")
         # write identifier as heading
         identifier = self._metadata.get("identifier", "").strip()
         if len(identifier) > 0:
-            output.append("<h3>")        
-            if(identifier.startswith("http")):
+            output.append("<h3>")
+            if (identifier.startswith("http")):
                 output.append(f"<a target='_blank' rel='noopener noreferrer' href='{identifier}'>{escape(identifier)}</a>")
             else:
                 output.append(f"{escape(identifier)}")
             output.append("</h3>")
 
-        # write metadata   
-        output.append("<details>")
-        output.append(f"<summary>Metadata</summary>")
-        output.append(DocSummary.metadata_to_html(self._metadata))
-        output.append("</details>")
+        if(include_metadata): 
+            output.append("<details>")
+            output.append(f"<summary>Metadata</summary>")
+            output.append(self.metadata_to_html())
+            output.append("</details>")
 
         # write displacy HTML rendering of doc text as paragraph with highlighted spans 
-        text = self.doctext()        
-        output.append("<details open>")
-        output.append(f"<summary>Text ({len(text)} characters)</summary>")
-        output.append(f"<p>{DocSummary.doctext_to_html(self._doc)}</p>")
-        output.append("</details>")
+        if(include_doctext):
+            output.append("<details open>")
+            output.append(f"<summary>Text ({len(self.doctext)} characters)</summary>")
+            output.append(f"<p>{self.doctext_to_html()}</p>")
+            output.append("</details>")
 
         # write tokens
         if(include_tokens):
             output.append("<details>")
-            output.append(f"<summary>Tokens ({len(DocSummary.tokens_to_list(self.tokens))})</summary>")
-            output.append(DocSummary.tokens_to_html_list(self.tokens))
+            output.append(f"<summary>Tokens ({len(self.tokens)})</summary>")
+            output.append(self.tokens_to_html())
+            output.append("</details>")
+
+        # write spans
+        if(include_spans):
+            output.append("<details>")
+            output.append(f"<summary>Spans ({len(self.spans)})</summary>")
+            output.append(self.spans_to_html())
             output.append("</details>")
 
         # write span counts
-        output.append("<details>")
-        output.append(f"<summary>Span Counts ({len(self.span_counts)})</summary>")
-        output.append(DocSummary.spancounts_to_html_table(self.span_counts))
-        output.append("</details>")
-
+        if(include_span_counts):
+            output.append("<details>")
+            output.append(f"<summary>Span Counts ({len(self.span_counts)})</summary>")
+            output.append(self.span_counts_to_html())
+            output.append("</details>")
+        
         # write span pairs
-        output.append("<details>")
-        output.append(f"<summary>Span Pairs</summary>")
-        output.append(DocSummary.spanpairs_to_html(self.span_pairs))
-        output.append("</details>")
+        if(include_span_pairs):
+            output.append("<details>")
+            output.append(f"<summary>Span Pairs ({len(self.span_pairs)})</summary>")
+            output.append(self.span_pairs_to_html(self.span_pairs))
+            output.append("</details>")
 
         # write negated pairs - this might not work now?? retest..
-        output.append("<details>")
-        output.append(f"<summary>Negated Pairs</summary>")
-        pairs = self.span_pairs(
-            format="htmlt", 
-            left_labels=["NEGATION"], 
-            right_labels=["YEARSPAN", "PERIOD", "FISH_OBJECT", "FISH_MONUMENT"]
-        )
-        output.append(pairs)
-        output.append("</details>")
+        if(include_negated_pairs):
+            output.append("<details>")
+            output.append(f"<summary>Negated Pairs ({len(self.negated_pairs)})</summary>")
+            output.append(self.span_pairs_to_html(self.negated_pairs))
+            output.append("</details>")
 
         # write footer tags
+        output.append("</div>")  # close container
         output.append("</body>")
         output.append("</html>")
 
@@ -707,33 +726,59 @@ class DocSummary:
 
 
     @run_timed
-    def report_to_json(self, include_tokens: bool=False):
+    def report_to_json(
+        self, 
+        include_metadata: bool = True,
+        include_doctext: bool = True,        
+        include_tokens: bool = False,
+        include_spans: bool = False,        
+        include_span_counts: bool = True,
+        include_span_pairs: bool = True,
+        include_negated_pairs: bool = True):
         output = {
-            "metadata": self.metadata,
-            "text": self.doctext,
-            "tokens": self.tokens if include_tokens else [],
-            "spans": self.spans,
-            "span_counts": self.span_counts,
-            "span_pairs": self.span_pairs,
+            "metadata": self.metadata if include_metadata else {},
+            "text": self.doctext if include_doctext else "",
+            "tokens": self.tokens_to_list() if include_tokens else [],
+            "spans": self.spans_to_list() if include_spans else [],
+            "span_counts": self.span_counts if include_span_counts else {},
+            "span_pairs": self.span_pairs_to_list(self.span_pairs) if include_span_pairs else [],
+            "negated_pairs": self.span_pairs_to_list(self.negated_pairs) if include_negated_pairs else []
         }
         return json.dumps(output, default=str)
 
 
     @run_timed
-    def report_to_text(self, include_tokens: bool=False) -> str:
+    def report_to_text(
+        self, 
+        include_metadata: bool = True,
+        include_doctext: bool = True,        
+        include_tokens: bool = False,
+        include_spans: bool = False,        
+        include_span_counts: bool = True,
+        include_span_pairs: bool = True,
+        include_negated_pairs: bool = True
+        ) -> str:
         output = []
-        output.append(f"metadata:\n{DocSummary.meta_to_text(self.metadata)}")        
-        output.append(f"text:\n{self.doctext}")
+        output.append(f"identifier: {self._metadata.get('identifier', '')}")
+        if include_metadata:
+            output.append(f"metadata:\n{self.metadata_to_text()}")        
+        if include_doctext:
+            output.append(f"text:\n{self.doctext}")
         if include_tokens:
-            output.append(f"tokens:\n{DocSummary.tokens_to_text(self.tokens)}")
-        output.append(f"spans:\n{DocSummary.spans_to_text(self.spans)}")        
-        output.append(f"span counts:\n{DocSummary.span_counts_to_text(self.span_counts)}")
-        output.append(f"span pairs:\n{DocSummary.span_pairs_to_text(self.span_pairs)}")
+            output.append(f"tokens:\n{self.tokens_to_text()}")
+        if include_spans:
+            output.append(f"spans:\n{self.spans_to_text()}")
+        if include_span_counts:
+            output.append(f"span counts:\n{self.span_counts_to_text()}")
+        if include_span_pairs:
+            output.append(f"span pairs:\n{self.span_pairs_to_text(self.span_pairs)}")
+        if include_negated_pairs:
+            output.append(f"negated pairs:\n{self.span_pairs_to_text(self.negated_pairs)}")
         return f"\n{'-' * 80}\n".join(output)
 
     
     @staticmethod
-    def span_pairs_to_df(pairs: list = []) -> DataFrame:
+    def span_pairs_to_df(pairs: list[SpanPair] = []) -> DataFrame:
         return DataFrame([{
             "span1_id": pair.span1.id_,
             "span1_label": pair.span1.label_,
@@ -747,33 +792,37 @@ class DocSummary:
         
 
     @staticmethod
-    def span_pairs_to_csv(pairs: list = [], sep=",") -> str:
+    def span_pairs_to_csv(pairs: list[SpanPair] = [], sep=",") -> str:
         df = DocSummary.span_pairs_to_df(pairs)
         return df.to_csv(sep=sep)
 
 
     @staticmethod
-    def span_pairs_to_list(pairs: list = []) -> list:
+    def span_pairs_to_list(pairs: list[SpanPair] = []) -> list:
         df = DocSummary.span_pairs_to_df(pairs)
         return df.to_dict(orient="records")
 
 
     @staticmethod
-    def span_pairs_to_html(pairs: list = []) -> str:
+    def span_pairs_to_html(pairs: list[SpanPair] = []) -> str:
         df = DocSummary.span_pairs_to_df(pairs)
-        return(df.to_html(index=False, border=0)) # renders html table
-
-    @staticmethod
-    def span_pairs_to_html(pairs: list = []) -> str:
-        return "<p>NOT IMPLEMENTED YET</p>"
+        html = df.to_html(
+            border=0,
+            index=False, 
+            render_links=True, 
+            escape=True,
+            na_rep='',
+            classes='text-start table table-sm table-striped table-light table-group-divider'
+        ) 
+        return html  
 
 
     # custom table render from find_pairs.py 
     @staticmethod
-    def span_pairs_to_html_table(pairs: list = []) -> str:
+    def span_pairs_to_html_table(pairs: list[SpanPair] = []) -> str:
         html = []
 
-        def _span_to_html(span) -> str:
+        def _span_to_html(span: Span) -> str:
             lines = []
             lines.append(f"<div class='entity {escape(span.label_.lower())}'>")
             if(span.id_.startswith("http")):
@@ -800,16 +849,16 @@ class DocSummary:
 
 
     @staticmethod
-    def span_pairs_to_json(pairs: list = []) -> str:
+    def span_pairs_to_json(pairs: list[SpanPair] = []) -> str:
         df = DocSummary.span_pairs_to_df(pairs)
         return df.to_json(orient="records")
 
 
     @staticmethod
-    def span_pairs_to_text(pairs: list = []) -> str:
+    def span_pairs_to_text(pairs: list[SpanPair] = []) -> str:
         df = DocSummary.span_pairs_to_df(pairs)
         pd.set_option('display.max_colwidth', None)
-        return(df.to_string(index=False))
+        return(df.to_string(index=False)) if len(df) > 0 else "NO RECORDS" 
 
 
 # test the DocSummary class

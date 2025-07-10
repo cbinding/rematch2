@@ -56,22 +56,24 @@ class BaseAnnotator():
         
         # perform the annotation
         doc = self.__annotate(input_text)
-                # convert the results to the required format
+        summary = DocSummary(doc)
+        
+        # convert the results to the required format
         match output_format.strip().lower():
             case "html":                
-                output = DocSummary(doc).doctext_to_html()
+                output = summary.doctext_to_html()
             #case "ttl":
                 #output = self.__doc_to_ttl(doc)
             case "json":
-                output = DocSummary(doc).spans_to_json()
+                output = summary.spans_to_json()
             case "text":
-                output = DocSummary(doc).spans_to_text()
+                output = summary.spans_to_text()
             case "dataframe":
-                output = DocSummary(doc).spans_to_df()
+                output = summary.spans_to_df()
             case "csv":
-                output = DocSummary(doc).spans_to_csv()
+                output = summary.spans_to_csv()
             case _:
-                output = DocSummary(doc).spans()
+                output = summary.spans
 
         return output
 
