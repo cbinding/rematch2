@@ -240,33 +240,20 @@ class DocSummary:
 
     def spans_to_html(self) -> str:
         df = self.spans_to_df()
+        if df.empty:
+            return "" 
+        df["span"] = df.apply(lambda row: DocSummary._make_link(row["id"], row["text"]), axis=1)
+        
         html = df.to_html(
             border=0,
             index=False, 
+            justify="left",
             render_links=True, 
-            escape=True,
+            escape=False,
             na_rep='',
-            classes='text-start table table-sm table-striped table-light table-group-divider'
+            classes=['table', 'table-sm', 'table-striped', 'table-light']
         ) 
         return html 
-
-
-    def spans_to_html_list(self) -> str:
-        html = []
-        html.append("<details>")
-        html.append(f"<summary>Spans ({len(self.spans)})</summary>")
-        html.append("<ul class='entities'>") 
-        for span in self.spans:
-            html.append("<li class='entity {label}'>({start}&#8594;{end}) [{label}] {id} \"{text}\"</li>".format(
-                start = span.start_char, 
-                end = span.end_char,
-                label = span.label_,
-                id = span.id_,
-                text = span.text
-            ))        
-        html.append("</ul>") 
-        html.append("</details>")
-        return "\n".join(html) 
 
 
     def spans_to_json(self) -> str:
@@ -366,57 +353,33 @@ class DocSummary:
         df = self.span_counts_to_df()
         return df.to_csv(sep=sep)
 
+    # use for combining columns to form an HTML anchor
+    @staticmethod
+    def _make_link(id, text):
+            if id.startswith("http"):
+                return f"<a target='_blank' rel='noopener noreferrer' href='{id}'>{escape(text)}</a>"
+            else:
+                return escape(text)
+            
 
     def span_counts_to_html(self) -> str:
-        df = self.span_counts_to_df()
+        df = self.span_counts_to_df()        
+                    
+        if df.empty:
+            return "" 
+        df["span"] = df.apply(lambda row: DocSummary._make_link(row["id"], row["text"]), axis=1)
+        
         html = df.to_html(
+            columns=["span", "label", "count", "cf"],
             border=0,
+            justify="left",
             index=False, 
             render_links=True, 
-            escape=True,
+            escape=False,
             na_rep='',
-            classes='text-start table table-sm table-striped table-light table-group-divider'
+            classes=['table', 'table-sm', 'table-striped', 'table-light']
         ) 
         return html  
-
-
-    # table rendering from find_pairs.py
-    def span_counts_to_html_table(self) -> str:
-        html = []        
-        if len(self.span_counts) == 0:
-            html.append("<p>NONE FOUND</p>")
-        else:
-            html.append("<table><tbody>")
-            for item in self.span_counts:
-                html.append("<tr>")
-                html.append("<td style='text-align:right; vertical-align: middle;'>")
-                html.append(f"<div class='entity {escape(item.get('label','').lower())}'>")
-                if(item.get('id', '').startswith("http")):
-                    html.append(f"<a target='_blank' rel='noopener noreferrer' href='{item.get('id', '')}'>{escape(item.get('text', ''))}</a>")
-                else:
-                    html.append(f"{escape(item.get('text', ''))}")
-                html.append("</div>")
-                html.append("</td>")
-                html.append(f"<td>({item.get('count', 0)})</td>")
-                html.append(f"<td>({item.get('cf', 0)})</td>")
-                html.append("</tr>")
-            html.append("</tbody></table>")
-        return "\n".join(html)
-
-
-    def span_counts_to_html_list(self) -> str:
-        html = []
-        html.append("<ul class='entities'>")
-        for item in self.span_counts:
-            html.append(f"<li class='entity {escape(item.get('label', '').lower())}'>")
-            if(item.get('id', '').startswith("http")):
-                html.append(f"<a target='_blank' rel='noopener noreferrer' href='{item.get('id', '')}'>{escape(item.get('text', ''))}</a>")
-            else:
-                html.append(f"{escape(item.get('text', ''))}")
-            html.append(f" ({item.get('count', 0)}) ({item.get('cf', 0)})")
-            html.append("</li>")
-        html.append("</ul>")
-        return "\n".join(html)
 
 
     def span_counts_to_json(self) -> str:
@@ -429,21 +392,7 @@ class DocSummary:
         pd.set_option('display.max_colwidth', None)
         return(df.to_string(index=False)) if len(df) > 0 else "NO RECORDS" 
 
-    
-    def span_counts_to_text_custom(self) -> str:
-        lines = []
-        for item in self.span_counts:                    
-            lines.append("[{label}] {id:<60} {text:>20} ({count}) ({cf})".format(
-                id = item.get("id", ""),                
-                label = item.get("label", ""),
-                text = item.get("text", ""),
-                count = int(item.get("count", 0)),
-                cf = float(item.get("cf", 0))
-                )
-            )
-        return "\n".join(lines) 
-
-
+        
     # count spans by label, return list [{label, count}, {label, count}, ...] 
     # returned in descending count order
     def get_span_counts_by_label(
@@ -492,51 +441,21 @@ class DocSummary:
 
     def label_counts_to_html(self) -> str:
         df = self.label_counts_to_df()
+        if df.empty:
+            return "" 
+                
         html = df.to_html(
+            columns=["label", "count"],
             border=0,
             index=False, 
             render_links=True, 
-            escape=True,
+            escape=False,
             na_rep='',
-            classes='text-start table table-sm table-striped table-light table-group-divider'
+            classes=['table', 'table-sm', 'table-striped', 'table-light']
         ) 
         return html 
 
-
-    def label_counts_to_html_list(self) -> str:
-        html = []
-        html.append("<details>")
-        html.append(f"<summary>Labels ({len(self.label_counts)})</summary>")
-        html.append("<ul class='entities'>") 
-        for item in self.label_counts:
-            html.append("<li><div class='entity {label}'>&nbsp;</div>({count})</li>".format(
-                label = item.get("label", "").lower(),
-                count = item.get("count", 0)
-            ))        
-        html.append("</ul>") 
-        html.append("</details>")
-        return "\n".join(html) 
-
     
-    def label_counts_to_html_table(self) -> str:
-        html = []        
-        if len(self.label_counts) == 0:
-            html.append("<p>NONE FOUND</p>")
-        else:
-            html.append("<table><tbody>")
-            for item in self.label_counts:
-                html.append("<tr>")
-                html.append("<td style='text-align:right; vertical-align: middle;'>")
-                html.append(f"<div class='entity {escape(item['label'].lower())}'>")
-                html.append(f"{escape(item['label'])}")
-                html.append("</div>")
-                html.append("</td>")
-                html.append(f"<td>({item['count']})</td>")
-                html.append("</tr>")
-            html.append("</tbody></table>")
-        return "\n".join(html)
-
-
     def label_counts_to_json(self) -> str:
         df = self.label_counts_to_df()
         return df.to_json(orient="records")
@@ -546,16 +465,6 @@ class DocSummary:
         df = self.label_counts_to_df()
         pd.set_option('display.max_colwidth', None)
         return(df.to_string(index=False)) if len(df) > 0 else "NO RECORDS" 
-
-
-    def label_counts_to_text_custom(self) -> str:
-        lines = []
-        for item in self.label_counts:                    
-            lines.append("[{label}] ({count})".format(
-                label = item.get("label", ""),
-                count = int(item.get("count", 0))
-            ))
-        return "\n".join(lines) 
 
 
     def tokens_to_df(self) -> DataFrame: 
@@ -585,7 +494,7 @@ class DocSummary:
             render_links=True, 
             escape=True,
             na_rep='',
-            classes='text-start table table-sm table-striped table-light table-group-divider'
+            classes=['table', 'table-sm', 'table-striped', 'table-light']
         ) 
         return html 
 
@@ -593,22 +502,6 @@ class DocSummary:
     def tokens_to_list(self) -> list:
         df = self.tokens_to_df()
         return df.to_dict(orient="records")
-
-
-    def tokens_to_html_list(self) -> str:
-        html = []
-        html.append("<ul class='tokens'>")
-        for tok in self.tokens:
-            html.append("<li class='token'>[{index}] ({start}&#8594;{end}) pos=\"{pos:<3}\" text=\"{text}\" lemma=\"{lemma}\"</li>".format(
-                index = tok.i,
-                start = tok.idx + 1,
-                end = tok.idx + len(tok.text),
-                pos = tok.pos_,
-                text = escape(tok.text),
-                lemma = escape(tok.lemma_)         
-            ))
-        html.append("</ul>")
-        return "\n".join(html)   
 
 
     def tokens_to_json(self) -> str:
@@ -621,17 +514,6 @@ class DocSummary:
         pd.set_option('display.max_colwidth', None)
         return(df.to_string(index=False)) if len(df) > 0 else "NO RECORDS"
 
-
-    def tokens_to_text_custom(self) -> str:
-        lines = ["[{index}] ({start}->{end}) {pos:<4} \"{text}\"".format(
-            index = tok.i,
-            start = tok.idx + 1,
-            end = tok.idx + len(tok.text),
-            pos = tok.pos_,
-            text = tok.text
-            ) for tok in self.tokens]
-        return "\n".join(lines)
-
    
     @run_timed
     def report_to_html(
@@ -639,6 +521,7 @@ class DocSummary:
         include_metadata: bool = True,
         include_doctext: bool = True,        
         include_tokens: bool = False,
+        include_label_counts: bool = True, 
         include_spans: bool = False,        
         include_span_counts: bool = True,
         include_span_pairs: bool = True,
@@ -670,49 +553,55 @@ class DocSummary:
 
         if(include_metadata): 
             output.append("<details>")
-            output.append(f"<summary>Metadata</summary>")
+            output.append(f"<summary class='metadata'>Metadata</summary>")
             output.append(self.metadata_to_html())
             output.append("</details>")
 
         # write displacy HTML rendering of doc text as paragraph with highlighted spans 
         if(include_doctext):
             output.append("<details open>")
-            output.append(f"<summary>Text ({len(self.doctext)} characters)</summary>")
+            output.append(f"<summary class='doctext'>Text ({len(self.doctext)} characters)</summary>")
             output.append(f"<p>{self.doctext_to_html()}</p>")
             output.append("</details>")
 
         # write tokens
         if(include_tokens):
             output.append("<details>")
-            output.append(f"<summary>Tokens ({len(self.tokens)})</summary>")
+            output.append(f"<summary class='tokens'>Tokens ({len(self.tokens)})</summary>")
             output.append(self.tokens_to_html())
             output.append("</details>")
 
         # write spans
         if(include_spans):
             output.append("<details>")
-            output.append(f"<summary>Spans ({len(self.spans)})</summary>")
+            output.append(f"<summary class='spans'>Spans ({len(self.spans)})</summary>")
             output.append(self.spans_to_html())
+            output.append("</details>")
+
+        if(include_label_counts):
+            output.append("<details>")
+            output.append(f"<summary class='spans'>Label Counts ({len(self.label_counts)})</summary>")
+            output.append(self.label_counts_to_html())
             output.append("</details>")
 
         # write span counts
         if(include_span_counts):
             output.append("<details>")
-            output.append(f"<summary>Span Counts ({len(self.span_counts)})</summary>")
+            output.append(f"<summary class='span-counts'>Span Counts ({len(self.span_counts)})</summary>")
             output.append(self.span_counts_to_html())
             output.append("</details>")
         
         # write span pairs
         if(include_span_pairs):
             output.append("<details>")
-            output.append(f"<summary>Span Pairs ({len(self.span_pairs)})</summary>")
+            output.append(f"<summary class='span-pairs'>Span Pairs ({len(self.span_pairs)})</summary>")
             output.append(self.span_pairs_to_html(self.span_pairs))
             output.append("</details>")
 
         # write negated pairs - this might not work now?? retest..
         if(include_negated_pairs):
             output.append("<details>")
-            output.append(f"<summary>Negated Pairs ({len(self.negated_pairs)})</summary>")
+            output.append(f"<summary class='span-pairs'>Negated Pairs ({len(self.negated_pairs)})</summary>")
             output.append(self.span_pairs_to_html(self.negated_pairs))
             output.append("</details>")
 
@@ -730,8 +619,9 @@ class DocSummary:
         self, 
         include_metadata: bool = True,
         include_doctext: bool = True,        
-        include_tokens: bool = False,
-        include_spans: bool = False,        
+        include_tokens: bool = True,
+        include_label_counts: bool = True,
+        include_spans: bool = True,        
         include_span_counts: bool = True,
         include_span_pairs: bool = True,
         include_negated_pairs: bool = True):
@@ -739,8 +629,9 @@ class DocSummary:
             "metadata": self.metadata if include_metadata else {},
             "text": self.doctext if include_doctext else "",
             "tokens": self.tokens_to_list() if include_tokens else [],
+            "label_counts": self.label_counts if include_label_counts else [],
             "spans": self.spans_to_list() if include_spans else [],
-            "span_counts": self.span_counts if include_span_counts else {},
+            "span_counts": self.span_counts if include_span_counts else [],
             "span_pairs": self.span_pairs_to_list(self.span_pairs) if include_span_pairs else [],
             "negated_pairs": self.span_pairs_to_list(self.negated_pairs) if include_negated_pairs else []
         }
@@ -753,6 +644,7 @@ class DocSummary:
         include_metadata: bool = True,
         include_doctext: bool = True,        
         include_tokens: bool = False,
+        include_label_counts: bool = True,
         include_spans: bool = False,        
         include_span_counts: bool = True,
         include_span_pairs: bool = True,
@@ -766,6 +658,8 @@ class DocSummary:
             output.append(f"text:\n{self.doctext}")
         if include_tokens:
             output.append(f"tokens:\n{self.tokens_to_text()}")
+        if include_label_counts:
+            output.append(f"label_counts:\n{self.label_counts_to_text()}")    
         if include_spans:
             output.append(f"spans:\n{self.spans_to_text()}")
         if include_span_counts:
@@ -779,7 +673,7 @@ class DocSummary:
     
     @staticmethod
     def span_pairs_to_df(pairs: list[SpanPair] = []) -> DataFrame:
-        return DataFrame([{
+        df = DataFrame([{
             "span1_id": pair.span1.id_,
             "span1_label": pair.span1.label_,
             "span1_text": pair.span1.text,
@@ -788,8 +682,9 @@ class DocSummary:
             "span2_label": pair.span2.label_,
             "span2_text": pair.span2.text,
             "score": pair.score
-        } for pair in pairs])
-        
+        } for pair in pairs])        
+           
+        return df
 
     @staticmethod
     def span_pairs_to_csv(pairs: list[SpanPair] = [], sep=",") -> str:
@@ -806,46 +701,22 @@ class DocSummary:
     @staticmethod
     def span_pairs_to_html(pairs: list[SpanPair] = []) -> str:
         df = DocSummary.span_pairs_to_df(pairs)
+        if df.empty:
+            return ""        
+        
+        df["span1"] = df.apply(lambda row: DocSummary._make_link(row["span1_id"], row["span1_text"]), axis=1)
+        df["span2"] = df.apply(lambda row: DocSummary._make_link(row["span2_id"], row["span2_text"]), axis=1)
+        
         html = df.to_html(
+            columns=["span1", "span1_label", "rel_op", "span2", "span2_label", "score"],
             border=0,
             index=False, 
             render_links=True, 
-            escape=True,
+            escape=False,
             na_rep='',
-            classes='text-start table table-sm table-striped table-light table-group-divider'
-        ) 
+            classes=['table', 'table-sm', 'table-striped', 'table-light']
+        )
         return html  
-
-
-    # custom table render from find_pairs.py 
-    @staticmethod
-    def span_pairs_to_html_table(pairs: list[SpanPair] = []) -> str:
-        html = []
-
-        def _span_to_html(span: Span) -> str:
-            lines = []
-            lines.append(f"<div class='entity {escape(span.label_.lower())}'>")
-            if(span.id_.startswith("http")):
-                lines.append(f"<a target='_blank' rel='noopener noreferrer' href='{span.id_}'>{escape(span.text)}</a>")
-            else:
-                lines.append(f"{escape(span.text)}")
-            lines.append("</div>")
-            return "\n".join(lines)
-
-
-        if len(pairs) == 0:
-            html.append("<p>NONE FOUND</p>")
-        else:            
-            html.append("<table><tbody>")
-            for pair in pairs:
-                html.append("<tr>")
-                html.append(f"<td style='text-align:right; vertical-align: middle'>{_span_to_html(pair.span1)}</td>")                
-                html.append(f"<td style='text-align:center; vertical-align: middle'>{escape(pair.rel_op)}</td>")
-                html.append(f"<td style='text-align:right; vertical-align: middle'>{_span_to_html(pair.span2)}</td>")
-                html.append(f"<td>({pair.score})</td>")
-                html.append("</tr>")
-            html.append("</tbody></table>")
-        return "\n".join(html)
 
 
     @staticmethod

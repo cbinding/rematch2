@@ -25,7 +25,6 @@ from .Decorators import run_timed
 
 class BaseRuler(SpanRuler):
     
-    #@run_timed
     def __call__(self, doc: Doc) -> Doc:
         print(f"{self.name}")
         return SpanRuler.__call__(self, doc)      

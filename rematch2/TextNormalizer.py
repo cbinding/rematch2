@@ -16,12 +16,9 @@ History :
 =============================================================================
 """
 import regex
-
 from spacy.tokens import Doc
 from spacy.pipeline import Pipe
 from spacy.language import Language
-
-from .Decorators import run_timed    
 
 
 class TextNormalizer(Pipe):
@@ -31,7 +28,6 @@ class TextNormalizer(Pipe):
         self.subs = {regex.compile(key, regex.IGNORECASE | regex.MULTILINE): val for key, val in (subs or {}).items()}        
 
 
-    @run_timed
     def __call__(self, doc: Doc) -> Doc:
         text = doc.text
         
@@ -138,7 +134,7 @@ if __name__ == "__main__":
     # usage example
     text = f"archeological  work indi-\ncated  an Iron Age/ Romano- British  /Roman\npost -hole, in( low -lying)ground.\nThis  was  near(vandal-\nized)\n  Mediaeval/post-medieval(15th-17th century? )foot-\nings. Items of Mediaeval &  paleolithic(archeological)jewelry were  located in the New Harbor area.  Gray colored  & oxidized,aluminum artifacts were   found near the theater."
     
-    # Note: order can make a difference, fix
+    # Note: order can make a difference, so fix
     # whitespace & punctuation before spelling
     nlp = spacy.load("en_core_web_sm", disable=["ner"]) 
     nlp.add_pipe("normalize_whitespace", before = "tagger")
