@@ -277,7 +277,7 @@ class DocSummary:
         self,
         left_labels: list=["PERIOD", "YEARSPAN"], 
         right_labels: list=["FISH_OBJECT", "FISH_MONUMENT"], 
-        rel_ops: list=[ "<", ">", "<<", ">>", ".", ".*", ";", ";*" ]
+        rel_ops: list=[ "<", ">", ".", ";" ]
         ) -> list[SpanPair]:
 
         pairs = SpanPairs(doc=self._doc, rel_ops=rel_ops, left_labels=left_labels, right_labels=right_labels).pairs
@@ -285,10 +285,11 @@ class DocSummary:
         return pairs
 
 
+    @run_timed
     def get_negated_span_pairs(
         self,
         right_labels=["YEARSPAN", "PERIOD", "FISH_OBJECT", "FISH_MONUMENT"],
-        rel_ops=["<", ">", ".", ";"]        
+        rel_ops=["<", "."]        
         ) -> list[SpanPair]:
 
         pairs = SpanPairs(doc=self._doc, rel_ops=rel_ops, left_labels=["NEGATION"], right_labels=right_labels).pairs
@@ -704,6 +705,7 @@ class DocSummary:
         if df.empty:
             return ""        
         
+        # create html links from id and text
         df["span1"] = df.apply(lambda row: DocSummary._make_link(row["span1_id"], row["span1_text"]), axis=1)
         df["span2"] = df.apply(lambda row: DocSummary._make_link(row["span2_id"], row["span2_text"]), axis=1)
         
