@@ -21,6 +21,7 @@ from spacy.pipeline import SpanRuler
 from spacy.language import Language
 import functools
 import time
+import json
 from .Decorators import run_timed
 
 class BaseRuler(SpanRuler):
@@ -79,7 +80,15 @@ class BaseRuler(SpanRuler):
                         continue
 
                     # first tokenize the phrase
-                    doc = nlp.make_doc(clean_phrase)
+                    # NOTE - this doesn't do POS or lemmas
+                    #doc = nlp.make_doc(clean_phrase)
+                    # so do this instead
+                    disabled = nlp.select_pipes(disable=["ner"])
+                    doc = nlp(clean_phrase)
+                    #doc.user_data = doc.user_data.copy()  # copy user data from original doc
+                    disabled.restore()
+
+
                     phrase_length = len(doc)
                         
                     # build a new token pattern for this phrase
@@ -141,6 +150,10 @@ class BaseRuler(SpanRuler):
                         "pattern":  new_pattern
                     })
 
-        # finally, return the normalized list        
+         # temp - write patterns out for examination
+        with open('normalized_patterns.json', 'w') as f:
+            json.dump(normalized_patterns, f)
+
+        # finally, return the normalized list 
         return normalized_patterns
     

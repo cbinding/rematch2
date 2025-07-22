@@ -160,7 +160,7 @@ def create_aat_activities_ruler(
     
     patterns=patterns_from_json_file("patterns_en_AAT_ACTIVITIES_20231018.json")
     #patts2=patterns_from_json_file("patterns_en_AAT_ACTIVITIES_SUPPLEMENTARY.json")
-    
+   
     ruler = create_vocabulary_ruler(
         nlp=nlp, 
         name=name, 
@@ -529,7 +529,7 @@ if __name__ == "__main__":
 
     en_test_text1 = '''Aside from three residual flints, none closely datable, the earliest remains from the archeomagnetism comprised a small assemblage of Roman pottery and Lower Paleolithic or Lower Palaeolithic ceramic building material, also residual and most likely derived from a Roman farmstead found immediately to the north within the Phase II excavation area. A single sherd of Anglo-Saxon grass-tempered pottery was also residual. The earliest features, which accounted for the majority of the remains on site, relate to medieval agricultural activity focused within a large enclosure. There was little to suggest domestic occupation within the site: the pottery assemblage was modest and well abraded, whilst charred plant remains were sparse, and, as with some metallurgical residues, point to waste disposal rather than the locations of processing or consumption. A focus of occupation within the Rodley Manor site, on higher ground 160m to the north-west, seems likely, with the currently site having lain beyond this and providing agricultural facilities, most likely corrals and pens for livestock. Animal bone was absent, but the damp, low-lying ground would have been best suited to cattle. An assemblage of medieval coins recovered from the subsoil during a metal detector survey may represent a dispersed hoard.'''
     en_test_text2 = '''
-    mola conducted an archaeological desk-based heritage assessment of land at fakenham road, great ryburgh, norfolk. the earliest archaeological evidence found dates from the mesolithic period. neolithic flint tools have been found close to the west and north-west of the site. a possible bronze age ring ditch has been identified to the north-east and finds dating to the period have been discovered through metal detecting surveys. iron age remains including pits and pottery have been found within the area of proposed development through trial trenching. the site lies between two roman settlements on the south-western banks of the river wensum. one lies nearby to the north-west of the site and numerous finds including coins have been discovered during a fieldwalking survey. a further roman settlement lies to the south-east where two enclosures, two kilns and two burials have recently been excavated. a middle saxon cemetery, drainage ditches, an enclosure, land divisions and a substantial boundary ditch have also recently been discovered to the south-east of the site. metal finds dating to the period have also been found to the north-west and to the east of the site during metal detecting surveys. the site lies beyond the historic core of great ryburgh. the medieval settlement developed around the junction of fakenham road and bridge road to the west of the river wensum, flanked by the medieval moated manor of ryburgh at the northern end and by st andrew's church to the south. cartographic evidence suggests that the site lay to the rear of properties fronting fakenham road during the post-medieval period and had remained as undeveloped farmland.'''
+    mola conducted an archaeological desk-based heritage assessment including radiocarbon dating of land at fakenham road, great ryburgh, norfolk. the earliest archaeological evidence found dates from the mesolithic period. neolithic flint tools have been found close to the west and north-west of the site. a possible bronze age ring ditch has been identified to the north-east and finds dating to the period have been discovered through metal detecting surveys. iron age remains including pits and pottery have been found within the area of proposed development through trial trenching. the site lies between two roman settlements on the south-western banks of the river wensum. one lies nearby to the north-west of the site and numerous finds including coins have been discovered during a fieldwalking survey. a further roman settlement lies to the south-east where two enclosures, two kilns and two burials have recently been excavated. a middle saxon cemetery, drainage ditches, an enclosure, land divisions and a substantial boundary ditch have also recently been discovered to the south-east of the site. metal finds dating to the period have also been found to the north-west and to the east of the site during metal detecting surveys. the site lies beyond the historic core of great ryburgh. the medieval settlement developed around the junction of fakenham road and bridge road to the west of the river wensum, flanked by the medieval moated manor of ryburgh at the northern end and by st andrew's church to the south. cartographic evidence suggests that the site lay to the rear of properties fronting fakenham road during the post-medieval period and had remained as undeveloped farmland.'''
     en_test_text3 = '''
     The Excavation revealed a wealth of archaeological information. The earliest period was represented by residual finds of a Mesolithic worked flint axe in a medieval plough furrow and Bronze Age aurochs bone in an Iron Age pit. The Iron Age period consisted of several phases of a Banjo Enclosure with associated roundhouses, four-post structures, boundary ditches, pits and a quarry. In the early Roman period there was little activity other than quarrying, but later a farmstead was established with an agricultural system reminiscent of a vineyard. No evidence was recovered for the Saxon period, even as residual finds in later contexts, and thus it is assumed that the site was either unused by the population at that time, or subject to a regime that has left no trace in the archaeological record. In the medieval period a ridge and furrow cultivation system was established that cut across many earlier features but incorporated surprisingly little material from earlier periods. After the medieval period, the site appears to have been largely abandoned until Enclosure. The two phases of work took place between March - May 2000 and subsequently between August - October 2001 by CAM ARC, Cambridgeshire County Council (formerly the Archaeological Field Unit).
     '''
@@ -589,7 +589,8 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     #nlp.add_pipe("amcr_ruler", last=True)
     
     # AAT vocabulary pipeline components
-    #nlp.add_pipe("aat_activities_ruler", last=True)
+    #nlp.add_pipe("normalize_text", before = "tagger")
+    nlp.add_pipe("aat_activities_ruler", last=True)
     # nlp.add_pipe("aat_agents_ruler", last=True)
     # nlp.add_pipe("aat_associated_concepts_ruler", last=True)
     # nlp.add_pipe("aat_materials_ruler", last=True)
@@ -600,7 +601,7 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
 
     #nlp.add_pipe("fish_archobjects_ruler", last=True)
     # testing monuments ruler with use of stop_list e.g. removing concept 'site' from patterns so we don't get matches on it in results
-    nlp.add_pipe("fish_monument_types_ruler", last=True, config={ "stop_list": ["http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412"] })
+    #nlp.add_pipe("fish_monument_types_ruler", last=True, config={ "stop_list": ["http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412"] })
     #nlp.add_pipe("respeller", before="tagger")
     #nlp.add_pipe("fish_archsciences_ruler", last=True)
     #nlp.add_pipe("fish_building_materials_ruler", last=True)
@@ -609,7 +610,7 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     # nlp.add_pipe("fish_evidence_ruler", last=True)
     # nlp.add_pipe("fish_maritime_craft_ruler", last=True)
     #nlp.add_pipe("fish_periods_ruler", last=True)
-    nlp.add_pipe("child_span_remover", last=True) 
+    #nlp.add_pipe("child_span_remover", last=True) 
 
     doc = nlp(en_test_text2)
     # explacy.print_parse_info(nlp, en_test_text.lower())
