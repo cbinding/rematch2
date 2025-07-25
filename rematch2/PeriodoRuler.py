@@ -26,14 +26,7 @@ History :
 02/07/2025 CFB based on BaseRuler instead of SpanRuler(!)
 =============================================================================
 """
-import os
-import sys
-import spacy            # NLP library
-import pandas as pd
-#from spacy.pipeline import SpanRuler
-from spacy.tokens import Doc
 from spacy.language import Language
-from pprint import pprint
 
 from .BaseRuler import BaseRuler
 from .PeriodoData import PeriodoData

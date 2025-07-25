@@ -52,6 +52,7 @@ def create_seasonname_ruler(nlp: Language, name: str = "seasonname_ruler", patte
         name=name,
         spans_key=DEFAULT_SPANS_KEY,
         phrase_matcher_attr="LOWER",
+        annotate_ents=True, # to reference in other patterns as {"ENT_TYPE": "SEASONNAME"}
         validate=False,
         overwrite=False
     )  

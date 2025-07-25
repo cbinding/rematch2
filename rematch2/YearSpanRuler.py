@@ -51,26 +51,26 @@ class YearSpanRuler(BaseRuler):
 
     def __init__(self, nlp: Language, name: str="yearspan_ruler", patterns: list=[]) -> None:
         # add token extensions for YearSpan patterns to work
-        if not Token.has_extension("is_dateprefix"):
-            Token.set_extension(name="is_dateprefix", getter=is_dateprefix)
+        #if not Token.has_extension("is_dateprefix"):
+            #Token.set_extension(name="is_dateprefix", getter=is_dateprefix)
 
-        if not Token.has_extension("is_datesuffix"):
-            Token.set_extension(name="is_datesuffix", getter=is_datesuffix)
+        #if not Token.has_extension("is_datesuffix"):
+            #Token.set_extension(name="is_datesuffix", getter=is_datesuffix)
 
-        if not Token.has_extension("is_dateseparator"):
-            Token.set_extension(name="is_dateseparator", getter=is_dateseparator)
+        #if not Token.has_extension("is_dateseparator"):
+            #Token.set_extension(name="is_dateseparator", getter=is_dateseparator)
 
-        if not Token.has_extension("is_ordinal"):
-            Token.set_extension(name="is_ordinal", getter=is_ordinal)
+        #if not Token.has_extension("is_ordinal"):
+            #Token.set_extension(name="is_ordinal", getter=is_ordinal)
 
-        if not Token.has_extension("is_monthname"):
-            Token.set_extension(name="is_monthname", getter=is_monthname)
+        #if not Token.has_extension("is_monthname"):
+            #Token.set_extension(name="is_monthname", getter=is_monthname)
 
-        if not Token.has_extension("is_seasonname"):
-            Token.set_extension(name="is_seasonname", getter=is_seasonname)
+        #if not Token.has_extension("is_seasonname"):
+            #Token.set_extension(name="is_seasonname", getter=is_seasonname)
         
-        if not Token.has_extension("labels"):
-            Token.set_extension(name="labels", getter=get_labels_for_token)
+        #if not Token.has_extension("labels"):
+            #Token.set_extension(name="labels", getter=get_labels_for_token)
 
         for name in [
             "ordinal_ruler",            
@@ -135,7 +135,7 @@ class YearSpanRuler(BaseRuler):
                 for item in doc.spans.get(DEFAULT_SPANS_KEY, [])
             )
         # apply the filter
-        doc.spans[DEFAULT_SPANS_KEY] = list(filter(not_enclosed, doc.spans.get(DEFAULT_SPANS_KEY, [])))
+        #doc.spans[DEFAULT_SPANS_KEY] = list(filter(not_enclosed, doc.spans.get(DEFAULT_SPANS_KEY, [])))
 
         return doc
 
@@ -195,7 +195,7 @@ if __name__ == "__main__":
 
     tests = [
         {"lang": "de", "text": "Das Artefakt wurde von 1650 bis 1800 n. Chr. datiert und war korrodiert"},
-        {"lang": "en", "text": "The artefact was dated from 1650 to 1800 AD and was corroded. possibly from start of March 1715 AD"},
+        {"lang": "en", "text": "The artefact was dated from the 2nd - 3rd century and the jug was 1650 to 1800 AD and was corroded. possibly from start of March 1715 AD"},
         {"lang": "es", "text": "El artefacto estaba fechado entre 1650 y 1800 d. C. y estaba corroído."},
         {"lang": "fr", "text": "L'artefact était daté de 1650 à 1800 après JC et a été corrodé"},
         {"lang": "it", "text": "Il manufatto fu datato dal 1650 al 1800 d.C. e fu corroso"},
@@ -209,7 +209,7 @@ if __name__ == "__main__":
         text = test.get("text", "")
 
         # print header
-        print(f"-------------\nlanguage = {lang}")
+        print(f"-------------\nlanguage = {lang}\ntext \"{text}\"")
         # load language-specific pre-built pipeline
         nlp = get_pipeline_for_language(lang)
         # add custom component at the end of the pipeline
@@ -217,6 +217,7 @@ if __name__ == "__main__":
         # run text through the pipeline
         doc = nlp(text)
         
-        #print("Tokens:\n" + DocSummary(doc).tokens("text"))
+        #print("Tokens:\n" + DocSummary(doc).tokens_to_text())
         print("Spans:\n" + DocSummary(doc).spans_to_text())
 
+        

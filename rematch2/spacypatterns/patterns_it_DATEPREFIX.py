@@ -51,7 +51,7 @@ patterns_it_DATEPREFIX = [
     { 
         "label": "DATEPREFIX",
 		"pattern": [
-            {"_": {"is_ordinal": True}},
+            {"ENT_TYPE": "ORDINAL"},
             {"LOWER": "metà"},
             {"LOWER": "del"}
         ]
@@ -65,7 +65,7 @@ patterns_it_DATEPREFIX = [
     { 
         "label": "DATEPREFIX",
 		"pattern": [
-            {"_": {"is_ordinal": True}},
+            {"ENT_TYPE": "ORDINAL"},
             {"LOWER": {"REGEX": r"^(quarto|trimestre)$"}}, 
             {"OP": "?", "LOWER": "del"}
         ]

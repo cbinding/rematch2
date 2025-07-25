@@ -18,29 +18,29 @@ patterns_it_YEARSPAN = [
         "label": "YEARSPAN", 
         "comment": "",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_monthname": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "MONTHNAME"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
     { 
         "label": "YEARSPAN",         
         "comment": "",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}}, 
-            {"_": {"is_seasonname": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "SEASONNAME"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
     { 
         "label": "YEARSPAN",         
         "comment": "",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "+", "_": {"is_datesuffix": True}}
+            {"OP": "+", "ENT_TYPE": "DATESUFFIX"}
         ] 
     },
     { 
@@ -48,38 +48,38 @@ patterns_it_YEARSPAN = [
         "comment": "",
 		"pattern": [
             {"ORTH": {"REGEX": r"^\d+(?:[/\–\-a]|all[a'])\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ] 
     },
     { 
         "label": "YEARSPAN",         
         "comment": "",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}}, 
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}, 
-            {"_": {"is_dateseparator": True}},
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}, 
+            {"ENT_TYPE": "DATESEPARATOR"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ] 
     },
     { 
         "label": "YEARSPAN",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}}, 
-            {"_": {"is_ordinal": True}}, 
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "ORDINAL"}, 
             {"LOWER": {"REGEX": r"^(sec(olo|\.)|mill(ennio|\.))$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}, 
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}, 
         ]
     },
     { 
         "label": "YEARSPAN",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},  
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},  
             {"TEXT": {"REGEX": r"[MCDLXVI]+"}}, 
             {"LOWER": {"REGEX": r"^(sec(olo|\.)|mill(ennio|\.))$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}, 
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}, 
         ]
     },
     { 
@@ -87,35 +87,35 @@ patterns_it_YEARSPAN = [
 		"pattern": [
             {"TEXT": {"REGEX": r"[MCDLXVI]+\-[MCDLXVI]+"}}, 
             {"LOWER": {"REGEX": r"^(sec(olo|\.)|mill(ennio|\.))$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}, 
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}, 
         ]
     },
     { 
         "label": "YEARSPAN",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}}, 
-            {"_": {"is_ordinal": True}}, 
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "ORDINAL"}, 
             {"OP": "?", "LOWER": {"REGEX": r"^(sec(olo|\.)|mill(ennio|\.))$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}, 
-            {"_": {"is_dateseparator": True}}, 
-            {"OP": "*", "_": {"is_dateprefix": True}}, 
-            {"_": {"is_ordinal": True}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}, 
+            {"ENT_TYPE": "DATESEPARATOR"}, 
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "ORDINAL"},
             {"LOWER": {"REGEX": r"^(sec(olo|\.)|mill(ennio|\.))$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
     { 
         "label": "YEARSPAN",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_ordinal": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "ORDINAL"},
             {"LOWER": {"REGEX": r"^(sec(olo|\.)|mill(ennio|\.))$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}},
-            {"_": {"is_dateseparator": True}},
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_ordinal": True}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "ORDINAL"},
             {"OP": "?", "LOWER": {"REGEX": r"^(sec(olo|\.)|mill(ennio|\.))$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     }
 ]

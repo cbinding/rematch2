@@ -47,6 +47,7 @@ def create_dateseparator_ruler(nlp: Language, name: str="dateseparator_ruler", p
         name=name,
         spans_key=DEFAULT_SPANS_KEY,
         phrase_matcher_attr="LOWER",
+        annotate_ents=True, # to reference in other patterns as {"ENT_TYPE": "DATESEPARATOR"}
         validate=False,
         overwrite=False
     )  

@@ -45,6 +45,7 @@ def create_monthname_ruler(nlp: Language, name: str="monthname_ruler", patterns:
         name=name,
         spans_key=DEFAULT_SPANS_KEY,
         phrase_matcher_attr="LOWER",
+        annotate_ents=True, # to reference in other patterns as {"ENT_TYPE": "MONTHNAME"}
         validate=False,
         overwrite=False
     )  
@@ -111,7 +112,7 @@ if __name__ == "__main__":
 
     tests = [
         {"lang": "de", "text": "Im Januar oder im März oder im Oktober, vielleicht im Dezember?"},
-        {"lang": "en", "text": "In January or in March or in October, maybe in Dec"},
+        {"lang": "en", "text": "In January or in Mar or in October, maybe in Dec"},
         {"lang": "es", "text": "¿En enero o en marzo o en octubre, tal vez en diciembre?"},
         {"lang": "fr", "text": "En janvier ou en mars ou en octobre, peut-être en décembre?"},
         {"lang": "it", "text": "A gennaio o a marzo o a ottobre, forse a dicembre?"},

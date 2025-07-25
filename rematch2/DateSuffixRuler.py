@@ -49,6 +49,7 @@ def create_datesuffix_ruler(nlp: Language, name: str="datesuffix_ruler", pattern
         nlp=nlp,        
         name=name,
         spans_key=DEFAULT_SPANS_KEY,
+        annotate_ents=True, # to reference in other patterns as {"ENT_TYPE": "DATESUFFIX"}
         phrase_matcher_attr="LOWER",
         validate=False,
         overwrite=False

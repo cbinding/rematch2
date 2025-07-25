@@ -19,46 +19,46 @@ patterns_fr_YEARSPAN = [
     { 
         "label": "YEARSPAN",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_monthname": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "MONTHNAME"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
     { 
         "label": "YEARSPAN",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}}, 
-            {"_": {"is_seasonname": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "SEASONNAME"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
     { 
         "label": "YEARSPAN",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "+", "_": {"is_datesuffix": True}},
+            {"OP": "+", "ENT_TYPE": "DATESUFFIX"},
         ] 
     },
     { 
         "label": "YEARSPAN",
 		"pattern": [
             {"ORTH": {"REGEX": r"^\d+[\–\-/]\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
         ] 
     },
     { 
         "label": "YEARSPAN",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}}, 
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}},
-            {"_": {"is_dateseparator": True}},
-            {"OP": "*", "_": {"is_dateprefix": True}}, 
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
         ] 
     },
     { 
@@ -66,7 +66,7 @@ patterns_fr_YEARSPAN = [
 		"pattern": [ 
             {"OP": "?", "LOWER": {"REGEX": "^ann[eé]es?$"}},
             {"LOWER": {"REGEX": r"^\d+$"}}, 
-            {"_": {"is_dateseparator": True}},
+            {"ENT_TYPE": "DATESEPARATOR"},
             {"LOWER": {"REGEX": r"^\d+$"}} 
         ]
     },    
@@ -80,38 +80,38 @@ patterns_fr_YEARSPAN = [
     {
         "label": "YEARSPAN",
         "pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_ordinal": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "ORDINAL"},
             {"LOWER": {"REGEX": siecle_millenaire}},
-            {"OP": "*", "_": {"is_datesuffix": True}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
         ]
     },
     {
         "label": "YEARSPAN",
         "pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_ordinal": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "ORDINAL"},
             {"OP": "?", "LOWER": {"REGEX": siecle_millenaire}},
-            {"OP": "*", "_": {"is_datesuffix": True}},
-            {"_": {"is_dateseparator": True}},
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_ordinal": True}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "ORDINAL"},
             {"LOWER": {"REGEX": siecle_millenaire}},
-            {"OP": "*", "_": {"is_datesuffix": True}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
         ]
     },
     {
         "label": "YEARSPAN",
         "pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_ordinal": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "ORDINAL"},
             {"LOWER": {"REGEX": siecle_millenaire}},
-            {"OP": "*", "_": {"is_datesuffix": True}},
-            {"_": {"is_dateseparator": True}},
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_ordinal": True}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "ORDINAL"},
             {"OP": "?", "LOWER": {"REGEX": siecle_millenaire}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     }
 ]

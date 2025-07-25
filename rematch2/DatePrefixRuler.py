@@ -45,8 +45,8 @@ from .DocSummary import DocSummary
 @Language.factory("dateprefix_ruler", default_config={"patterns": []})
 def create_dateprefix_ruler(nlp: Language, name: str = "dateprefix_ruler", patterns: list=[]) -> BaseRuler:
     
-    if not Token.has_extension("is_ordinal"):
-        Token.set_extension(name="is_ordinal", getter=is_ordinal)
+    #if not Token.has_extension("is_ordinal"):
+       #Token.set_extension(name="is_ordinal", getter=is_ordinal)
 
     
     ruler = BaseRuler(
@@ -54,6 +54,7 @@ def create_dateprefix_ruler(nlp: Language, name: str = "dateprefix_ruler", patte
         name=name,
         spans_key=DEFAULT_SPANS_KEY,
         phrase_matcher_attr="LOWER",
+        annotate_ents=True, # to refer to prefixes in other patterns as {"ENT_TYPE": "DATEPREFIX"}
         validate=False,
         overwrite=False
     )  
@@ -118,6 +119,8 @@ def create__dateprefix_ruler_cs(nlp: Language, name: str = "dateprefix_ruler") -
 # to test this module, run from package root:
 # python -m rematch2.DatePrefixRuler
 if __name__ == "__main__":
+    from spacy.pipeline import Pipe
+    from spacy.pipeline import SpanRuler
 
     tests = [
         {"lang": "de", "text": "erbaut Anfang bis Mitte 1480 bis Ende 1275 oder Anfang des 16. Jahrhunderts"},
@@ -138,8 +141,20 @@ if __name__ == "__main__":
         print(f"-------------\nlanguage = {lang}")
         nlp = get_pipeline_for_language(lang)
         nlp.add_pipe("dateprefix_ruler", last=True)
-        doc = nlp(text)
         
+        tester: SpanRuler = nlp.add_pipe("span_ruler", config = {"spans_key": DEFAULT_SPANS_KEY})
+        tester.add_patterns([
+            { 
+                "label": "PREFIXED_YEAR", 
+                "pattern": [
+                    { "OP": "+", "ENT_TYPE": "DATEPREFIX" }, 
+                    { "LOWER": { "REGEX": r"\d+" } }
+                ]
+            }
+        ])
+
+        doc = nlp(text)
+        #filtered_doc = spacy.util.filter_spans(doc.spans.get(DEFAULT_SPANS_KEY, []))
         #print("Tokens:\n" + DocSummary(doc).tokens("text"))
         print("Spans:\n" + DocSummary(doc).spans_to_text())
 

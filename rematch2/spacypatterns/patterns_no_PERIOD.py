@@ -17,70 +17,70 @@ patterns_no_PERIOD = [
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": r"^steinalder(?:en)?$"}}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": r"^(?:tidlig|mellom|sei?n)(?:mesolitt?iske?|mesol[iuo]tikk?um)$"}}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": r"^(?:tidlig|mellom|sei?n)(?:neolitt?iske?|neolitikk?um)$"}}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": "metalltid"}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}}, 
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"LOWER": {"REGEX": r"^brons(?:ea|å|aa?)lder(?:en)?$"}}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": r"^j[eäæ]rn(?:å|aa?)lder(?:en)?$"}}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": r"^romer(?:ske?|tid)$"}}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": r"^folkevandringstid(?:en)?$"}}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": r"^merovingertid(?:en)?$"}}
         ] 
     },
     { 
         "label": "PERIOD",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": r"^vikinge?tid(?:en)?$"}}
         ] 
     },

@@ -27,7 +27,7 @@ from .Decorators import run_timed
 class BaseRuler(SpanRuler):
     
     def __call__(self, doc: Doc) -> Doc:
-        print(f"{self.name}")
+        #print(f"{self.name}")
         return SpanRuler.__call__(self, doc)      
 
 
@@ -56,103 +56,110 @@ class BaseRuler(SpanRuler):
 
             # is a pattern present? (may be either a list or a string)
             pattern = item.get("pattern", "")
-            if len(pattern) > 0:
+            if len(pattern) == 0:
+                continue
 
-                # if already a pre-structured token pattern [{}, {}, ...]
-                if isinstance(pattern, list):
+            # if already a pre-structured token pattern [{}, {}, ...]
+            if isinstance(pattern, list):
 
-                    # just append to normalized_patterns as is
-                    normalized_patterns.append({
-                        "id": clean_id,
-                        "label": clean_label,
-                        "pattern":  pattern
-                    })
+                # just append to normalized_patterns as is
+                normalized_patterns.append({
+                    "id": clean_id,
+                    "label": clean_label,
+                    "pattern":  pattern
+                })
 
-                # if it is a string term or phrase
-                elif isinstance(pattern, str):
+            # if it is a string term or phrase
+            elif isinstance(pattern, str):
                         
-                    # NOTE - main text normalisation is now part of the pipeline
-                    # so is handled below in doc = nlp.make_doc(clean_phrase)
-                    clean_phrase = pattern.lower()          
+                # NOTE - main text normalisation is now part of the pipeline
+                # so is handled below in doc = nlp.make_doc(clean_phrase)
+                clean_phrase = pattern.lower()          
                     
-                    # if too small don't include it at all
-                    if len(clean_phrase) < min_term_length:
+                # if too small don't include it at all
+                if len(clean_phrase) < min_term_length:
+                    continue
+
+                # first tokenize the phrase
+                # NOTE - nlp.make_doc doesn't do POS or lemmas
+                # doc = nlp.make_doc(clean_phrase)
+                # so do this instead
+                disabled = nlp.select_pipes(disable=["ner"])
+                doc = nlp(clean_phrase)
+                disabled.restore()
+
+                phrase_length = len(doc)
+                        
+                # build a new token pattern for this phrase
+                new_pattern = []                    
+                # for each term (token) in the phrase
+                for tok in doc:
+                    
+                    element = {}
+
+                    text = (tok.text or "").strip()
+                    
+                    # is this a punctuation token?
+                    if tok.pos_ == "PUNCT":
+                        element["POS"] = "PUNCT"
+                        element["ORTH"] = text
+                        new_pattern.append(element)
                         continue
 
-                    # first tokenize the phrase
-                    # NOTE - this doesn't do POS or lemmas
-                    #doc = nlp.make_doc(clean_phrase)
-                    # so do this instead
-                    disabled = nlp.select_pipes(disable=["ner"])
-                    doc = nlp(clean_phrase)
-                    #doc.user_data = doc.user_data.copy()  # copy user data from original doc
-                    disabled.restore()
-
-
-                    phrase_length = len(doc)
+                    # lemmatize term if required (and if term long enough). Uses both lemma AND original term,
+                    # lemmatization may not work on capitalised text (as spaCy may regard it as a proper noun),
+                    # and there doesn't seem a way to specify a rule to match on the lowercase of the lemma                    
                         
-                    # build a new token pattern for this phrase
-                    new_pattern = []                    
-                    # for each term (token) in the phrase
-                    # for n, tok in enumerate(doc, 0):
-                    for tok in doc:
-                        element = {}
-
-                        # lemmatize term if required (and if term long enough). Uses both lemma AND original term,
-                        # lemmatization may not work on capitalised text (as spaCy may regard it as a proper noun),
-                        # and there doesn't seem a way to specify a rule to match on the lowercase of the lemma                    
-                        text = (tok.text or "").strip()
+                    if (lemmatize == True and len(text) >= min_lemmatize_length):
+                        # lemmatization of full text may be different to lemmatisation of vocabulary term,
+                        # and cannot use "LOWER" in conjunction with "LEMMA" in spaCy patterns here, so  
+                        # using a set to list unique case variants of either original term text OR lemma 
+                        # so pattern built here is:
+                        # [
+                        # { "LEMMA": { "IN" { [ "SKIRT", "skirt", "Skirt", "SKIRTING", "skirting", "Skirting" ]}}},
+                        # { "LEMMA": { "IN" { [ "BOARD", "board", "Board", "BOARDS", "boards", "Boards" ]}}}
+                        # ] 
+                        lemma = (tok.lemma_ or "").strip()
                         
-                        if (lemmatize == True and len(text) >= min_lemmatize_length):
-                            # lemmatization of full text may be different to lemmatisation of vocabulary term,
-                            # and cannot use "LOWER" in conjunction with "LEMMA" in spaCy patterns here, so  
-                            # using a set to list unique case variants of either original term text OR lemma 
-                            # so pattern built here is:
-                            # [
-                            # { "LEMMA": { "IN" { [ "SKIRT", "skirt", "Skirt", "SKIRTING", "skirting", "Skirting" ]}}},
-                            # { "LEMMA": { "IN" { [ "BOARD", "board", "Board", "BOARDS", "boards", "Boards" ]}}}
-                            # ] 
-                            lemma = (tok.lemma_ or "").strip()
-                        
-                            variants = {
-                                lemma.upper(), 
-                                lemma.lower(), 
-                                lemma.title(), 
-                                text.upper(), 
-                                text.lower(), 
-                                text.title()
-                            }                        
+                        variants = {
+                            lemma.upper(), 
+                            lemma.lower(), 
+                            lemma.title(), 
+                            text.upper(), 
+                            text.lower(), 
+                            text.title()
+                        }                        
                             
-                            element["LEMMA"] = { "IN": list(variants) }   
-                        else:
-                            # just match the term, ignore case. Pattern built here is:
-                            # [{ "LOWER": "skirting" }, { "LOWER": "boards" }]   
-                            element["LOWER"] = text.lower()                       
+                        element["LEMMA"] = { "IN": list(variants) }   
+                    else:
+                        # just match the term, ignore case. Pattern built here is:
+                        # [{ "LOWER": "skirting" }, { "LOWER": "boards" }]   
+                        element["LOWER"] = text.lower()                       
                         
-                        # add POS restriction if any passed in or any present in this item
-                        # note 06/03/2024 - POS (was) only applied to LAST term if multi-word phrase
-                        # e.g. { "LEMMA": "board", "POS": { "IN": ["NOUN", "PROPN"] }}
-                        # POS now applied ONLY to single terms, NOT to multi-word phrases, which
-                        # are regarded more likely to be correct matches without POS restriction
-                        if (len(clean_pos) > 0 and phrase_length == 1):
-                            if isinstance(clean_pos, list):
-                                element["POS"] = { "IN": clean_pos }
-                            elif isinstance(clean_pos, str):
-                                element["POS"] = { "IN": [clean_pos] }
+                    # add POS restriction if any passed in or any present in this item
+                    # note 06/03/2024 - POS (was) only applied to LAST term if multi-word phrase
+                    # e.g. { "LEMMA": "board", "POS": { "IN": ["NOUN", "PROPN"] }}
+                    # POS now applied ONLY to single terms, NOT to multi-word phrases, which
+                    # are regarded more likely to be correct matches without POS restriction
+                    if (len(clean_pos) > 0 and phrase_length == 1):
+                        if isinstance(clean_pos, list):
+                            element["POS"] = { "IN": clean_pos }
+                        elif isinstance(clean_pos, str):
+                            element["POS"] = { "IN": [clean_pos] }
 
-                        new_pattern.append(element)
+                    new_pattern.append(element)
                         
-                    # add newly built pattern to normalized_patterns
-                    # print(new_pattern)
-                    normalized_patterns.append({
-                        "id": clean_id,
-                        "label": clean_label,
-                        "pattern":  new_pattern
-                    })
+                # add newly built pattern to normalized_patterns
+                # print(new_pattern)
+                normalized_patterns.append({
+                    "id": clean_id,
+                    "label": clean_label,
+                    "pattern":  new_pattern
+                })
 
-         # temp - write patterns out for examination
-        with open('normalized_patterns.json', 'w') as f:
-            json.dump(normalized_patterns, f)
+        # temp - write patterns out for examination
+        #with open('normalized_patterns.json', 'w') as f:
+            #json.dump(normalized_patterns, f)
 
         # finally, return the normalized list 
         return normalized_patterns

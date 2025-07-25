@@ -17,94 +17,94 @@ patterns_nl_YEARSPAN = [
     { 
         "label": "YEARSPAN",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}}, 
-            {"_": {"is_monthname": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ENT_TYPE": "MONTHNAME"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
     { 
         "label": "YEARSPAN", 
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_seasonname": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "SEASONNAME"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
     { 
         "label": "YEARSPAN",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"_": {"is_datesuffix": True}}
+            {"ENT_TYPE": "DATESUFFIX"}
         ] 
     },
     { 
         "label": "YEARSPAN", 
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": r"^\d+[\–\-/]\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ] 
     },
     { 
         "label": "YEARSPAN", 
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}},
-            {"_": {"is_dateseparator": True}}, 
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"}, 
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"_": {"is_datesuffix": True}}
+            {"ENT_TYPE": "DATESUFFIX"}
         ] 
     },
     { 
         "label": "YEARSPAN", 
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}},
-            {"_": {"is_dateseparator": True}}, 
-            {"OP": "*", "_": {"is_dateprefix": True}}, 
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"}, 
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ] 
     },
     { 
         "label": "YEARSPAN",         
         "comment": "e.g. vijfde eeuw na Christus",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_ordinal": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "ORDINAL"},
             {"LOWER": {"REGEX": r"^(eeuw|millennium)$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
     { 
         "label": "YEARSPAN",         
         "comment": "e.g. vijfde eeuw na Christus",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": r"\d+e/\d+e"}},
             {"LOWER": {"REGEX": r"^(eeuw|millennium)$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
         ]
     },
     { 
         "label": "YEARSPAN",        
         "comment": "e.g. 14e - 15e eeuw",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_ordinal": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "ORDINAL"},
             {"OP": "?", "LOWER": {"REGEX": r"^(eeuw|millennium)$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}},
-            {"_": {"is_dateseparator": True}},
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_ordinal": True}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "ORDINAL"},
             {"LOWER": {"REGEX": r"^(eeuw|millennium)$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     }
 ]

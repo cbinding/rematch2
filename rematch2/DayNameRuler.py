@@ -51,6 +51,7 @@ def create_dayname_ruler(nlp: Language, name: str="dayname_ruler", patterns: lis
         name=name,
         spans_key=DEFAULT_SPANS_KEY,
         phrase_matcher_attr="LOWER",
+        annotate_ents=True, # to reference in other patterns as {"ENT_TYPE": "DAYNAME"}
         validate=False,
         overwrite=False
     )  

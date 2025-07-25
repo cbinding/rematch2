@@ -18,29 +18,35 @@ patterns_es_YEARSPAN = [
         "label": "YEARSPAN",        
         "comment": "e.g. start of March 1715 AD",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_monthname": True}},
+            #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "MONTHNAME"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            #"OP": "*", "ENT_TYPE": "DATESUFFIX"}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
         ]
     },    
     { 
         "label": "YEARSPAN",        
         "comment": "e.g. mid autumn 1715 AD",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_seasonname": True}},
+            #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "SEASONNAME"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            #{"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
     { 
         "label": "YEARSPAN",         
         "comment": "e.g. mid 1580 AD",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "+", "_": {"is_datesuffix": True}},
+            {"OP": "+", "ENT_TYPE": "DATESUFFIX"},
+            #{"OP": "+", "ENT_TYPE": "DATESUFFIX"},
         ] 
     },
     { 
@@ -48,7 +54,8 @@ patterns_es_YEARSPAN = [
         "comment": "",
 		"pattern": [
             {"ORTH": {"REGEX": r"^\d+[\–\-/]\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}},
+            #{"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
         ] 
     },
     { 
@@ -56,13 +63,17 @@ patterns_es_YEARSPAN = [
         
         "comment": "",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}},
-            {"_": {"is_dateseparator": True}},
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            #{"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"},
+            #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            #{"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ] 
     },
     { 
@@ -70,45 +81,56 @@ patterns_es_YEARSPAN = [
 		"pattern": [
             {"LOWER": {"REGEX": r"^(siglos?|milenios?)$"}},
             {"TEXT": {"REGEX": r"[MCDLXVI]+\-[MCDLXVI]+"}}, 
-            {"OP": "?", "_": {"is_datesuffix": True}},
+            #{"OP": "?", "ENT_TYPE": "DATESUFFIX"},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
         ]
     },
     { 
         "label": "YEARSPAN",         
         "comment": "",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": r"^(siglos?|milenios?)$"}},
-            {"_": {"is_ordinal": True}},           
-            {"OP": "?", "_": {"is_datesuffix": True}},
+            {"ENT_TYPE": "ORDINAL"},  
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},         
+            #{"OP": "?", "ENT_TYPE": "DATESUFFIX"},
         ]
     },
     { 
         "label": "YEARSPAN",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": r"^(siglos?|milenios?)$"}},
-            {"_": {"is_ordinal": True}},          
-            {"OP": "?", "_": {"is_datesuffix": True}},
-            {"_": {"is_dateseparator": True}},
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"ENT_TYPE": "ORDINAL"},          
+            #{"OP": "?", "ENT_TYPE": "DATESUFFIX"},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"},
+            #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"OP": "?", "LOWER": {"REGEX": r"^(siglos?|milenios?)$"}}, 
-            {"_": {"is_ordinal": True}},           
-            {"OP": "?", "_": {"is_datesuffix": True}},
+            {"ENT_TYPE": "ORDINAL"},           
+            #{"OP": "?", "ENT_TYPE": "DATESUFFIX"},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
         ]
     },
     { 
         "label": "YEARSPAN",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}}, 
+            #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"OP": "?", "LOWER": {"REGEX": r"^(siglos?|milenios?)$"}},
-            {"_": {"is_ordinal": True}},            
-            {"OP": "?", "_": {"is_datesuffix": True}},
-            {"_": {"is_dateseparator": True}},
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"ENT_TYPE": "ORDINAL"},            
+            {"OP": "?", "ENT_TYPE": "DATESUFFIX"},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            #{"ENT_TYPE": "DATESEPARATOR"},
+            #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"LOWER": {"REGEX": r"^(siglos?|milenios?)$"}}, 
-            {"_": {"is_ordinal": True}},            
-            {"OP": "?", "_": {"is_datesuffix": True}}
+            {"ENT_TYPE": "ORDINAL"},            
+            #{"OP": "?", "ENT_TYPE": "DATESUFFIX"}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
         ]
     }
 ]

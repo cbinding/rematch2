@@ -50,6 +50,7 @@ def create_ordinal_ruler(nlp: Language, name: str="ordinal_ruler", patterns: lis
         name=name,
         spans_key=DEFAULT_SPANS_KEY,
         phrase_matcher_attr="LOWER",
+        annotate_ents=True, # to reference in other patterns as {"ENT_TYPE": "ORDINAL"}
         validate=False,
         overwrite=False
     ) 

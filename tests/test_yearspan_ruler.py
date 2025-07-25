@@ -17,7 +17,7 @@ class TestYearSpanRuler(unittest.TestCase):
         nlp.add_pipe("yearspan_ruler", last=True)
         doc = nlp(txt)
         spans = doc.spans.get(Util.DEFAULT_SPANS_KEY, [])
-        found = next((span for span in spans if span.label_ == "YEARSPAN" and span.text == "7. bis 6. Jahrhundert v. Chr."), False)
+        found = next((span for span in spans if span.label_ == "YEARSPAN" and span.text == "7. bis 6. Jahrhundert v. Chr." and span.start == 5), False)
         self.assertTrue(found, msg=doc.ents)
         
 
@@ -27,7 +27,7 @@ class TestYearSpanRuler(unittest.TestCase):
         nlp.add_pipe("yearspan_ruler", last=True)
         doc = nlp(txt)
         spans = doc.spans.get(Util.DEFAULT_SPANS_KEY, [])
-        found = next((ent for ent in doc.ents if ent.label_ == "YEARSPAN" and ent.text == "7th to 6th century BC"), False)
+        found = next((span for span in spans if span.label_ == "YEARSPAN" and span.start == 5 and span.end == 10), False)
         self.assertTrue(found)
 
 
@@ -36,7 +36,7 @@ class TestYearSpanRuler(unittest.TestCase):
         nlp = Util.get_pipeline_for_language("es")
         nlp.add_pipe("yearspan_ruler", last=True)
         doc = nlp(txt)
-        for ent in doc.ents:
-            print(ent.text)
-        found = next((ent for ent in doc.ents if ent.label_ == "YEARSPAN" and ent.start_char == 22), False)
+        spans = doc.spans.get(Util.DEFAULT_SPANS_KEY, [])
+        print(spans)
+        found = next((span for span in spans if span.label_ == "YEARSPAN" and span.start == 4 and span.end == 10), False)
         self.assertTrue(found)

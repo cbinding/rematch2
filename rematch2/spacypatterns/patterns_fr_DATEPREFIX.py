@@ -36,6 +36,15 @@ patterns_fr_DATEPREFIX = [
     { 
         "label": "DATEPREFIX", 
         
+        "comment": "beginning of the, middle of the, end of the",
+		"pattern": [
+            {"LOWER": {"REGEX": r"^(d[eé]but|milieu|fin)$"}},
+            {"LOWER": "au"}
+        ]
+    },
+    { 
+        "label": "DATEPREFIX", 
+        
         "comment": "during the",
 		"pattern": [
             {"LOWER": "durant"},

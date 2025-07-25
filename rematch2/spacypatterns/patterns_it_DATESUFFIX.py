@@ -14,10 +14,15 @@ History :   25/01/2024 CFB Initially created script
 =============================================================================
 """
 patterns_it_DATESUFFIX = [
-    {
+  {
     "id": "ad",
     "label": "DATESUFFIX",
     "pattern": [{"LOWER": {"REGEX": r"^a\.?d\.?$"}}]
+  },  
+  {
+    "id": "ad",
+    "label": "DATESUFFIX",
+    "pattern": [{"LOWER": {"REGEX": r"^d\.?c\.?$"}}]
   },  
   {
     "id": "bc",
@@ -25,10 +30,11 @@ patterns_it_DATESUFFIX = [
     "pattern": [{"LOWER": {"REGEX": r"^b\.?c\.?$"}}]
   }, 
   {
-    "id": "ad",
+    "id": "bc",
     "label": "DATESUFFIX",
-    "pattern": [{"LOWER": {"REGEX": r"^c\.?e\.?$"}}]
-  },   
+    "pattern": [{"LOWER": {"REGEX": r"^a\.?c\.?$"}}]
+  }, 
+   
   {
     "id": "bc",
     "label": "DATESUFFIX",

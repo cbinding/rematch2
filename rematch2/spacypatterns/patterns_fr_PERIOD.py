@@ -237,7 +237,7 @@ patterns_fr_PERIOD = [
     {
         "label": "PERIODOLD",
         "pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"OP": "?", "LOWER": {
                 "REGEX": "^(premier|deuxi[eè]me|1er|2e|second)$"}},
             {"LOWER": {"REGEX": "^[aâ]ge$"}},

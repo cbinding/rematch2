@@ -52,7 +52,7 @@ patterns_de_DATEPREFIX = [
     { 
         "label": "DATEPREFIX",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(anfang|vor|im|wurde|nach|seit|bis|ab|von|aus)$"}}
+            {"LOWER": {"REGEX": r"^(anfang|vor|im|nach|seit|ab|von|aus)$"}}
         ]
     }
 ]

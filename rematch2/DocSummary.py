@@ -38,7 +38,7 @@ class DocSummary:
 
     def __init__(
             self, 
-            doc: Doc, 
+            doc: Doc, # required
             spans_key: str=DEFAULT_SPANS_KEY, 
             metadata: dict[str, str] = {}            
         ):
@@ -48,38 +48,43 @@ class DocSummary:
 
         # copy any entities to spans so they can be reported and displayed
         # in the same way as all other spans identified
-        for ent in doc.ents: doc.spans[spans_key].append(ent)            
+        #for ent in doc.ents: doc.spans[spans_key].append(ent)            
 
         # calculate and attach concept frequency (similar to term frequency)
-        self._calculate_concept_frequency() 
+        #self._calculate_concept_frequency() 
 
 
-    def _calculate_concept_frequency(self):
-        spans = self._doc.spans.get(self._spans_key, [])
-        label_count = {}
-        id_count = {}
-        for span in spans:
-            # increment counter of spans for this label 
-            # (number of concepts of this type in the document)
-            label = (span.label_ or "nothing")
-            if len(label) > 0:
-                if label not in label_count:
-                    label_count[label] = 1
-                else:
-                    label_count[label] += 1
-            # increment counter of spans for this id 
-            # (number of times this concept appears in the document)
-            id = (span.id_ or "nothing")
-            if len(id) > 0:
-                if id not in id_count:
-                    id_count[id] = 1
-                else:
-                    id_count[id] += 1
+    @staticmethod
+    def _id_for_span(span: Span):
+        id = ""
+        if len(span.id_.strip()) > 0:
+            id = span.id_.strip()
+        elif len(span.text.strip()) > 0:
+            id = span.text.strip()
+        else:
+            id = "other"
+        return id
+
+
+    def get_frequencies_by_id(self) -> dict[str, dict]:
         
-        # casting to floats to ensure the result is float; 
-        # default denominator of 1 prevents divide by zero errors
-        cf_value = lambda span: float(id_count.get(span.id_, 0)) / float(label_count.get(span.label_, 1))
-        Span.set_extension("cf_value", getter = cf_value, force=True)
+        id_counts: dict[str, dict] = self.get_span_counts_by_id()
+        lbl_counts: dict[str, dict] = self.get_span_counts_by_label()
+        frequencies = {}
+        for span in self.spans:
+            id = self._id_for_span(span)
+            
+            if id not in frequencies:
+                id_count = id_counts.get(id, {}).get("count", 0)
+                lbl_count = lbl_counts.get(span.label_, {}).get("count", 1)
+
+                frequencies[id] = { 
+                    "id": id, 
+                    "cf": float(id_count) / float(lbl_count),
+                    "cf_explain": f"id_count={id_count}, label_count={lbl_count}"
+                } 
+
+        return frequencies
         
 
     @property
@@ -94,7 +99,8 @@ class DocSummary:
 
     @property
     def spans(self) -> list[Span]:
-      return self._doc.spans.get(self._spans_key, [])
+      spans = self._doc.spans.get(self._spans_key, [])
+      return spacy.util.filter_spans(spans)
 
 
     @property
@@ -108,13 +114,13 @@ class DocSummary:
         return pairs
 
     @cached_property
-    def span_counts(self) -> list[SpanPairs]:
+    def span_counts(self) -> dict[str, dict]:
         counts = self.get_span_counts_by_id() 
         return counts
 
 
     @cached_property
-    def label_counts(self) -> list:
+    def label_counts(self) -> dict[str, dict]:
         counts = self.get_span_counts_by_label()
         return counts
 
@@ -229,7 +235,7 @@ class DocSummary:
             "label": span.label_,
             "id": span.id_,
             "text": span.text,
-            "cf": span._.cf_value
+            #"cf": span._.cf_value
             } for span in self.spans]).drop_duplicates()
 
 
@@ -308,7 +314,7 @@ class DocSummary:
             "ORDINAL", 
             "MONTHNAME", 
             "SEASONNAME"
-        ]) -> list[dict]:
+        ]) -> dict[str, dict]:
         counts = {}
         #spans_count = len(list(filter(lambda s: s.label_ not in exclude, spans)))
 
@@ -317,37 +323,55 @@ class DocSummary:
             if span.label_ in exclude:
                 continue
 
-            # get suitable identifier to aggregate counts
-            id=""
-            if span.id_:
-                id = span.id_
-            elif span.ent_id_:
-                id = span.ent_id_
-            elif span.lemma_:
-                id = span.lemma_
-            elif span.text:
-                id = span.text
-            else:
-                id = "other"
-             
+            id = self._id_for_span(span)
+           
             # create a new record if not encountered before, or increment the existing count
             if id not in counts:
-                counts[id] = { "id": id, "label": span.label_, "text": span.lemma_, "count": 1, "cf": span._.cf_value } 
+                counts[id] = { "id": id, "label": span.label_, "text": [span.text], "count": 1 } 
             else:
-                counts[id]["count"] += 1                        
+                counts[id]["count"] += 1 
+
+            # might be a variation of the word
+            if span.text.lower() not in map(str.lower, counts[id]["text"]):
+                #if span.text.lower() not in (value.lower() for value in counts[id]["text"]):
+                counts[id]["text"].append(span.text)
         
-        # return as list sorted by ascending count
-        return sorted(list(counts.values()), key=lambda x: x.get("count", 0), reverse=True)
+        return counts
 
 
-    def span_counts_to_df(self) -> DataFrame: 
+    def span_counts_to_df(self) -> DataFrame:        
+        #span_counts = sorted(list(self.span_counts.values()), key=lambda x: (x.get("count", 0), x.get("cf", 0)), reverse=True)
+        
+        span_counts = list(self.span_counts.values())
+        frequencies = self.get_frequencies_by_id()
+
+        # add concept frequencies to span count records
+        for sc in span_counts:
+            sc["cf"] = float(frequencies.get(sc["id"], {}).get("cf", 0))
+            sc["cf_explain"] = frequencies.get(sc["id"], {}).get("cf_explain", "")
+
+        # sort the span count records
+        sorted_list = sorted(span_counts, key=lambda x: (x.get("count", 0), x.get("cf", 0)), reverse=True)
+
+        # return as dataframe
+        #counts = sorted(list(self.span_counts.values()), key=lambda x: (x.get("count", 0), x.get("cf", 0)), reverse=True)
         return DataFrame([{
-            "id": item.get("id", ""),
-            "label": item.get("label", ""),
-            "text": item.get("text", ""),
-            "count": int(item.get("count", 0)),
-            "cf": float(item.get("cf", 0))
-            } for item in self.span_counts]) 
+            "id": sc.get("id", ""),
+            "label": sc.get("label", ""), 
+            "text": r" / ".join(sc.get("text", [])),
+            "count": int(sc.get("count", 0)),
+            "cf": float(sc.get("cf", 0)),
+            #"cf_explain": sc.get("cf_explain", ""),
+            } for sc in sorted_list]) 
+    
+       # return DataFrame([{
+         #   "id": sc.get("id", ""),
+         #   "label": sc.get("label", ""),
+         #   "text": sc.get("text", ""),
+         #   "count": int(sc.get("count", 0)),
+         #   "cf": float(frequencies.get(sc["id"], {}).get("cf", 0)),
+         #   "cf_explain": frequencies.get(sc["id"], {}).get("cf_explain", ""),
+         #   } for sc in span_counts]) 
 
 
     def span_counts_to_csv(self, sep: str=",") -> str:
@@ -377,6 +401,7 @@ class DocSummary:
             index=False, 
             render_links=True, 
             escape=False,
+            float_format=lambda x: "{:5.3f}".format(x),
             na_rep='',
             classes=['table', 'table-sm', 'table-striped', 'table-light']
         ) 
@@ -406,7 +431,7 @@ class DocSummary:
             "ORDINAL", 
             "MONTHNAME", 
             "SEASONNAME"
-        ]) -> list[dict[str, int]]:
+        ]) -> dict[str, dict]:
          
         counts = {}
 
@@ -418,21 +443,24 @@ class DocSummary:
             
             # create a new record if not encountered before, or increment the count
             if label not in counts:
-                counts[label] = { "label": label, "count": 1 } 
+                counts[label] =  { "label": label, "count": 1 }  
             else:
                 counts[label]["count"] += 1            
         
         # return as list sorted by ascending count
-        return sorted(list(counts.values()), key=lambda x: x.get("count", 0), reverse=True)
+        return counts
 
 
     def label_counts_to_df(self) -> DataFrame: 
+
+        counts = sorted(list(self.label_counts.values()), key=lambda x: x.get("count", 0), reverse=True)
+
         # convert to DataFrame, casting count to int
         # (in case it is a float, e.g. if cf_value was used)
         return DataFrame([{
             "label": item.get("label", ""),
             "count": int(item.get("count", 0))
-            } for item in self.label_counts]) 
+            } for item in counts]) 
 
 
     def label_counts_to_csv(self, sep: str=",") -> str:

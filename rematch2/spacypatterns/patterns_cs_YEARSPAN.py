@@ -20,29 +20,29 @@ patterns_cs_YEARSPAN = [
         "label": "YEARSPAN",
         "comment": "Month and year e.g. start of March 1715 AD",
         "pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_monthname": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "MONTHNAME"},
             {"ORTH": {"REGEX": r"^\d{4}$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
     {
         "label": "YEARSPAN",
         "comment": "Season and year e.g. mid autumn 1715 AD",
         "pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
-            {"_": {"is_seasonname": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            {"ENT_TYPE": "SEASONNAME"},
             {"ORTH": {"REGEX": r"^\d{4}$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
     {
         "label": "YEARSPAN",
         "comment": "decade e.g. late 1920s",
         "pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d{4}s$"}},
-            {"OP": "+", "_": {"is_datesuffix": True}}
+            {"OP": "+", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
     {
@@ -50,7 +50,7 @@ patterns_cs_YEARSPAN = [
         "comment": "year with tolerance e.g. 1715±9 AD",
         "pattern": [
             {"ORTH": {"REGEX": r"^\d+±\d+$"}},
-            {"OP": "+", "_": {"is_datesuffix": True}}
+            {"OP": "+", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
     {
@@ -58,65 +58,65 @@ patterns_cs_YEARSPAN = [
         "comment": "year with tolerance e.g. 1715+9-5 AD",
         "pattern": [
             {"ORTH": {"REGEX": r"^\d+\+\d+\-\d+$"}},
-            {"OP": "+", "_": {"is_datesuffix": True}}
+            {"OP": "+", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
     {
         "label": "YEARSPAN",
         "comment": "year with prefix e.g. early 1580 AD",
         "pattern": [
-            {"OP": "+", "_": {"is_dateprefix": True}},
+            {"OP": "+", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d{3,4}$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     },
     {
         "label": "YEARSPAN",
         "comment": "year with suffix e.g. 1580 AD",
         "pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d{3,4}$"}},
-            {"OP": "+", "_": {"is_datesuffix": True}}
+            {"OP": "+", "ENT_TYPE": "DATESUFFIX"}
         ]
     },    
     {
         "label": "YEARSPAN",
         "comment": "year span e.g. early 100 BC to late 100 AD",
         "pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d{3,4}$"}},            
-            {"OP": "*", "_": {"is_datesuffix": True}},
-            {"_": {"is_dateseparator": True}},
-            {"OP": "*", "_": {"is_dateprefix": True}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
             {"ORTH": {"REGEX": r"^\d{3,4}}$"}},
-            {"OP": "*", "_": {"is_datesuffix": True}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
         ]
     },
     { 
         "label": "YEARSPAN",
         "id": "ordinalcentury",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}}, 
-            {"OP": "+", "_": {"is_ordinal": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "+", "ENT_TYPE": "ORDINAL"},
             {"LOWER": {"REGEX": stoleti_tisicileti}},
             {"OP": "?","TEXT": "."},
-            {"OP": "*", "_": {"is_datesuffix": True}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
         ]
     },
     { 
         "label": "YEARSPAN",
 		"pattern": [
-            {"OP": "*", "_": {"is_dateprefix": True}}, 
-            {"OP": "+", "_": {"is_ordinal": True}},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "+", "ENT_TYPE": "ORDINAL"},
             {"OP": "?", "LOWER": {"REGEX": stoleti_tisicileti}},
             {"OP": "?","TEXT": "."},
-            {"OP": "*", "_": {"is_datesuffix": True}},
-            {"_": {"is_dateseparator": True}},
-            {"OP": "*", "_": {"is_dateprefix": True}}, 
-            {"OP": "+", "_": {"is_ordinal": True}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"OP": "+", "ENT_TYPE": "ORDINAL"},
             {"LOWER": {"REGEX": stoleti_tisicileti}},
             {"OP": "?","TEXT": "."},
-            {"OP": "*", "_": {"is_datesuffix": True}}
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
         ]
     }
 ]
