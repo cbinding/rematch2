@@ -1,0 +1,15 @@
+[
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/139085", "term": "Coin (Contemporary Imitation)" }, 
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/139087", "term": "Coin (Modern Forgery)" }, 
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/139086", "term": "Coin (Modern Imitation)" }, 
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/95353", "term": "level" }, 
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/95306", "term": "scale" }, 
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96615", "term": "shift" }, 
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96379", "term": "point" }, 
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/143243", "term": "setting" }, 
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96735", "term": "staff" }, 
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/100151", "term": "paper" }, 
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96473", "term": "model" }, 
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/100107", "term": "desk" }, 
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/95183", "term": "crest" } 
+]

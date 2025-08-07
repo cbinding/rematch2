@@ -75,7 +75,7 @@ def create_vocabulary_ruler(
         pos: list[str] = [],
         patterns: list[dict] = [],   # list of match patterns
         supp_list: list[dict] = [],  # additional patterns to add to the vocabulary
-        stop_list: list[str] = []   # identifers not to be matched, to exclude specific concepts from results
+        stop_list: list[dict] = []   # with identifers not to be matched, to exclude specific concepts from results
     ) -> BaseRuler:
 
     # create the SpanRuler to use
@@ -100,7 +100,8 @@ def create_vocabulary_ruler(
     )
 
     # only include patterns with identifiers that are not in the stop_list
-    filtered_patterns = [p for p in normalized_patterns if p.get("id", "") not in stop_list]    
+    stop_ids = list(map(lambda item: item.get("id", ""), stop_list))    
+    filtered_patterns = [patt for patt in normalized_patterns if patt.get("id", "") not in stop_ids]    
     ruler.add_patterns(filtered_patterns)
     return ruler 
 
