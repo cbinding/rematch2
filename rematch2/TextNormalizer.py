@@ -14,9 +14,14 @@ License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 History :   
 20/06/2025 CFB adapted from StringCleaning.py, for use as pipeline components
 16/07/2025 CFB now single factory function 'normalize_text' with options
+            for spelling, ligatures, whitespace and punctuation normalisation
+            and with support for supplementary substitutions
+11/.08/2025 CFB added decode_unicode option to allow for unicode characters
+            to be converted to ASCII equivalents (e.g. accents removed)
 =============================================================================
 """
 import regex # using regex (not re) to allow for e.g. \p{Dash_Punctuation}
+from unidecode import unidecode # for removing accents from characters
 from typing import Tuple
 from spacy.tokens import Doc
 from spacy.pipeline import Pipe
@@ -29,6 +34,7 @@ class Substitution:
     find: str
     repl: str
     ignoreCase: Optional[bool] = True
+
 
 # text substitutions to normalize spelling (English)
 substitute_spelling_en: list[Substitution] = [
@@ -104,6 +110,8 @@ substitute_whitespace_en: list[Substitution] = [
     # words hyphenated at line break -
     # remove both hyphen and newline character
     # typical of text extracted from PDF docs
+    Substitution(r"(\p{Letter})\p{Separator}*[\r\n]([a-z])", r"\1 \2"),
+    # remove hyphen at end of line
     Substitution(r"\p{Dash_Punctuation}\p{Separator}*[\r\n]([a-z])", r"\1"),
     # remove newline characters unless at end of a sentence
     Substitution(r"([^.])\p{Separator}*[\r\n]", r"\1 "),
@@ -118,18 +126,21 @@ class TextNormalizer(Pipe):
     @staticmethod
     def _compileSub(sub: Substitution) -> Substitution:
         flags = regex.IGNORECASE | regex.MULTILINE if sub.ignoreCase else regex.MULTILINE
-        return Substitution(regex.compile(sub.find, flags), sub.repl, sub.ignoreCase)        
+        return Substitution(regex.compile(pattern=sub.find, flags=flags), sub.repl, sub.ignoreCase)        
 
-    def __init__(self, nlp: Language, subs: list[Substitution] = []):
+    # substitutions are compiled for use in the __call__ method
+    def __init__(self, nlp: Language, subs: list[Substitution] = [], decode_unicode: bool = True) -> None:
         self.nlp: Language = nlp
+        self.decode_unicode: bool = decode_unicode
         self.substitutions: list[Substitution] = list(map(self._compileSub, subs))
          
     def __call__(self, doc: Doc) -> Doc:
-        text = doc.text
+        text = unidecode(doc.text) if self.decode_unicode else doc.text
         
-        # perform text replacement for each of the substitutions
-        for substitution in self.substitutions:
-            text = substitution.find.sub(substitution.repl, text)
+        # perform text replacement for each of the substitutions,
+        # conditionally decoding any unicode characters
+        for item in self.substitutions:
+            text = item.find.sub(item.repl, text)
                
         # retokenize and return the Doc
         disabled = self.nlp.select_pipes(disable=["ner", "normalize_text"])
@@ -145,6 +156,7 @@ class TextNormalizer(Pipe):
 @Language.factory(
     name="normalize_text", 
     default_config={
+        "decode_unicode": True,
         "normalize_spelling": True,
         "normalize_ligatures": True,
         "normalize_whitespace": True, 
@@ -154,6 +166,7 @@ class TextNormalizer(Pipe):
 def normalize_text_en(
     nlp: Language, 
     name: str="normalize_text",
+    decode_unicode: bool=True,
     normalize_spelling: bool=True,
     normalize_ligatures: bool=True,
     normalize_whitespace: bool=True, 
@@ -161,16 +174,18 @@ def normalize_text_en(
     supplementary_subs: list[Substitution]=[]) -> Pipe:
 
     substitutions: list[Substitution] = [] 
-    # order can make a difference, so whitespace, punctuation & ligatures before spelling        
+    # order can make a difference, so whitespace, punctuation & ligatures before spelling  
+    # add the substitutions in the order they should be applied
+    substitutions.extend(substitute_ligatures_en if normalize_ligatures else []) 
     substitutions.extend(substitute_whitespace_en if normalize_whitespace else [])
     substitutions.extend(substitute_punctuation_en if normalize_punctuation else [])
-    substitutions.extend(substitute_ligatures_en if normalize_ligatures else [])    
     substitutions.extend(substitute_spelling_en if normalize_spelling else [])
     substitutions.extend(supplementary_subs)
     # redo whitespace substitution to ensure normalized after all other subs have run
-    substitutions.extend(substitute_whitespace_en if normalize_whitespace else [])
-    
-    return TextNormalizer(nlp, substitutions)
+    substitutions.extend(substitute_whitespace_en if normalize_whitespace else [])    
+
+    # create the TextNormalizer pipe with the substitutions        
+    return TextNormalizer(nlp=nlp, subs=substitutions, decode_unicode=decode_unicode)
 
 
 # to run this script directly for testing, run with -m from package root to ensure
@@ -179,11 +194,10 @@ if __name__ == "__main__":
     import spacy
     
     # usage example - testing whitespace & punctuation issues and inconsistent spelling
-    text = f"archeological  work indi-\ncated   an Iron Age/ Romano- British  /Roman\npost -hole, in( low -lying)ground.\nThis  was  near(vandal-\nized)\n  mediæval/post-medieval(15th-17th century? )foot-\nings. Items of Mediaeval &  paleolithic(archeological)jewelry dated to the 2nd -  3rd century and pottery & vertebræ of a fœtus were  located in the New Harbor area.  Gray colored  & oxidized,aluminum artifacts were   found near the theater."
+    text = f"archeological  work in Bełżec indi-\ncated   an Iron Age/ Romano- British  /Roman\npost -hole, in( low -lying)ground.\nThis  was  near(vandal-\nized)\n  mediæval/post-medieval(15th-17th century? )foot-\nings. Items of Mediaeval &  paleolithic(archeological)jewelry dated to the 2nd -  3rd century and pottery & vertebræ of a fœtus were  located in the New Harbor area.  Gray colored  & oxidized,aluminum artifacts were   found near the theater."
     
     nlp = spacy.load("en_core_web_sm", disable=["ner"]) 
-    nlp.add_pipe("normalize_text", before="tagger")
-    #nlp.add_pipe("normalize_text", before="tagger", config={"normalize_spelling": False})
+    nlp.add_pipe("normalize_text", before="tagger", config={"decode_unicode": True})
         
     print(f"\nBefore:\n\"{text}\"")
     doc = nlp(text)
