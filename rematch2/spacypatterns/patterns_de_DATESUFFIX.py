@@ -73,5 +73,12 @@ patterns_de_DATESUFFIX = [
         {"LOWER": "vor"}, 
         {"LOWER": "christus"}
       ]
+  },
+  {
+    "id": "ad7",
+    "label": "DATESUFFIX",
+    "pattern": [
+        {"LOWER": "vc"}
+      ]
   }  
 ]

@@ -48,9 +48,21 @@ patterns_de_YEARSPAN = [
         "comment": "e.g. '1580-1700 AD'",
 		"pattern": [
             {"ORTH": {"REGEX": r"^\d+[\–\-]\d+$"}},
-            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
+            {"OP": "+", "ENT_TYPE": "DATESUFFIX"}
         ] 
     },    
+    { 
+        "label": "YEARSPAN",
+		"pattern": [
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ORTH": {"REGEX": r"^\d+$"}},
+            {"OP": "+", "ENT_TYPE": "DATESUFFIX"},
+            {"ENT_TYPE": "DATESEPARATOR"},
+            {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
+            {"ORTH": {"REGEX": r"^\d+$"}},
+            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+        ] 
+    },
     { 
         "label": "YEARSPAN",
 		"pattern": [
@@ -60,7 +72,7 @@ patterns_de_YEARSPAN = [
             {"ENT_TYPE": "DATESEPARATOR"},
             {"OP": "*", "ENT_TYPE": "DATEPREFIX"}, 
             {"ORTH": {"REGEX": r"^\d+$"}},
-            {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
+            {"OP": "+", "ENT_TYPE": "DATESUFFIX"},
         ] 
     },
     { 

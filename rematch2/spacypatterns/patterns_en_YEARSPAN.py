@@ -170,16 +170,15 @@ patterns_en_YEARSPAN = [
             {"OP": "*", "ENT_TYPE": "DATESUFFIX"},
         ]
     },
-    {
-        "label": "YEARSPAN",
-        "comment": "shorthand century e.g. C19",
-        "pattern": [
-            {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
-            #{"OP": "*", "ENT_TYPE": "DATEPREFIX"},
-            {"ORTH": {"REGEX": r"^C[12]\d$"}},            
-            {"OP": "*", "ENT_TYPE": "DATESUFFIX"}
-        ]
-    },
+    #{
+        #"label": "YEARSPAN",
+        #"comment": "shorthand century e.g. C19",
+        #"pattern": [
+           # {"OP": "*", "ENT_TYPE": "DATEPREFIX"},
+            #{"ORTH": {"REGEX": r"^C[12]\d$"}},            
+            #{"OP": "*", "ENT_TYPE": "DATESUFFIX"}
+        #]
+    #},
     {
         "label": "YEARSPAN",
         "comment": "shorthand century span e.g. C19 - C20",

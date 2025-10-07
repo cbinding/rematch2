@@ -39,7 +39,7 @@ from .VocabularyRuler import create_vocabulary_ruler
 def create_periodo_ruler(
     nlp: Language, 
     name: str="periodo_ruler", 
-    periodo_authority_id: str="", 
+    periodo_authority_id: str|None=None, 
     supp_list: list=[], 
     stop_list: list=[]
     ) -> BaseRuler:
