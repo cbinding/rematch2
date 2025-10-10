@@ -138,7 +138,7 @@ class PeriodoData:
         for period in periods:
             id = period.value.get("id", "")
 
-            uri = f"{BASE_URI}{ period.value.get('id', '') }"
+            uri = f"{BASE_URI}{id}"
             label = period.value.get("label", "")
             language = period.value.get("language", "")
             localized = period.value.get("localizedLabels", {}).items()
@@ -148,7 +148,7 @@ class PeriodoData:
             # main terms
             lst.append({
                 "id": id,
-                "uri": f"{BASE_URI}{id}",
+                "uri": uri,
                 "label": label,
                 "minYear": min_year,
                 "maxYear": max_year,
@@ -161,7 +161,7 @@ class PeriodoData:
                     if (localizedLabel != label):
                         lst.append({
                             "id": id,
-                            "uri": f"{BASE_URI}{id}",
+                            "uri": uri,
                             "label": localizedLabel,
                             "minYear": min_year,
                             "maxYear": max_year,

@@ -3,5 +3,7 @@
 # python cache files
 *.pyc
 # local testing data input and output
-/data/*
+/data/oasis/*
+/data/gotriple/*
+!data/gotriple/ner-output*
 !data/athena/*
