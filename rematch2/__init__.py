@@ -26,9 +26,9 @@ from .Util import *
 from .YearSpanRuler import create_yearspan_ruler
 
 
-# This was previously a workaround for relative imports in Python 3.6
-# instead use e.g. 'python rematch2.TextNormalizer' from package root
-# to run modules directly.
+# The following was previously a workaround for relative imports in Python 3.6
+# instead now use e.g. 'python -m rematch2.TextNormalizer' from package root
+# to run modules directly for testing purposes.
 # import os
 # import sys
 # sys.path.append(os.path.dirname(os.path.realpath(__file__)))

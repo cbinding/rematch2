@@ -1,0 +1,682 @@
+[
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/163245",
+    "pattern": "Underwater Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145107",
+    "pattern": "Aerial Photography"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145108",
+    "pattern": "Aerial Reconnaissance"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/152410",
+    "pattern": "Fieldwalking Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147265",
+    "pattern": "Sonar Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145114",
+    "pattern": "Grid Excavation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145153",
+    "pattern": "Photogrammetry"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145158",
+    "pattern": "Electrical Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147259",
+    "pattern": "Geotechnical Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145158",
+    "pattern": "Resistivity Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147244",
+    "pattern": "Analytical Earthwork Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147310",
+    "pattern": "Grab Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/160152",
+    "pattern": "Conservation Area Appraisal"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147242",
+    "pattern": "Historic Landscape Characterisation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147243",
+    "pattern": "Historic Seascape Characterisation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/163244",
+    "pattern": "Underwater Excavation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/163243",
+    "pattern": "Underwater Evaluation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145158",
+    "pattern": "Earth Resistance Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145140",
+    "pattern": "Infrared Line Scan Aerial Photography"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145151",
+    "pattern": "Open Area Excavation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145118",
+    "pattern": "Cross Sectional Building Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145129",
+    "pattern": "Excavation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145130",
+    "pattern": "Field Observation (Monitoring)"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145131",
+    "pattern": "Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145132",
+    "pattern": "Systematic Fieldwalking Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145158",
+    "pattern": "Geophysical Resistivity"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145133",
+    "pattern": "Geochemical Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145134",
+    "pattern": "Geophysical Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145135",
+    "pattern": "Ground Penetrating Radar Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145139",
+    "pattern": "Infra Red Aerial Photography"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145140",
+    "pattern": "Infra Red Line Scan Aerial Photography"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145125",
+    "pattern": "Environmental Impact Assessment"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145139",
+    "pattern": "Infrared Aerial Photography"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147326",
+    "pattern": "Thematic Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145141",
+    "pattern": "Infrared Thermography Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145142",
+    "pattern": "Airborne Laser Scanning (Lidar) Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145143",
+    "pattern": "Magnetic Susceptibility Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147552",
+    "pattern": "Aerial Photograph Interpretation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145144",
+    "pattern": "Magnetometry Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145145",
+    "pattern": "Management Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145142",
+    "pattern": "Airborne Lidar Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145142",
+    "pattern": "Airborne Laser Scanning"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145146",
+    "pattern": "Measured Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145147",
+    "pattern": "Metal Detecting Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145148",
+    "pattern": "Metal Detecting Use"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145149",
+    "pattern": "Multi Spectral Aerial Photography"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145150",
+    "pattern": "Non Archaeological Intervention"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145141",
+    "pattern": "Infra Red Thermography Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147306",
+    "pattern": "Hedgerow Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145128",
+    "pattern": "Evaluation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145135",
+    "pattern": "Ground Penetrating Radar"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145127",
+    "pattern": "Environmental Sampling"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145172",
+    "pattern": "Test Pits"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145172",
+    "pattern": "Test Pit Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145172",
+    "pattern": "Sondage"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147297",
+    "pattern": "Intrusive Event"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147298",
+    "pattern": "Non Intrusive Event"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147299",
+    "pattern": "Assessment And Analysis"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145132",
+    "pattern": "Fieldwalking"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145132",
+    "pattern": "Topsoil Artefact Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145147",
+    "pattern": "Metal Detectors"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145124",
+    "pattern": "Dowsing Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147305",
+    "pattern": "Research Excavation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147323",
+    "pattern": "Electromagnetic Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147310",
+    "pattern": "Grab Sampling"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147311",
+    "pattern": "Underwater Remote Operated Vehicle Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147312",
+    "pattern": "Gravity Core"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147313",
+    "pattern": "Vibro Core"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145126",
+    "pattern": "Environmental Intervention"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147317",
+    "pattern": "Field Observation (Visual Assessment)"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147317",
+    "pattern": "Visual Inspection"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147319",
+    "pattern": "Multi Beam Echo Sounder Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147266",
+    "pattern": "Single Beam Echo Sounder Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147322",
+    "pattern": "Walkover Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145109",
+    "pattern": "Archaeological Intervention"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147324",
+    "pattern": "3D Seismic Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147325",
+    "pattern": "Historic Area Assessment"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145147",
+    "pattern": "Systematic Metal Detector Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145120",
+    "pattern": "Conventional Aerial Photography"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146337",
+    "pattern": "Seismic Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146337",
+    "pattern": "Seismograph Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145175",
+    "pattern": "Sample Trenches"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146339",
+    "pattern": "Microgravity Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146340",
+    "pattern": "Antiquarian Observation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146341",
+    "pattern": "Geomorphological Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145175",
+    "pattern": "Targeted Trenches"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146347",
+    "pattern": "Resistivity Profile"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146342",
+    "pattern": "Laser Scanning Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146344",
+    "pattern": "Casual Observation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146345",
+    "pattern": "Photographic Recording"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146346",
+    "pattern": "Field Visit"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146334",
+    "pattern": "Bottom Classification Sonar"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146353",
+    "pattern": "Geotechnical Test Pit"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146347",
+    "pattern": "Electrical Resistivity Imaging Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145174",
+    "pattern": "Contour Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145118",
+    "pattern": "Building Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145118",
+    "pattern": "Building Recording"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145118",
+    "pattern": "Building Plan Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145118",
+    "pattern": "Building Elevation Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145114",
+    "pattern": "Box Trenching"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145113",
+    "pattern": "Bosing Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145112",
+    "pattern": "Borehole Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145111",
+    "pattern": "Auger Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145152",
+    "pattern": "Phosphate Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147321",
+    "pattern": "Acoustic Ground Discriminating System"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145110",
+    "pattern": "Architectural Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146347",
+    "pattern": "Electrical Resistivity Tomography"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145158",
+    "pattern": "Earth Resistance (Resistivity) Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145167",
+    "pattern": "Strip Map And Sample"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145167",
+    "pattern": "Strip And Record"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145144",
+    "pattern": "Geophysical Magnetometer"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146334",
+    "pattern": "Side Scanning Sonar Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145153",
+    "pattern": "Photogrammetric Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145168",
+    "pattern": "Sub Bottom Profiling Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145157",
+    "pattern": "Salvage Excavation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145164",
+    "pattern": "Monolith Sampling"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145157",
+    "pattern": "Rescue Excavation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145156",
+    "pattern": "Remote Sensing"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146334",
+    "pattern": "Side Looking Sonar Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/147268",
+    "pattern": "Bathymetric Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145155",
+    "pattern": "Rectified Photographic Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145154",
+    "pattern": "Photographic Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145160",
+    "pattern": "Salvage Recording"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145174",
+    "pattern": "Topographic Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145121",
+    "pattern": "Core Sampling"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145177",
+    "pattern": "Watching Brief"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145162",
+    "pattern": "Satellite Imaging"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145143",
+    "pattern": "Geophysical Magnetic Susceptibility"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146334",
+    "pattern": "Side Scan Sonar Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145175",
+    "pattern": "Trial Trench"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145176",
+    "pattern": "Unsystematic Fieldwalking Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145173",
+    "pattern": "Timber Sampling"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145122",
+    "pattern": "Dendrochronological Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145123",
+    "pattern": "Desk Based Assessment"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145172",
+    "pattern": "Test Pit"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/145132",
+    "pattern": "Surface Collection"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/146353",
+    "pattern": "Subsoil Test Pit"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170811",
+    "pattern": "Aerial Investigation And Mapping"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170667",
+    "pattern": "Comprehensive Building Survey (Level 4)"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170668",
+    "pattern": "Visual Buildings Record (Level 1)"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/171100",
+    "pattern": "Salvage"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170807",
+    "pattern": "Terrain Mapping From Aerial Photography"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170809",
+    "pattern": "Airborne Laser Scanning Interpretation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170849",
+    "pattern": "Arborglyph Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170648",
+    "pattern": "Documentary Research"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170666",
+    "pattern": "Detailed Building Survey (Level 3)"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170898",
+    "pattern": "Automated Object Detection"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170808",
+    "pattern": "Landscape Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/167599",
+    "pattern": "X Ray Fluorescence Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/168103",
+    "pattern": "Post Excavation Assessment"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/168104",
+    "pattern": "Archaeomagnetic Sampling"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170665",
+    "pattern": "Enhanced Building Survey (Level 2)"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170650",
+    "pattern": "Heritage Assessment"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170111",
+    "pattern": "Airborne Laser Scanning Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170645",
+    "pattern": "Graveyard Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170647",
+    "pattern": "Condition Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170649",
+    "pattern": "Building Fabric Analysis"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170651",
+    "pattern": "Historic Urban Characterisation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170652",
+    "pattern": "Observation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170661",
+    "pattern": "Comprehensive Analytical Buildings Record (Level 4)"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170654",
+    "pattern": "Field Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170645",
+    "pattern": "Burial Ground Survey"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170656",
+    "pattern": "Buildings Investigation (England)"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170657",
+    "pattern": "Buildings Recording And Investigation"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170659",
+    "pattern": "Descriptive Buildings Record (Level 2)"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170660",
+    "pattern": "Analytical Buildings Record (Level 3)"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170653",
+    "pattern": "Diver Inspection"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170662",
+    "pattern": "Buildings Investigation (Scotland)"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170663",
+    "pattern": "Buildings Appraisal"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/agl_et/concepts/170664",
+    "pattern": "Basic Building Survey (Level 1)"
+  }
+]

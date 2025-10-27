@@ -77,7 +77,8 @@ def create_vocabulary_ruler(
         supp_list: list[dict] = [],  # additional patterns to add to the vocabulary
         stop_list: list[dict] = []   # with identifers not to be matched, to exclude specific concepts from results
     ) -> BaseRuler:
-
+    print("Create VocabularyRuler - stop list:")
+    print(stop_list)
     # create the SpanRuler to use
     ruler = BaseRuler(
         nlp=nlp,        
@@ -101,6 +102,7 @@ def create_vocabulary_ruler(
 
     # only include patterns with identifiers that are not in the stop_list
     stop_ids = list(map(lambda item: item.get("id", ""), stop_list))    
+    print("Stop IDs:", stop_ids)
     filtered_patterns = [patt for patt in normalized_patterns if patt.get("id", "") not in stop_ids]    
     ruler.add_patterns(filtered_patterns)
     return ruler 
@@ -310,7 +312,7 @@ def create_fish_archobjects_ruler(
     stop_list: list
     ) -> BaseRuler: 
 
-    patterns = patterns_from_json_file("patterns_en_FISH_ARCHOBJECTS_20210921.json")
+    patterns = patterns_from_json_file("patterns_en_FISH_mda_obj.json")
     
     ruler = create_vocabulary_ruler(
         nlp=nlp, 
@@ -333,7 +335,7 @@ def create_fish_archsciences_ruler(
     stop_list: list
     ) -> BaseRuler: 
 
-    patterns=patterns_from_json_file("patterns_en_FISH_ARCHSCIENCES_20210921.json")
+    patterns=patterns_from_json_file("patterns_en_FISH_560.json")
    
     ruler = create_vocabulary_ruler(
         nlp=nlp, 
@@ -355,7 +357,7 @@ def create_fish_building_materials_ruler(
     stop_list: list
     ) -> BaseRuler:  
 
-    patterns=patterns_from_json_file("patterns_en_FISH_BUILDING_MATERIALS_20210921.json")
+    patterns=patterns_from_json_file("patterns_en_FISH_eh_tbm.json")
     
     ruler = create_vocabulary_ruler(
         nlp=nlp, 
@@ -376,7 +378,7 @@ def create_fish_components_ruler(
     stop_list: list
     ) -> BaseRuler:
 
-    patterns=patterns_from_json_file("patterns_en_FISH_COMPONENTS_20210921.json")
+    patterns=patterns_from_json_file("patterns_en_FISH_eh_com.json")
     
     ruler = create_vocabulary_ruler(
         nlp=nlp, 
@@ -398,7 +400,7 @@ def create_fish_event_types_ruler(
     stop_list: list
     ) -> BaseRuler:    
 
-    patterns=patterns_from_json_file("patterns_en_FISH_EVENT_TYPES_20210921.json")
+    patterns=patterns_from_json_file("patterns_en_FISH_agl_et.json")
     
     ruler = create_vocabulary_ruler(
         nlp=nlp, 
@@ -420,7 +422,7 @@ def create_fish_evidence_ruler(
     stop_list: list
     ) -> BaseRuler: 
 
-    patterns=patterns_from_json_file("patterns_en_FISH_EVIDENCE_20210921.json")
+    patterns=patterns_from_json_file("patterns_en_eh_evd.json")
     
     ruler = create_vocabulary_ruler(
         nlp=nlp, 
@@ -441,7 +443,7 @@ def create_fish_maritime_craft_ruler(
     stop_list: list
     ) -> BaseRuler: 
 
-    patterns=patterns_from_json_file("patterns_en_FISH_MARITIME_CRAFT_20221104.json")
+    patterns=patterns_from_json_file("patterns_en_eh_tmc.json")
     
     ruler = create_vocabulary_ruler(
         nlp=nlp, 
@@ -463,9 +465,8 @@ def create_fish_monument_types_ruler(
     stop_list: list
     ) -> BaseRuler:
     
-    patterns = patterns_from_json_file("patterns_en_FISH_MONUMENT_TYPES_20210921.json")
-    #patts2 = patterns_from_json_file("patterns_en_FISH_MONUMENT_TYPES_SUPPLEMENTARY.json")
-        
+    patterns = patterns_from_json_file("patterns_en_FISH_eh_tmt2.json")
+    
     ruler = create_vocabulary_ruler(
         nlp=nlp, 
         name=name, 
@@ -474,48 +475,6 @@ def create_fish_monument_types_ruler(
         min_lemmatize_length=3, 
         patterns=patterns,
         supp_list=supp_list,
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory(name="fish_periods_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_fish_periods_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list,
-    stop_list: list
-    ) -> BaseRuler:  
-
-    patterns=patterns_from_json_file("patterns_en_FISH_PERIODS_20211011.json")
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="FISH_PERIOD", 
-        patterns=patterns,
-        supp_list=supp_list,
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory(name="fish_supplementary_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_fish_supplementary_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list,
-    stop_list: list
-    ) -> BaseRuler:    
-
-    patterns=patterns_from_json_file("patterns_en_FISH_SUPPLEMENTARY.json")
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="FISH_OBJECT", 
-        patterns=patterns,
-        supp_list=supp_list, 
         stop_list=stop_list
     )
     return ruler
@@ -599,18 +558,15 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     # nlp.add_pipe("aat_physical_attributes_ruler", last=True)
     # nlp.add_pipe("aat_styleperiods_ruler", last=True)
     # FISH vocabulary pipeline components
-
     #nlp.add_pipe("fish_archobjects_ruler", last=True)
     # testing monuments ruler with use of stop_list e.g. removing concept 'site' from patterns so we don't get matches on it in results
-    #nlp.add_pipe("fish_monument_types_ruler", last=True, config={ "stop_list": ["http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70412"] })
-    #nlp.add_pipe("respeller", before="tagger")
+    #nlp.add_pipe("fish_monument_types_ruler", last=True)
     #nlp.add_pipe("fish_archsciences_ruler", last=True)
     #nlp.add_pipe("fish_building_materials_ruler", last=True)
     # nlp.add_pipe("fish_components_ruler", last=True)
     #nlp.add_pipe("fish_event_types_ruler", last=True)
     # nlp.add_pipe("fish_evidence_ruler", last=True)
     # nlp.add_pipe("fish_maritime_craft_ruler", last=True)
-    #nlp.add_pipe("fish_periods_ruler", last=True)
     #nlp.add_pipe("child_span_remover", last=True) 
 
     doc = nlp(en_test_text2)

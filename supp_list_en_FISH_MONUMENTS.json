@@ -16,7 +16,7 @@
     "pattern": "channel"
   },
   {
-    "id": "/purl.org/heritagedata/schemes/eh_tmt2/concepts/78156",		
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/78156",		
     "pattern": "cobbles"
   },
   {
@@ -67,7 +67,7 @@
     "id": "http://tempuri/supplementary/launchchamber",		
     "pattern": "launch chamber"
   }, 
-   {
+  {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68975",		
     "pattern": "midden pit"
   },
@@ -77,7 +77,15 @@
   },
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70403",		
+    "pattern": "post-holes"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70403",		
     "pattern": "posthole"
+  },  
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70403",		
+    "pattern": "postholes"
   },  
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70407",	
@@ -85,12 +93,24 @@
   },  
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70407",	
+    "pattern": "ring-ditches"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70407",	
+    "pattern": "ring ditches"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70407",	
     "pattern": "ring-gully"
   },
-   {
+  {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70407",	
     "pattern": "ring gully"
   },  
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70407",	
+    "pattern": "ring gullies"
+  },
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/94036",	
     "pattern": "roundhouse"

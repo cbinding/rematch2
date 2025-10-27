@@ -11,5 +11,13 @@
   { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/100151", "term": "paper" }, 
   { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96473", "term": "model" }, 
   { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/100107", "term": "desk" }, 
-  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/95183", "term": "crest" } 
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/95183", "term": "crest" },
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97552", "term": "core" },
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/95392", "term": "plan" },
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96677", "term": "case" },
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/95374", "term": "document" },
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96364", "term": "bucket" },
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96804", "term": "spit" },
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/170044", "term": "lighter" },
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96556", "term": "table" }
 ]

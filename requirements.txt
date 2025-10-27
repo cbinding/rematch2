@@ -10,6 +10,7 @@ sympy>=1.10.1
 ipywidgets>=7.7.0
 xhtml2pdf
 regex
+jsondiff
 
 brotli # for JSON Periodo import (returns brotli compressed data)
 python-slugify # for constructing valid filenames from record identifiers

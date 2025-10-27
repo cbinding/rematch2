@@ -156,6 +156,33 @@ class BaseRuler(SpanRuler):
                     "label": clean_label,
                     "pattern":  new_pattern
                 })
+                # 24/10/2025 if the newly built pattern contains a hyphen, 
+                # also add a pattern variant with the hyphen removed
+                contains_hyphen = any(tok.text == "-" for tok in doc)
+                if contains_hyphen:
+                    # build variant pattern without hyphen tokens
+                    variant_pattern = [elem for elem in new_pattern if elem.get("ORTH", "") != "-"]
+                    # add variant pattern to normalized_patterns
+                    normalized_patterns.append({
+                        "id": clean_id,
+                        "label": clean_label,
+                        "pattern":  variant_pattern
+                    })
+                else:
+                    # build variant pattern WITH hyphen token for 2 word phrases
+                    if phrase_length == 2:
+                        # insert hyphen token between the two tokens
+                        variant_pattern = [
+                            new_pattern[0],
+                            {"ORTH": "-"},
+                            new_pattern[1]
+                        ]                                       
+                        # add variant pattern to normalized_patterns
+                        normalized_patterns.append({
+                            "id": clean_id,
+                            "label": clean_label,
+                            "pattern":  variant_pattern
+                        })
 
         # temp - write patterns out for examination
         #with open('normalized_patterns.json', 'w') as f:

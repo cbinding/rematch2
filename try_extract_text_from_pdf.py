@@ -29,7 +29,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # get clean required arguments
-    inputFileName = "./data/journals_july_2024/078_047_054.pdf"
+    inputFileName = "./data/journals_july_2024/078_047_054.pdf" # default for test
     outputFileName = ""
     
     if args.inputfilename:

@@ -4,6 +4,10 @@
     "pattern": "CBM"
   },
   {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/141190",		
+    "pattern": "ceramic building material"
+  },
+  {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96399",		
     "pattern": "bladelet"
   },
@@ -82,5 +86,17 @@
       { "POS": "ADJ" },
       { "LOWER": "colluvium" }
     ]
-  }
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/170829",		
+    "pattern": "fossil"
+  }, 
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/170831",		
+    "pattern": "pebble"
+  }, 
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/170833",		
+    "pattern": "shell"
+  } 
 ]
