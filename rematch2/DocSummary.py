@@ -225,23 +225,40 @@ class DocSummary:
             case "text": return self.report_to_text()
             case _: return self.report_to_text()        
     
+    
+    @staticmethod
+    def get_span_context(span: Span, window_size: int=4) -> str:
+        doc = span.doc
+        start = max(span.start - window_size, 0)
+        end = min(span.end + window_size, len(doc))
+        context_span = doc[start:end]
+        return context_span.text
            
-    def spans_to_df(self) -> DataFrame: 
+
+    def spans_to_df(self) -> DataFrame:
+
         return DataFrame([{
             "start": span.start_char,
-            "end": span.end_char,
+            "end": span.end_char -1,
             "token_start": span.start,
             "token_end": span.end - 1,            
             "label": span.label_,
             "id": span.id_,
             "text": span.text,
-            #"cf": span._.cf_value
+            # if SpanScorer is in the pipeline, these custom attributes will be populated
+            "occurrences": span._.occurrences if Span.has_extension("occurrences") else 0, # number of occurrences
+            "frequency": span._.frequency if Span.has_extension("frequency") else 0.0, # concept frequency
+            "frequency_explain": span._.frequency_explain if Span.has_extension("frequency_explain") else "",
+            "sec_score": span._.sec_score if Span.has_extension("sec_score") else 0.0, # section score
+            "sig_score": span._.sig_score if Span.has_extension("sig_score") else 0.0, # significance score
+            "neg_score": span._.neg_score if Span.has_extension("neg_score") else 0.0, # negation score
+            "context": DocSummary.get_span_context(span)
             } for span in self.spans]).drop_duplicates()
 
 
-    def spans_to_csv(self, sep=",") -> str:
+    def spans_to_csv(self, file=None, sep=",") -> str:
         df = self.spans_to_df()
-        return df.to_csv(sep=sep)
+        return df.to_csv(path_or_buf=file, sep=sep, index=False, header=True)
 
 
     def spans_to_html(self) -> str:
@@ -340,7 +357,6 @@ class DocSummary:
 
 
     def span_counts_to_df(self) -> DataFrame:        
-        #span_counts = sorted(list(self.span_counts.values()), key=lambda x: (x.get("count", 0), x.get("cf", 0)), reverse=True)
         
         span_counts = list(self.span_counts.values())
         frequencies = self.get_frequencies_by_id()
@@ -354,30 +370,21 @@ class DocSummary:
         sorted_list = sorted(span_counts, key=lambda x: (x.get("count", 0), x.get("cf", 0)), reverse=True)
 
         # return as dataframe
-        #counts = sorted(list(self.span_counts.values()), key=lambda x: (x.get("count", 0), x.get("cf", 0)), reverse=True)
         return DataFrame([{
             "id": sc.get("id", ""),
             "label": sc.get("label", ""), 
             "text": r" / ".join(sc.get("text", [])),
             "count": int(sc.get("count", 0)),
             "cf": float(sc.get("cf", 0)),
-            #"cf_explain": sc.get("cf_explain", ""),
-            } for sc in sorted_list]) 
-    
-       # return DataFrame([{
-         #   "id": sc.get("id", ""),
-         #   "label": sc.get("label", ""),
-         #   "text": sc.get("text", ""),
-         #   "count": int(sc.get("count", 0)),
-         #   "cf": float(frequencies.get(sc["id"], {}).get("cf", 0)),
-         #   "cf_explain": frequencies.get(sc["id"], {}).get("cf_explain", ""),
-         #   } for sc in span_counts]) 
+            "cf_explain": sc.get("cf_explain", ""),
+            } for sc in sorted_list])
 
 
     def span_counts_to_csv(self, sep: str=",") -> str:
         df = self.span_counts_to_df()
         return df.to_csv(sep=sep)
 
+    
     # use for combining columns to form an HTML anchor
     @staticmethod
     def _make_link(id, text):
@@ -470,8 +477,7 @@ class DocSummary:
 
     def label_counts_to_html(self) -> str:
         df = self.label_counts_to_df()
-        if df.empty:
-            return "" 
+        if df.empty: return "" 
                 
         html = df.to_html(
             columns=["label", "count"],
@@ -554,7 +560,7 @@ class DocSummary:
         include_spans: bool = False,        
         include_span_counts: bool = True,
         include_span_pairs: bool = True,
-        include_negated_pairs: bool = True
+        include_negated_pairs: bool = False
         ) -> str:
         output = []
 
@@ -653,7 +659,7 @@ class DocSummary:
         include_spans: bool = True,        
         include_span_counts: bool = True,
         include_span_pairs: bool = True,
-        include_negated_pairs: bool = True):
+        include_negated_pairs: bool = False) -> str:
         output = {
             "metadata": self.metadata if include_metadata else {},
             "text": self.doctext if include_doctext else "",
@@ -677,7 +683,7 @@ class DocSummary:
         include_spans: bool = False,        
         include_span_counts: bool = True,
         include_span_pairs: bool = True,
-        include_negated_pairs: bool = True
+        include_negated_pairs: bool = False
         ) -> str:
         output = []
         output.append(f"identifier: {self._metadata.get('identifier', '')}")

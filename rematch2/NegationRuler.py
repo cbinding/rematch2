@@ -137,7 +137,7 @@ def create_negation_ruler_cs(nlp: Language, name: str = "negation_ruler") -> Neg
 if __name__ == "__main__":
     tests = []
     # load some local test texts from JSON file..    
-    test_file_path = (Path(__file__).parent.parent / "data/ner-input/test-examples/test_examples_english.json").resolve()    
+    test_file_path = (Path(__file__).parent.parent / "data/ie-input/test-examples/test_examples_english.json").resolve()    
     with open(test_file_path, "r") as f:
         tests = json.load(f)
     

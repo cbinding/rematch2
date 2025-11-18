@@ -77,8 +77,8 @@ def create_vocabulary_ruler(
         supp_list: list[dict] = [],  # additional patterns to add to the vocabulary
         stop_list: list[dict] = []   # with identifers not to be matched, to exclude specific concepts from results
     ) -> BaseRuler:
-    print("Create VocabularyRuler - stop list:")
-    print(stop_list)
+    #print("Create VocabularyRuler - stop list:")
+    #print(stop_list)
     # create the SpanRuler to use
     ruler = BaseRuler(
         nlp=nlp,        
@@ -102,7 +102,7 @@ def create_vocabulary_ruler(
 
     # only include patterns with identifiers that are not in the stop_list
     stop_ids = list(map(lambda item: item.get("id", ""), stop_list))    
-    print("Stop IDs:", stop_ids)
+    #print("Stop IDs:", stop_ids)
     filtered_patterns = [patt for patt in normalized_patterns if patt.get("id", "") not in stop_ids]    
     ruler.add_patterns(filtered_patterns)
     return ruler 
@@ -480,6 +480,29 @@ def create_fish_monument_types_ruler(
     return ruler
 
 
+@Language.factory(name="fish_object_materials_ruler", default_config={"supp_list": [], "stop_list": []})
+def create_fish_object_materials_ruler(
+    nlp: Language, 
+    name: str, 
+    supp_list: list,
+    stop_list: list
+    ) -> BaseRuler:
+    
+    patterns = patterns_from_json_file("patterns_en_FISH_73.json")
+    
+    ruler = create_vocabulary_ruler(
+        nlp=nlp, 
+        name=name, 
+        default_label="FISH_MATERIAL", 
+        #pos=["ADJ"], 
+        min_lemmatize_length=3, 
+        patterns=patterns,
+        supp_list=supp_list,
+        stop_list=stop_list
+    )
+    return ruler
+
+
 # test the BaseRuler class
 if __name__ == "__main__":
 
@@ -567,6 +590,7 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     #nlp.add_pipe("fish_event_types_ruler", last=True)
     # nlp.add_pipe("fish_evidence_ruler", last=True)
     # nlp.add_pipe("fish_maritime_craft_ruler", last=True)
+    #nlp.add_pipe("fish_object_materials_ruler", last=True)
     #nlp.add_pipe("child_span_remover", last=True) 
 
     doc = nlp(en_test_text2)

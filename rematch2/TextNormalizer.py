@@ -6,7 +6,7 @@ Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   ATRIUM
 Summary :   spaCy custom pipeline components for text normalisation -
-            this can improve subsequent NLP tokenisation and NER results            
+            this can improve subsequent NLP tokenisation and IE results            
 Imports :   regex, spacy, Doc, Pipe, Language
 Example :   nlp.add_pipe("normalize_text", before = "tagger")
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt

@@ -90,6 +90,15 @@ patterns_en_YEARSPAN = [
     },
     {
         "label": "YEARSPAN",
+        "comment": "e.g. 2.3 ka BP",
+        "pattern": [
+            {"LIKE_NUM": True},
+            {"LOWER":"ka"},
+            {"ENT_TYPE": "DATESUFFIX"}
+        ]
+    },
+    {
+        "label": "YEARSPAN",
         "comment": "year with prefix e.g. early 1580 AD",
         "pattern": [
             {"OP": "+", "ENT_TYPE": "DATEPREFIX"},

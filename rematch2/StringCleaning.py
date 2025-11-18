@@ -10,7 +10,7 @@ Summary   :
     ***** NOTE - deprecated, this code now implemented as custom pipeline components
     see TextNormalizer.py *****
     Functions for performing string cleaning and normalisation operations on 
-    text, prior to any NER work. Mostly based on regex replacement patterns. 
+    text, prior to any information extraction work. Mostly based on regex replacement patterns. 
     Functions allow chaining and pipelining: f(text: str) -> str
     NOTE: using 'regex' library not 're' - to support Unicode category groups 
     e.g. r"\p{Dash_Punctuation}" (represents any hyphenation character)
@@ -232,7 +232,7 @@ def pipeline(*functions):
     return inner
 
 
-# normalize text for NER
+# normalize text for information extraction
 normalize_text = pipeline(
     remove_newline_hyphens, 
     remove_spurious_newlines,   

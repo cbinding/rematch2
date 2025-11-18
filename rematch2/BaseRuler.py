@@ -19,15 +19,14 @@ History :
 from spacy.tokens import Doc
 from spacy.pipeline import SpanRuler
 from spacy.language import Language
-import functools
-import time
-import json
-from .Decorators import run_timed
+#import functools
+#import time
+#import json
+#from .Decorators import run_timed
 
 class BaseRuler(SpanRuler):
     
     def __call__(self, doc: Doc) -> Doc:
-        #print(f"{self.name}")
         return SpanRuler.__call__(self, doc)      
 
 

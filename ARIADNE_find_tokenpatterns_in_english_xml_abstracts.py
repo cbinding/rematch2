@@ -1,7 +1,7 @@
 # =============================================================================
 # Project   : Enrich
-# Package   : NER
-# Module    : find-tokenpatterns-in-english-xml-abstracts.py
+# Package   : rematch2
+# Module    : find_tokenpatterns_in_english_xml_abstracts.py
 # Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 # Contact   : ceri.binding@southwales.ac.uk
 # Summary   : Identifies matching token patterns in English text

@@ -80,7 +80,7 @@ def get_unique_span_ids(json_file_name: str) -> list:
    
         
 
-# IDF for spans is calculated after we have NER results
+# IDF for spans is calculated after we have IE results
 # as we need to calculate stats across all result files
 # IDF = log (doc_count / (docs_containing_given_span_id + 1))
 def get_spans_idf_for_path(path: str) -> dict:
@@ -201,7 +201,7 @@ def calculate_idf_for_spans(spans: list) -> list:
 
 # testing the script
 if __name__ == "__main__":
-    input_file_path = "../data/ner-output/ner-output-oasis-report-metadata-20250228/*.json"
+    input_file_path = "../data/ie-output/ie-output-oasis-report-metadata-20250228/*.json"
     idf_index = get_spans_idf_for_path(input_file_path)
     get_spans_cf_idf_for_path(input_file_path, idf_index)
 

@@ -1,0 +1,239 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/atrium-information-extraction-schema",
+  "title": "Textual Information Data Extraction Schema (TIDES)",
+  "version": "1.0.0",
+  "creator": "Ceri Binding, University of South Wales / Prifysgol de Cymru",
+  "created": "2025-11-18",
+  "license": "https://github.com/cbinding/rematch2/blob/main/LICENSE.txt",
+  "type": "object",  
+  "description": "Schema for data extracted from archaeological reports in the ATRIUM project.",
+  "properties": {
+    "meta": {
+      "type": "object",
+      "description": "Metadata about the information extraction process.",
+      "properties": {
+        "filename": {
+          "type": "string",
+          "description": "The name of the source file from which the report text was extracted."
+        },
+        "pipeline": { 
+          "type": "array",
+          "description": "Name of each pipeline component used in the extraction process."
+        } 
+      } , 
+      "required": [
+        "filename"
+      ]
+    },
+    "text": {
+      "type": "string",
+      "description": "The full text of the archaeological report."
+    },
+    "tokens": {
+      "type": "array",
+      "description": "A list of tokens extracted from the report text.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number",
+            "description": "The zero-based token index."
+          },
+          "text": {
+            "type": "string",
+            "description": "The token text."
+          },
+          "pos": {
+            "type": "string",
+            "description": "The part of speech tag for the token."
+          },
+          "lemma": {
+            "type": "string",
+            "description": "The lemma or base form of the token."
+          },
+          "start": {
+            "type": "number",
+            "description": "The starting character index of the token in the report text."
+          },
+          "end": {
+            "type": "number",
+            "description": "The ending character index of the token in the report text."
+          }
+        },
+        "required": [
+          "text",
+          "pos",
+          "lemma",
+          "start",
+          "end"
+        ]
+      }
+    },
+    "spans": {
+      "type": "array",
+      "description": "A list of text spans identified in the report text.",
+      "items": {
+        "type": "object",
+        "properties": {          
+          "text": {
+            "type": "string",
+            "description": "The span text."
+          },          
+          "start": {
+            "type": "number",
+            "description": "The starting character index of the span in the report text."
+          },
+          "end": {
+            "type": "number",
+            "description": "The ending character index of the span in the report text."
+          },
+          "token_start": {
+            "type": "number",
+            "description": "The starting token index of the span in the report text."
+          },          
+          "token_end": {
+            "type": "number",
+            "description": "The ending token index of the span in the report text."
+          },
+          "label": {
+            "type": "string",
+            "description": "Label of the identified span indicating the type of entity."
+          },
+          "id": {
+            "type": "string",
+            "description": "Identifier associated with the identified span, e.g. concept URI"
+          },
+          "occurrences": {
+            "type": "number",
+            "description": "Number of occurrences of the concept represented by this span in the text."
+          },
+          "frequency": {
+            "type": "number",
+            "description": "Calcuated concept frequency for the concept represented by this span in the text."
+          },
+          "frequency_explain": {
+            "type": "string",
+            "description": "Short explanation of the frequency calculation (for testing purposes)."
+          },
+          "sec_score": {
+            "type": "number",
+            "description": "Section score for the section in which this span occurs."
+          },
+          "sig_score": {
+            "type": "number",
+            "description": "Significance score for this span (if close to a significance indicator term)."
+          },
+          "neg_score": {
+            "type": "number",
+            "description": "Negation score for this span (if close to a negation indicator term)."
+          },
+          "context": {
+            "type": "string",
+            "description": "Short sentence showing the span text in context of surrounding text"
+          }
+        },
+        "required": [
+          "text",
+          "start",
+          "end",
+          "token_start",
+          "token_end",
+          "label"
+        ]
+      }
+    },
+    "sections": {
+      "type": "array",
+      "description": "A list of identified sections with their character positions within the report text.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "number",
+            "description": "The starting character index of the section in the report text."
+          },
+          "end": {
+            "type": "number",
+            "description": "The ending character index of the section in the report text."
+          },
+          "type": {
+            "type": "string",
+            "description": "The type/category of the section."
+          },
+          "number": {
+            "type": "number",
+            "description": "A unique identifier for the section."
+          },
+          "comment": {
+            "type": "string",
+            "description": "A comment on the content of the section."
+            }
+          },
+        "required": [
+          "start",
+          "end",
+          "type"
+        ]
+      }
+    },
+    "text_normalized": {
+      "type": "string",
+      "description": "The normalized version of the report text for consistent processing."
+    },
+    "span_pairs": {
+      "type": "array",
+      "description": "A list of identified pairs of spans.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "span1_id": {
+            "type": "string",
+            "description": "Identifier for the concept represented by the first span in the pair."
+          },
+          "span1_label": {
+            "type": "string",
+            "description": "Label for the concept represented by the first span in the pair."
+          },
+          "span1_text": {
+            "type": "string",
+            "description": "Text of the first span in the pair."
+          },
+          "rel_op": {
+            "type": "string",
+            "description": "Dependency relationship operator between the two spans."
+          },
+          "span2_id": {
+            "type": "string",
+            "description": "Identifier for the concept represented by the second span in the pair."
+          },
+          "span2_label": {
+            "type": "string",
+            "description": "Label for the concept represented by the second span in the pair."
+          },
+          "span2_text": {
+            "type": "string",
+            "description": "Text of the second span in the pair."
+          },
+          "score": {
+            "type": "number",
+            "description": "Score for the span pair for ranking purposes."
+          }
+        },
+        "required": [
+          "span1_id",
+          "span1_label",
+          "span1_text",
+          "rel_op",
+          "span2_label",
+          "span2_text"
+        ]
+      }
+    }
+  },  
+  "required": [
+    "meta",
+    "text",
+    "sections"
+  ]
+}

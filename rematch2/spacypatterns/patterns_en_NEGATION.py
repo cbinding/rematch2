@@ -102,5 +102,5 @@ patterns_en_NEGATION = [
         "id": "precludes",
         "label": "NEGATION",
 		"pattern": "precludes"
-    }    
+    }
 ]

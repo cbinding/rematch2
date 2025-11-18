@@ -1,0 +1,470 @@
+[
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/171271",
+    "pattern": "Alder"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/170819",
+    "pattern": "Ash"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/170069",
+    "pattern": "Siltstone"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/164394",
+    "pattern": "Larch"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/170892",
+    "pattern": "Soapstone"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/170838",
+    "pattern": "Hydrocarbon"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/170108",
+    "pattern": "Paper"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/171269",
+    "pattern": "Slag"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/170820",
+    "pattern": "Sapphire"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/171272",
+    "pattern": "Plastic"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/170893",
+    "pattern": "Andesite"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/170896",
+    "pattern": "Picrite"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/170897",
+    "pattern": "Wool"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/171210",
+    "pattern": "Porcelain"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/170109",
+    "pattern": "Charcoal"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/170070",
+    "pattern": "Mudstone"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/166992",
+    "pattern": "Garnet"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/171262",
+    "pattern": "Mortar"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/170068",
+    "pattern": "Amphibolite"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/166989",
+    "pattern": "Utahlite"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/166988",
+    "pattern": "Plaster"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/164111",
+    "pattern": "Hertfordshire Puddingstone"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/169986",
+    "pattern": "Bakelite"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/166991",
+    "pattern": "Amethyst"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/171263",
+    "pattern": "Vegetal"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/166986",
+    "pattern": "Carnelian"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/171257",
+    "pattern": "Basalt"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/166993",
+    "pattern": "Emerald"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/166989",
+    "pattern": "Variscite"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/164107",
+    "pattern": "Hazel"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/166986",
+    "pattern": "Cornelian"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/171264",
+    "pattern": "Plant"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/159154",
+    "pattern": "Aluminum"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/171268",
+    "pattern": "Gritstone (Sandstone)"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/169900",
+    "pattern": "Rubber"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75395",
+    "pattern": "Quartz"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75358",
+    "pattern": "Faience"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75339",
+    "pattern": "Antler"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75368",
+    "pattern": "Horn"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75364",
+    "pattern": "Greenstone"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75414",
+    "pattern": "Wood"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75398",
+    "pattern": "Shale"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75363",
+    "pattern": "Granite"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75362",
+    "pattern": "Gold"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75361",
+    "pattern": "Glass"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75335",
+    "pattern": "Alloy"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75337",
+    "pattern": "Amber"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75370",
+    "pattern": "Ivory"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75338",
+    "pattern": "Animal"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75371",
+    "pattern": "Jadeite"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75357",
+    "pattern": "Enamel"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75353",
+    "pattern": "Earthenware"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75351",
+    "pattern": "Copper Alloy"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75350",
+    "pattern": "Copper"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75349",
+    "pattern": "Concrete"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75348",
+    "pattern": "Clay"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75346",
+    "pattern": "Chert"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75345",
+    "pattern": "Cement"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75344",
+    "pattern": "Bronze"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75343",
+    "pattern": "Brass"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75342",
+    "pattern": "Bone"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75359",
+    "pattern": "Flint"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75390",
+    "pattern": "Pewter"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75411",
+    "pattern": "Tooth"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75410",
+    "pattern": "Tin"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75408",
+    "pattern": "Terracotta"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75405",
+    "pattern": "Stone"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75404",
+    "pattern": "Steel"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75403",
+    "pattern": "Slate"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75401",
+    "pattern": "Silver"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/99959",
+    "pattern": "Quartzite"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/141973",
+    "pattern": "Spruce"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/140448",
+    "pattern": "Fir"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/143453",
+    "pattern": "Schist"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/143865",
+    "pattern": "Antimony"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/143960",
+    "pattern": "Zinc"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/143005",
+    "pattern": "Lead Alloy"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/142972",
+    "pattern": "Graphite"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/141340",
+    "pattern": "Pine"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/141284",
+    "pattern": "Elm"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/142974",
+    "pattern": "Ceramic"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/142973",
+    "pattern": "Dolerite"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/141974",
+    "pattern": "Tamarac"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/152383",
+    "pattern": "Teak"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/147357",
+    "pattern": "Birch"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/146359",
+    "pattern": "Onyx"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/163222",
+    "pattern": "Coal"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/160192",
+    "pattern": "Chalk"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/146351",
+    "pattern": "Jade"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/144473",
+    "pattern": "Beech"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/144479",
+    "pattern": "Textile"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/144480",
+    "pattern": "Felt"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/159154",
+    "pattern": "Aluminium"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/151858",
+    "pattern": "Fibreglass"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/146408",
+    "pattern": "Alabaster"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/151858",
+    "pattern": "Glass Fibre"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/151858",
+    "pattern": "Fiberglass"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/160444",
+    "pattern": "Ebony"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/170837",
+    "pattern": "Argillite"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/164110",
+    "pattern": "Puddingstone"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/171270",
+    "pattern": "Flax"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/170818",
+    "pattern": "Totternhoe Clunch"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75399",
+    "pattern": "Shell"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75369",
+    "pattern": "Iron"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75394",
+    "pattern": "Pottery"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75372",
+    "pattern": "Jet"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75377",
+    "pattern": "Limestone"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75373",
+    "pattern": "Lava"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75396",
+    "pattern": "Sandstone"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75376",
+    "pattern": "Leather"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75386",
+    "pattern": "Obsidian"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75379",
+    "pattern": "Marble"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75380",
+    "pattern": "Metal"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75381",
+    "pattern": "Mineral"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75384",
+    "pattern": "Oak"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75385",
+    "pattern": "Object Material"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/73/concepts/75374",
+    "pattern": "Lead"
+  }
+]

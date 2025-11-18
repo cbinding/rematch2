@@ -126,5 +126,9 @@
   {
     "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/94083",		
     "pattern": "stake-hole"
-  } 
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/69068",		
+    "pattern": "quarries"
+  }  
 ]

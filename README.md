@@ -35,28 +35,29 @@
       - [fish_evidence_ruler](#fish_evidence_ruler)
       - [fish_maritime_craft_ruler](#fish_maritime_craft_ruler)
       - [fish_monument_types_ruler](#fish_monument_types_ruler)
+      - [fish_object_materials_ruler](#fish_object_materials_ruler)
       - [fish_periods_ruler](#fish_periods_ruler)
     - [vocabulary_annotator](#vocabulary_annotator)
     - [Vocabulary Annotator usage](#vocabulary_annotator_usage)
 
 ## Introduction <a class="anchor" id="introduction"></a>
 
-`rematch2` is an experimental [spaCy](https://spacy.io) open-source library and associated tools for performing multilingual rule-based Named Entity Recognition (NER) on abstracts and texts relating to archaeological investigations. The library and tools were created by [University of South Wales Hypermedia Research Group](https://hypermedia.research.southwales.ac.uk/) as part of the [ARIADNEplus project](https://ariadne-infrastructure.eu/), and improved and extended as part of the [ATRIUM project](https://atrium-research.eu/).
+`rematch2` is an [spaCy](https://spacy.io) open-source library and associated tools for performing multilingual rule-based information extraction on abstracts and texts relating to archaeological investigations. The library and tools were originally created by [University of South Wales Hypermedia Research Group](https://hypermedia.research.southwales.ac.uk/) as part of the [ARIADNEplus project](https://ariadne-infrastructure.eu/), and subsequently improved and extended as part of the [ATRIUM project](https://atrium-research.eu/).
 
 ### Supported Languages <a class="anchor" id="languages"></a>
 
-The languages (currently) supported by the `rematch2` pipeline temporal components are:
+The languages currently supported by the `rematch2` pipeline temporal components are:
 
-- German
-- English
-- Spanish
-- French
-- Italian
-- Dutch
-- Norwegian
-- Swedish
+- German (de)
+- English (en)
+- Spanish (es)
+- French (fr)
+- Italian (it)
+- Dutch (nl)
+- Norwegian (no)
+- Swedish (sv)
 
-For the vocabulary-driven components the language supported is English - as the vocabularies currently used are expressed in English.
+For the vocabulary-driven components the supported language is English - as the vocabularies currently used are only expressed in English.
 
 ## Patterns <a class="anchor" id="patterns"></a>
 
@@ -66,7 +67,7 @@ The pipeline components utilise spaCy _patterns_ located in the _spacypatterns_ 
 
 ### Temporal Components <a class="anchor" id="temporal_components"></a>
 
-`rematch2` performs specialised NER focussed on temporal entities, and implements specialised spaCy pipeline components to identify the following entity types in free text:
+`rematch2` performs specialised information extraction focussed on temporal entities, and implements specialised spaCy pipeline components to identify the following entity types in free text:
 
 | Component Name                        | Entity Type | Description                                                              |                                             Examples |
 | ------------------------------------- | ----------- | ------------------------------------------------------------------------ | ---------------------------------------------------: |
@@ -81,7 +82,7 @@ The pipeline components utilise spaCy _patterns_ located in the _spacypatterns_ 
 
 ### dayname_ruler <a class="anchor" id="dayname_ruler"></a>
 
-Identifies day names or their abbreviations in text. Not currently used by other rulers, but remains present and usable as a concrete example showing how to implement a custom multilingual pattern-based ruler.
+Identifies day names or their abbreviations in text. Not currently used by other rulers, but remains present as a concrete example showing how to implement a custom multilingual pattern-based ruler.
 
 ### monthname_ruler <a class="anchor" id="monthname_ruler"></a>
 
@@ -93,7 +94,7 @@ Identifies season names in text. Used in combination with other rulers to identi
 
 ### ordinal_ruler <a class="anchor" id="ordinal_ruler"></a>
 
-Identifies ordinal expressions in text e.g. _15th, nineteenth_. Used in combination with other rulers to identify pattern of ordinal followed by century e.g. _15th century_, _nineteenth century_. As an alternative spaCy does have its own built in NER functionality which includes identification of ordinals; these patterns were developed prior to adopting spaCy
+Identifies ordinal expressions in text e.g. _15th, nineteenth_. Used in combination with other rulers to identify pattern of ordinal followed by century e.g. _15th century_, _nineteenth century_. As an alternative spaCy does have its own built in NER functionality which includes identification of ordinals; these patterns were developed prior to adopting spaCy.
 
 ### dateprefix_ruler <a class="anchor" id="dateprefix_ruler"></a>
 
@@ -113,7 +114,7 @@ The periodo ruler component utilises the [Perio.do](https://perio.do/) dataset. 
 
 ## Usage <a class="anchor" id="temporal_component_usage"></a>
 
-Example Python script to perform NER using a `rematch2` pipeline component:
+Example Python script to perform information extraction using a `rematch2` pipeline component:
 
 ```python
 import spacy
@@ -136,7 +137,7 @@ for span in doc.spans.get("rematch", []):
 
 ## Temporal Annotator <a class="anchor" id="temporal_annotator"></a>
 
-The temporal annotation components described above are used by the TemporalAnnotator class, which facilitates annotation of text using specified combinations of the components. Example Python script to perform NER using the TemporalAnnotator class:
+The temporal annotation components described above are used by the TemporalAnnotator class, which facilitates annotation of text using specified combinations of the components. Example Python script to perform information extraction using the TemporalAnnotator class:
 
 ```python
 from rematch2.TemporalAnnotator import TemporalAnnotator
@@ -175,7 +176,7 @@ The VocabularyAnnotator class facilitates annotation of text using a specified v
 
 ### Usage <a class="anchor" id="vocabulary_annotator_usage"></a>
 
-Example Python script to perform NER using the VocabularyAnnotator class:
+Example Python script to perform information extraction using the VocabularyAnnotator class:
 
 ```python
 # simple example using VocabularyAnnotator on a passage of text
@@ -202,7 +203,7 @@ results = annotator.annotateText(input_text=test_text, output_format=output_form
 return results
 ```
 
-`rematch2` also implements specialised spaCy pipeline components to identify terms from the following pre-defined vocabularies in free text:
+`rematch2` also implements specialised spaCy pipeline components to identify terms from the following pre-defined vocabularies occurring in free text:
 
 | Component Name                                                  | Entity Type             | Description | Examples |
 | --------------------------------------------------------------- | ----------------------- | ----------- | -------: |
@@ -221,6 +222,7 @@ return results
 | [fish_evidence_ruler](#fish_evidence_ruler)                     | FISH_ARCHSCIENCE        |             |          |
 | [fish_maritime_craft_ruler](#fish_maritime_craft_ruler)         | FISH_OBJECT             |             |          |
 | [fish_monument_types_ruler](#fish_monument_types_ruler)         | FISH_OBJECT             |             |          |
+| [fish_object_materials_ruler](#fish_object_materials_ruler)     | FISH_MATERIAL           |             |          |
 | [fish_periods_ruler](#fish_periods_ruler)                       | FISH_PERIOD             |             |          |
 | [geonames_ruler](#geonames_ruler)                               | PLACE                   |             |          |
 
@@ -292,13 +294,17 @@ Identifies terms from the [FISH 'Maritime Craft Types' thesaurus](http://purl.or
 
 Identifies terms from the [FISH 'Monument Types' thesaurus](http://purl.org/heritagedata/schemes/eh_tmt2)
 
+### fish_object_materials_ruler <a class="anchor" id="fish_object_materials_ruler"></a>
+
+Identifies terms from the [FISH 'Object Materials' thesaurus](http://purl.org/heritagedata/schemes/73)
+
 ### fish_periods_ruler <a class="anchor" id="fish_periods_ruler"></a>
 
 Identifies terms from the [FISH 'Historic England Periods' thesaurus](http://purl.org/heritagedata/schemes/eh_period)
 
 ## Usage <a class="anchor" id="component_usage"></a>
 
-Example Python script to perform NER using the components:
+Example Python script to perform information extraction using the components:
 
 ```python
 # Using specialised VocabularyRuler pipeline components
@@ -350,4 +356,4 @@ df = pd.DataFrame([{
 print(df)
 ```
 
-Other practical examples of usage are found in the accompanying Python notebooks.
+Other practical examples of usage may be found in the accompanying Python notebooks.

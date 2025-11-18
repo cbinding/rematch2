@@ -5,6 +5,8 @@
 # local testing data input and output
 /data/fish/*
 /data/oasis/*
+/data/doug_llm/*
 /data/gotriple/*
 !data/gotriple/ner-output*
+!data/gotriple/ie-output*
 !data/athena/*

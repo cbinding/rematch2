@@ -2,13 +2,9 @@
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/141190",		
     "pattern": "CBM"
-  },
+  },  
   {
-    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/141190",		
-    "pattern": "ceramic building material"
-  },
-  {
-    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96399",		
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97326",		
     "pattern": "bladelet"
   },
   {
@@ -18,6 +14,10 @@
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97566",		
     "pattern": "flint"
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97566",		
+    "pattern": "flintwork"
   },
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97566",		
@@ -94,9 +94,5 @@
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/170831",		
     "pattern": "pebble"
-  }, 
-  {
-    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/170833",		
-    "pattern": "shell"
-  } 
+  }  
 ]

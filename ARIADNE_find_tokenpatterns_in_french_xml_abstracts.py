@@ -1,7 +1,7 @@
 # =============================================================================
 # Project   : ARIADNEplus
 # Package   : NLP
-# Module    : find-tokenpatterns-in-french-xml-abstracts.py
+# Module    : find_tokenpatterns_in_french_xml_abstracts.py
 # Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 # Contact   : ceri.binding@southwales.ac.uk
 # Summary   :
