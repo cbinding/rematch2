@@ -10,7 +10,7 @@ Summary   : Convert spaCy Doc spans, tokens, pairs, counts to
             various output formats. use to improve consistency            
 Imports   : escape, pandas, DataFrame, Doc, displacy, SpanPairs
 Example   : html = DocSummary(doc).spans_to_html()
-    .doctext, .tokens, .spans, .span_counts, .labels, .label_counts, .spanpairs 
+    .doctext, .tokens, .spans, .span_scores, .labels, .label_counts, .spanpairs 
 License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History
@@ -26,13 +26,13 @@ import pandas as pd
 import spacy
 from html import escape  # for writing escaped HTML
 from pandas import DataFrame
-from spacy.tokens import Doc, Span, Token, SpanGroup
+from spacy.tokens import Doc, Span, Token
 from spacy import displacy
 from .SpanPair import SpanPair
 from .SpanPairs import SpanPairs
 from .Decorators import run_timed
 from .Util import DEFAULT_SPANS_KEY
-
+from collections import Counter
 
 class DocSummary:
 
@@ -55,37 +55,18 @@ class DocSummary:
 
 
     @staticmethod
-    def _id_for_span(span: Span):
-        id = ""
-        if len(span.id_.strip()) > 0:
-            id = span.id_.strip()
-        elif len(span.text.strip()) > 0:
-            id = span.text.strip()
-        else:
-            id = "other"
+    def _id_for_span(span: Span) -> str:
+        id: str = "other"
+        span_id: str = span.id_.strip()
+        span_text: str = span.text.strip()
+
+        if len(span_id) > 0:
+            id = span_id
+        elif len(span_text) > 0:
+            id = span_text
+        
         return id
-
-
-    def get_frequencies_by_id(self) -> dict[str, dict]:
-        
-        id_counts: dict[str, dict] = self.get_span_counts_by_id()
-        lbl_counts: dict[str, dict] = self.get_span_counts_by_label()
-        frequencies = {}
-        for span in self.spans:
-            id = self._id_for_span(span)
-            
-            if id not in frequencies:
-                id_count = id_counts.get(id, {}).get("count", 0)
-                lbl_count = lbl_counts.get(span.label_, {}).get("count", 1)
-
-                frequencies[id] = { 
-                    "id": id, 
-                    "cf": float(id_count) / float(lbl_count),
-                    "cf_explain": f"id_count={id_count}, label_count={lbl_count}"
-                } 
-
-        return frequencies
-        
+ 
 
     @property
     def metadata(self) -> dict[str,str]: 
@@ -114,9 +95,9 @@ class DocSummary:
         return pairs
 
     @cached_property
-    def span_counts(self) -> dict[str, dict]:
-        counts = self.get_span_counts_by_id() 
-        return counts
+    def span_scores(self) -> list:
+        scores = self.get_span_scores() 
+        return scores
 
 
     @cached_property
@@ -194,7 +175,7 @@ class DocSummary:
                 "FISH_ARCHSCIENCE": "lightpink",
                 "FISH_ACTIVITY": "lightsalmon",
                 "FISH_EVIDENCE": "aliceblue",
-                "FISH_MATERIAL": "antiquewhite",
+                "FISH_MATERIAL": "palegreen",
                 "FISH_EVENTTYPE": "coral"
             } 
         }
@@ -246,12 +227,18 @@ class DocSummary:
             "id": span.id_,
             "text": span.text,
             # if SpanScorer is in the pipeline, these custom attributes will be populated
-            "occurrences": span._.occurrences if Span.has_extension("occurrences") else 0, # number of occurrences
-            "frequency": span._.frequency if Span.has_extension("frequency") else 0.0, # concept frequency
-            "frequency_explain": span._.frequency_explain if Span.has_extension("frequency_explain") else "",
-            "sec_score": span._.sec_score if Span.has_extension("sec_score") else 0.0, # section score
-            "sig_score": span._.sig_score if Span.has_extension("sig_score") else 0.0, # significance score
-            "neg_score": span._.neg_score if Span.has_extension("neg_score") else 0.0, # negation score
+            #"occurrences": getattr(span._, "ccurrences", 0), # number of occurrences
+            #"frequency_by_label": getattr(span._, "frequency_by_label", 0.0), # concept frequency
+            #"frequency_overall": getattr(span._, "frequency_overall", 0.0), # concept frequency
+            #"frequency_explain": getattr(span._, "frequency_explain", ""),
+            "sec_score": getattr(span._, "sec_score", 0.0), # section score
+            "sections": getattr(span._, "sections", ""),
+            "sig_sentence": getattr(span._, "sig_sentence", 0.0), # significance by sentence score
+            "sig_proximity": getattr(span._, "sig_proximity", 0.0), # significance by proximity score
+            #"llm_sig_score": span._.llm_sig_score if Span.has_extension("llm_sig_score") else 0.0, # llm significance score
+            "neg_proximity": getattr(span._, "neg_proximity", 0.0), # negation by proximity score
+            #"score": getattr(span._, "score", 0.0), # calculated score
+            #"score_explain": getattr(span._, "score_explain", ""), # calculated score explanation for testing/debugging
             "context": DocSummary.get_span_context(span)
             } for span in self.spans]).drop_duplicates()
 
@@ -298,7 +285,7 @@ class DocSummary:
     @run_timed
     def get_span_pairs(
         self,
-        left_labels: list=["PERIOD", "YEARSPAN"], 
+        left_labels: list=["PERIOD", "YEARSPAN", "FISH_MATERIAL"], 
         right_labels: list=["FISH_OBJECT", "FISH_MONUMENT"], 
         rel_ops: list=[ "<", ">", ".", ";" ]
         ) -> list[SpanPair]:
@@ -311,7 +298,7 @@ class DocSummary:
     @run_timed
     def get_negated_span_pairs(
         self,
-        right_labels=["YEARSPAN", "PERIOD", "FISH_OBJECT", "FISH_MONUMENT"],
+        right_labels=["YEARSPAN", "PERIOD", "FISH_OBJECT", "FISH_MONUMENT", "FISH_MATERIAL"],
         rel_ops=["<", "."]        
         ) -> list[SpanPair]:
 
@@ -319,9 +306,9 @@ class DocSummary:
 
         return pairs
 
-    # count spans by id, return list [{id, label, text, count}, {id, label, text, count}, ...] 
+    # return list [{id, label, text, score}, id, label, text, score}, ...] 
     # returned in descending count order - note there is probably a more elegant way to do this 
-    def get_span_counts_by_id(
+    def get_span_scores(
         self,            
         exclude: list = [
             "NEGATION", 
@@ -331,43 +318,81 @@ class DocSummary:
             "ORDINAL", 
             "MONTHNAME", 
             "SEASONNAME"
-        ]) -> dict[str, dict]:
-        counts = {}
-        #spans_count = len(list(filter(lambda s: s.label_ not in exclude, spans)))
+        ]) -> list:
+        
+        # create list of id, text[], label, count, score
+        scores = {}
 
-        for span in self.spans:
-            # exclude specified labels from summary counts
-            if span.label_ in exclude:
-                continue
+        con_weight: float = 1.0    # weighting for concept
+        sec_weight: float = 1.0    # weighting for section score
+        sig_weight: float = 1.0    # weighting for significance score
+        neg_weight: float = 0.0    # weighting for negation
 
-            id = self._id_for_span(span)
-           
-            # create a new record if not encountered before, or increment the existing count
-            if id not in counts:
-                counts[id] = { "id": id, "label": span.label_, "text": [span.text], "count": 1 } 
+        # get all the current spans
+        all_spans: list[Span] = list(self._doc.spans.get(self._spans_key, []))
+        if len(all_spans) == 0: return list(scores.values())
+
+        # count occurrences by id (or text if no id) and by label
+        ident_count = Counter(map(lambda span: span.text.lower() if not span.id_ else span.id_, all_spans))
+        label_count = Counter(map(lambda span: span.label_, all_spans))
+
+        # build dict to hold scores for each span id
+        for span in all_spans:
+            # create new span record or increment existing
+            id = span.text.lower() if not span.id_ else span.id_
+            sec_score: float = getattr(span._, "sec_score", 0.0) # section score
+            sig_sentence: float = getattr(span._, "sig_sentence", 0.0) # significance score
+            sig_proximity: float = getattr(span._, "sig_proximity", 0.0) # significance score
+            neg_proximity: float = getattr(span._, "neg_proximity", 0.0) # negation score
+            significance: float = max(sig_sentence, sig_proximity)
+            if id not in scores:
+                scores[id] = { 
+                    "id": id, 
+                    "text": [span.text], 
+                    "label": span.label_, 
+                    "count": 1, 
+                    "sec_score": sec_score, 
+                    "sig_score": significance,
+                    "neg_score": neg_proximity,
+                    "score": 0, 
+                    "score_explain": ""
+                }
             else:
-                counts[id]["count"] += 1 
+                if span.text not in scores[id]["text"]:
+                    scores[id]["text"].append(span.text)
+                scores[id]["count"] += 1
+                scores[id]["sec_score"] += sec_score
+                scores[id]["sig_score"] += significance
+                scores[id]["neg_score"] += neg_proximity # neg score not currently used in calculation
+                
+        sum_sec_scores = sum(item["sec_score"] for item in scores.values())
+        sum_sig_scores = sum(item["sig_score"] for item in scores.values())
 
-            # might be a variation of the word
-            if span.text.lower() not in map(str.lower, counts[id]["text"]):
-                #if span.text.lower() not in (value.lower() for value in counts[id]["text"]):
-                counts[id]["text"].append(span.text)
+        # now calculate and add scores
+        for item in scores.values():
+            id = item.get("id","")
+            label = item.get("label","")
+            id_count = ident_count.get(id, 0) 
+            lbl_count = label_count.get(label, 0)            
+            frequency_by_label: float = float(id_count) / float(lbl_count if lbl_count > 0 else 1)   
+            frequency_overall: float = float(id_count) / float(len(all_spans))
+            #item["score"] = (con_weight * item["count"] * frequency_by_label) + (sec_weight * item["sec_score"] * frequency_by_label) + (sig_weight * item["sig_score"] * frequency_by_label)
+            #item["score_explain"] = f"(({con_weight} * {frequency_by_label}) + ({sec_weight} * {item["sec_score"]} * {frequency_by_label}) + ({sig_weight} * {item["sig_score"]} * {frequency_by_label}))"
+            
+            #item["score"] = (sec_weight * (item["sec_score"] / sum_sec_scores)) + (sig_weight * (item["sig_score"] / sum_sig_scores))
+            #item["score_explain"] = f"(({sec_weight} * {"{:.3f}".format(item["sec_score"])} / {"{:.3f}".format(sum_sec_scores)}) + ({sig_weight} * {"{:.3f}".format(item["sig_score"])} / {"{:.3f}".format(sum_sig_scores)}))"
+            
+            item["score"] = (sec_weight * item["sec_score"]) + (sig_weight * item["sig_score"])
+            item["score_explain"] = f"(({sec_weight} * {"{:.3f}".format(item["sec_score"])}) + ({sig_weight} * {"{:.3f}".format(item["sig_score"])}))"
+            
+
+        return list(scores.values()) # create list of id, text[], label, count, score
+
+
+    def span_scores_to_df(self) -> DataFrame: 
         
-        return counts
-
-
-    def span_counts_to_df(self) -> DataFrame:        
-        
-        span_counts = list(self.span_counts.values())
-        frequencies = self.get_frequencies_by_id()
-
-        # add concept frequencies to span count records
-        for sc in span_counts:
-            sc["cf"] = float(frequencies.get(sc["id"], {}).get("cf", 0))
-            sc["cf_explain"] = frequencies.get(sc["id"], {}).get("cf_explain", "")
-
-        # sort the span count records
-        sorted_list = sorted(span_counts, key=lambda x: (x.get("count", 0), x.get("cf", 0)), reverse=True)
+        # sort the span score records
+        sorted_list = sorted(self.span_scores, key=lambda x: (x.get("score", 0)), reverse=True)
 
         # return as dataframe
         return DataFrame([{
@@ -375,13 +400,13 @@ class DocSummary:
             "label": sc.get("label", ""), 
             "text": r" / ".join(sc.get("text", [])),
             "count": int(sc.get("count", 0)),
-            "cf": float(sc.get("cf", 0)),
-            "cf_explain": sc.get("cf_explain", ""),
+            "score": sc.get("score", ""),
+            "score_explain": sc.get("score_explain", ""),
             } for sc in sorted_list])
 
 
-    def span_counts_to_csv(self, sep: str=",") -> str:
-        df = self.span_counts_to_df()
+    def span_scores_to_csv(self, sep: str=",") -> str:
+        df = self.span_scores_to_df()
         return df.to_csv(sep=sep)
 
     
@@ -394,15 +419,15 @@ class DocSummary:
                 return escape(text)
             
 
-    def span_counts_to_html(self) -> str:
-        df = self.span_counts_to_df()        
+    def span_scores_to_html(self) -> str:
+        df = self.span_scores_to_df()        
                     
         if df.empty:
             return "" 
         df["span"] = df.apply(lambda row: DocSummary._make_link(row["id"], row["text"]), axis=1)
         
         html = df.to_html(
-            columns=["span", "label", "count", "cf"],
+            columns=["span", "label", "count", "score", "score_explain"],
             border=0,
             justify="left",
             index=False, 
@@ -415,13 +440,13 @@ class DocSummary:
         return html  
 
 
-    def span_counts_to_json(self) -> str:
-        df = self.span_counts_to_df()
+    def span_scores_to_json(self) -> str:
+        df = self.span_scores_to_df()
         return df.to_json(orient="records")
 
 
-    def span_counts_to_text(self) -> str:
-        df = self.span_counts_to_df()
+    def span_scores_to_text(self) -> str:
+        df = self.span_scores_to_df()
         pd.set_option('display.max_colwidth', None)
         return(df.to_string(index=False)) if len(df) > 0 else "NO RECORDS" 
 
@@ -558,7 +583,7 @@ class DocSummary:
         include_tokens: bool = False,
         include_label_counts: bool = True, 
         include_spans: bool = False,        
-        include_span_counts: bool = True,
+        include_span_scores: bool = True,
         include_span_pairs: bool = True,
         include_negated_pairs: bool = False
         ) -> str:
@@ -620,10 +645,10 @@ class DocSummary:
             output.append("</details>")
 
         # write span counts
-        if(include_span_counts):
+        if(include_span_scores):
             output.append("<details>")
-            output.append(f"<summary class='span-counts'>Span Counts ({len(self.span_counts)})</summary>")
-            output.append(self.span_counts_to_html())
+            output.append(f"<summary class='span-counts'>Span Counts ({len(self.span_scores)})</summary>")
+            output.append(self.span_scores_to_html())
             output.append("</details>")
         
         # write span pairs
@@ -657,7 +682,7 @@ class DocSummary:
         include_tokens: bool = True,
         include_label_counts: bool = True,
         include_spans: bool = True,        
-        include_span_counts: bool = True,
+        include_span_scores: bool = True,
         include_span_pairs: bool = True,
         include_negated_pairs: bool = False) -> str:
         output = {
@@ -666,7 +691,7 @@ class DocSummary:
             "tokens": self.tokens_to_list() if include_tokens else [],
             "label_counts": self.label_counts if include_label_counts else [],
             "spans": self.spans_to_list() if include_spans else [],
-            "span_counts": self.span_counts if include_span_counts else [],
+            "span_scores": self.span_scores if include_span_scores else [],
             "span_pairs": self.span_pairs_to_list(self.span_pairs) if include_span_pairs else [],
             "negated_pairs": self.span_pairs_to_list(self.negated_pairs) if include_negated_pairs else []
         }
@@ -681,7 +706,7 @@ class DocSummary:
         include_tokens: bool = False,
         include_label_counts: bool = True,
         include_spans: bool = False,        
-        include_span_counts: bool = True,
+        include_span_scores: bool = True,
         include_span_pairs: bool = True,
         include_negated_pairs: bool = False
         ) -> str:
@@ -697,8 +722,8 @@ class DocSummary:
             output.append(f"label_counts:\n{self.label_counts_to_text()}")    
         if include_spans:
             output.append(f"spans:\n{self.spans_to_text()}")
-        if include_span_counts:
-            output.append(f"span counts:\n{self.span_counts_to_text()}")
+        if include_span_scores:
+            output.append(f"span counts:\n{self.span_scores_to_text()}")
         if include_span_pairs:
             output.append(f"span pairs:\n{self.span_pairs_to_text(self.span_pairs)}")
         if include_negated_pairs:

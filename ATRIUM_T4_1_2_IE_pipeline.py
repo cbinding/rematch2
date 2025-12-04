@@ -5,7 +5,7 @@ from rematch2.spacypatterns import patterns_en_ATTRIBUTE_RULES # rules to overri
 
 
 # read data from JSON file (for supplementary lists and stopword lists)
-def read_json(file_name) -> any:
+def read_json(file_name):
     data = []
     try:
         with open(file_name, "r") as f:
@@ -20,7 +20,7 @@ def get_pipeline(language: str="en") -> Language:
 
     clean_language = language.strip().lower()
 
-    nlp: Language = None
+    nlp: Language
 
     if(clean_language == "en"):
         # using predefined spaCy pipeline (English)
@@ -41,18 +41,22 @@ def get_pipeline(language: str="en") -> Language:
         supp_list_obj = read_json("./supp_list_en_FISH_ARCHOBJECTS.json")
         supp_list_mon = read_json("./supp_list_en_FISH_MONUMENTS.json")
         supp_list_per = read_json("./supp_list_en_FISH_PERIODS.json")
+        supp_list_mat = [] # object materials
         # existing vocabulary concepts we don't want to appear in the results (even if legitimate matches) 
         stop_list_obj = read_json("./stop_list_en_FISH_ARCHOBJECTS.json")
         stop_list_mon = read_json("./stop_list_en_FISH_MONUMENTS.json")
+        stop_list_per = []
+        stop_list_mat = [] # object materials
+
         
         # add rematch2 information extraction component(s) to the pipeline
         nlp.add_pipe("normalize_text", before = "tagger")
         nlp.add_pipe("yearspan_ruler", last=True)   
-        nlp.add_pipe("periodo_ruler", last=True, config={"periodo_authority_id": periodo_authority_id, "supp_list": supp_list_per}) 
+        nlp.add_pipe("periodo_ruler", last=True, config={"periodo_authority_id": periodo_authority_id, "supp_list": supp_list_per, "stop_list": stop_list_per}) 
         nlp.add_pipe("fish_archobjects_ruler", last=True, config={"supp_list": supp_list_obj, "stop_list": stop_list_obj}) 
         nlp.add_pipe("fish_monument_types_ruler", last=True, config={"supp_list": supp_list_mon, "stop_list": stop_list_mon})   
-        nlp.add_pipe("child_span_remover", last=True) 
-        nlp.add_pipe("span_scorer", last=True)
+        nlp.add_pipe("fish_object_materials_ruler", last=True, config={"supp_list": supp_list_mat, "stop_list": stop_list_mat})   
+        nlp.add_pipe("child_span_remover", last=True)
     else:
         raise ValueError(f"Unsupported language code \"{language}\"")
     

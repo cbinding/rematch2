@@ -363,6 +363,7 @@ def create_fish_building_materials_ruler(
         nlp=nlp, 
         name=name, 
         default_label="FISH_MATERIAL", 
+        pos=["ADJ"], 
         patterns=patterns,
         supp_list=supp_list, 
         stop_list=stop_list
@@ -494,7 +495,7 @@ def create_fish_object_materials_ruler(
         nlp=nlp, 
         name=name, 
         default_label="FISH_MATERIAL", 
-        #pos=["ADJ"], 
+        pos=["ADJ"], 
         min_lemmatize_length=3, 
         patterns=patterns,
         supp_list=supp_list,
