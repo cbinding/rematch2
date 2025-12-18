@@ -20,10 +20,19 @@ class BaseMatcher(Matcher):
         
 
     # Add single word (case-insensitive) pattern for each term in terms
-    # TODO: could normalize these?
-    def add_terms(self, label: str="unknown", terms: list[str]=[]) -> None:
-        patterns = [[{"LOWER": term.lower()}] for term in terms]
-        self.add_patterns(label, patterns)
+    def add_terms(self, label: str="unknown", terms: list[str]=[], pos: list[str]=[]) -> None:
+
+        pos_test: dict = {}
+        if (len(pos) > 0):
+            pos_test = { "POS": { "IN": pos } }            
+        
+        patterns = []
+        for term in terms:
+            pattern: dict = { "LOWER": term.lower() }
+            pattern.update(pos_test)
+            patterns.append([pattern])  
+
+        self.add(label, patterns)
 
 
     # Add patterns passed in (see spaCy matcher pattern syntax)
@@ -45,99 +54,80 @@ class BaseMatcher(Matcher):
 class SignificanceMatcher(BaseMatcher):
     def __init__(self, vocab: Vocab, validate: bool=True):
         super().__init__(vocab, validate=validate)
-        terms = [
-            "C14",
-            "calibrated",
-            "calibration",
-            "carbon", 
-            "carbon14", 
-            "compelling", 
-            "conclusions",
-            "considerable", 
-            "crucial",
-            "crucially",
-            "demonstrates",
-            "dendro", 
-            "dendrochonological",
-            "dendrochonology",
-            "excellent",
-            "exceptional",
-            "exceptionally",
-            "extraordinary",
-            "extraordinarily",
-            "importance",
-            "importantly",
-            "major", 
-            "meaningful",
-            "notable", 
-            "notably",
-            "noteworthy",
-            "pertinent",
-            "pivotal",
-            "radiocarbon",
-            "rare",
-            "rarity",
-            "relevant",
-            "remarkable",
-            "salient",
-            "spectacular",
-            "surprisingly",
-            "understanding",
-            "unexpectedly",
-            "unique",
-            "unusual",
-            "valuable",
-            "vital",
-            "worthwhile",
-            "significant",
-        ]
+        
         patterns = [
-            [{"OP": "?", "LOWER": {"REGEX": "(quite|exceptionally|extraordinarily|particularly|highly|most|very|extremely|nationally)"}},  {"LOWER": { "REGEX": "(significant|major|important)"}}, {"OP": "?", "LOWER": {"REGEX": "(discover(y|ies)|findings?)"}}],
-            [{"OP": "?", "LOWER": {"REGEX": "(obvious|extraordinary|exceptional|particular|undoubted|great|major)"}}, { "LOWER": {"REGEX": "(significance|importance)"}}],
-            [{"LOWER": "earliest"}, {"LOWER": "dated"}],
-            [{"OP": "?", "LOWER":  {"REGEX": "(important|excellent)"}}, {"LOWER": {"REGEX": "insights?"}}],
-            [{"LOWER": "exceptionally"}, {"LOWER": "rich"}],
-            [{"LOWER": "extraordinary"}, {"LOWER": "assemblage"}],
-            [{"LOWER": "enormous"}, {"LOWER": "feature"}],
-            [{"OP": "?", "LOWER": "particularly"}, {"LOWER": "interesting"}],
-            [{"LOWER": "evidence"}, {"LOWER": "highlights"}],
-            [{"LOWER": "assemblage"}, {"LOWER": "is"}, {"LOWER": "important"}],
-            [{"LOWER": "important"}, {"OP": "?", "LOWER": {"REGEX": "(assemblage|find(ing)?|evidence|discovery)"}}],
-            [{"LOWER": "results"}, {"LOWER": "of"}, {"LOWER": "this"}, {"LOWER": {"REGEX": "(investigation|excavation)"}}],
-            [{"LOWER": "principle"}, {"LOWER": {"REGEX": "(aims|features?)"}}],
-            [{"LOWER": "principal"}, {"LOWER": {"REGEX": "(aims|features?)"}}],
-            [{"OP": "?", "LOWER": "more"}, {"LOWER": "substantial"}, {"OP": "?", "LOWER": "activity"}],
-            [{"LOWER": {"REGEX": "(main|major)"}}, {"LOWER": "phase"}],
-            [{"LOWER": "strongly"}, {"LOWER": {"REGEX": "(hints|suggests)"}}],
-            [{"LOWER": "first"}, {"LOWER": "record"}, {"LOWER": "of"}],
-            [{"LOWER": "not"}, {"LOWER": "typically"}, {"LOWER": "found"}],
-            [{"LOWER": "unique"}, {"LOWER": "in"}, {"LOWER": "britain"}],
-            [{"LOWER": "radio"}, {"OP": "?", "ORTH": "-"}, {"LOWER": "carbon"}, {"OP": "?", "LOWER": {"REGEX": "dat(ing|ed|e)"}}],
-            [{"LOWER": "most"}, {"LOWER": {"REGEX": "important(ly)?"}}],
-            [{"LOWER": {"REGEX": "strong(er)?"}}, {"LOWER": "evidence"}, {"OP": "?", "LOWER": {"REGEX": "(for|of)"}}],
-            [{"LOWER": "carbon"}, {"LOWER": {"REGEX": "dat(s|e|ing|ed)"}}],
-            [{"LOWER": "rare"}, {"LOWER": "example"}, {"OP": "?", "LOWER": "of"}],
-            [{"LOWER": {"REGEX": "(strong(er|ly)?|considerable|important|plentiful)"}}, {"LOWER": "evidence"}],           
+            [{ "LOWER": { "REGEX": "^biostratigraph(ic|y)$" }}],
+            [{ "LOWER": { "REGEX": "^calibrat(ed|ion)$" }}],
+            [{ "LOWER": { "REGEX": "^carbon(14)?$" }}],
+            [{ "LOWER": "c14" }],
+            [{ "LOWER": { "REGEX": "^dendro(chronolog(y|ical))?$" }}],
+            [{ "LOWER": "enormous" }],
+            [{ "LOWER": "evidence" }],
+            [{ "LOWER": "exceptional" }],
+            [{ "LOWER": "extraordinary" }],
+            [{ "LOWER": "important" }],
+            [{ "LOWER": "interesting" }],
+            [{ "LOWER": "notable" }],
+            [{ "LOWER": "noteworthy" }],
+            [{ "LOWER": "radiocarbon" }],
+            [{ "LOWER": "radio" }, {"OP": "?", "ORTH": "-"}, { "LOWER": "carbon" }, { "OP": "?", "LOWER": { "REGEX": "^dat(es?|ing|ed)$" }}],
+            [{ "OP": "?", "LOWER": "carbon" }, { "LOWER": { "REGEX": "^dat(es?|ing|ed)$" }}],
+            [{ "LOWER": "rare" }],
+            [{ "LOWER": "remarkable" }],
+            [{ "LOWER": "salient" }],
+            [{ "LOWER": "spectacular" }],
+            [{ "LOWER": "spectrometry" }],
+            [{ "LOWER": "stratigraphy" }],
+            [{ "LOWER": "surprising" }],
+            [{ "LOWER": "unexpected" }],    
+            [{ "LOWER": "unique" }],
+            [{ "LOWER": "unusual" }],
+            [{ "LOWER": "vital" }],
+            [{ "LOWER": "significant" }],           
+            #[{"OP": "?", "LOWER": {"REGEX": "(quite|exceptionally|extraordinarily|particularly|highly|most|very|extremely|nationally)"}},  {"LOWER": { "REGEX": "(significant|major|important)"}}, {"OP": "?", "LOWER": {"REGEX": "(discover(y|ies)|findings?)"}}],
+            #[{"OP": "?", "LOWER": {"REGEX": "(obvious|extraordinary|exceptional|particular|undoubted|great|major)"}}, { "LOWER": {"REGEX": "(significance|importance)"}}],
+            #[{"LOWER": "earliest"}, {"LOWER": "dated"}],
+            #[{"OP": "?", "LOWER":  {"REGEX": "(important|excellent)"}}, {"LOWER": {"REGEX": "insights?"}}],
+            #[{"LOWER": "exceptionally"}, {"LOWER": "rich"}],
+            #[{"LOWER": "extraordinary"}, {"LOWER": "assemblage"}],
+            #[{"LOWER": "enormous"}, {"LOWER": "feature"}],
+            #[{"OP": "?", "LOWER": "particularly"}, {"LOWER": "interesting"}],
+            #[{"LOWER": "evidence"}, {"LOWER": "highlights"}],
+            #[{"LOWER": "assemblage"}, {"LOWER": "is"}, {"LOWER": "important"}],
+            #[{"LOWER": "important"}, {"OP": "?", "LOWER": {"REGEX": "(assemblage|find(ing)?|evidence|discovery)"}}],
+            #[{"LOWER": "results"}, {"LOWER": "of"}, {"LOWER": "this"}, {"LOWER": {"REGEX": "(investigation|excavation)"}}],
+            #[{"LOWER": "principle"}, {"LOWER": {"REGEX": "(aims|features?)"}}],
+            #[{"LOWER": "principal"}, {"LOWER": {"REGEX": "(aims|features?)"}}],
+            #[{"OP": "?", "LOWER": "more"}, {"LOWER": "substantial"}, {"OP": "?", "LOWER": "activity"}],
+            #[{"LOWER": {"REGEX": "(main|major)"}}, {"LOWER": "phase"}],
+            #[{"LOWER": "strongly"}, {"LOWER": {"REGEX": "(hints|suggests)"}}],
+            #[{"LOWER": "first"}, {"LOWER": "record"}, {"LOWER": "of"}],
+            #[{"LOWER": "not"}, {"LOWER": "typically"}, {"LOWER": "found"}],
+            #[{"LOWER": "unique"}, {"LOWER": "in"}, {"LOWER": "britain"}],
+            #[{"LOWER": "radio"}, {"OP": "?", "ORTH": "-"}, {"LOWER": "carbon"}, {"OP": "?", "LOWER": {"REGEX": "dat(ing|ed|e)"}}],
+            #[{"LOWER": "most"}, {"LOWER": {"REGEX": "important(ly)?"}}],
+            #[{"LOWER": {"REGEX": "strong(er)?"}}, {"LOWER": "evidence"}, {"OP": "?", "LOWER": {"REGEX": "(for|of)"}}],
+            #[{"LOWER": "rare"}, {"LOWER": "example"}, {"OP": "?", "LOWER": "of"}],
+            #[{"LOWER": {"REGEX": "(strong(er|ly)?|considerable|important|plentiful)"}}, {"LOWER": "evidence"}],           
         ]
-        super().add_terms("significance", terms)
-        super().add_patterns("significance", patterns)
+        super().add("significance", patterns)
                 
 
 class NegationMatcher(BaseMatcher):
     def __init__(self, vocab: Vocab, validate: bool=True):
         super().__init__(vocab, validate=validate)
-        terms = ["preclude", "precluded", "precludes", "precluding"]
+
         patterns = [
-            [{"LOWER":  {"REGEX": "^(lack|scarcity|absence)$"}}, {"LOWER": "of"}],
-            [{"LOWER": {"REGEX": "^(no|lack(s|ed))$"}},{"LOWER": "evidence"}, {"OP": "?", "LOWER": "of"}],
-            [{"LOWER": "did"}, {"LOWER": "not"}, {"LOWER": "indicate"}],
-            [{"LOWER": "lack"}, {"LOWER": "of"}, {"OP": "?", "LOWER": "evidence"}],
-            [{"LOWER": "not"}, {"LOWER":  {"REGEX": "(suggest(ed)?|reveal(ed)?|detected)"}}],
-            [{"LOWER": {"REGEX": "fail(s|ed)"}}, {"LOWER": "to"}, {"LOWER": "reveal"}],
-            [{"LOWER": {"REGEX": "(is|was)"}}, {"LOWER": "absent"}]
+            [{ "LOWER": { "REGEX": "^preclud(e[ds]?|ing)$" }}],
+            [{ "LOWER": { "REGEX": "^(lack|scarcity|absence)$" }}, { "LOWER": "of" }],
+            [{ "LOWER": { "REGEX": "^(no|lack(s|ed))$" }}, { "LOWER": "evidence" }, { "OP": "?", "LOWER": "of" }],
+            [{ "LOWER": "did" }, { "LOWER": "not" }, { "LOWER": "indicate" }],
+            [{ "LOWER": "lack" }, { "LOWER": "of" }, { "OP": "?", "LOWER": "evidence" }],
+            [{ "LOWER": "not" }, { "LOWER":  { "REGEX": "^(suggest(ed)?|reveal(ed)?|detected)$" }}],
+            [{ "LOWER": { "REGEX": "^fail(s|ed)$" }}, { "LOWER": "to"}, {"LOWER": "reveal" }],
+            [{ "LOWER": { "REGEX": "^(is|was)$" }}, { "LOWER": "absent" }]
         ]
-        super().add_terms("negation", terms)
-        super().add_patterns("negation", patterns)
+        super().add("negation", patterns)
 
 
 class SpanScorer(Pipe):
