@@ -17,7 +17,7 @@ patterns_en_DATEPREFIX = [
     { 
         "label": "DATEPREFIX",
 		"pattern": [
-            {"LOWER": {"REGEX": r"^(c\.|circa|around|approximately)$"}}            
+            {"LOWER": {"REGEX": r"^(circa|around|approximately)$"}}            
         ]
     },
     {

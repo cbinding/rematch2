@@ -45,6 +45,7 @@ class SpanPair:
     span2_text: str
     rel_op: str
     score: Optional[float] = None
+    score_explain: Optional[str] = None
 
 
 @dataclass(frozen=True)

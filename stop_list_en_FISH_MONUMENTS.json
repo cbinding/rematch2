@@ -15,6 +15,10 @@
   { "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70121", "term": "CAMERA" },
   { "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/91355", "term": "CAR PARK" },
   { "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70232", "term": "LIFT" },
+  { "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/78156", "term": "FEATURE" },
+  { "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68623", "term": "FIELD" },
+  { "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/71371", "term": "TERRACE" },
+
   
   { "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68543", "term": "AGRICULTURE AND SUBSISTENCE" },
   { "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/147336", "term": "WINTER BEE HOUSE" },

@@ -1,7 +1,19 @@
 # build configured pipeline for ATRIUM T-4-1-2
 import spacy, json
+import pandas as pd  # for DataFrame
+
 from spacy.language import Language
 from rematch2.spacypatterns import patterns_en_ATTRIBUTE_RULES # rules to override POS tags in some cases
+
+
+# parse and extract records from CSV file, returns list[dict] for subsequent processing
+def get_records_from_csv_file(file_path: str="", delimiter: str=",") -> list[dict]:
+    # read the CSV file to a DataFrame
+    df = pd.read_csv(file_path, skip_blank_lines=True, delimiter=delimiter)
+    # set any NaN values to blank string
+    df.fillna("", inplace=True)
+    # return data as a list[dict] structure
+    return df.to_dict(orient="records") 
 
 
 # read data from JSON file (for supplementary lists and stopword lists)

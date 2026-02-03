@@ -94,5 +94,9 @@
   {
     "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/170831",		
     "pattern": "pebble"
-  }  
+  },
+  {
+    "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/169938",		
+    "pattern": "hazelnut"
+  }   
 ]

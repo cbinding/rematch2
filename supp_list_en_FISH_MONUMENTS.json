@@ -48,6 +48,10 @@
     "pattern": "crop-dryer" 
   },
   {
+    "id": "http://purl.org/heritagedata/schemes/eh_tmt2/concepts/68765",		
+    "pattern": "field monument" 
+  },
+  {
     "id": "http://tempuri/supplementary/floodplain",		
     "pattern": "floodplain"
   },

@@ -9,8 +9,8 @@ from spacy.vocab import Vocab
 from .Util import DEFAULT_SPANS_KEY
 from .SpanRelationship import *
 from collections import Counter
-import pandas as pd
-from pandas import DataFrame
+#import pandas as pd
+#from pandas import DataFrame
 from rematch2.DocSummary import DocSummary
 
 
@@ -59,6 +59,7 @@ class SignificanceMatcher(BaseMatcher):
             [{ "LOWER": { "REGEX": "^biostratigraph(ic|y)$" }}],
             [{ "LOWER": { "REGEX": "^calibrat(ed|ion)$" }}],
             [{ "LOWER": { "REGEX": "^carbon(14)?$" }}],
+            [{ "OP": "?", "LOWER": "carbon" }, { "LOWER": { "REGEX": "^dat(es?|ing|ed)$" }}],            
             [{ "LOWER": "c14" }],
             [{ "LOWER": { "REGEX": "^dendro(chronolog(y|ical))?$" }}],
             [{ "LOWER": "enormous" }],
@@ -71,14 +72,14 @@ class SignificanceMatcher(BaseMatcher):
             [{ "LOWER": "noteworthy" }],
             [{ "LOWER": "radiocarbon" }],
             [{ "LOWER": "radio" }, {"OP": "?", "ORTH": "-"}, { "LOWER": "carbon" }, { "OP": "?", "LOWER": { "REGEX": "^dat(es?|ing|ed)$" }}],
-            [{ "OP": "?", "LOWER": "carbon" }, { "LOWER": { "REGEX": "^dat(es?|ing|ed)$" }}],
-            [{ "LOWER": "rare" }],
+           [{ "LOWER": "rare" }],
             [{ "LOWER": "remarkable" }],
             [{ "LOWER": "salient" }],
             [{ "LOWER": "spectacular" }],
             [{ "LOWER": "spectrometry" }],
             [{ "LOWER": "stratigraphy" }],
             [{ "LOWER": "surprising" }],
+            [{ "LOWER": "tree" }, { "LOWER": "ring"}],     
             [{ "LOWER": "unexpected" }],    
             [{ "LOWER": "unique" }],
             [{ "LOWER": "unusual" }],
@@ -137,8 +138,11 @@ class SpanScorer(Pipe):
         spans_key: str = DEFAULT_SPANS_KEY, 
         sections: list = []
         #max_proximity: int = 3, 
-        #significance_weight: float = 1.0, 
-        #significance_terms: list = []
+        #sig_weight: float = 1.0,
+        #neg_weight: float = 1.0,
+        #sec_weight: float = 1.0,
+        #sig_terms: list = []
+        #neg_terms: list = []
         ) -> None:
 
         self.nlp: Language = nlp
@@ -149,13 +153,14 @@ class SpanScorer(Pipe):
         #self.significance_terms: list = list(map(lambda s: s.strip().lower(), significance_terms))
         
 
-    # multiple metrics to run, scores asdded to indicidual spans
+    # multiple metrics to run, scores added to individual spans
     def __call__(self, doc: Doc) -> Doc:
         doc = self.set_section_scores(doc)
         doc = self.set_frequency_scores(doc)        
-        doc = self.set_neg_proximity_scores(doc)
-        doc = self.set_sig_proximity_scores(doc)
-        doc = self.set_sig_sentence_scores(doc)
+        doc = self.set_neg_proximity_scores(doc, max_proximity=3.0)
+        doc = self.set_sig_proximity_scores(doc, max_proximity=4.0, score=2.0)
+        #doc = self.set_sig_sentence_scores(doc)
+        doc = self.set_overall_span_scores(doc)
         return doc 
 
 
@@ -165,12 +170,12 @@ class SpanScorer(Pipe):
         sec_type = section_type.strip().lower()
 
         if sec_type == "title":
-            sec_score = 10.0
+            sec_score = 40.0
         elif sec_type == "abstract":
-            sec_score = 1.0
+            sec_score = 2.0
         elif sec_type == "body":
             sec_score = 0.1
-        elif sec_type == "end_material":
+        elif sec_type == "end_matter":
             sec_score = 0.0
         else:
            sec_score = 0.0
@@ -199,9 +204,15 @@ class SpanScorer(Pipe):
             containing_sections = [s for s in all_sections if s.get("start", span.end_char) <= span.start_char and s.get("end", span.start_char) >= span.end_char]
             if len(containing_sections) == 0:
                 continue
-            
+            # list the sections this span is part of (e.g ['page', 'body'])
             section_types: list[str] = list(set(map(lambda s: s.get("type", ""), containing_sections)))
+            # override - if section_types does not include any known types except page, then assume 'body'
+            if all(st not in ["title", "abstract", "body", "end_matter"] for st in section_types):
+                section_types.append("body")                     
+                        
+            # get the highest section score for these sections
             section_scores: list[float] = list(map(lambda t: self.get_section_score_by_type(t), section_types))           
+            # assign the highest section score and list of sections to the span
             span._.sec_score = max(section_scores)
             span._.sections = ", ".join(section_types)
         return doc
@@ -243,7 +254,7 @@ class SpanScorer(Pipe):
         return doc
     
 
-    # get textual context around a span
+    # get textual context around a span - for display/debugging purposes
     @staticmethod
     def get_span_context(span: Span, window_size: int=4) -> str:
         doc = span.doc
@@ -254,7 +265,8 @@ class SpanScorer(Pipe):
 
 
      # scoring for being in sentence containing 'significant' terms or phrases
-    def set_sig_sentence_scores(self, doc: Doc) -> Doc:
+     # (not used now, using proximity instead)
+    """ def set_sig_sentence_scores(self, doc: Doc) -> Doc:
         property_name = "sig_sentence"
         if not Span.has_extension(property_name):
             Span.set_extension(property_name, default=0.0)
@@ -271,22 +283,22 @@ class SpanScorer(Pipe):
             if span.sent in sentences:
                 setattr(span._, property_name, 0.2)
         
-        return doc
+        return doc """
 
 
     # scoring for proximity to a 'significant' term or phrase
-    def set_sig_proximity_scores(self, doc: Doc) -> Doc:
+    def set_sig_proximity_scores(self, doc: Doc, max_proximity: int=4, score: float=1.0) -> Doc:
         matcher = SignificanceMatcher(doc.vocab)        
         matches = matcher(doc)      
-        self.set_proximity_scores(doc, list(matches), max_proximity=4, property_name="sig_proximity", property_score=0.5)
+        self.set_proximity_scores(doc, proximity_to=list(matches), max_proximity=max_proximity, property_name="sig_proximity", property_score=score)
         return doc
     
 
     # scoring for proximity to a 'negation' term or phrase
-    def set_neg_proximity_scores(self, doc: Doc) -> Doc:
+    def set_neg_proximity_scores(self, doc: Doc, max_proximity: int=3, score: float=1.0) -> Doc:
         matcher = NegationMatcher(doc.vocab)        
         matches = matcher(doc)
-        self.set_proximity_scores(doc, list(matches), max_proximity=3, property_name="neg_proximity", property_score=1.0)
+        self.set_proximity_scores(doc, proximity_to=list(matches), max_proximity=max_proximity, property_name="neg_proximity", property_score=score)
         return doc
         
 
@@ -323,39 +335,41 @@ class SpanScorer(Pipe):
 
         return doc 
     
-
-    # not used now - totals calculated in DocSummary
-    #def set_overall_scores(self, doc: Doc):
+    
+    def set_overall_span_scores(self, doc: Doc):
         # ensure that custom properties exist before use
-        #if not Span.has_extension("score"):
-            #Span.set_extension("score", default=0.0) 
+        if not Span.has_extension("score"):
+            Span.set_extension("score", default=0.0) 
 
-        #if not Span.has_extension("score_explain"):
-            #Span.set_extension("score_explain", default="") 
+        if not Span.has_extension("score_explain"):
+            Span.set_extension("score_explain", default="") 
 
         # get all the current spans
-        #all_spans = list(doc.spans.get(self.spans_key, []))
-        #if len(all_spans) == 0: return doc
+        all_spans = list(doc.spans.get(self.spans_key, []))
+        if len(all_spans) == 0: return doc
 
         #con_weight = 1.0    # weighting for concept
         #sec_weight = 1.0    # weighting for section score
         #sig_weight = 1.0    # weighting for significance score
         #neg_weight = 0.0    # weighting for negation
 
-        #for span in all_spans:
+        for span in all_spans:
             #con_score = 1.0 # instance of concept
             #frequency = getattr(span._, "frequency_overall", 0.0)
-            #sec_score = getattr(span._, "sec_score", 0.0)
-            #sig_score = max(getattr(span._, "sig_proximity", 0.0), getattr(span._, "sig_sentence", 0.0))
+            sec_score = getattr(span._, "sec_score", 0.0)
+            sig_score = getattr(span._, "sig_proximity", 0.0)
             #neg_score = getattr(span._, "neg_proximity", 0.0)
-            #tot_score = (con_weight * frequency * con_score) + (sec_weight * sec_score) + (sig_weight * sig_score)
-            #tot_score_explain = f"(({con_weight} * {frequency} * {con_score}) + ({sec_weight} * {sec_score}) + ({sig_weight} * {sig_score}))"
+            #score = (con_weight * frequency * con_score) + (sec_weight * sec_score) + (sig_weight * sig_score)
+            #score_explain = f"(({con_weight} * {frequency} * {con_score}) + ({sec_weight} * {sec_score}) + ({sig_weight} * {sig_score}))"
             # note: neg_weight and neg_score not used in calculation yet
+            #score = (sec_weight * sec_score) + (sig_weight * sig_score)
+            #score_explain = f"(({sec_weight} * {"{:.3f}".format(sec_score)}) + ({sig_weight} * {"{:.3f}".format(sig_score)}))"
+            score = sec_score + sig_score 
+            score_explain = f"({sec_score:.2f}) + ({sig_score:.2f})"
+            setattr(span._, "score", score)
+            setattr(span._, "score_explain", score_explain)
 
-            #setattr(span._, "score", tot_score)
-            #setattr(span._, "score_explain", tot_score_explain)
-
-        #return doc
+        return doc
      
 
 @Language.factory(name="span_scorer", default_config={"spans_key": DEFAULT_SPANS_KEY, "sections": []}) 
@@ -410,11 +424,9 @@ if __name__ == "__main__":
                 input_text = f.read()           
                 input_file_content = {"text": input_text}
 
-
         # run the pipeline on the text and get all identified spans
         print(f"processing text through pipeline")
         doc = nlp(input_file_content.get("text", ""))   
-
         
         # add any 'sections' from the input data file (for later scoring)
         #sections_as_spans = []
@@ -443,7 +455,6 @@ if __name__ == "__main__":
         sections = list(input_file_content.get("sections", []))
         scorer = SpanScorer(nlp, sections=sections)
         doc = scorer(doc)
-
         
         # output the results        
         summary = DocSummary(doc)

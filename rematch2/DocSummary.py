@@ -94,6 +94,7 @@ class DocSummary:
         pairs = self.get_span_pairs()
         return pairs
 
+
     @cached_property
     def span_scores(self) -> list:
         scores = self.get_span_scores() 
@@ -105,10 +106,12 @@ class DocSummary:
         counts = self.get_span_counts_by_label()
         return counts
 
+
     @cached_property
     def negated_pairs(self) -> list[SpanPair]:
         pairs = self.get_negated_span_pairs()
         return pairs
+
 
     def __str__(self):
         return self.doctext
@@ -148,6 +151,7 @@ class DocSummary:
 
     
     def doctext_to_text(self) -> str: return self._doc.text
+
 
     def doctext_to_html(
         self,
@@ -237,8 +241,8 @@ class DocSummary:
             "sig_proximity": getattr(span._, "sig_proximity", 0.0), # significance by proximity score
             #"llm_sig_score": span._.llm_sig_score if Span.has_extension("llm_sig_score") else 0.0, # llm significance score
             "neg_proximity": getattr(span._, "neg_proximity", 0.0), # negation by proximity score
-            #"score": getattr(span._, "score", 0.0), # calculated score
-            #"score_explain": getattr(span._, "score_explain", ""), # calculated score explanation for testing/debugging
+            "score": getattr(span._, "score", 0.0), # calculated overall score
+            "score_explain": getattr(span._, "score_explain", ""), # calculated overall score explanation (for testing/debugging)
             "context": DocSummary.get_span_context(span)
             } for span in self.spans]).drop_duplicates()
 
@@ -290,9 +294,14 @@ class DocSummary:
         rel_ops: list=[ "<", ">", ".", ";" ]
         ) -> list[SpanPair]:
 
-        pairs = SpanPairs(doc=self._doc, rel_ops=rel_ops, left_labels=left_labels, right_labels=right_labels).pairs
-
-        return pairs
+        all_pairs = SpanPairs(doc=self._doc, rel_ops=rel_ops, left_labels=left_labels, right_labels=right_labels).pairs
+        
+        # only return pairs where both spans have non-zero section score (i.e.within title, abstract, body - not endmatter)
+        def nonzero_sec_score(span):
+            return getattr(span._, "sec_score", 0) > 0
+        
+        filtered_pairs = [pair for pair in all_pairs if nonzero_sec_score(pair.span1) and nonzero_sec_score(pair.span2)]
+        return filtered_pairs
 
 
     @run_timed
@@ -306,7 +315,7 @@ class DocSummary:
 
         return pairs
 
-    # return list [{id, label, text, score}, id, label, text, score}, ...] 
+    # return list [{id, text[], label, text, score}, {id, label, text, score}, ...] 
     # returned in descending count order - note there is probably a more elegant way to do this 
     def get_span_scores(
         self,            
@@ -323,71 +332,80 @@ class DocSummary:
         # create list of id, text[], label, count, score
         scores = {}
 
-        con_weight: float = 1.0    # weighting for concept
-        sec_weight: float = 1.0    # weighting for section score
-        sig_weight: float = 1.0    # weighting for significance score
-        neg_weight: float = 0.0    # weighting for negation
+        #con_weight: float = 1.0    # weighting for concept
+        #sec_weight: float = 1.0    # weighting for section score
+        #sig_weight: float = 1.0    # weighting for significance score
+        #neg_weight: float = 0.0    # weighting for negation
 
         # get all the current spans
         all_spans: list[Span] = list(self._doc.spans.get(self._spans_key, []))
-        if len(all_spans) == 0: return list(scores.values())
+        if len(all_spans) == 0: return [] #list(scores.values())
 
         # count occurrences by id (or text if no id) and by label
-        ident_count = Counter(map(lambda span: span.text.lower() if not span.id_ else span.id_, all_spans))
-        label_count = Counter(map(lambda span: span.label_, all_spans))
+        #ident_count = Counter(map(lambda span: span.text.lower() if not span.id_ else span.id_, all_spans))
+        #label_count = Counter(map(lambda span: span.label_, all_spans))
 
         # build dict to hold scores for each span id
         for span in all_spans:
             # create new span record or increment existing
             id = span.text.lower() if not span.id_ else span.id_
             sec_score: float = getattr(span._, "sec_score", 0.0) # section score
-            sig_sentence: float = getattr(span._, "sig_sentence", 0.0) # significance score
+            score: float = getattr(span._, "score", 0.0) # span score
+            #sig_sentence: float = getattr(span._, "sig_sentence", 0.0) # significance score
             sig_proximity: float = getattr(span._, "sig_proximity", 0.0) # significance score
             neg_proximity: float = getattr(span._, "neg_proximity", 0.0) # negation score
-            significance: float = max(sig_sentence, sig_proximity)
+            sections: list[str] = getattr(span._, "sections", []) # sections
+            #significance: float = max(sig_sentence, sig_proximity)
+            #sig_score: float = sig_proximity
+            increment: int = 0 if "end_matter" in sections else 1 # only count if not in end_matter
+
             if id not in scores:
                 scores[id] = { 
                     "id": id, 
                     "text": [span.text], 
                     "label": span.label_, 
-                    "count": 1, 
-                    "sec_score": sec_score, 
-                    "sig_score": significance,
-                    "neg_score": neg_proximity,
-                    "score": 0, 
-                    "score_explain": ""
+                    "count": increment, # only count if not in endmatter
+                    "score": score,
+                    "score_explain": f"{"{:.2f}".format(sec_score)} + {"{:.2f}".format(sig_proximity)}",
+                    "sec_score": sec_score,
+                    "sig_score": sig_proximity,
+                    "neg_score": neg_proximity # neg score not currently used in calculation
                 }
             else:
                 if span.text not in scores[id]["text"]:
                     scores[id]["text"].append(span.text)
-                scores[id]["count"] += 1
+                scores[id]["count"] += increment # only count if not in endmatter
+                scores[id]["score"] += score
                 scores[id]["sec_score"] += sec_score
-                scores[id]["sig_score"] += significance
+                scores[id]["sig_score"] += sig_proximity
                 scores[id]["neg_score"] += neg_proximity # neg score not currently used in calculation
+                scores[id]["score_explain"] = f"{"{:.2f}".format(scores[id]["sec_score"])} + {"{:.2f}".format(scores[id]["sig_score"])}"
                 
-        sum_sec_scores = sum(item["sec_score"] for item in scores.values())
-        sum_sig_scores = sum(item["sig_score"] for item in scores.values())
+                
+        #sum_sec_scores = sum(item["sec_score"] for item in scores.values())
+        #sum_sig_scores = sum(item["sig_score"] for item in scores.values())
 
         # now calculate and add scores
-        for item in scores.values():
-            id = item.get("id","")
-            label = item.get("label","")
-            id_count = ident_count.get(id, 0) 
-            lbl_count = label_count.get(label, 0)            
-            frequency_by_label: float = float(id_count) / float(lbl_count if lbl_count > 0 else 1)   
-            frequency_overall: float = float(id_count) / float(len(all_spans))
+        #for item in scores.values():
+            #id = item.get("id","")
+            #label = item.get("label","")
+            #id_count = ident_count.get(id, 0) 
+            #lbl_count = label_count.get(label, 0)            
+            #frequency_by_label: float = float(id_count) / float(lbl_count if lbl_count > 0 else 1)   
+            #frequency_overall: float = float(id_count) / float(len(all_spans))
             #item["score"] = (con_weight * item["count"] * frequency_by_label) + (sec_weight * item["sec_score"] * frequency_by_label) + (sig_weight * item["sig_score"] * frequency_by_label)
             #item["score_explain"] = f"(({con_weight} * {frequency_by_label}) + ({sec_weight} * {item["sec_score"]} * {frequency_by_label}) + ({sig_weight} * {item["sig_score"]} * {frequency_by_label}))"
             
             #item["score"] = (sec_weight * (item["sec_score"] / sum_sec_scores)) + (sig_weight * (item["sig_score"] / sum_sig_scores))
-            #item["score_explain"] = f"(({sec_weight} * {"{:.3f}".format(item["sec_score"])} / {"{:.3f}".format(sum_sec_scores)}) + ({sig_weight} * {"{:.3f}".format(item["sig_score"])} / {"{:.3f}".format(sum_sig_scores)}))"
+            #item["score_explain"] = f"(({sec_weight} * {"{:.2f}".format(item["sec_score"])} / {"{:.2f}".format(sum_sec_scores)}) + ({sig_weight} * {"{:.2f}".format(item["sig_score"])} / {"{:.2f}".format(sum_sig_scores)}))"
             
-            item["score"] = (sec_weight * item["sec_score"]) + (sig_weight * item["sig_score"])
-            item["score_explain"] = f"(({sec_weight} * {"{:.3f}".format(item["sec_score"])}) + ({sig_weight} * {"{:.3f}".format(item["sig_score"])}))"
-            
+            #item["score"] = (sec_weight * item["sec_score"]) + (sig_weight * item["sig_score"])
+            #item["score_explain"] = f"(({sec_weight} * {"{:.2f}".format(item["sec_score"])}) + ({sig_weight} * {"{:.2f}".format(item["sig_score"])}))"
 
-        return list(scores.values()) # create list of id, text[], label, count, score
-
+        # filter out any with zero section score (i.e. not in title, abstract, body)    
+        filtered = lambda item: item.get("sec_score", 0) > 0 
+        return list(filter(filtered, scores.values())) 
+      
 
     def span_scores_to_df(self) -> DataFrame: 
         
@@ -400,14 +418,14 @@ class DocSummary:
             "label": sc.get("label", ""), 
             "text": r" / ".join(sc.get("text", [])),
             "count": int(sc.get("count", 0)),
-            "score": sc.get("score", ""),
+            "score": sc.get("score", 0.0),
             "score_explain": sc.get("score_explain", ""),
             } for sc in sorted_list])
 
 
     def span_scores_to_csv(self, sep: str=",") -> str:
         df = self.span_scores_to_df()
-        return df.to_csv(sep=sep)
+        return df.to_csv(sep=sep, index=False) 
 
     
     # use for combining columns to form an HTML anchor
@@ -427,7 +445,7 @@ class DocSummary:
         df["span"] = df.apply(lambda row: DocSummary._make_link(row["id"], row["text"]), axis=1)
         
         html = df.to_html(
-            columns=["span", "label", "count", "score", "score_explain"],
+            columns=["span", "label", "count", "score"],
             border=0,
             justify="left",
             index=False, 
@@ -471,7 +489,11 @@ class DocSummary:
             label = span.label_
             # exclude specified labels from summary counts
             if label in exclude:
-                continue            
+                continue 
+
+            # exclude from count if span is in end_matter section
+            if "end_matter" in getattr(span._, "sections", []):  
+                continue           
             
             # create a new record if not encountered before, or increment the count
             if label not in counts:
@@ -600,70 +622,104 @@ class DocSummary:
         output.append(" <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr' crossorigin='anonymous'>")
         output.append("</head>")
         output.append("<body>")
-        output.append("<div class='container'>")
+        output.append("<div class='container' id='top'>")
         # write identifier as heading
-        identifier = self._metadata.get("identifier", "").strip()
-        if len(identifier) > 0:
-            output.append("<h3>")
-            if (identifier.startswith("http")):
-                output.append(f"<a target='_blank' rel='noopener noreferrer' href='{identifier}'>{escape(identifier)}</a>")
-            else:
-                output.append(f"{escape(identifier)}")
-            output.append("</h3>")
+        #identifier = self._metadata.get("identifier", "").strip()
+        #if len(identifier) > 0:
+            #output.append("<h3>")
+            #if (identifier.startswith("http")):
+                #output.append(f"<a target='_blank' rel='noopener noreferrer' href='{identifier}'>{escape(identifier)}</a>")
+            #else:
+               #output.append(f"{escape(identifier)}")
+            #output.append("</h3>")
 
+        # write title instead; as identifier / input file name is repeated in the metadata
+        output.append("<h2 class='title'>Information Extraction Report</h2>")
+
+        # build and write index links
+        output.append("<h3>Index</h3>")
+        output.append("<ul>")
+        if(include_metadata):
+            output.append("<li><a href='#metadata'>Metadata</a></li>")
+        if(include_doctext):
+            output.append("<li><a href='#doctext'>Document Text</a></li>")
+        if(include_tokens):
+            output.append("<li><a href='#tokens'>Tokens</a></li>")
+        if(include_spans):
+            output.append("<li><a href='#spans'>Spans</a></li>")
+        if(include_label_counts):
+            output.append("<li><a href='#label-counts'>Label Counts</a></li>")
+        if(include_span_scores):
+            output.append("<li><a href='#span-scores'>Span Scores</a></li>")
+        if(include_span_pairs):
+            output.append("<li><a href='#span-pairs'>Span Pairs</a></li>")
+        if(include_negated_pairs):
+            output.append("<li><a href='#negated-pairs'>Negated Pairs</a></li>")
+        output.append("</ul>")
+
+        # write the metadata section
         if(include_metadata): 
-            output.append("<details>")
-            output.append(f"<summary class='metadata'>Metadata</summary>")
+            output.append("<hr><section>")
+            output.append(f"<h3 class='metadata' id='metadata'>Metadata</h3>")
             output.append(self.metadata_to_html())
-            output.append("</details>")
+            output.append("<div class='top-link'><a href='#top'>[back to top]</a></div>")
+            output.append("</section>")
 
         # write displacy HTML rendering of doc text as paragraph with highlighted spans 
         if(include_doctext):
-            output.append("<details open>")
-            output.append(f"<summary class='doctext'>Text ({len(self.doctext)} characters)</summary>")
+            output.append("<hr><section>")
+            output.append(f"<h3 class='doctext' id='doctext'>Document Text ({len(self.doctext)} characters)</h3>")
             output.append(f"<p>{self.doctext_to_html()}</p>")
-            output.append("</details>")
+            output.append("<div class='top-link'><a href='#top'>[back to top]</a></div>")
+            output.append("</section>")
 
         # write tokens
         if(include_tokens):
-            output.append("<details>")
-            output.append(f"<summary class='tokens'>Tokens ({len(self.tokens)})</summary>")
+            output.append("<hr><section>")
+            output.append(f"<h3 class='tokens' id='tokens'>Tokens ({len(self.tokens)})</h3>")
             output.append(self.tokens_to_html())
-            output.append("</details>")
+            output.append("<div class='top-link'><a href='#top'>[back to top]</a></div>")
+            output.append("</section>")
 
         # write spans
         if(include_spans):
-            output.append("<details>")
-            output.append(f"<summary class='spans'>Spans ({len(self.spans)})</summary>")
+            output.append("<hr><section>")
+            output.append(f"<h3 class='spans' id='spans'>Spans ({len(self.spans)})</h3>")
             output.append(self.spans_to_html())
-            output.append("</details>")
+            output.append("<div class='top-link'><a href='#top'>[back to top]</a></div>")
+            output.append("</section>")
 
+        # write label counts
         if(include_label_counts):
-            output.append("<details>")
-            output.append(f"<summary class='spans'>Label Counts ({len(self.label_counts)})</summary>")
+            output.append("<hr><section>")
+            output.append(f"<h3 class='label-counts' id='label-counts'>Label Counts ({len(self.label_counts)})</h3>")
             output.append(self.label_counts_to_html())
-            output.append("</details>")
+            output.append("<div class='top-link'><a href='#top'>[back to top]</a></div>")
+            output.append("</section>")
 
-        # write span counts
+        # write span scores
         if(include_span_scores):
-            output.append("<details>")
-            output.append(f"<summary class='span-counts'>Span Counts ({len(self.span_scores)})</summary>")
+            output.append("<hr><section>")
+            output.append(f"<h3 class='span-scores' id='span-scores'>Span Scores ({len(self.span_scores)})</h3>")
             output.append(self.span_scores_to_html())
-            output.append("</details>")
+            output.append("<div class='top-link'><a href='#top'>[back to top]</a></div>")
+            output.append("</section>")
         
         # write span pairs
         if(include_span_pairs):
-            output.append("<details>")
-            output.append(f"<summary class='span-pairs'>Span Pairs ({len(self.span_pairs)})</summary>")
+            output.append("<hr><section>")
+            output.append(f"<h3 class='span-pairs' id='span-pairs'>Span Pairs ({len(self.span_pairs)})</h3>")
             output.append(self.span_pairs_to_html(self.span_pairs))
-            output.append("</details>")
+            output.append("<div class='top-link'><a href='#top'>[back to top]</a></div>")
+            output.append("</section>")
 
         # write negated pairs - this might not work now?? retest..
         if(include_negated_pairs):
-            output.append("<details>")
-            output.append(f"<summary class='span-pairs'>Negated Pairs ({len(self.negated_pairs)})</summary>")
+            output.append("<hr><section>")
+            output.append(f"<h3 class='span-pairs' id='negated-pairs'>Negated Pairs ({len(self.negated_pairs)})</h3>")
             output.append(self.span_pairs_to_html(self.negated_pairs))
-            output.append("</details>")
+            output.append("<div class='top-link'><a href='#top'>[back to top]</a></div>")
+            output.append("</section>")
 
         # write footer tags
         output.append("</div>")  # close container
@@ -723,7 +779,7 @@ class DocSummary:
         if include_spans:
             output.append(f"spans:\n{self.spans_to_text()}")
         if include_span_scores:
-            output.append(f"span counts:\n{self.span_scores_to_text()}")
+            output.append(f"span scores:\n{self.span_scores_to_text()}")
         if include_span_pairs:
             output.append(f"span pairs:\n{self.span_pairs_to_text(self.span_pairs)}")
         if include_negated_pairs:
@@ -741,7 +797,8 @@ class DocSummary:
             "span2_id": pair.span2.id_,
             "span2_label": pair.span2.label_,
             "span2_text": pair.span2.text,
-            "score": pair.score
+            "score": pair.score,
+            "score_explain": pair.score_explain
         } for pair in pairs])        
            
         return df
@@ -806,5 +863,6 @@ if __name__ == "__main__":
     
     with open("../data/test_serialisation.json", "w") as outfile:
         json.dump(data, outfile)
+    
     #print("\nTokens:\n" + summary.tokens_to_text())
     #print("\nSpans:\n" + summary.spans_to_text())    

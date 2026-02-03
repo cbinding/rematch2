@@ -19,5 +19,13 @@
   { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96364", "term": "bucket" },
   { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96804", "term": "spit" },
   { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/170044", "term": "lighter" },
-  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96556", "term": "table" }
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96556", "term": "table" },
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97401", "term": "pattern" },
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/141192", "term": "assemblage" },  
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96745", "term": "umbrella" },
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/95343", "term": "ruler" },
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96553", "term": "shelf" },
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97447", "term": "shelving" },
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96524", "term": "bed" },
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97202", "term": "bedding" }
 ]

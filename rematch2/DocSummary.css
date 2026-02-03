@@ -11,6 +11,18 @@ table {
     font-size:12px !important;
     width: 100%;
 }
+.top-link {
+    text-align: right;
+    font-size: small;
+    margin-top: -1em;
+    margin-bottom: 1em;
+}
+.title {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
 /*a:hover {
     color: red;
 }
