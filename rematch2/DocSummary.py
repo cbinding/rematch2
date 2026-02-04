@@ -203,7 +203,7 @@ class DocSummary:
 
 
     @run_timed
-    def report(self, format: str="text") -> str: 
+    def report(self, format: str="text") -> str|dict: 
         match format.strip().lower():  
             case "html": return self.report_to_html()
             case "json": return self.report_to_json()
@@ -740,7 +740,7 @@ class DocSummary:
         include_spans: bool = True,        
         include_span_scores: bool = True,
         include_span_pairs: bool = True,
-        include_negated_pairs: bool = False) -> str:
+        include_negated_pairs: bool = False) -> dict:
         output = {
             "metadata": self.metadata if include_metadata else {},
             "text": self.doctext if include_doctext else "",
@@ -750,8 +750,9 @@ class DocSummary:
             "span_scores": self.span_scores if include_span_scores else [],
             "span_pairs": self.span_pairs_to_list(self.span_pairs) if include_span_pairs else [],
             "negated_pairs": self.span_pairs_to_list(self.negated_pairs) if include_negated_pairs else []
-        }
-        return json.dumps(output, default=str)
+        }    
+        #return json.dumps(output, default=str)
+        return output
 
 
     @run_timed

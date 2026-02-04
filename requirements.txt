@@ -14,7 +14,7 @@ jsondiff
 
 brotli # for JSON Periodo import (returns brotli compressed data)
 python-slugify # for constructing valid filenames from record identifiers
-spacy>=3.7.2  # for NER
+spacy>=3.7.2  # for NER/IE
 
 #jmespath>=1.0.1  # for JSON search
 jsonpath-ng>=1.5.3 # for JSON search (as used in PeriodoData.py)
