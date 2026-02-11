@@ -348,7 +348,7 @@ class DocSummary:
         # build dict to hold scores for each span id
         for span in all_spans:
             # create new span record or increment existing
-            id = span.text.lower() if not span.id_ else span.id_
+            id: str = span.text.lower() if not span.id_ else span.id_
             sec_score: float = getattr(span._, "sec_score", 0.0) # section score
             score: float = getattr(span._, "score", 0.0) # span score
             #sig_sentence: float = getattr(span._, "sig_sentence", 0.0) # significance score

@@ -7,7 +7,7 @@ from rematch2.spacypatterns import patterns_en_ATTRIBUTE_RULES # rules to overri
 
 
 # parse and extract records from CSV file, returns list[dict] for subsequent processing
-def get_records_from_csv_file(file_path: str="", delimiter: str=",") -> list[dict]:
+def read_csv_file(file_path: str="", delimiter: str=",") -> list[dict]:
     # read the CSV file to a DataFrame
     df = pd.read_csv(file_path, skip_blank_lines=True, delimiter=delimiter)
     # set any NaN values to blank string
@@ -17,7 +17,7 @@ def get_records_from_csv_file(file_path: str="", delimiter: str=",") -> list[dic
 
 
 # read data from JSON file (for supplementary lists and stopword lists)
-def read_json(file_name):
+def read_json(file_name: str) -> list:
     data = []
     try:
         with open(file_name, "r") as f:
@@ -34,7 +34,7 @@ def get_pipeline(language: str="en") -> Language:
 
     nlp: Language
 
-    if(clean_language == "en"):
+    if(clean_language.startswith("en")):
         # using predefined spaCy pipeline (English)
         nlp = spacy.load("en_core_web_sm", disable = ['ner'])
 
@@ -57,7 +57,7 @@ def get_pipeline(language: str="en") -> Language:
         # existing vocabulary concepts we don't want to appear in the results (even if legitimate matches) 
         stop_list_obj = read_json("./stop_list_en_FISH_ARCHOBJECTS.json")
         stop_list_mon = read_json("./stop_list_en_FISH_MONUMENTS.json")
-        stop_list_per = []
+        stop_list_per = [] # periods
         stop_list_mat = [] # object materials
 
         
