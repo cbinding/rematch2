@@ -14,6 +14,7 @@
   { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/95183", "term": "crest" },
   { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/97552", "term": "core" },
   { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/95392", "term": "plan" },
+  { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96797", "term": "plate" },
   { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96677", "term": "case" },
   { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/95374", "term": "document" },
   { "id": "http://purl.org/heritagedata/schemes/mda_obj/concepts/96364", "term": "bucket" },

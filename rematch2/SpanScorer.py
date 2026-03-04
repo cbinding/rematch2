@@ -61,6 +61,9 @@ class SignificanceMatcher(BaseMatcher):
             [{ "LOWER": { "REGEX": "^carbon(14)?$" }}],
             [{ "OP": "?", "LOWER": "carbon" }, { "LOWER": { "REGEX": "^dat(es?|ing|ed)$" }}],            
             [{ "LOWER": "c14" }],
+            #[{ "LOWER": "compelling" }],##
+            #[{ "LOWER": "conclusions" }],##
+            #[{ "LOWER": "considerable" }],##
             [{ "LOWER": { "REGEX": "^dendro(chronolog(y|ical))?$" }}],
             [{ "LOWER": "enormous" }],
             [{ "LOWER": "evidence" }],
@@ -68,13 +71,14 @@ class SignificanceMatcher(BaseMatcher):
             [{ "LOWER": "extraordinary" }],
             [{ "LOWER": "important" }],
             [{ "LOWER": "interesting" }],
-            [{ "LOWER": "notable" }],
+            [{ "LOWER": { "REGEX": "^notabl[ey]$" }}],##
             [{ "LOWER": "noteworthy" }],
             [{ "LOWER": "radiocarbon" }],
             [{ "LOWER": "radio" }, {"OP": "?", "ORTH": "-"}, { "LOWER": "carbon" }, { "OP": "?", "LOWER": { "REGEX": "^dat(es?|ing|ed)$" }}],
-           [{ "LOWER": "rare" }],
+            [{ "LOWER": "rare" }],
             [{ "LOWER": "remarkable" }],
             [{ "LOWER": "salient" }],
+            [{ "LOWER": "significant" }],
             [{ "LOWER": "spectacular" }],
             [{ "LOWER": "spectrometry" }],
             [{ "LOWER": "stratigraphy" }],
@@ -83,8 +87,7 @@ class SignificanceMatcher(BaseMatcher):
             [{ "LOWER": "unexpected" }],    
             [{ "LOWER": "unique" }],
             [{ "LOWER": "unusual" }],
-            [{ "LOWER": "vital" }],
-            [{ "LOWER": "significant" }],           
+            [{ "LOWER": "vital" }],                       
             #[{"OP": "?", "LOWER": {"REGEX": "(quite|exceptionally|extraordinarily|particularly|highly|most|very|extremely|nationally)"}},  {"LOWER": { "REGEX": "(significant|major|important)"}}, {"OP": "?", "LOWER": {"REGEX": "(discover(y|ies)|findings?)"}}],
             #[{"OP": "?", "LOWER": {"REGEX": "(obvious|extraordinary|exceptional|particular|undoubted|great|major)"}}, { "LOWER": {"REGEX": "(significance|importance)"}}],
             #[{"LOWER": "earliest"}, {"LOWER": "dated"}],
@@ -157,7 +160,7 @@ class SpanScorer(Pipe):
     def __call__(self, doc: Doc) -> Doc:
         doc = self.set_section_scores(doc)
         doc = self.set_frequency_scores(doc)        
-        doc = self.set_neg_proximity_scores(doc, max_proximity=3.0)
+        doc = self.set_neg_proximity_scores(doc, max_proximity=3.0, score=1.0)
         doc = self.set_sig_proximity_scores(doc, max_proximity=4.0, score=2.0)
         #doc = self.set_sig_sentence_scores(doc)
         doc = self.set_overall_span_scores(doc)
@@ -287,7 +290,7 @@ class SpanScorer(Pipe):
 
 
     # scoring for proximity to a 'significant' term or phrase
-    def set_sig_proximity_scores(self, doc: Doc, max_proximity: int=4, score: float=1.0) -> Doc:
+    def set_sig_proximity_scores(self, doc: Doc, max_proximity: int=1, score: float=0.0) -> Doc:
         matcher = SignificanceMatcher(doc.vocab)        
         matches = matcher(doc)      
         self.set_proximity_scores(doc, proximity_to=list(matches), max_proximity=max_proximity, property_name="sig_proximity", property_score=score)
@@ -295,7 +298,7 @@ class SpanScorer(Pipe):
     
 
     # scoring for proximity to a 'negation' term or phrase
-    def set_neg_proximity_scores(self, doc: Doc, max_proximity: int=3, score: float=1.0) -> Doc:
+    def set_neg_proximity_scores(self, doc: Doc, max_proximity: int=1, score: float=0.0) -> Doc:
         matcher = NegationMatcher(doc.vocab)        
         matches = matcher(doc)
         self.set_proximity_scores(doc, proximity_to=list(matches), max_proximity=max_proximity, property_name="neg_proximity", property_score=score)
@@ -306,7 +309,7 @@ class SpanScorer(Pipe):
         self, 
         doc: Doc, 
         proximity_to: list[Span], 
-        max_proximity: int=4, 
+        max_proximity: int=1, 
         property_name: str="unknown", 
         property_score: float=0.0) -> Doc:
 
