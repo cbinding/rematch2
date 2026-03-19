@@ -23,6 +23,10 @@
     "id": "http://n2t.net/ark:/99152/p0kh9dsts5m",		 
     "pattern": "Later Palaeolithic"
   },
+ {
+    "id": "http://n2t.net/ark:/99152/p0kh9dst7t7",		 
+    "pattern": "Pre-historic"
+  },  
   {
     "id": "http://tempuri/supplementary/beaker",		 
     "pattern": "Beaker"
@@ -38,6 +42,10 @@
   {
     "id": "http://tempuri/supplementary/late-beaker",		 
     "pattern": "Later Beaker"
+  },
+  {
+    "id": "http://tempuri/supplementary/pictish",		 
+    "pattern": "Pictish"
   },
   {
     "id": "http://n2t.net/ark:/99152/p0kh9ds9nsj",		 
