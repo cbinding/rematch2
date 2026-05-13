@@ -1,0 +1,26 @@
+[    
+    { 
+        "comment": "e.g. 'Roman mosaic' -> 'mosaic' is NOUN, not PROPN; 'the mosaic' -> 'mosaic' is NOUN, not ADJ",
+        "patterns": [[ 
+            { "POS": { "IN": ["ADJ", "DET"] } }, 
+            { "POS": { "IN": ["ADJ", "PROPN"] }, "LOWER": "mosaic" } ]],
+        "attrs": { "POS": "NOUN" },
+        "index": 1
+    },    
+    { 
+        "comment": "e.g. 'villa complex' or 'villa building' -> 'villa' is NOUN, not ADJ",
+        "patterns": [[ 
+            { "LOWER": "villa" }, 
+            { "POS": "NOUN" } ]],
+        "attrs": { "POS": "NOUN" },
+        "index": 0
+    },
+    { 
+        "comment": "e.g. 'post-conquest' -> 'post' is ADJ, not NOUN",
+        "patterns": [[ 
+            { "POS": "NOUN", "LOWER": "post" }, 
+            { "POS": "PUNCT", "TEXT": "-" } ]],
+        "attrs": { "POS": "ADJ" },
+        "index": 0
+    }
+]

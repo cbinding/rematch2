@@ -72,7 +72,13 @@ class SpanPairs:
                     pairs.append(pair)
         return pairs
 
-   
+    # get list of labels for any spans this token is within
+    @staticmethod
+    def get_labels_for_token(tok: Token, spans_key: str=DEFAULT_SPANS_KEY) -> list: 
+        outer_spans = filter(lambda span: span.start <= tok.i and span.end >= tok.i, tok.doc.spans.get(spans_key,[]))
+        return list(set(map(lambda span: span.label, outer_spans)))
+
+
     # Using dependency matcher. Find dependency pairs
     # https://spacy.io/usage/rule-based-matching#dependencymatcher  
     # Allowing * as wildcard for dealing with negation span pairs 
@@ -84,7 +90,7 @@ class SpanPairs:
         right_spans = self._filter_spans_by_labels(self.right_labels, all_spans) 
 
         if not Token.has_extension("labels"):
-            Token.set_extension(name="labels", getter=get_labels_for_token)
+            Token.set_extension(name="labels", getter=self.get_labels_for_token)
         
         matcher = DependencyMatcher(self.doc.vocab)
 

@@ -4,10 +4,10 @@ Package :   rematch2
 Module  :   OrdinalRuler.py
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   
+Project :   any
 Summary :   spaCy custom pipeline component to identify ordinals in free text 
-            SPan label will be "ORDINAL"
-Imports :   os, sys, spacy, SpanRuler
+            Span label will be "ORDINAL"
+Imports :   spacy, BaseRuler, DocSummary
 Example :   nlp.add_pipe("ordinal_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
@@ -44,7 +44,6 @@ from .DocSummary import DocSummary
 @Language.factory("ordinal_ruler", default_config={"patterns": []})
 def create_ordinal_ruler(nlp: Language, name: str="ordinal_ruler", patterns: list=[]) -> BaseRuler:
     
-
     ruler = BaseRuler(
         nlp=nlp,        
         name=name,
@@ -113,7 +112,7 @@ def create_ordinal_ruler_cs(nlp: Language, name: str = "ordinal_ruler") -> BaseR
     return create_ordinal_ruler(nlp, name, patterns_cs_ORDINAL)
 
 
-# test the material_ruler pipeline component
+# test the pipeline component
 if __name__ == "__main__":
 
     tests = [
@@ -133,8 +132,7 @@ if __name__ == "__main__":
 
         print(f"-------------\nlanguage = {lang}")
         nlp = get_pipeline_for_language(lang)
-        nlp.add_pipe("ordinal_ruler", last=True)
-        
+        nlp.add_pipe("ordinal_ruler", last=True)        
         doc = nlp(text)
 
         print("Tokens:\n" + DocSummary(doc).tokens_to_text())

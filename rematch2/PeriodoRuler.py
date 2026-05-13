@@ -4,16 +4,15 @@ Package :   rematch2
 Module  :   PeriodoRuler.py
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   
+Project :   any
 Summary :   spaCy custom pipeline component (specialized SpanRuler) to 
             identify named periods (from Perio.do) in free text. 
             Span label will be "PERIOD"
-Imports :   os, sys, spacy, Language, SpanRuler, Doc, Language
+Imports :   spacy, Language, BaseRuler, PeriodoData, DocSummary
 Example :   
         nlp = spacy.load(pipe_name, disable=['ner'])
         nlp.add_pipe("periodo_ruler", last=True) 
         doc = nlp(test_text)
-
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History :   
@@ -39,7 +38,7 @@ from .VocabularyRuler import create_vocabulary_ruler
 def create_periodo_ruler(
     nlp: Language, 
     name: str="periodo_ruler", 
-    periodo_authority_id: str|None=None, 
+    periodo_authority_id: str="*", 
     supp_list: list=[], 
     stop_list: list=[]
     ) -> BaseRuler:
@@ -64,7 +63,7 @@ def create_periodo_ruler(
         default_label="PERIOD", 
         lemmatize=False,
         pos=["ADJ", "PROPN"],
-        patterns=patterns + supp_list,
+        patt_list=patterns + supp_list,
         stop_list=stop_list
     )
           

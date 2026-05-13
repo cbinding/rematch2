@@ -3,9 +3,8 @@
 # python cache files
 *.pyc
 # local testing data input and output
-/data/fish/*
+/data/ads/*
 /data/oasis/*
-/data/doug_llm/*
 /data/gotriple/*
 !data/gotriple/ner-output*
 !data/gotriple/ie-output*

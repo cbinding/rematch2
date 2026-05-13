@@ -31,7 +31,8 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class Substitution:
-    find: str
+    find: str|regex.Pattern
+
     repl: str
     ignoreCase: Optional[bool] = True
 

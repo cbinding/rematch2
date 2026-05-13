@@ -109,7 +109,7 @@ def locate_section(section_text: str="", report_text: str="") -> Section:
     report_text = normalize_text(report_text)
     section_text = normalize_text(section_text)
 
-    new_section: Section = None
+    new_section: Section = Section()
     index = report_text.find(section_text)
     if index == -1:
         print(f"Section not found: \"{section_text[:100]}\"")  # Print truncated text        

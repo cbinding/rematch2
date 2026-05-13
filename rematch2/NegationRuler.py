@@ -4,11 +4,11 @@ Package :   rematch2
 Module  :   NegationRuler.py
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   
+Project :   any
 Summary :   spaCy custom pipeline component (specialized SpanRuler)
             Language-sensitive component to identify negation phrases
             in free text. span label added will be "NEGATION"
-Imports :   os, sys, spacy, Language, SpanRuler, Doc
+Imports :   spacy, Language, BaseRuler, DocSummary
 Example :   nlp.add_pipe("negation_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
@@ -29,7 +29,7 @@ from spacy.lang.en import English
 from spacy.tokens import Doc, Span
 
 from .BaseRuler import BaseRuler
-from .SpanRemover import child_span_remover
+from .ChildSpanRemover import child_span_remover
 from .spacypatterns import *
 from .Util import * 
 from .SpanPairs import SpanPairs    

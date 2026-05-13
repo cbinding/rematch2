@@ -29,11 +29,11 @@ from spacy.tokens import Doc
 from spacy import displacy              # for HTML formatting results
 import argparse                         # for argument parsing
 
-from .SpanRemover import child_span_remover
+from ..rematch2.ChildSpanRemover import child_span_remover
 from .BaseAnnotator import BaseAnnotator
-from .YearSpanRuler import create_yearspan_ruler
-from .PeriodoRuler import create_periodo_ruler
-from .DocSummary import DocSummary
+from ..rematch2.YearSpanRuler import create_yearspan_ruler
+from ..rematch2.PeriodoRuler import create_periodo_ruler
+from ..rematch2.DocSummary import DocSummary
 
 
 # default Perio.do authority ("p0kh9ds") is Historic England periods list..

@@ -1,6 +1,5 @@
 import spacy
 from spacy.language import Language
-from spacy.tokens import Token
 
 DEFAULT_SPANS_KEY = "rematch" # default key for storing spans in Doc.spans
 
@@ -37,8 +36,4 @@ def get_pipeline_for_language(language: str="") -> Language:
     return nlp
 
 
-# get list of labels for any spans this token is within
-def get_labels_for_token(tok: Token, spans_key: str=DEFAULT_SPANS_KEY) -> list: 
-    outer_spans = filter(lambda span: span.start <= tok.i and span.end >= tok.i, tok.doc.spans.get(spans_key,[]))
-    return list(set(map(lambda span: span.label, outer_spans)))
 

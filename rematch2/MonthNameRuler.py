@@ -4,11 +4,11 @@ Package :   rematch2
 Module  :   MonthNameRuler.py
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   
+Project :   any
 Summary :   spaCy custom pipeline component (specialized SpanRuler)
             Language-sensitive component to identify month names
             in free text. Span label will be "MONTHNAME"
-Imports :   os, sys, spacy, Language, SpanRuler, Doc
+Imports :   spacy, Language, BaseRuler, DocSummary
 Example :   nlp.add_pipe("monthname_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================

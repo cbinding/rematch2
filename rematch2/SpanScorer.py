@@ -1,17 +1,38 @@
 # add weighting and scores to spans
+"""
+=============================================================================
+Package :   rematch2
+Module  :   SpanScorer.py
+Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
+Contact :   ceri.binding@southwales.ac.uk
+Summary :   Score identified spans based on proximity to 'significance' terms.
+Imports :   spacy, Doc, Span, Pipe, Matcher,Language, Vocab, Counter
+Example :   nlp.add_pipe("span_scorer", last=True, config={"sections": []})
+            # note could also call it after main pipeline runs, like this:
+            # scorer = SpanScorer(nlp)
+            # doc = scorer(doc)          
+License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
+=============================================================================
+History :   
+07/01/2024 CFB Initially created script
+=============================================================================
+"""
 import spacy, os, json
+from collections import Counter
 from typing import Iterable, Any, cast
+
 from spacy.tokens import Doc, Span
 from spacy.pipeline import Pipe
 from spacy.matcher import Matcher
 from spacy.language import Language
 from spacy.vocab import Vocab
+
 from .Util import DEFAULT_SPANS_KEY
 from .SpanRelationship import *
-from collections import Counter
+
 #import pandas as pd
 #from pandas import DataFrame
-from rematch2.DocSummary import DocSummary
+from .DocSummary import DocSummary
 
 
 class BaseMatcher(Matcher):
@@ -160,28 +181,28 @@ class SpanScorer(Pipe):
     def __call__(self, doc: Doc) -> Doc:
         doc = self.set_section_scores(doc)
         doc = self.set_frequency_scores(doc)        
-        doc = self.set_neg_proximity_scores(doc, max_proximity=3.0, score=1.0)
-        doc = self.set_sig_proximity_scores(doc, max_proximity=4.0, score=2.0)
+        doc = self.set_neg_proximity_scores(doc, max_proximity=3, score=1.0)
+        doc = self.set_sig_proximity_scores(doc, max_proximity=4, score=2.0)
         #doc = self.set_sig_sentence_scores(doc)
         doc = self.set_overall_span_scores(doc)
         return doc 
 
 
     @staticmethod
-    def get_section_score_by_type(section_type: str="") -> float:
+    def get_section_score_by_type(sec_type: str="") -> float:
         sec_score = 0.0
-        sec_type = section_type.strip().lower()
-
-        if sec_type == "title":
-            sec_score = 40.0
-        elif sec_type == "abstract":
-            sec_score = 2.0
-        elif sec_type == "body":
-            sec_score = 0.1
-        elif sec_type == "end_matter":
-            sec_score = 0.0
-        else:
-           sec_score = 0.0
+        
+        match sec_type.strip().lower():
+            case "title":
+                sec_score = 40.0
+            case "abstract":
+                sec_score = 2.0
+            case "body":
+                sec_score = 0.1
+            case "end_matter":
+                sec_score = 0.0
+            case _:
+                sec_score = 0.0
 
         return sec_score
 
@@ -396,7 +417,11 @@ if __name__ == "__main__":
     nlp.add_pipe("normalize_text", before = "tagger")
     nlp.add_pipe("yearspan_ruler", last=True)
     nlp.add_pipe("periodo_ruler", last=True, config={"periodo_authority_id": "p0kh9ds"}) 
+
     nlp.add_pipe("fish_archobjects_ruler", last=True)
+
+
+    
     nlp.add_pipe("child_span_remover", last=True) 
     nlp.add_pipe("span_scorer", last=True, config={"sections": []})
     # note could also call it after main pipeline runs, like this:

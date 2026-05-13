@@ -4,11 +4,10 @@ Package :   rematch2
 Module  :   DateSeparatorRuler.py
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   
 Summary :   spaCy custom pipeline component (specialized SpanRuler)
             Language-sensitive component to identify date separators
             in free text. Span label will be "DATESEPARATOR"
-Imports :   os, sys, spacy, Language, SpanRuler, Doc
+Imports :   spacy, Language, BaseRuler, DocSummary
 Example :   nlp.add_pipe("dateseparator_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
@@ -20,7 +19,7 @@ History :
 02/07/2025 CFB based on BaseRuler instead of SpanRuler(!)
 =============================================================================
 """
-
+import spacy
 from spacy.language import Language
 #from spacy.lang.cs import Czech #doesn't exist yet..
 from spacy.lang.de import German

@@ -6,7 +6,7 @@ Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
 Project :   
 Summary :   spaCy custom pipeline components (specialized SpanRuler)
-Imports :   SpanRuler, Language
+Imports :   BaseRuler, Language, DocSummary
 Example :   N/A - superclass for more specialized components    
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
@@ -15,71 +15,63 @@ History :
 27/10/2023 CFB type hints added for function signatures
 28/03/2024 CFB base on SpanRuler instead of EntityRuler
 08/01/2024 CFB Moved normalization into create_vocabulary_ruler, 
-                added supp_list and stop_list config options
+            added supp_list and stop_list config options
+13/06/2024 CFB Simplified to generic Vocabulary Ruler component, AAT and FISH
+            vocabularies moved to config options in pipeline creation function
 =============================================================================
 """
-import spacy
-import json
-from spacy.pipeline import SpanRuler
-from spacy.tokens import Doc
 from spacy.language import Language
 from pprint import pprint
 from pathlib import Path
 from spacy import displacy
-
-import pandas as pd
-
-from .spacypatterns import *
+#from .spacypatterns import *
 from .Util import *
 from .DocSummary import DocSummary
-from .SpanRemover import child_span_remover
+from .ChildSpanRemover import child_span_remover
 from .BaseRuler import BaseRuler
-    
+from dataclasses import dataclass, asdict, field
 
-def patterns_from_json_file(file_name: str) -> list:
+'''
+def patt_list_from_json_file(file_name: str) -> list:
     base_path = (Path(__file__).parent / "vocabularies").resolve()
     file_path = os.path.join(base_path, file_name)
-    patterns = []
+    patt_list = []
     with open(file_path, "r") as f:
-        patterns = json.load(f)
-        #patterns = list(filter(lambda item: item.get("ignore", False) == False, patterns))
+        patt_list = json.load(f)
+        
+    return patt_list
+'''
 
-    return patterns
 
-
-# stop_list is a list of identifiers that should not be matched 
-# in order to exclude specific concepts from the match results
 @Language.factory(
     name="vocabulary_ruler", 
     default_config = {
         "name": "vocabulary_ruler",
-        "spans_key": DEFAULT_SPANS_KEY,
         "default_label": "UNDEFINED",
         "lemmatize": True,
         "min_lemmatize_length": 4,
         "min_term_length": 3,
         "pos": [],
-        "patterns": [],         
+        "patt_list": [],         
         "supp_list": [], 
         "stop_list": []
     }
 )   
 def create_vocabulary_ruler(
-        nlp: Language, 
-        name: str, 
-        spans_key: str = DEFAULT_SPANS_KEY,
-        default_label: str = "UNDEFINED",
-        lemmatize: bool = True,
-        min_lemmatize_length: int = 4,
-        min_term_length: int = 3,
-        pos: list[str] = [],
-        patterns: list[dict] = [],   # list of match patterns
-        supp_list: list[dict] = [],  # additional patterns to add to the vocabulary
-        stop_list: list[dict] = []   # with identifers not to be matched, to exclude specific concepts from results
+        nlp: Language, # the nlp object the component will be added to
+        name: str, # name of the pipeline component
+        spans_key: str = DEFAULT_SPANS_KEY, # key in doc._. to store matched spans under
+        default_label: str = "UNDEFINED", # default label to assign to patterns that don't have a label specified
+        lemmatize: bool = True, # whether to lemmatize terms for matching (to allow matching of different inflected forms);
+        min_lemmatize_length: int = 4, # minimum length of terms to be lemmatized (to avoid over-normalization of short terms)
+        min_term_length: int = 3, # minimum length of terms to be matched (to avoid spurious matches of short common words)
+        pos: list[str] = [],   # Part of Speech tags to restrict matching to (e.g. ["NOUN", "PROPN"])
+        patt_list: list = [],  # list of match patterns
+        supp_list: list = [],  # additional patterns to add to the vocabulary
+        stop_list: list = []   # with identifers not to be matched, to exclude specific concepts from results
     ) -> BaseRuler:
-    #print("Create VocabularyRuler - stop list:")
-    #print(stop_list)
-    # create the SpanRuler to use
+    
+    # create the basic Ruler component  
     ruler = BaseRuler(
         nlp=nlp,        
         name=name,
@@ -89,10 +81,10 @@ def create_vocabulary_ruler(
         overwrite=False
     )      
 
-    # get normalized patterns    
+    # get (normalized) patterns    
     normalized_patterns = BaseRuler.normalize_patterns(
         nlp=nlp, 
-        patterns=patterns + supp_list,
+        patterns=patt_list + supp_list,
         default_label=default_label,
         lemmatize=lemmatize,
         min_lemmatize_length=min_lemmatize_length,
@@ -102,413 +94,16 @@ def create_vocabulary_ruler(
 
     # only include patterns with identifiers that are not in the stop_list
     stop_ids = list(map(lambda item: item.get("id", ""), stop_list))    
-    #print("Stop IDs:", stop_ids)
     filtered_patterns = [patt for patt in normalized_patterns if patt.get("id", "") not in stop_ids]    
     ruler.add_patterns(filtered_patterns)
     return ruler 
 
 
-@Language.factory(name="ssh_lcsh_ruler", default_config={"language": "en", "supp_list": [], "stop_list": []})
-def create_ssh_lcsh_ruler(
-    nlp: Language, 
-    name: str, 
-    language: str, 
-    supp_list: list, 
-    stop_list: list
-    ) -> BaseRuler:
-    
-    patterns = patterns_from_json_file("patterns_SSH_LCSH.json")
-    clean_language =  language.strip().lower()
-    patterns_for_language = list(filter(lambda x: x.language.strip().lower() == clean_language, patterns))
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="SSH_LCSH", 
-        patterns=patterns_for_language, 
-        supp_list=supp_list,
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory(name="amcr_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_amcr_ruler(
-    nlp: Language, 
-    name: str,
-    supp_list: list, 
-    stop_list: list
-    ) -> BaseRuler:
-    
-    patterns=patterns_from_json_file("patterns_cs_AMCR_20221208.json")
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="AMCR", 
-        patterns=patterns,
-        supp_list=supp_list,
-        stop_list=stop_list
-    )
-    return ruler    
-    
-
-@Language.factory(name="aat_activities_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_aat_activities_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list, 
-    stop_list: list
-    ) -> BaseRuler:
-    
-    patterns=patterns_from_json_file("patterns_en_AAT_ACTIVITIES_20231018.json")
-    #patts2=patterns_from_json_file("patterns_en_AAT_ACTIVITIES_SUPPLEMENTARY.json")
-   
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="AAT_ACTIVITY", 
-        pos=["VERB"],
-        patterns=patterns,
-        supp_list=supp_list,
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory(name="aat_agents_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_aat_agents_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list, 
-    stop_list: list
-    ) -> BaseRuler:
-
-    patterns=patterns_from_json_file("patterns_en_AAT_AGENTS_20231018.json")
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="AAT_AGENT",
-        patterns=patterns, 
-        pos=["NOUN", "PROPN"],
-        supp_list=supp_list,
-        stop_list=stop_list
-    )
-    return ruler
-    
-
-@Language.factory(name="aat_associated_concepts_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_aat_associated_concepts_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list, 
-    stop_list: list
-    ) -> BaseRuler:   
-
-    patterns=patterns_from_json_file("patterns_en_AAT_ASSOCIATED_CONCEPTS_20231018.json")
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="AAT_ASSOCIATED_CONCEPT", 
-        patterns=patterns,
-        supp_list=supp_list,
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory(name="aat_materials_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_aat_materials_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list, 
-    stop_list: list
-    ) -> BaseRuler:   
-
-    patterns=patterns_from_json_file("patterns_en_AAT_MATERIALS_20231018.json")
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="AAT_MATERIAL", 
-        patterns=patterns,
-        supp_list=supp_list,
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory(name="aat_objects_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_aat_objects_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list,
-    stop_list: list
-    ) -> BaseRuler:
-
-    patterns=patterns_from_json_file("patterns_en_AAT_OBJECTS_20231018.json")
-        
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="AAT_OBJECT", 
-        pos=["NOUN", "PROPN"], 
-        patterns=patterns,
-        supp_list=supp_list,
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory(name="aat_physical_attributes_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_aat_physical_attributes_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list,
-    stop_list: list
-    ) -> BaseRuler: 
-
-    patterns=patterns_from_json_file("patterns_en_AAT_PHYSICAL_ATTRIBUTES_20231018.json")
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="AAT_PHYSICAL_ATTRIBUTE", 
-        patterns=patterns,
-        supp_list=supp_list,
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory(name="aat_styleperiods_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_aat_styleperiods_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list,
-    stop_list: list
-    ) -> BaseRuler: 
-
-    patterns=patterns_from_json_file("patterns_en_AAT_STYLEPERIODS_20231018.json")
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="AAT_STYLEPERIOD", 
-        patterns=patterns,
-        supp_list=supp_list, 
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory("fish_archobjects_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_fish_archobjects_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list,
-    stop_list: list
-    ) -> BaseRuler: 
-
-    patterns = patterns_from_json_file("patterns_en_FISH_mda_obj.json")
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="FISH_OBJECT", 
-        pos=["NOUN"],  
-        min_lemmatize_length=3,
-        patterns=patterns,
-        supp_list=supp_list, 
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory(name="fish_archsciences_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_fish_archsciences_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list,
-    stop_list: list
-    ) -> BaseRuler: 
-
-    patterns=patterns_from_json_file("patterns_en_FISH_560.json")
-   
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="FISH_ARCHSCIENCE", 
-        pos=["VERB"], 
-        patterns=patterns,
-        supp_list=supp_list,
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory(name="fish_building_materials_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_fish_building_materials_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list,
-    stop_list: list
-    ) -> BaseRuler:  
-
-    patterns=patterns_from_json_file("patterns_en_FISH_eh_tbm.json")
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="FISH_MATERIAL", 
-        pos=["ADJ"], 
-        patterns=patterns,
-        supp_list=supp_list, 
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory(name="fish_components_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_fish_components_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list,
-    stop_list: list
-    ) -> BaseRuler:
-
-    patterns=patterns_from_json_file("patterns_en_FISH_eh_com.json")
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="FISH_OBJECT", 
-        pos=["NOUN"], 
-        patterns=patterns,
-        supp_list=supp_list, 
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory(name="fish_event_types_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_fish_event_types_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list,
-    stop_list: list
-    ) -> BaseRuler:    
-
-    patterns=patterns_from_json_file("patterns_en_FISH_agl_et.json")
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="FISH_EVENT", 
-        pos=["VERB"], 
-        patterns=patterns,
-        supp_list=supp_list, 
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory("fish_evidence_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_fish_evidence_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list,
-    stop_list: list
-    ) -> BaseRuler: 
-
-    patterns=patterns_from_json_file("patterns_en_eh_evd.json")
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="FISH_EVIDENCE", 
-        patterns=patterns, 
-        supp_list=supp_list,
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory(name="fish_maritime_craft_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_fish_maritime_craft_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list,
-    stop_list: list
-    ) -> BaseRuler: 
-
-    patterns=patterns_from_json_file("patterns_en_eh_tmc.json")
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="FISH_OBJECT", 
-        pos=["NOUN"], 
-        patterns=patterns,
-        supp_list=supp_list, 
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory(name="fish_monument_types_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_fish_monument_types_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list,
-    stop_list: list
-    ) -> BaseRuler:
-    
-    patterns = patterns_from_json_file("patterns_en_FISH_eh_tmt2.json")
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="FISH_MONUMENT", 
-        pos=["NOUN"], 
-        min_lemmatize_length=3, 
-        patterns=patterns,
-        supp_list=supp_list,
-        stop_list=stop_list
-    )
-    return ruler
-
-
-@Language.factory(name="fish_object_materials_ruler", default_config={"supp_list": [], "stop_list": []})
-def create_fish_object_materials_ruler(
-    nlp: Language, 
-    name: str, 
-    supp_list: list,
-    stop_list: list
-    ) -> BaseRuler:
-    
-    patterns = patterns_from_json_file("patterns_en_FISH_73.json")
-    
-    ruler = create_vocabulary_ruler(
-        nlp=nlp, 
-        name=name, 
-        default_label="FISH_MATERIAL", 
-        pos=["ADJ"], 
-        min_lemmatize_length=3, 
-        patterns=patterns,
-        supp_list=supp_list,
-        stop_list=stop_list
-    )
-    return ruler
-
-
-# test the BaseRuler class
+# testing 
 if __name__ == "__main__":
 
     # sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-    # from rematch2.spacypatterns import vocab_en_AAT_OBJECTS
+    # from .spacypatterns import vocab_en_AAT_OBJECTS
     # from ..spacypatterns import vocab_en_AAT_OBJECTS
 
     en_test_text1 = '''Aside from three residual flints, none closely datable, the earliest remains from the archeomagnetism comprised a small assemblage of Roman pottery and Lower Paleolithic or Lower Palaeolithic ceramic building material, also residual and most likely derived from a Roman farmstead found immediately to the north within the Phase II excavation area. A single sherd of Anglo-Saxon grass-tempered pottery was also residual. The earliest features, which accounted for the majority of the remains on site, relate to medieval agricultural activity focused within a large enclosure. There was little to suggest domestic occupation within the site: the pottery assemblage was modest and well abraded, whilst charred plant remains were sparse, and, as with some metallurgical residues, point to waste disposal rather than the locations of processing or consumption. A focus of occupation within the Rodley Manor site, on higher ground 160m to the north-west, seems likely, with the currently site having lain beyond this and providing agricultural facilities, most likely corrals and pens for livestock. Animal bone was absent, but the damp, low-lying ground would have been best suited to cattle. An assemblage of medieval coins recovered from the subsoil during a metal detector survey may represent a dispersed hoard.'''

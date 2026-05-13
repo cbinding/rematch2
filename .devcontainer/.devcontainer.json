@@ -1,0 +1,17 @@
+{
+  // setup file, performs equivalent function of .gitpod.yml
+  "name": "rematch2-dev",
+  //"image": "mcr.microsoft.com/devcontainers/python:3.12", // or your preferred base image
+  "postCreateCommand": "./postCreateCommand.sh",
+  "customizations": {
+    "vscode": {
+      "settings": {},
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "ms-toolsai.jupyter-renderers",
+        "ms-toolsai.jupyter-keymap"
+      ]
+    }
+  }
+}

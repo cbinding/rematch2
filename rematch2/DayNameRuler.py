@@ -8,12 +8,12 @@ Project :
 Summary :   spaCy custom pipeline component (specialized SpanRuler)
             Language-sensitive component to identify day names
             in free text. Span label will be "DAYNAME"
-Imports :   os, sys, spacy, Language, SpanRuler, Doc
+Imports :   spacy, Language, BaseRuler, DocSummary
 Example :   
     nlp = spacy.load("en_core_web_sm", disable=['ner'])
     nlp.add_pipe("dateprefix_ruler", last=True)  
     doc = nlp("On Monday, Tuesday or even Wednesday")   
-    # tags ["Monday", "Tuesday", "Wednesday"] as "DAYNAME"          
+    # identifies ["Monday", "Tuesday", "Wednesday"] as "DAYNAME"          
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History :   
@@ -24,7 +24,6 @@ History :
 02/07/2025 CFB based on BaseRuler instead of SpanRuler(!)
 =============================================================================
 """
-
 from spacy.language import Language
 #from spacy.lang.cs import Czech #doesn't exist yet..
 from spacy.lang.de import German

@@ -8,7 +8,7 @@ Project :
 Summary :   spaCy custom pipeline component (specialized SpanRuler)
             Language-sensitive component to identify season names
             in free text. Span label will be "SEASONNAME"
-Imports :   os, sys, spacy, Language, SpanRuler
+Imports :   Language, BaseRuler
 Example :   nlp.add_pipe("seasonname_ruler", last=True)           
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
@@ -20,11 +20,6 @@ History :
 02/07/2025 CFB based on BaseRuler instead of SpanRuler(!)
 =============================================================================
 """
-import os
-import sys
-import spacy            # NLP library
-#from spacy.pipeline import SpanRuler
-
 from spacy.language import Language
 #from spacy.lang.cs import Czech #doesn't exist yet..
 from spacy.lang.de import German
@@ -36,7 +31,6 @@ from spacy.lang.nl import Dutch
 from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 from spacy.lang.pl import Polish # experimental substitute for Czech as it doesn't exist yet..
-
 
 from .spacypatterns import *
 from .Util import *

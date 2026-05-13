@@ -7,7 +7,7 @@ Project   : ATRIUM
 Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact   : ceri.binding@southwales.ac.uk
 Summary   : 
-    ***** NOTE - deprecated, this code now implemented as custom pipeline components
+    ***** NOTE - deprecated, this code now implemented as custom pipeline component
     see TextNormalizer.py *****
     Functions for performing string cleaning and normalisation operations on 
     text, prior to any information extraction work. Mostly based on regex replacement patterns. 

@@ -1,6 +1,6 @@
 __version__ = "0.2.0"
 
-from .BaseAnnotator import BaseAnnotator
+#from ..old.BaseAnnotator import BaseAnnotator
 from .DatePrefixRuler import create_dateprefix_ruler
 from .DateSeparatorRuler import create_dateseparator_ruler
 from .DateSuffixRuler import create_datesuffix_ruler
@@ -10,13 +10,11 @@ from .PeriodoRuler import create_periodo_ruler
 from .OrdinalRuler import create_ordinal_ruler
 from .PeriodoData import PeriodoData
 from .SeasonNameRuler import create_seasonname_ruler
-from .TemporalAnnotator import TemporalAnnotator
-from .VocabularyAnnotator import VocabularyAnnotator
-from .VocabularyEnum import VocabularyEnum
-from .VocabularyRuler import *
+#from ..old.TemporalAnnotator import TemporalAnnotator
+from .VocabularyRuler import create_vocabulary_ruler
 from .GeoNamesRuler import create_geonames_ruler
 from .SpanScorer import create_span_scorer
-from .SpanRemover import child_span_remover, stop_list_span_remover
+from .ChildSpanRemover import child_span_remover
 from .NegationRuler import NegationRuler
 from .SpanPair import SpanPair
 from .SpanPairs import SpanPairs

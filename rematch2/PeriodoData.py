@@ -37,7 +37,8 @@ class PeriodoData:
     # default data sources
     #PERIODO_URI = "https://n2t.net/ark:/99152/p0dataset.json"
     PERIODO_URI = "https://data.perio.do/dataset.json"
-    CACHE_FILE_PATH = (Path(__file__).parent / "vocabularies").resolve()
+    #CACHE_FILE_PATH = (Path(__file__).parent / "vocabularies").resolve()
+    CACHE_FILE_PATH = Path(__file__).parent 
     CACHE_FILE_NAME = os.path.join(CACHE_FILE_PATH, "periodo-cache.json")
       
     def __init__(self):

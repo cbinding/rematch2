@@ -1,5 +1,24 @@
 __version__ = "0.1.0"
-import os, sys
+
+from .patterns_cs_DATEPREFIX import patterns_cs_DATEPREFIX
+from .patterns_de_DATEPREFIX import patterns_de_DATEPREFIX
+from .patterns_en_DATEPREFIX import patterns_en_DATEPREFIX
+from .patterns_es_DATEPREFIX import patterns_es_DATEPREFIX
+from .patterns_fr_DATEPREFIX import patterns_fr_DATEPREFIX
+from .patterns_it_DATEPREFIX import patterns_it_DATEPREFIX
+from .patterns_nl_DATEPREFIX import patterns_nl_DATEPREFIX
+from .patterns_no_DATEPREFIX import patterns_no_DATEPREFIX
+from .patterns_sv_DATEPREFIX import patterns_sv_DATEPREFIX
+
+from .patterns_cs_DATESUFFIX import patterns_cs_DATESUFFIX
+from .patterns_de_DATESUFFIX import patterns_de_DATESUFFIX
+from .patterns_en_DATESUFFIX import patterns_en_DATESUFFIX
+from .patterns_es_DATESUFFIX import patterns_es_DATESUFFIX
+from .patterns_fr_DATESUFFIX import patterns_fr_DATESUFFIX
+from .patterns_it_DATESUFFIX import patterns_it_DATESUFFIX
+from .patterns_nl_DATESUFFIX import patterns_nl_DATESUFFIX
+from .patterns_no_DATESUFFIX import patterns_no_DATESUFFIX
+from .patterns_sv_DATESUFFIX import patterns_sv_DATESUFFIX
 
 from .patterns_cs_DAYNAME import patterns_cs_DAYNAME
 from .patterns_cy_DAYNAME import patterns_cy_DAYNAME
@@ -42,26 +61,6 @@ from .patterns_nl_ORDINAL import patterns_nl_ORDINAL
 from .patterns_no_ORDINAL import patterns_no_ORDINAL
 from .patterns_sv_ORDINAL import patterns_sv_ORDINAL
 
-from .patterns_cs_DATEPREFIX import patterns_cs_DATEPREFIX
-from .patterns_de_DATEPREFIX import patterns_de_DATEPREFIX
-from .patterns_en_DATEPREFIX import patterns_en_DATEPREFIX
-from .patterns_es_DATEPREFIX import patterns_es_DATEPREFIX
-from .patterns_fr_DATEPREFIX import patterns_fr_DATEPREFIX
-from .patterns_it_DATEPREFIX import patterns_it_DATEPREFIX
-from .patterns_nl_DATEPREFIX import patterns_nl_DATEPREFIX
-from .patterns_no_DATEPREFIX import patterns_no_DATEPREFIX
-from .patterns_sv_DATEPREFIX import patterns_sv_DATEPREFIX
-
-from .patterns_cs_DATESUFFIX import patterns_cs_DATESUFFIX
-from .patterns_de_DATESUFFIX import patterns_de_DATESUFFIX
-from .patterns_en_DATESUFFIX import patterns_en_DATESUFFIX
-from .patterns_es_DATESUFFIX import patterns_es_DATESUFFIX
-from .patterns_fr_DATESUFFIX import patterns_fr_DATESUFFIX
-from .patterns_it_DATESUFFIX import patterns_it_DATESUFFIX
-from .patterns_nl_DATESUFFIX import patterns_nl_DATESUFFIX
-from .patterns_no_DATESUFFIX import patterns_no_DATESUFFIX
-from .patterns_sv_DATESUFFIX import patterns_sv_DATESUFFIX
-
 from .patterns_cs_DATESEPARATOR import patterns_cs_DATESEPARATOR
 from .patterns_de_DATESEPARATOR import patterns_de_DATESEPARATOR
 from .patterns_en_DATESEPARATOR import patterns_en_DATESEPARATOR
@@ -84,10 +83,7 @@ from .patterns_sv_YEARSPAN import patterns_sv_YEARSPAN
 
 # experimental...
 from .patterns_en_NEGATION import patterns_en_NEGATION
-from .patterns_en_ATTRIBUTE_RULES import patterns_en_ATTRIBUTE_RULES
 
 # superseded by PeriodoRuler
 from .patterns_no_PERIOD import patterns_no_PERIOD
 from .patterns_sv_PERIOD import patterns_sv_PERIOD
-
-#sys.path.append(os.path.dirname(os.path.realpath(__file__)))

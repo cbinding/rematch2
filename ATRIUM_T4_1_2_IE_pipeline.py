@@ -1,13 +1,35 @@
 # build configured pipeline for ATRIUM T-4-1-2
-import spacy, json
-import pandas as pd  # for DataFrame
-
+import argparse
+from dataclasses import dataclass, asdict, field
+from datetime import datetime as DT # for timestamps
+import os
+from typing import Any
+import spacy, json 
+import pandas as pd
 from spacy.language import Language
-from rematch2.spacypatterns import patterns_en_ATTRIBUTE_RULES # rules to override POS tags in some cases
+
+def load_pipeline_for_language(language: str="en") -> Language:   
+    # load appropriate language-specific pipeline
+    package_name: str = ""
+
+    match language.strip().lower()[:2]: 
+        case "en":
+            package_name = "en_core_web_sm"
+        case "fr":
+            package_name = "fr_core_news_sm"
+        case "de":
+            package_name = "de_core_news_sm"  
+        case "es":
+            package_name = "es_core_news_sm"
+        case _:
+            raise ValueError(f"Unsupported language code \"{language}\"")
+    
+    return spacy.load(package_name, disable = ['ner'])
 
 
-# parse and extract records from CSV file, returns list[dict] for subsequent processing
-def read_csv_file(file_path: str="", delimiter: str=",") -> list[dict]:
+def read_csv_file(file_path: str, delimiter: str=",") -> list[dict]:
+    # parse and extract records from CSV file; returns list[dict] for subsequent processing
+
     # read the CSV file to a DataFrame
     df = pd.read_csv(file_path, skip_blank_lines=True, delimiter=delimiter)
     # set any NaN values to blank string
@@ -16,63 +38,192 @@ def read_csv_file(file_path: str="", delimiter: str=",") -> list[dict]:
     return df.to_dict(orient="records") 
 
 
-# read data from JSON file (for supplementary lists and stopword lists)
-def read_json(file_name: str) -> list:
+def read_json_file(file_path: str) -> list|dict:
+    # read data from JSON file (supplementary lists and stopword lists)
     data = []
     try:
-        with open(file_name, "r") as f:
+        with open(file_path, "r") as f:
             data = json.load(f)
     except Exception as e:
-        print(f"Problem reading \"{file_name}\": {e}")
+        print(f"Problem reading \"{file_path}\": {e}")
     return data
 
+ 
+# takes an optional dict of config values to override defaults; 
+# output is configured spacy pipeline with custom IE components
+def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
+    # default config values
+    defaults: dict = { "language": "en" }
 
-# get pre-configured information extraction pipeline
-def get_pipeline(language: str="en") -> Language:
+    # merge passed values overriding defaults; 
+    # create config object from merged values
+    cfg: dict = { **defaults, **config }
 
-    clean_language = language.strip().lower()
-
-    nlp: Language
-
-    if(clean_language.startswith("en")):
-        # using predefined spaCy pipeline (English)
-        nlp = spacy.load("en_core_web_sm", disable = ['ner'])
-
-        # adding custom rules to override default POS tagging for specific cases
-        # NOTE: adding rules to existing attribute_ruler component doesn't work
-        # so insert another one directly after it and add the rules to that one    
-        # nlp.get_pipe("attribute_ruler").add_patterns(patterns_en_ATTRIBUTE_RULES) # didn't work this way
-        ar = nlp.add_pipe("attribute_ruler", name="custom_attribute_ruler", after="attribute_ruler")
-        ar.add_patterns(patterns_en_ATTRIBUTE_RULES)
-
-        # using "Historic England Archaeological and Cultural Periods" Perio.do authority
-        periodo_authority_id = "p0kh9ds" 
-        
-        # reading supplementary and stopword lists from JSON files
-        # supplementary concepts we want to appear in the results (or alternate terms for existing concepts)
-        supp_list_obj = read_json("./supp_list_en_FISH_ARCHOBJECTS.json")
-        supp_list_mon = read_json("./supp_list_en_FISH_MONUMENTS.json")
-        supp_list_per = read_json("./supp_list_en_FISH_PERIODS.json")
-        supp_list_mat = [] # object materials
-        # existing vocabulary concepts we don't want to appear in the results (even if legitimate matches) 
-        stop_list_obj = read_json("./stop_list_en_FISH_ARCHOBJECTS.json")
-        stop_list_mon = read_json("./stop_list_en_FISH_MONUMENTS.json")
-        stop_list_per = [] # periods
-        stop_list_mat = [] # object materials
-
-        
-        # add rematch2 information extraction component(s) to the pipeline
-        nlp.add_pipe("normalize_text", before = "tagger")
-        nlp.add_pipe("yearspan_ruler", last=True)   
-        nlp.add_pipe("periodo_ruler", last=True, config={"periodo_authority_id": periodo_authority_id, "supp_list": supp_list_per, "stop_list": stop_list_per}) 
-        nlp.add_pipe("fish_archobjects_ruler", last=True, config={"supp_list": supp_list_obj, "stop_list": stop_list_obj}) 
-        nlp.add_pipe("fish_monument_types_ruler", last=True, config={"supp_list": supp_list_mon, "stop_list": stop_list_mon})   
-        nlp.add_pipe("fish_object_materials_ruler", last=True, config={"supp_list": supp_list_mat, "stop_list": stop_list_mat})   
-        nlp.add_pipe("child_span_remover", last=True)
-    else:
-        raise ValueError(f"Unsupported language code \"{language}\"")
+    # create pre-configured information extraction pipeline, then
+    # add custom information extraction component(s) to the pipeline
+    nlp: Language = load_pipeline_for_language(cfg["language"])
+   
+    # text normalisation to improve pattern matching 
+    nlp.add_pipe("normalize_text", before = "tagger")
     
+    # adding custom rules to override default POS tagging for specific cases
+    # NOTE: adding rules to existing attribute_ruler component doesn't work:
+    # i.e. nlp.get_pipe("attribute_ruler").add_patterns(patterns_en_ATTRIBUTE_RULES)    
+    # so inserting another one directly after it and adding the rules to that one    
+    component = nlp.add_pipe("attribute_ruler", name="custom_attribute_ruler", after="attribute_ruler")
+    patterns_FISH_MONUMENT_ATTRIBUTE_RULES = read_json_file("./vocabularies/patterns_FISH_MONUMENT_ATTRIBUTE_RULES.json")
+    component.add_patterns(patterns_FISH_MONUMENT_ATTRIBUTE_RULES)  # type: ignore
+
+    # year spans (e.g. "1450 - 1530 AD") 
+    nlp.add_pipe("yearspan_ruler", last=True)
+
+    # named periods (from specified authority of Perio.do dataset)
+    nlp.add_pipe(
+        "periodo_ruler", 
+        name = "periodo_ruler",
+        last = True, 
+        config = {
+            #"default_label": "PERIOD",
+            "periodo_authority_id": "p0kh9ds", # Historic England periods authority ID in Periodo dataset
+            "supp_list": read_json_file("./vocabularies/supp_list_FISH_PERIODS.json"), 
+            "stop_list": []
+        }
+    ) 
+
+    # object types from FISH object types vocabulary 
+    nlp.add_pipe(
+        "vocabulary_ruler", 
+        name = "object_types_ruler",
+        last = True, 
+        config = {
+            "default_label": "FISH_OBJECT",
+            "pos": ["NOUN"],
+            "lemmatize": True,
+            "min_lemmatize_length": 3,
+            "min_term_length": 3,
+            "patt_list": read_json_file("./vocabularies/patterns_FISH_mda_obj_20260513.json"),
+            "supp_list": read_json_file("./vocabularies/supp_list_FISH_ARCHOBJECTS.json"), 
+            "stop_list": read_json_file("./vocabularies/stop_list_FISH_ARCHOBJECTS.json")
+        }
+    ) 
+
+    # monument types from FISH monument types vocabulary
+    nlp.add_pipe(
+        "vocabulary_ruler", 
+        name = "monument_types_ruler",
+        last = True, 
+        config ={
+            "default_label": "FISH_MONUMENT",
+            "pos": ["NOUN"],
+            "lemmatize": True,
+            "min_lemmatize_length": 3,
+            "min_term_length": 3,
+            "patt_list": read_json_file("./vocabularies/patterns_FISH_eh_tmt2_20260513.json"),
+            "supp_list": read_json_file("./vocabularies/supp_list_FISH_MONUMENTS.json"), 
+            "stop_list": read_json_file("./vocabularies/stop_list_FISH_MONUMENTS.json")
+        }
+    ) 
+
+    # object materials from FISH object materials vocabulary
+    nlp.add_pipe(
+        "vocabulary_ruler", 
+        name = "object_materials_ruler",
+        last = True, 
+        config = {
+            "default_label": "FISH_MATERIAL",
+            "pos": ["ADJ"],
+            "lemmatize": True,
+            "min_lemmatize_length": 3,
+            "min_term_length": 3,
+            "patt_list": read_json_file("./vocabularies/patterns_en_FISH_73.json"),
+            "supp_list": [], 
+            "stop_list": []
+        }
+    ) 
+
+    # remove child spans from matches to avoid nested entities 
+    # (e.g. "BRONZE AGE" occurring within "LATE BRONZE AGE")
+    # this is optional but helps with precision of results
+    nlp.add_pipe("child_span_remover", last=True)
+    
+    # add ._.score attribute to spans for confidence scoring of matches
+    nlp.add_pipe("span_scorer", last=True) 
+
+    # return the configured pipeline
     return nlp
 
 
+# test the pipeline configuration and output results to files
+if __name__ == "__main__":
+    import os
 
+    # initiate the input arguments parser
+    parser = argparse.ArgumentParser(
+        prog=__file__, description="ATRIUM T4_1_2 information extraction pipeline")
+
+    # add long and short argument descriptions
+    parser.add_argument("--inputpath", "-i", required=False,
+        help="Input directory containing files to be processed")
+    
+    # add long and short argument descriptions
+    parser.add_argument("--outputpath", "-o", required=False,
+        help="Output directory for processed data files")
+    
+    # add long and short argument descriptions
+    parser.add_argument("--outputformat", "-f", required=False,
+        help="Output format for processed data files")
+
+
+    # parse command line arguments
+    args = parser.parse_args()
+
+    # timestamp for use in directory names
+    timestamp = DT.now().strftime('%Y%m%d')   
+
+    # clean required arguments
+    if args.inputpath:
+        input_directory = args.inputpath.strip()
+    else:
+        # temp harcoded test..
+        input_directory = "./data/ads/journals_july_2024"
+    if args.outputpath:
+        output_directory = args.outputpath.strip()
+    else:
+        output_directory = os.path.join(input_directory, f"ie-output-{timestamp}")
+    if args.outputformat:
+        output_format = args.outputformat.strip()
+    else:        
+        output_format = "json" # default to JSON format for output files
+
+    # create output file path if it does not already exist    
+    if not os.path.exists(output_directory):
+        os.makedirs(output_directory)
+
+    # creat a pre-configured information extraction pipeline
+    print("Creating configured pipeline...")
+    nlp = create_configured_pipeline() 
+    print(f"Pipeline created with components: {nlp.pipe_names}")
+
+    # process each eligible file in the input directory
+    print(f"Processing files in input directory '{input_directory}'")
+    for entry in os.scandir(input_directory):
+        if not entry.is_file(): # or not entry.name.lower().endswith(".pdf"):  
+            continue
+
+        input_file_name = entry.name
+        input_file_path = entry.path
+        
+        print(f"Processing file '{input_file_name}'...")
+        #input_file_content = read_json_file(entry.path)        
+        print(f"Done")
+
+        # set up metadata to include in output
+        metadata = {
+            "identifier": entry.name,
+            "title": "vocabulary-based IE results",
+            "description": f"vocabulary-based information extraction results for file {entry.name}",
+            "creator": "ATRIUM_T4_1_2_IE_pipeline.py",
+            "pipeline": nlp.pipe_names,
+            "input_file_name": entry.name,
+            "input_record_count": 1
+        }

@@ -19,7 +19,6 @@ History :
 28/03/2024 CFB base on SpanRuler instead of EntityRuler
 =============================================================================
 """
-import spacy
 from spacy.language import Language
 from spacy.pipeline import SpanRuler
 from spacy.tokens import Doc, Token
@@ -50,28 +49,7 @@ from .DocSummary import DocSummary
 class YearSpanRuler(BaseRuler):
 
     def __init__(self, nlp: Language, name: str="yearspan_ruler", patterns: list=[]) -> None:
-        # add token extensions for YearSpan patterns to work
-        #if not Token.has_extension("is_dateprefix"):
-            #Token.set_extension(name="is_dateprefix", getter=is_dateprefix)
-
-        #if not Token.has_extension("is_datesuffix"):
-            #Token.set_extension(name="is_datesuffix", getter=is_datesuffix)
-
-        #if not Token.has_extension("is_dateseparator"):
-            #Token.set_extension(name="is_dateseparator", getter=is_dateseparator)
-
-        #if not Token.has_extension("is_ordinal"):
-            #Token.set_extension(name="is_ordinal", getter=is_ordinal)
-
-        #if not Token.has_extension("is_monthname"):
-            #Token.set_extension(name="is_monthname", getter=is_monthname)
-
-        #if not Token.has_extension("is_seasonname"):
-            #Token.set_extension(name="is_seasonname", getter=is_seasonname)
         
-        #if not Token.has_extension("labels"):
-            #Token.set_extension(name="labels", getter=get_labels_for_token)
-
         for name in [
             "ordinal_ruler",            
             "dateprefix_ruler",

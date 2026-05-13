@@ -27,7 +27,8 @@ from html import escape
 from pathlib import Path
 from spacy import displacy
 from spacy.tokens import Doc #, Span, Token
-from rematch2 import SpanPair, SpanPairs, PeriodoRuler, VocabularyRuler, NegationRuler, DocSummary, TextNormalizer, StringCleaning
+from old import StringCleaning
+from rematch2 import SpanPair, SpanPairs, PeriodoRuler, VocabularyRuler, NegationRuler, DocSummary, TextNormalizer
 from rematch2.Util import *
 from decorators import run_timed # form local run timing
 from .Util import DEFAULT_SPANS_KEY

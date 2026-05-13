@@ -21,9 +21,9 @@ History
 
 from spacy.tokens import Doc
 from spacy.pipeline import SpanRuler
-from .Util import *
-from .DocSummary import DocSummary
-from .TextNormalizer import *
+from ..rematch2.Util import *
+from ..rematch2.DocSummary import DocSummary
+from ..rematch2.TextNormalizer import *
 
 
 # base class for VocabularyAnnotator and TemporalAnnotator

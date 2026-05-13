@@ -26,13 +26,13 @@ from os.path import exists
 #import json
 #import pandas as pd                     # for DataFrame output
 #import spacy
-#from spacy import displacy              # for HTML formatting results
+from spacy.tokens import Doc             
 import argparse                         # for argument parsing
 
 from .BaseAnnotator import BaseAnnotator
-from .VocabularyEnum import VocabularyEnum
-from .VocabularyRuler import *
-from .DocSummary import DocSummary
+from .vocabularies.VocabularyEnum import VocabularyEnum
+from ..rematch2.VocabularyRuler import *
+from ..rematch2.DocSummary import DocSummary
 
 # TODO: formats and vocabularies as enums??
 
@@ -82,8 +82,6 @@ class VocabularyAnnotator(BaseAnnotator):
                     pipe_name = "fish_maritime_craft_ruler"
                 case VocabularyEnum.FISH_MONUMENT_TYPES:
                     pipe_name = "fish_monument_types_ruler"
-                case VocabularyEnum.FISH_PERIODS:
-                    pipe_name = "fish_periods_ruler"
                 case _:
                     pipe_name = "" 
             # add to pipeline if found

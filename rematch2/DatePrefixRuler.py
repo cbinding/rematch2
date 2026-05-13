@@ -36,19 +36,15 @@ from spacy.lang.nb import Norwegian
 from spacy.lang.sv import Swedish
 from spacy.lang.pl import Polish # experimental substitute for Czech as it doesn't exist yet..
 
-from .spacypatterns import *
+#from spacypatterns import *
 from .Util import *
 from .BaseRuler import BaseRuler
 from .DocSummary import DocSummary
-
+from .spacypatterns import *
 
 @Language.factory("dateprefix_ruler", default_config={"patterns": []})
 def create_dateprefix_ruler(nlp: Language, name: str = "dateprefix_ruler", patterns: list=[]) -> BaseRuler:
-    
-    #if not Token.has_extension("is_ordinal"):
-       #Token.set_extension(name="is_ordinal", getter=is_ordinal)
-
-    
+        
     ruler = BaseRuler(
         nlp=nlp,        
         name=name,
@@ -73,7 +69,7 @@ def create_dateprefix_ruler(nlp: Language, name: str = "dateprefix_ruler", patte
 
 @German.factory("dateprefix_ruler")
 def create_dateprefix_ruler_de(nlp: Language, name: str = "dateprefix_ruler") -> BaseRuler:
-    return create_dateprefix_ruler(nlp, name, patterns_de_DATEPREFIX)
+    return create_dateprefix_ruler(nlp, name, patterns_en_DATEPREFIX)
 
 
 @English.factory("dateprefix_ruler")
@@ -83,32 +79,32 @@ def create_dateprefix_ruler_en(nlp: Language, name: str = "dateprefix_ruler") ->
 
 @Spanish.factory("dateprefix_ruler")
 def create_dateprefix_ruler_es(nlp: Language, name: str = "dateprefix_ruler") -> BaseRuler:
-    return create_dateprefix_ruler(nlp, name, patterns_es_DATEPREFIX)
+    return create_dateprefix_ruler(nlp, name, patterns_en_DATEPREFIX)
 
 
 @French.factory("dateprefix_ruler")
 def create_dateprefix_ruler_fr(nlp: Language, name: str = "dateprefix_ruler") -> BaseRuler:
-    return create_dateprefix_ruler(nlp, name, patterns_fr_DATEPREFIX)
+    return create_dateprefix_ruler(nlp, name, patterns_en_DATEPREFIX)
 
 
 @Italian.factory("dateprefix_ruler")
 def create_dateprefix_ruler_it(nlp: Language, name: str = "dateprefix_ruler") -> BaseRuler:
-    return create_dateprefix_ruler(nlp, name, patterns_it_DATEPREFIX)
+    return create_dateprefix_ruler(nlp, name, patterns_en_DATEPREFIX)
 
 
 @Dutch.factory("dateprefix_ruler")
 def create_dateprefix_ruler_nl(nlp: Language, name: str = "dateprefix_ruler") -> BaseRuler:
-    return create_dateprefix_ruler(nlp, name, patterns_nl_DATEPREFIX)
+    return create_dateprefix_ruler(nlp, name, patterns_en_DATEPREFIX)
 
 
 @Norwegian.factory("dateprefix_ruler")
 def create_dateprefix_ruler_no(nlp: Language, name: str = "dateprefix_ruler") -> BaseRuler:
-    return create_dateprefix_ruler(nlp, name, patterns_no_DATEPREFIX)
+    return create_dateprefix_ruler(nlp, name, patterns_en_DATEPREFIX)
 
 
 @Swedish.factory("dateprefix_ruler")
 def create_dateprefix_ruler_sv(nlp: Language, name: str = "dateprefix_ruler") -> BaseRuler:
-    return create_dateprefix_ruler(nlp, name, patterns_sv_DATEPREFIX)
+    return create_dateprefix_ruler(nlp, name, patterns_en_DATEPREFIX)
 
 # Polish as temp experimental substitute until Czech is available
 @Polish.factory("dateprefix_ruler")
@@ -119,9 +115,7 @@ def create__dateprefix_ruler_cs(nlp: Language, name: str = "dateprefix_ruler") -
 # to test this module, run from package root:
 # python -m rematch2.DatePrefixRuler
 if __name__ == "__main__":
-    from spacy.pipeline import Pipe
-    from spacy.pipeline import SpanRuler
-
+    
     tests = [
         {"lang": "de", "text": "erbaut Anfang bis Mitte 1480 bis Ende 1275 oder Anfang des 16. Jahrhunderts"},
         {"lang": "en", "text": "constructed in early to mid 1480 to late 1275, or early 1500s"},
@@ -138,12 +132,14 @@ if __name__ == "__main__":
         lang = test.get('lang', '')
         text = test.get('text', '')
 
+        if(lang != "en"):
+            continue
         print(f"-------------\nlanguage = {lang}")
         nlp = get_pipeline_for_language(lang)
         nlp.add_pipe("dateprefix_ruler", last=True)
         
-        tester: SpanRuler = nlp.add_pipe("span_ruler", config = {"spans_key": DEFAULT_SPANS_KEY})
-        tester.add_patterns([
+        tester = nlp.add_pipe("span_ruler", config = {"spans_key": DEFAULT_SPANS_KEY})
+        tester.add_patterns([ # type: ignore
             { 
                 "label": "PREFIXED_YEAR", 
                 "pattern": [
@@ -154,7 +150,7 @@ if __name__ == "__main__":
         ])
 
         doc = nlp(text)
-        #filtered_doc = spacy.util.filter_spans(doc.spans.get(DEFAULT_SPANS_KEY, []))
-        #print("Tokens:\n" + DocSummary(doc).tokens("text"))
+        # filtered_doc = spacy.util.filter_spans(doc.spans.get(DEFAULT_SPANS_KEY, []))
+        # print("Tokens:\n" + DocSummary(doc).tokens("text"))
         print("Spans:\n" + DocSummary(doc).spans_to_text())
 

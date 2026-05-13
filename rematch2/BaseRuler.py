@@ -4,34 +4,27 @@ Package :   rematch2
 Module  :   BaseRuler.py
 Creator :   Ceri Binding, University of South Wales / Prifysgol de Cymru
 Contact :   ceri.binding@southwales.ac.uk
-Project :   
 Summary :   spaCy custom pipeline component (specialized SpanRuler)
             base class for other custom ruler pipeline components
-Imports :   Doc, SpanRuler, Language, functools, time
+Imports :   Doc, SpanRuler, Language
 Example :       
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History :   
-02/07/2025 CFB was 'CustomSpanRuler', All other rulers now based on this
-                (mainly so we can time function calls for performance)
+02/07/2025 CFB was 'CustomSpanRuler' - all custom rulers now based on this                
 =============================================================================
 """
 from spacy.tokens import Doc
 from spacy.pipeline import SpanRuler
 from spacy.language import Language
-#import functools
-#import time
-#import json
-#from .Decorators import run_timed
 
 class BaseRuler(SpanRuler):
     
     def __call__(self, doc: Doc) -> Doc:
         return SpanRuler.__call__(self, doc)      
 
-
-    # normalize input patterns - used for consistency in custom rulers
-    # patterns: [{id: "", label: "", pattern: []}, {id, label, pattern: []},...]    
+    # normalize input patterns for consistency in custom rulers:
+    # [{ id: "", label: "", pattern: [] }, ...]    
     @staticmethod
     def normalize_patterns(
         nlp: Language, 
@@ -68,10 +61,10 @@ class BaseRuler(SpanRuler):
                     "pattern":  pattern
                 })
 
-            # if it is a string term or phrase
+            # if it is a string term/phrase
             elif isinstance(pattern, str):
                         
-                # NOTE - main text normalisation is now part of the pipeline
+                # NOTE - text normalisation is now part of the pipeline
                 # so is handled below in doc = nlp.make_doc(clean_phrase)
                 clean_phrase = pattern.lower()          
                     
@@ -79,10 +72,8 @@ class BaseRuler(SpanRuler):
                 if len(clean_phrase) < min_term_length:
                     continue
 
-                # first tokenize the phrase
-                # NOTE - nlp.make_doc doesn't do POS or lemmas
-                # doc = nlp.make_doc(clean_phrase)
-                # so do this instead
+                # NOTE: doc = nlp.make_doc(clean_phrase) doesn't do POS or lemmas
+                # so do this instead to tokenize the phrase:
                 disabled = nlp.select_pipes(disable=["ner"])
                 doc = nlp(clean_phrase)
                 disabled.restore()
@@ -111,24 +102,15 @@ class BaseRuler(SpanRuler):
                         
                     if (lemmatize == True and len(text) >= min_lemmatize_length):
                         # lemmatization of full text may be different to lemmatisation of vocabulary term,
-                        # and cannot use "LOWER" in conjunction with "LEMMA" in spaCy patterns here, so  
-                        # using a set to list unique case variants of either original term text OR lemma 
-                        # so pattern built here is:
+                        # and sadly cannot use "LOWER" in conjunction with "LEMMA" in spaCy patterns, so  
+                        # using a set to list unique case variants of either original term text OR lemma. 
+                        # Pattern built here is:
                         # [
-                        # { "LEMMA": { "IN" { [ "SKIRT", "skirt", "Skirt", "SKIRTING", "skirting", "Skirting" ]}}},
-                        # { "LEMMA": { "IN" { [ "BOARD", "board", "Board", "BOARDS", "boards", "Boards" ]}}}
+                        #   { "LEMMA": { "IN" { [ "SKIRT", "skirt", "Skirt", "SKIRTING", "skirting", "Skirting" ]}}},
+                        #   { "LEMMA": { "IN" { [ "BOARD", "board", "Board", "BOARDS", "boards", "Boards" ]}}}
                         # ] 
-                        lemma = (tok.lemma_ or "").strip()
-                        
-                        variants = {
-                            lemma.upper(), 
-                            lemma.lower(), 
-                            lemma.title(), 
-                            text.upper(), 
-                            text.lower(), 
-                            text.title()
-                        }                        
-                            
+                        lemma = (tok.lemma_ or "").strip()                        
+                        variants = { lemma.upper(), lemma.lower(), lemma.title(), text.upper(), text.lower(), text.title() }  
                         element["LEMMA"] = { "IN": list(variants) }   
                     else:
                         # just match the term, ignore case. Pattern built here is:
@@ -149,16 +131,15 @@ class BaseRuler(SpanRuler):
                     new_pattern.append(element)
                         
                 # add newly built pattern to normalized_patterns
-                # print(new_pattern)
                 normalized_patterns.append({
                     "id": clean_id,
                     "label": clean_label,
                     "pattern":  new_pattern
                 })
-                # 24/10/2025 if the newly built pattern contains a hyphen, 
-                # also add a pattern variant with the hyphen removed
-                contains_hyphen = any(tok.text == "-" for tok in doc)
-                if contains_hyphen:
+
+                # if the newly built pattern contains a hyphen, 
+                # add a pattern variant with the hyphen removed
+                if any(tok.text == "-" for tok in doc):
                     # build variant pattern without hyphen tokens
                     variant_pattern = [elem for elem in new_pattern if elem.get("ORTH", "") != "-"]
                     # add variant pattern to normalized_patterns
@@ -183,9 +164,9 @@ class BaseRuler(SpanRuler):
                             "pattern":  variant_pattern
                         })
 
-        # temp - write patterns out for examination
-        #with open('normalized_patterns.json', 'w') as f:
-            #json.dump(normalized_patterns, f)
+        # temp - write generated patterns to file for examination
+        # with open('normalized_patterns.json', 'w') as f:
+            # json.dump(normalized_patterns, f)
 
         # finally, return the normalized list 
         return normalized_patterns
