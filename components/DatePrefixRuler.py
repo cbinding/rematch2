@@ -135,7 +135,7 @@ if __name__ == "__main__":
         if(lang != "en"):
             continue
         print(f"-------------\nlanguage = {lang}")
-        nlp = get_pipeline_for_language(lang)
+        nlp = load_pipeline_for_language(lang)
         nlp.add_pipe("dateprefix_ruler", last=True)
         
         tester = nlp.add_pipe("span_ruler", config = {"spans_key": DEFAULT_SPANS_KEY})

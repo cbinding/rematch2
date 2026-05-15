@@ -7,46 +7,7 @@ from typing import Any
 import spacy, json 
 import pandas as pd
 from spacy.language import Language
-
-def load_pipeline_for_language(language: str="en") -> Language:   
-    # load appropriate language-specific pipeline
-    package_name: str = ""
-
-    match language.strip().lower()[:2]: 
-        case "en":
-            package_name = "en_core_web_sm"
-        case "fr":
-            package_name = "fr_core_news_sm"
-        case "de":
-            package_name = "de_core_news_sm"  
-        case "es":
-            package_name = "es_core_news_sm"
-        case _:
-            raise ValueError(f"Unsupported language code \"{language}\"")
-    
-    return spacy.load(package_name, disable = ['ner'])
-
-
-def read_csv_file(file_path: str, delimiter: str=",") -> list[dict]:
-    # parse and extract records from CSV file; returns list[dict] for subsequent processing
-
-    # read the CSV file to a DataFrame
-    df = pd.read_csv(file_path, skip_blank_lines=True, delimiter=delimiter)
-    # set any NaN values to blank string
-    df.fillna("", inplace=True)
-    # return data as a list[dict] structure
-    return df.to_dict(orient="records") 
-
-
-def read_json_file(file_path: str) -> list|dict:
-    # read data from JSON file (supplementary lists and stopword lists)
-    data = []
-    try:
-        with open(file_path, "r") as f:
-            data = json.load(f)
-    except Exception as e:
-        print(f"Problem reading \"{file_path}\": {e}")
-    return data
+from components.Util import load_pipeline_for_language, read_json_file
 
  
 # takes an optional dict of config values to override defaults; 
@@ -64,15 +25,15 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
     nlp: Language = load_pipeline_for_language(cfg["language"])
    
     # text normalisation to improve pattern matching 
-    nlp.add_pipe("normalize_text", before = "tagger")
+    nlp.add_pipe("text_normalizer", first=True)
     
     # adding custom rules to override default POS tagging for specific cases
     # NOTE: adding rules to existing attribute_ruler component doesn't work:
     # i.e. nlp.get_pipe("attribute_ruler").add_patterns(patterns_en_ATTRIBUTE_RULES)    
     # so inserting another one directly after it and adding the rules to that one    
     component = nlp.add_pipe("attribute_ruler", name="custom_attribute_ruler", after="attribute_ruler")
-    patterns_FISH_MONUMENT_ATTRIBUTE_RULES = read_json_file("./vocabularies/patterns_FISH_MONUMENT_ATTRIBUTE_RULES.json")
-    component.add_patterns(patterns_FISH_MONUMENT_ATTRIBUTE_RULES)  # type: ignore
+    patterns = read_json_file("./vocabularies/patterns_FISH_MONUMENT_ATTRIBUTE_RULES.json")
+    component.add_patterns(patterns)  # type: ignore
 
     # year spans (e.g. "1450 - 1530 AD") 
     nlp.add_pipe("yearspan_ruler", last=True)
@@ -83,7 +44,7 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
         name = "periodo_ruler",
         last = True, 
         config = {
-            #"default_label": "PERIOD",
+            "default_label": "PERIOD",
             "periodo_authority_id": "p0kh9ds", # Historic England periods authority ID in Periodo dataset
             "supp_list": read_json_file("./vocabularies/supp_list_FISH_PERIODS.json"), 
             "stop_list": []
@@ -97,9 +58,9 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
         last = True, 
         config = {
             "default_label": "FISH_OBJECT",
-            "pos": ["NOUN"],
+            "token_pos": ["NOUN"],
             "lemmatize": True,
-            "min_lemmatize_length": 3,
+            "min_lemm_length": 3,
             "min_term_length": 3,
             "patt_list": read_json_file("./vocabularies/patterns_FISH_mda_obj_20260513.json"),
             "supp_list": read_json_file("./vocabularies/supp_list_FISH_ARCHOBJECTS.json"), 
@@ -114,9 +75,9 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
         last = True, 
         config ={
             "default_label": "FISH_MONUMENT",
-            "pos": ["NOUN"],
+            "token_pos": ["NOUN"],
             "lemmatize": True,
-            "min_lemmatize_length": 3,
+            "min_lemm_length": 3,
             "min_term_length": 3,
             "patt_list": read_json_file("./vocabularies/patterns_FISH_eh_tmt2_20260513.json"),
             "supp_list": read_json_file("./vocabularies/supp_list_FISH_MONUMENTS.json"), 
@@ -131,9 +92,9 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
         last = True, 
         config = {
             "default_label": "FISH_MATERIAL",
-            "pos": ["ADJ"],
+            "token_pos": ["ADJ"],
             "lemmatize": True,
-            "min_lemmatize_length": 3,
+            "min_lemm_length": 3,
             "min_term_length": 3,
             "patt_list": read_json_file("./vocabularies/patterns_en_FISH_73.json"),
             "supp_list": [], 

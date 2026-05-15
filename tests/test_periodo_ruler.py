@@ -1,11 +1,10 @@
 import unittest
 import spacy
-
-from rematch2 import Util, PeriodoRuler
+from components import Util, PeriodoRuler
 
 class TestPeriodoRuler(unittest.TestCase):       
     def setUp(self):
-        self.nlp = Util.get_pipeline_for_language("en")
+        self.nlp = Util.load_pipeline_for_language("en")
 
     def tearDown(self):
         del self.nlp

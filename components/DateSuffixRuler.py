@@ -132,7 +132,7 @@ if __name__ == "__main__":
         text = test.get("text", "")
 
         print(f"-------------\nlanguage = {lang}")
-        nlp = get_pipeline_for_language(lang)
+        nlp = load_pipeline_for_language(lang)
         nlp.add_pipe("datesuffix_ruler", last=True)
         doc = nlp(text)
         

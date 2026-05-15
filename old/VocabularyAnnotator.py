@@ -31,8 +31,8 @@ import argparse                         # for argument parsing
 
 from .BaseAnnotator import BaseAnnotator
 from .vocabularies.VocabularyEnum import VocabularyEnum
-from ..rematch2.VocabularyRuler import *
-from ..rematch2.DocSummary import DocSummary
+from ..components.VocabularyRuler import *
+from ..components.DocSummary import DocSummary
 
 # TODO: formats and vocabularies as enums??
 

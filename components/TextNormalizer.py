@@ -8,16 +8,17 @@ Project :   ATRIUM
 Summary :   spaCy custom pipeline components for text normalisation -
             this can improve subsequent NLP tokenisation and IE results            
 Imports :   regex, spacy, Doc, Pipe, Language
-Example :   nlp.add_pipe("normalize_text", before = "tagger")
+Example :   nlp.add_pipe("text_normalizer", first=True)
 License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History :   
-20/06/2025 CFB adapted from StringCleaning.py, for use as pipeline components
-16/07/2025 CFB now single factory function 'normalize_text' with options
-            for spelling, ligatures, whitespace and punctuation normalisation
-            and with support for supplementary substitutions
-11/.08/2025 CFB added decode_unicode option to allow for unicode characters
-            to be converted to ASCII equivalents (e.g. accents removed)
+20/06/2025  CFB adapted from StringCleaning.py, for use as pipeline components
+16/07/2025  CFB now single factory function with options for spelling, 
+                ligatures, whitespace and punctuation normalisation
+                and with support for supplementary substitutions
+11/08/2025  CFB added decode_unicode option to allow for unicode characters
+                to be converted to ASCII equivalents (e.g. accents removed)
+14/05/2026  CFB fix support for regex patterns in substitutions
 =============================================================================
 """
 import regex # using regex (not re) to allow for e.g. \p{Dash_Punctuation}
@@ -26,13 +27,16 @@ from typing import Tuple
 from spacy.tokens import Doc
 from spacy.pipeline import Pipe
 from spacy.language import Language
+from spacy.lang.en import English
 from typing import Optional
 from dataclasses import dataclass
+
+from old.StringCleaning import normalize_whitespace
+
 
 @dataclass(frozen=True)
 class Substitution:
     find: str|regex.Pattern
-
     repl: str
     ignoreCase: Optional[bool] = True
 
@@ -141,10 +145,13 @@ class TextNormalizer(Pipe):
         # perform text replacement for each of the substitutions,
         # conditionally decoding any unicode characters
         for item in self.substitutions:
-            text = item.find.sub(item.repl, text)
+            if isinstance(item.find, str):
+                text = text.replace(item.find, item.repl)
+            elif isinstance(item.find, regex.Pattern):  
+                text = item.find.sub(item.repl, text)
                
         # retokenize and return the Doc
-        disabled = self.nlp.select_pipes(disable=["ner", "normalize_text"])
+        disabled = self.nlp.select_pipes(disable=["ner", "text_normalizer"])
         #newDoc = self.nlp.make_doc(text) # note this doesn't do lemmas or pos, only tokenisation
         newDoc = self.nlp(text)
         newDoc.user_data = doc.user_data.copy()  # copy user data from original doc        
@@ -152,41 +159,41 @@ class TextNormalizer(Pipe):
         return newDoc
                 
 
-# Note currently English specific but this script is extensible 
-# to add substitutions for other languages
+# Note currently English specific but this script is extensible to add substitutions for other languages
 @Language.factory(
-    name="normalize_text", 
-    default_config={
-        "decode_unicode": True,
-        "normalize_spelling": True,
-        "normalize_ligatures": True,
-        "normalize_whitespace": True, 
-        "normalize_punctuation": True,        
-        "supplementary_subs": []
-    }) 
-def normalize_text_en(
+    name="text_normalizer", 
+    default_config={ 
+        "decode_unicode": True, 
+        "substitutions": [] 
+}) 
+def create_text_normalizer(
     nlp: Language, 
-    name: str="normalize_text",
-    decode_unicode: bool=True,
-    normalize_spelling: bool=True,
-    normalize_ligatures: bool=True,
-    normalize_whitespace: bool=True, 
-    normalize_punctuation: bool=True,
-    supplementary_subs: list[Substitution]=[]) -> Pipe:
-
-    substitutions: list[Substitution] = [] 
-    # order can make a difference, so whitespace, punctuation & ligatures before spelling  
-    # add the substitutions in the order they should be applied
-    substitutions.extend(substitute_ligatures_en if normalize_ligatures else []) 
-    substitutions.extend(substitute_whitespace_en if normalize_whitespace else [])
-    substitutions.extend(substitute_punctuation_en if normalize_punctuation else [])
-    substitutions.extend(substitute_spelling_en if normalize_spelling else [])
-    substitutions.extend(supplementary_subs)
-    # redo whitespace substitution to ensure normalized after all other subs have run
-    substitutions.extend(substitute_whitespace_en if normalize_whitespace else [])    
-
+    name: str = "text_normalizer",
+    decode_unicode: bool = True,    
+    substitutions: list[Substitution] = []
+    ) -> Pipe: 
     # create the TextNormalizer pipe with the substitutions        
     return TextNormalizer(nlp=nlp, subs=substitutions, decode_unicode=decode_unicode)
+
+
+@English.factory(name="text_normalizer", default_config={"decode_unicode": True})
+def create_text_normalizer_en(
+    nlp: Language, 
+    name: str = "text_normalizer", 
+    decode_unicode: bool = True
+    ) -> Pipe:
+    # create composite list of sustitutions to be applied to the text, 
+    # based on options and any supplementary substitutions provided.
+    # order matters; add substitutions in order they should be applied
+    # so normalize whitespace, ligatures & punctuation before spelling  
+    subs: list[Substitution] = []     
+    subs.extend(substitute_whitespace_en)    
+    subs.extend(substitute_ligatures_en) 
+    subs.extend(substitute_punctuation_en)
+    subs.extend(substitute_spelling_en)
+    # redo whitespace substitution to ensure normalized after other subs have run
+    subs.extend(substitute_whitespace_en)    
+    return create_text_normalizer(nlp, name, decode_unicode=decode_unicode, substitutions=subs)
 
 
 # to run this script directly for testing, run with -m from package root to ensure
@@ -198,7 +205,7 @@ if __name__ == "__main__":
     text = f"archeological  work in Bełżec indi-\ncated   an Iron Age/ Romano- British  /Roman\npost -hole, in( low -lying)ground.\nThis  was  near(vandal-\nized)\n  mediæval/post-medieval(15th-17th century? )foot-\nings. Items of Mediaeval &  paleolithic(archeological)jewelry dated to the 2nd -  3rd century and pottery & vertebræ of a fœtus were  located in the New Harbor area.  Gray colored  & oxidized,aluminum artifacts were   found near the theater."
     
     nlp = spacy.load("en_core_web_sm", disable=["ner"]) 
-    nlp.add_pipe("normalize_text", before="tagger", config={"decode_unicode": True})
+    nlp.add_pipe("text_normalizer", first=True)
         
     print(f"\nBefore:\n\"{text}\"")
     doc = nlp(text)

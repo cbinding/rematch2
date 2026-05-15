@@ -1,11 +1,11 @@
 import unittest
 import spacy
 
-from rematch2 import Util, VocabularyRuler
+from components import Util, VocabularyRuler
 
 class TestVocabularyRuler(unittest.TestCase):       
     def setUp(self):
-        self.nlp = Util.get_pipeline_for_language("en")
+        self.nlp = Util.load_pipeline_for_language("en")
 
     def tearDown(self):
         del self.nlp
@@ -14,8 +14,14 @@ class TestVocabularyRuler(unittest.TestCase):
     def test_aat_activities_ruler(self):
         found = False
         txt = "Contextualisation and spatial analysis reveals finer - scale patterning than is usually possible with summed - probability approaches"
-        #nlp = Util.get_pipeline_for_language("en")
+        
+        
+        
         self.nlp.add_pipe("aat_activities_ruler", last=True)
+        
+        
+        
+        
         doc = self.nlp(txt)
         self.nlp.remove_pipe("aat_activities_ruler")
         

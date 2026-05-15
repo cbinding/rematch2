@@ -20,7 +20,7 @@ from .SpanPair import SpanPair
 from .SpanPairs import SpanPairs
 from .DocSummary import DocSummary
 from .Decorators import run_timed
-from .TextNormalizer import TextNormalizer
+from .TextNormalizer import TextNormalizer, create_text_normalizer, create_text_normalizer_en
 from .Util import *
 from .YearSpanRuler import create_yearspan_ruler
 

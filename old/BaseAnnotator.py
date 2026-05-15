@@ -21,17 +21,17 @@ History
 
 from spacy.tokens import Doc
 from spacy.pipeline import SpanRuler
-from ..rematch2.Util import *
-from ..rematch2.DocSummary import DocSummary
-from ..rematch2.TextNormalizer import *
-
+from ..components.Util import *
+from ..components.DocSummary import DocSummary
+from ..components.TextNormalizer import *
+from ..components.Util import load_pipeline_for_language
 
 # base class for VocabularyAnnotator and TemporalAnnotator
 class BaseAnnotator():
     def __init__(self, language: str="en", patterns: list=[]) -> None:
         # start with predefined language-specific spaCy pipeline        
-        self._pipeline = get_pipeline_for_language(language)
-        self._pipeline.add_pipe("normalize_text", before="tagger")  
+        self._pipeline = load_pipeline_for_language(language)
+        self._pipeline.add_pipe("text_normalizer", before="tagger")  
         # append any additional patterns passed in (for local customisation)
         if (len(patterns or []) > 0):
             self._pipeline.add_pipe("vocabulary_ruler", before="tagger", config={"patterns": patterns}) 

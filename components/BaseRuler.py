@@ -14,9 +14,11 @@ History :
 02/07/2025 CFB was 'CustomSpanRuler' - all custom rulers now based on this                
 =============================================================================
 """
+from dataclasses import dataclass
 from spacy.tokens import Doc
 from spacy.pipeline import SpanRuler
 from spacy.language import Language
+
 
 class BaseRuler(SpanRuler):
     
@@ -31,9 +33,9 @@ class BaseRuler(SpanRuler):
         patterns: list=[],
         default_label: str="UNKNOWN",
         lemmatize: bool=True,
-        min_lemmatize_length: int=4,
+        min_lemm_length: int=4,
         min_term_length: int=3,
-        pos: list[str]=[]
+        token_pos: list[str]=[]
         ) -> list:
 
         normalized_patterns = []
@@ -41,13 +43,15 @@ class BaseRuler(SpanRuler):
         for item in patterns:
             # clean passed in values before using
             clean_id = item.get("id", "").strip()
-            clean_label = item.get("label", default_label).strip()
+            clean_label = item.get("label", "").strip()
+            if(clean_label == ""):
+                clean_label = default_label
 
             # any pos already present in the pattern overrides passed arg
-            clean_pos = item.get("pos", pos)             
+            clean_pos = item.get("token_pos", []) if item.get("token_pos", []) else token_pos             
 
             # is a pattern present? (may be either a list or a string)
-            pattern = item.get("pattern", "")
+            pattern = item.get("pattern", [])
             if len(pattern) == 0:
                 continue
 
@@ -100,7 +104,7 @@ class BaseRuler(SpanRuler):
                     # lemmatization may not work on capitalised text (as spaCy may regard it as a proper noun),
                     # and there doesn't seem a way to specify a rule to match on the lowercase of the lemma                    
                         
-                    if (lemmatize == True and len(text) >= min_lemmatize_length):
+                    if (lemmatize == True and len(text) >= min_lemm_length):
                         # lemmatization of full text may be different to lemmatisation of vocabulary term,
                         # and sadly cannot use "LOWER" in conjunction with "LEMMA" in spaCy patterns, so  
                         # using a set to list unique case variants of either original term text OR lemma. 

@@ -83,6 +83,7 @@ from .patterns_sv_YEARSPAN import patterns_sv_YEARSPAN
 
 # experimental...
 from .patterns_en_NEGATION import patterns_en_NEGATION
+from .patterns_en_SIGNIFICANCE import patterns_en_SIGNIFICANCE
 
 # superseded by PeriodoRuler
 from .patterns_no_PERIOD import patterns_no_PERIOD

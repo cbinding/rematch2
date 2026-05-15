@@ -87,11 +87,8 @@ class YearSpanRuler(BaseRuler):
 
         doc = BaseRuler.__call__(self, doc)
 
-        # filter for 'atomic' labelled spans only used to determine yearspans
-        #filtered = [span for span in all_spans if span.label_ not in [
-        #    "ORDINAL", "DATEPREFIX", "DATESUFFIX", "DATESEPARATOR", "MONTHNAME", "SEASONNAME"]]
-        #doc.spans[DEFAULT_SPANS_KEY] = filtered
-        def not_excluded(span):
+        # filter out helper spans only used to determine yearspans        
+        def filtered(span):
             return span.label_ not in [
                 "ORDINAL", 
                 "DATEPREFIX", 
@@ -100,11 +97,11 @@ class YearSpanRuler(BaseRuler):
                 "MONTHNAME", 
                 "SEASONNAME"
             ]
-        # apply the filter
-        doc.spans[DEFAULT_SPANS_KEY] = list(filter(not_excluded, doc.spans.get(DEFAULT_SPANS_KEY, [])))
+        # update the spans list with the newly filtered list 
+        doc.spans[DEFAULT_SPANS_KEY] = list(filter(filtered, doc.spans.get(DEFAULT_SPANS_KEY, [])))
         
         # filter out 'sub-spans' encompassed by others (e.g. "BRONZE AGE" in "EARLY BRONZE AGE")
-        def not_enclosed(span):
+        '''def not_enclosed(span):
             return not any(
                 item.orth_ != span.orth_
                 and item.label_ == "YEARSPAN" # restricted as other types may be present!
@@ -112,9 +109,9 @@ class YearSpanRuler(BaseRuler):
                 and item.end >= span.end 
                 for item in doc.spans.get(DEFAULT_SPANS_KEY, [])
             )
-        # apply the filter
-        #doc.spans[DEFAULT_SPANS_KEY] = list(filter(not_enclosed, doc.spans.get(DEFAULT_SPANS_KEY, [])))
-
+        # update the spans list with the newly filtered list 
+        doc.spans[DEFAULT_SPANS_KEY] = list(filter(not_enclosed, doc.spans.get(DEFAULT_SPANS_KEY, [])))
+        '''                                                                                                                                                                                                                                                                                                         
         return doc
 
 
@@ -189,7 +186,7 @@ if __name__ == "__main__":
         # print header
         print(f"-------------\nlanguage = {lang}\ntext \"{text}\"")
         # load language-specific pre-built pipeline
-        nlp = get_pipeline_for_language(lang)
+        nlp = load_pipeline_for_language(lang)
         # add custom component at the end of the pipeline
         nlp.add_pipe("yearspan_ruler", last=True)
         # run text through the pipeline

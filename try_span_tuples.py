@@ -2,37 +2,28 @@ import json
 import spacy, os
 from spacy.lang.en import English 
 import itertools
-from rematch2 import PeriodoRuler, child_span_remover
+from components import PeriodoRuler, child_span_remover
 from collections import defaultdict
+from components.Util import read_json_file 
 
 BASE_DIRECTORY = "./data/oasis/journals_july_2024/text extraction - new/"
    
-# for reading supplementary lists from JSON files
-def read_json(file_name):
-    data = []
-    try:
-        with open(file_name, "r") as f:
-            data = json.load(f)
-    except Exception as e:
-        print(f"Problem reading \"{file_name}\": {e}")
-    return data
-
 def get_configured_pipeline():
-    supp_list_obj = read_json("./supp_list_en_FISH_ARCHOBJECTS.json")
-    supp_list_mon = read_json("./supp_list_en_FISH_MONUMENTS.json")
-    supp_list_per = read_json("./supp_list_en_FISH_PERIODS.json")
+    supp_list_obj = read_json_file("./supp_list_en_FISH_ARCHOBJECTS.json")
+    supp_list_mon = read_json_file("./supp_list_en_FISH_MONUMENTS.json")
+    supp_list_per = read_json_file("./supp_list_en_FISH_PERIODS.json")
     # existing vocabulary concepts we don't want to appear in the results (even if legitimate matches) 
-    stop_list_obj = read_json("./stop_list_en_FISH_ARCHOBJECTS.json")
-    stop_list_mon = read_json("./stop_list_en_FISH_MONUMENTS.json")
+    stop_list_obj = read_json_file("./stop_list_en_FISH_ARCHOBJECTS.json")
+    stop_list_mon = read_json_file("./stop_list_en_FISH_MONUMENTS.json")
 
 
     nlp = spacy.load("en_core_web_sm", disable=["ner"])
-    nlp.add_pipe("normalize_text", before = "tagger")
+    nlp.add_pipe("text_normalizer", before = "tagger")
     nlp.add_pipe("periodo_ruler", last=True, config={"periodo_authority_id": "p0kh9ds", "supp_list": supp_list_per})
-    nlp.add_pipe("fish_archobjects_ruler", last=True, config={"supp_list": supp_list_obj, "stop_list": stop_list_obj})
-    nlp.add_pipe("fish_monument_types_ruler", last=True,config={"supp_list": supp_list_mon, "stop_list": stop_list_mon})
-    nlp.add_pipe("fish_object_materials_ruler", last=True)
-    nlp.add_pipe("fish_event_types_ruler", last=True)
+    #nlp.add_pipe("fish_archobjects_ruler", last=True, config={"supp_list": supp_list_obj, "stop_list": stop_list_obj})
+    #nlp.add_pipe("fish_monument_types_ruler", last=True,config={"supp_list": supp_list_mon, "stop_list": stop_list_mon})
+    #nlp.add_pipe("fish_object_materials_ruler", last=True)
+    #nlp.add_pipe("fish_event_types_ruler", last=True)
     nlp.add_pipe("child_span_remover", last=True)
     return nlp
 

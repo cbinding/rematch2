@@ -196,7 +196,7 @@ class SpanPairs:
 if __name__ == "__main__":
     from .DocSummary import DocSummary
 
-    nlp = get_pipeline_for_language("en")
+    nlp = load_pipeline_for_language("en")
     nlp.add_pipe("fish_monument_types_ruler", last=True )
     nlp.add_pipe("periodo_ruler", last=True, config={"periodo_authority_id": "p0kh9ds"})
     rel_ops =[ "<", ">", ".", ";"]

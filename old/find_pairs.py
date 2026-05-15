@@ -28,10 +28,10 @@ from pathlib import Path
 from spacy import displacy
 from spacy.tokens import Doc #, Span, Token
 from old import StringCleaning
-from rematch2 import SpanPair, SpanPairs, PeriodoRuler, VocabularyRuler, NegationRuler, DocSummary, TextNormalizer
-from rematch2.Util import *
+from components import SpanPair, SpanPairs, PeriodoRuler, VocabularyRuler, NegationRuler, DocSummary, TextNormalizer
+from components.Util import *
 from decorators import run_timed # form local run timing
-from .Util import DEFAULT_SPANS_KEY
+from Util import DEFAULT_SPANS_KEY, load_pipeline_for_language
 
 # parse and extract list of records from source XML file 
 # returns [{"id", "text"}, {"id", "text"}, ...] for subsequent processing
@@ -297,15 +297,15 @@ def main(records: list=[], periodo_authority_id: str="p0kh9ds") -> dict:
     print(f"processing {input_record_count} records")
     
     # use predefined spaCy pipeline (English)
-    nlp = get_pipeline_for_language("en")
+    nlp = load_pipeline_for_language("en")
     
     # add rematch2 component(s) to the end of the pipeline
     nlp.add_pipe("yearspan_ruler", last=True)    
     nlp.add_pipe("periodo_ruler", last=True, config={
         "periodo_authority_id": periodo_authority_id})
     #nlp.add_pipe("aat_objects_ruler", last=True)
-    nlp.add_pipe("fish_archobjects_ruler", last=True)
-    nlp.add_pipe("fish_monument_types_ruler", last=True)  
+    #nlp.add_pipe("fish_archobjects_ruler", last=True)
+    #nlp.add_pipe("fish_monument_types_ruler", last=True)  
     # make sure negation_ruler is placed last in the pipeline, 
     # as it flags "is_negated" property for existing spans
     nlp.add_pipe("negation_ruler", last=True)    

@@ -15,14 +15,15 @@
 # =============================================================================
 
 import regex # using regex (not re) to allow for e.g. \p{Dash_Punctuation}
-import os, json, re
+import os, json, mimetypes
 from dataclasses import dataclass, asdict
 from typing import Optional
 from unidecode import unidecode
+from components.Util import read_json_file # for reading supplementary lists from JSON files
 
 @dataclass(frozen=True)
 class Substitution:
-    find: str
+    find: str|regex.Pattern
     repl: str
     ignoreCase: Optional[bool] = True
 
@@ -83,23 +84,13 @@ substitutions: list[Substitution] = [
 # normalize text substituting problematic characters and by removing extra whitespace
 def normalize_text(text):
     
-    #subs: list[Substitution] = list(map(compileSub, substitutions))
+    subs: list[Substitution] = list(map(compileSub, substitutions))
     text = unidecode(text) # unicode substitutions to nearest ASCII equivalent
-    for item in substitutions: # NOTE - if using unidecode, we maybe don't need the ligature sustitution?
-        text = regex.sub(item.find, item.repl, text, flags=re.IGNORECASE if item.ignoreCase else 0)
+    #for item in substitutions: # NOTE - if using unidecode, we maybe don't need the ligature sustitution?
+    for item in subs:
+        text = regex.sub(item.find, item.repl, text, flags=regex.IGNORECASE if item.ignoreCase else 0)
     # finally make whitespace consistent
     return " ".join(text.split()).strip()
-
-
-# read and parse a JSON file, returning the content as a dictionary
-def read_json_file(file_path: str="") -> dict:
-    file_content = {}
-    try:
-        with open(file_path, "r", encoding="utf-8-sig") as f:
-            file_content = json.load(f)
-    except Exception as e:
-        print(f"Problem reading \"{file_path}\": {e}")
-    return file_content
 
 
 # get location of identified section in the LLM output within the report text
@@ -149,9 +140,17 @@ if __name__ == "__main__":
     json_files_folder = "./data/oasis/journals_july_2024/text_extraction-20251117"
 
     for entry in os.scandir(llm_files_folder):
-        if not entry.is_file() or not entry.name.lower().endswith(".json"):  
+        # skip if this entry is not a file
+        if not entry.is_file():
+            print(f"Skipping non-file: {entry.name}")
+            continue 
+        # skip if this entry is not a JSON file (based on MIME type or file extension)       
+        input_file_type = mimetypes.guess_type(entry.path)
+        input_file_ext =  os.path.splitext(entry.name.strip().lower())           
+        if not input_file_type == "application/json" and not input_file_ext == "json":
+            print(f"Skipping non-JSON file: {entry.name}")
             continue
-
+        # process the file
         llm_file_name = entry.name
         llm_file_path = entry.path
         llm_file_content = read_json_file(entry.path)

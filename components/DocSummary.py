@@ -209,16 +209,7 @@ class DocSummary:
             case "json": return self.report_to_json()
             case "text": return self.report_to_text()
             case _: return self.report_to_text()        
-    
-    
-    @staticmethod
-    def get_span_context(span: Span, window_size: int=4) -> str:
-        doc = span.doc
-        start = max(span.start - window_size, 0)
-        end = min(span.end + window_size, len(doc))
-        context_span = doc[start:end]
-        return context_span.text
-           
+         
 
     def spans_to_df(self) -> DataFrame:
 
@@ -248,7 +239,7 @@ class DocSummary:
             "neg_proximity": getattr(span._, "neg_proximity", 0.0), # negation by proximity score
             "score": getattr(span._, "score", 0.0), # calculated overall score
             "score_explain": getattr(span._, "score_explain", ""), # calculated overall score explanation (for testing/debugging)
-            "context": DocSummary.get_span_context(span)
+            "context": getattr(span._, "context", ""), # text context around the span
             } for span in self.spans]).drop_duplicates()
 
 

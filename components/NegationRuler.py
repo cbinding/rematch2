@@ -142,7 +142,7 @@ if __name__ == "__main__":
         tests = json.load(f)
     
     # set up the spaCy pipeline
-    nlp = get_pipeline_for_language("en")
+    nlp = load_pipeline_for_language("en")
     nlp.add_pipe("negation_ruler", last=True)
     nlp.add_pipe("child_span_remover", last=True)
         

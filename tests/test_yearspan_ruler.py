@@ -2,7 +2,7 @@ import unittest
 import spacy
 import logging
 
-from rematch2 import Util, YearSpanRuler
+from components import Util, YearSpanRuler
 # Set log level
 loglevel = logging.DEBUG
 logging.basicConfig(level=loglevel)
@@ -13,7 +13,7 @@ class TestYearSpanRuler(unittest.TestCase):
 
     def test_YearSpanRulerDE(self):
         txt = "Das Artefakt stammt aus dem 7. bis 6. Jahrhundert v. Chr., Kann aber älter sein"
-        nlp = Util.get_pipeline_for_language("de")
+        nlp = Util.load_pipeline_for_language("de")
         nlp.add_pipe("yearspan_ruler", last=True)
         doc = nlp(txt)
         spans = doc.spans.get(Util.DEFAULT_SPANS_KEY, [])
@@ -23,7 +23,7 @@ class TestYearSpanRuler(unittest.TestCase):
 
     def test_YearSpanRulerEN(self):
         txt = "The artefact dates from the 7th to 6th century BC but may be older"
-        nlp = Util.get_pipeline_for_language("en")
+        nlp = Util.load_pipeline_for_language("en")
         nlp.add_pipe("yearspan_ruler", last=True)
         doc = nlp(txt)
         spans = doc.spans.get(Util.DEFAULT_SPANS_KEY, [])
@@ -33,7 +33,7 @@ class TestYearSpanRuler(unittest.TestCase):
 
     def test_YearSpanRulerES(self):
         txt = "el artefacto data del siglo VII al VI a. C. pero puede ser más antiguo"
-        nlp = Util.get_pipeline_for_language("es")
+        nlp = Util.load_pipeline_for_language("es")
         nlp.add_pipe("yearspan_ruler", last=True)
         doc = nlp(txt)
         spans = doc.spans.get(Util.DEFAULT_SPANS_KEY, [])

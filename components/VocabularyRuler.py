@@ -26,9 +26,9 @@ from pathlib import Path
 from spacy import displacy
 #from .spacypatterns import *
 from .Util import *
+from .BaseRuler import BaseRuler
 from .DocSummary import DocSummary
 from .ChildSpanRemover import child_span_remover
-from .BaseRuler import BaseRuler
 from dataclasses import dataclass, asdict, field
 
 '''
@@ -42,36 +42,34 @@ def patt_list_from_json_file(file_name: str) -> list:
     return patt_list
 '''
 
-
 @Language.factory(
     name="vocabulary_ruler", 
     default_config = {
         "name": "vocabulary_ruler",
         "default_label": "UNDEFINED",
         "lemmatize": True,
-        "min_lemmatize_length": 4,
+        "min_lemm_length": 4,
         "min_term_length": 3,
-        "pos": [],
-        "patt_list": [],         
-        "supp_list": [], 
+        "token_pos": [],
+        "patt_list": [],
+        "supp_list": [],
         "stop_list": []
-    }
-)   
+    })   
 def create_vocabulary_ruler(
-        nlp: Language, # the nlp object the component will be added to
-        name: str, # name of the pipeline component
-        spans_key: str = DEFAULT_SPANS_KEY, # key in doc._. to store matched spans under
-        default_label: str = "UNDEFINED", # default label to assign to patterns that don't have a label specified
-        lemmatize: bool = True, # whether to lemmatize terms for matching (to allow matching of different inflected forms);
-        min_lemmatize_length: int = 4, # minimum length of terms to be lemmatized (to avoid over-normalization of short terms)
-        min_term_length: int = 3, # minimum length of terms to be matched (to avoid spurious matches of short common words)
-        pos: list[str] = [],   # Part of Speech tags to restrict matching to (e.g. ["NOUN", "PROPN"])
-        patt_list: list = [],  # list of match patterns
-        supp_list: list = [],  # additional patterns to add to the vocabulary
-        stop_list: list = []   # with identifers not to be matched, to exclude specific concepts from results
+    nlp: Language, # the nlp pipelineobject the component will be added to
+    name: str, # name of the pipeline component (needs to be unique in pipeline)
+    spans_key: str = DEFAULT_SPANS_KEY, # key to store matched spans under
+    default_label: str = "UNDEFINED", # default label to assign to patterns that don't yet have a label specified
+    lemmatize: bool = True, # whether to lemmatize terms for matching (to allow matching of variant inflected forms)
+    min_lemm_length: int = 4, # minimum length of terms to be lemmatized (to avoid over-normalization of short terms)
+    min_term_length: int = 3, # minimum length of terms to be matched (to avoid spurious matches of short common words)
+    token_pos: list[str] = [],   # Part of Speech tag(s) to restrict matching to (e.g. ["NOUN", "PROPN"])
+    patt_list: list = [],  # list of match patterns
+    supp_list: list = [],  # additional patterns to add to the vocabulary
+    stop_list: list = []   # with identifers not to be matched, to exclude specific concepts from results
     ) -> BaseRuler:
     
-    # create the basic Ruler component  
+    # create the base ruler component  
     ruler = BaseRuler(
         nlp=nlp,        
         name=name,
@@ -81,21 +79,23 @@ def create_vocabulary_ruler(
         overwrite=False
     )      
 
-    # get (normalized) patterns    
-    normalized_patterns = BaseRuler.normalize_patterns(
+    # get (normalized) patterns including supplementary list    
+    normalized: list = BaseRuler.normalize_patterns(
         nlp=nlp, 
         patterns=patt_list + supp_list,
         default_label=default_label,
         lemmatize=lemmatize,
-        min_lemmatize_length=min_lemmatize_length,
+        min_lemm_length=min_lemm_length,
         min_term_length=min_term_length,
-        pos=pos
+        token_pos=token_pos
     )
 
-    # only include patterns with identifiers that are not in the stop_list
-    stop_ids = list(map(lambda item: item.get("id", ""), stop_list))    
-    filtered_patterns = [patt for patt in normalized_patterns if patt.get("id", "") not in stop_ids]    
-    ruler.add_patterns(filtered_patterns)
+    # Now filter out any patterns with IDs in the stop_list
+    stop_ids: list = list(map(lambda item: item.get("id", ""), stop_list))    
+    filtered: list = [patt for patt in normalized if patt.get("id", "") not in stop_ids]    
+
+    # Add the filtered patterns to the ruler
+    ruler.add_patterns(filtered)
     return ruler 
 
 
@@ -132,30 +132,30 @@ if __name__ == "__main__":
     '''
     cs_test_text3 = '''
     Objekt zámku v Chanovicích (okr. Klatovy) se nalézá spolu s pozdně románským
-kostelem sv. Kříže na severozápadním okraji obce. Byl postaven na nevýrazné ostrožně, jejíž
-páteř vytvářejí výchozy žulové skály. Ze tří stran sídlo obklopuje zpustlý park s rybníkem
-v jeho dolní části. Na severovýchodní straně pak k zámku přiléhá areál hospodářského dvora.
-Nejstarším dokladem existence chanovického sídla je pozdně románský kostel Povýšení
-sv. Kříže. Jako vlastnický kostel se patrně vázal na zde již existující feudální sídlo.
-Předpokládá se, že leželo v místech pozdějšího poplužního dvora, dnes dochovaného
-v klasicistní přestavbě. V průběhu 13. stol. bylo sídlo přeneseno na skalnatou ostrožnu, do
-míst dnešního zámku.
-V písemných pramenech se Chanovice objevují ve 2. polovině 14. století. Z této doby
-pochází též nejstarší dochovaná gotická část sídla. K výrazné přestavbě objektu došlo v
-prvních desetiletích 16. století za Chanovských z Dlouhé Vsi, kdy stavba nabyla dnešní
-půdorysné podoby. Areál byl ohrazen novou, značně silnou obvodovou zdí, respektující v
-některých úsecích starší konstrukce. Roku 1670 byla Chanovicím odpuštěna část berní
-povinnosti, což snad naznačuje, že obec v této době postihla jakási živelná pohroma.
-Do podoby sídla výrazně zasáhla barokní přestavba, ke které došlo někdy okolo
-poloviny 18. století za majitele Ferdinanda Jáchyma Rumerskirchena. Dílčí zásahy do stavby
-nastaly patrně také po ničivém požáru roku 1781, při kterém vyhořel kostel, fara, škola a
-zámek spolu s hospodářskými budovami přilehlého dvora.
-Na přelomu 18. a 19. stol. zámek rychle střídal majitele a pustnul. Písemné prameny
-uvádí, že roku 1811 objekt, v té době ve velmi špatném stavu, koupil plzeňský podnikatel
-František Becher. Ten nechal sejmout jedno patro, zámek opravil a pokryl těžkou krytinou.
-Úpravám se nevyhnul ani chanovický hospodářský dvůr. Částečně ho nechal přestavět na
-konci 19. stol. nový majitel Eduard Rytíř z Doubků. Poslední známá úprava hospodářského
-dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
+    kostelem sv. Kříže na severozápadním okraji obce. Byl postaven na nevýrazné ostrožně, jejíž
+    páteř vytvářejí výchozy žulové skály. Ze tří stran sídlo obklopuje zpustlý park s rybníkem
+    v jeho dolní části. Na severovýchodní straně pak k zámku přiléhá areál hospodářského dvora.
+    Nejstarším dokladem existence chanovického sídla je pozdně románský kostel Povýšení
+    sv. Kříže. Jako vlastnický kostel se patrně vázal na zde již existující feudální sídlo.
+    Předpokládá se, že leželo v místech pozdějšího poplužního dvora, dnes dochovaného
+    v klasicistní přestavbě. V průběhu 13. stol. bylo sídlo přeneseno na skalnatou ostrožnu, do
+    míst dnešního zámku.
+    V písemných pramenech se Chanovice objevují ve 2. polovině 14. století. Z této doby
+    pochází též nejstarší dochovaná gotická část sídla. K výrazné přestavbě objektu došlo v
+    prvních desetiletích 16. století za Chanovských z Dlouhé Vsi, kdy stavba nabyla dnešní
+    půdorysné podoby. Areál byl ohrazen novou, značně silnou obvodovou zdí, respektující v
+    některých úsecích starší konstrukce. Roku 1670 byla Chanovicím odpuštěna část berní
+    povinnosti, což snad naznačuje, že obec v této době postihla jakási živelná pohroma.
+    Do podoby sídla výrazně zasáhla barokní přestavba, ke které došlo někdy okolo
+    poloviny 18. století za majitele Ferdinanda Jáchyma Rumerskirchena. Dílčí zásahy do stavby
+    nastaly patrně také po ničivém požáru roku 1781, při kterém vyhořel kostel, fara, škola a
+    zámek spolu s hospodářskými budovami přilehlého dvora.
+    Na přelomu 18. a 19. stol. zámek rychle střídal majitele a pustnul. Písemné prameny
+    uvádí, že roku 1811 objekt, v té době ve velmi špatném stavu, koupil plzeňský podnikatel
+    František Becher. Ten nechal sejmout jedno patro, zámek opravil a pokryl těžkou krytinou.
+    Úpravám se nevyhnul ani chanovický hospodářský dvůr. Částečně ho nechal přestavět na
+    konci 19. stol. nový majitel Eduard Rytíř z Doubků. Poslední známá úprava hospodářského
+    dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
     '''
     #nlp = spacy.load("pl_core_news_sm", disable=['ner'])
     #nlp.add_pipe("amcr_ruler", last=True)
@@ -163,31 +163,19 @@ dvora byla projekčně připravována v roce 1901. (Anderle – Ebel 1996)
 
     # create pipeline and add one or more custom pipeline components
 
-    nlp = get_pipeline_for_language("en")
-    #nlp = spacy.load("pl_core_news_sm", disable=['ner'])
-    #nlp.add_pipe("amcr_ruler", last=True)
-    
-    # AAT vocabulary pipeline components
-    #nlp.add_pipe("normalize_text", before = "tagger")
-    nlp.add_pipe("aat_activities_ruler", last=True)
-    # nlp.add_pipe("aat_agents_ruler", last=True)
-    # nlp.add_pipe("aat_associated_concepts_ruler", last=True)
-    # nlp.add_pipe("aat_materials_ruler", last=True)
-    # nlp.add_pipe("aat_objects_ruler", last=True)
-    # nlp.add_pipe("aat_physical_attributes_ruler", last=True)
-    # nlp.add_pipe("aat_styleperiods_ruler", last=True)
-    # FISH vocabulary pipeline components
-    #nlp.add_pipe("fish_archobjects_ruler", last=True)
-    # testing monuments ruler with use of stop_list e.g. removing concept 'site' from patterns so we don't get matches on it in results
-    #nlp.add_pipe("fish_monument_types_ruler", last=True)
-    #nlp.add_pipe("fish_archsciences_ruler", last=True)
-    #nlp.add_pipe("fish_building_materials_ruler", last=True)
-    # nlp.add_pipe("fish_components_ruler", last=True)
-    #nlp.add_pipe("fish_event_types_ruler", last=True)
-    # nlp.add_pipe("fish_evidence_ruler", last=True)
-    # nlp.add_pipe("fish_maritime_craft_ruler", last=True)
-    #nlp.add_pipe("fish_object_materials_ruler", last=True)
-    #nlp.add_pipe("child_span_remover", last=True) 
+    nlp = load_pipeline_for_language("en")    
+    nlp.add_pipe("text_normalizer", first=True)
+    nlp.add_pipe("vocabulary_ruler", 
+        name = "object_types_ruler",
+        last = True, 
+        config = {
+            "default_label": "FISH_OBJECT",
+            "token_pos": ["NOUN"],            
+            "patt_list": read_json_file("./vocabularies/patterns_FISH_mda_obj_20260513.json")
+        }
+    ) 
+    nlp.add_pipe("child_span_remover", last=True)
+    nlp.add_pipe("span_scorer", last=True) 
 
     doc = nlp(en_test_text2)
     # explacy.print_parse_info(nlp, en_test_text.lower())
