@@ -40,3 +40,35 @@ def run_timed(f):
         return result
 
     return wrapper_run_timed
+
+
+# custom decorator to call function once, return same result on subsequent calls
+# (for use with e.g. expensive setup functions that only need to be run once)
+def run_once(f):
+
+    result = []
+
+    @functools.wraps(f)
+    def wrapper_run_once(*args, **kwargs):
+        if not result:
+            result.append(f(*args, **kwargs))
+        return result[0]
+
+    return wrapper_run_once
+
+if __name__ == "__main__":
+    @run_timed
+    def test_function():
+        print("Running timed function...")
+        time.sleep(1) # Simulate a function that takes 1 second to run
+        return ("Timed function complete")
+    test_function()
+
+
+    @run_once
+    def expensive_setup():
+        print("Running expensive setup...")
+        time.sleep(2) # Simulate an expensive setup that takes 2 seconds
+        return "Setup complete"
+
+    print(expensive_setup()) 

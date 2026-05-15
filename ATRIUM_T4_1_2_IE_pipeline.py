@@ -8,10 +8,11 @@ import spacy, json
 import pandas as pd
 from spacy.language import Language
 from components.Util import load_pipeline_for_language, read_json_file
-
+from decorators import run_once
  
 # takes an optional dict of config values to override defaults; 
 # output is configured spacy pipeline with custom IE components
+@run_once
 def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
     # default config values
     defaults: dict = { "language": "en" }

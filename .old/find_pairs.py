@@ -27,11 +27,9 @@ from html import escape
 from pathlib import Path
 from spacy import displacy
 from spacy.tokens import Doc #, Span, Token
-from old import StringCleaning
 from components import SpanPair, SpanPairs, PeriodoRuler, VocabularyRuler, NegationRuler, DocSummary, TextNormalizer
 from components.Util import *
 from decorators import run_timed # form local run timing
-from Util import DEFAULT_SPANS_KEY, load_pipeline_for_language
 
 # parse and extract list of records from source XML file 
 # returns [{"id", "text"}, {"id", "text"}, ...] for subsequent processing
@@ -123,18 +121,18 @@ def results_to_text_file(file_name: str="", results: dict={}):
         lines.append(f"\"{input_text}\"")
             
         # write label counts (by desc count)             
-        lines.append("\nLabel Counts:")  
+        lines.append(r"\nLabel Counts:")  
         label_counts = DocSummary.label_counts_to_text(results.label_counts) 
         lines.append(label_counts)
 
         # write span counts (by desc count)             
-        lines.append("\nSpan Counts:")  
+        lines.append(r"\nSpan Counts:")  
         span_counts = DocSummary(doc).span_counts(format="text")  
         lines.append(span_counts)           
                     
         # write span pairs as fixed width string values
         lines.append("\nSpan Pairs:")
-        pairs = DocSummary(doc).spanpairs(
+        pairs = DocSummary(doc).span_pairs(
             format="text",
             rel_ops=[ "<", ">", "<<", ">>", ".", ";" ], 
             left_labels=["PERIOD", "YEARSPAN"], 

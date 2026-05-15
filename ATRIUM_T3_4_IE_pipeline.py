@@ -1,27 +1,25 @@
 # build configured pipeline for ATRIUM T4_1_2
 import spacy
+from spacy import language
 from spacy.language import Language
 from components.Util import load_pipeline_for_language
 
-
 # get periodo authority ID to use based on language code 
 def get_periodo_id_for_language(language: str="en") -> str:
-    lang = language.strip().lower()[:2]        
-    periodo_id: str = ""
+    
+    authorities = {
+        "en": "p0kh9ds",    # Historic England Archaeological and Cultural Periods authority
+        "fr": "p02chr4",    # PACTOLS chronology periods used in DOLIA data, 2021    
+        "de": "p0qhb66",    # ARIADNE Consortium. "ARIADNE Data Collection". 2015
+        "es": "p0qhb66"     # ARIADNE Consortium. "ARIADNE Data Collection". 2015
+    }   
 
-    match lang:
-        case "en":
-            periodo_id = "p0kh9ds" # 'Historic England Archaeological and Cultural Periods' authority
-        case "fr":
-            periodo_id = "fr_core_news_sm" # 'PACTOLS chronology periods used in DOLIA data' authority TODO - fix...
-        case "de":
-            periodo_id = "de_core_news_sm"  # using ARIADNE authority (no DAI authority??)
-        case "es":
-            periodo_id = "es_core_news_sm" # using 'SIA+ Chrono-Cultural Categories' authority
-        case _:
-            raise ValueError(f"Unsupported language code \"{language}\"")
+    periodo_id: str|None = authorities.get(language.strip().lower()[:2], None)
+    if periodo_id is None:
+        raise ValueError(f"Unsupported language code \"{language}\"")
     
     return periodo_id
+
 
 # get pre-configured information extraction pipeline
 def get_configured_pipeline(language: str="en") -> Language:
@@ -41,7 +39,7 @@ def get_configured_pipeline(language: str="en") -> Language:
 if __name__ == "__main__":
     print("Testing ATRIUM IE pipeline creation for multiple languages")
 
-    for language in["en", "fr", "de", "es", "unknown"]:
+    for language in["en", "fr", "de", "es"]:
         print(f"Building pipeline for language \"{language}\"...")
         try:
             nlp = get_configured_pipeline(language)

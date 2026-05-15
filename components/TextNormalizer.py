@@ -31,8 +31,16 @@ from spacy.lang.en import English
 from typing import Optional
 from dataclasses import dataclass
 
-from old.StringCleaning import normalize_whitespace
-
+# normalize whitespace - multiple whitespace chars reduced to single
+# e.g. "This  is a\n  test" => "this is a test"
+def normalize_whitespace(text: str, preserve_line_breaks: bool=True) -> str:
+    if preserve_line_breaks: # normalize only spaces, not line or paragraph breaks
+        return regex.sub(pattern=r"\p{Separator}+", repl=" ", string=text).strip()
+        # check if any better or worse (no Unicode entities so more generalizable)
+        #return regex.sub(pattern=r"[^\S\r\n]+", repl=" ", string=text).strip()
+    else:
+        return " ".join(text.split())
+    
 
 @dataclass(frozen=True)
 class Substitution:
