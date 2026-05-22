@@ -32,11 +32,12 @@ from .Util import *
 from .DocSummary import DocSummary
 from .VocabularyRuler import create_vocabulary_ruler
 
-@Language.factory(name="periodo_ruler", default_config={"periodo_authority_id": None, "supp_list": [], "stop_list": []})
+@Language.factory(name="periodo_ruler", default_config={"periodo_authority_id": None, "default_label": "PERIOD", "supp_list": [], "stop_list": []})
 def create_periodo_ruler(
     nlp: Language, 
     name: str="periodo_ruler", 
-    periodo_authority_id: str="*", 
+    periodo_authority_id: str="*",
+    default_label: str="PERIOD", 
     supp_list: list=[], 
     stop_list: list=[]
     ) -> BaseRuler:
@@ -51,14 +52,14 @@ def create_periodo_ruler(
     def period_to_pattern(item: dict):
         return {
             "id": item.get("uri", ""),
-            "label": "PERIOD",
+            "label": default_label,
             "pattern": item.get("label", "")
         }
     patterns = list(map(period_to_pattern, periods or []))
 
     ruler = create_vocabulary_ruler(
         nlp=nlp,        name=name, 
-        default_label="PERIOD", 
+        default_label=default_label, 
         lemmatize=False,
         token_pos=["ADJ", "PROPN"],
         patt_list=patterns + supp_list,

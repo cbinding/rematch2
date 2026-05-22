@@ -1,14 +1,11 @@
 # build configured pipeline for ATRIUM T-4-1-2
-import argparse
-from dataclasses import dataclass, asdict, field
-from datetime import datetime as DT # for timestamps
-import os
+#from dataclasses import dataclass, asdict, field
+from os import name
 from typing import Any
-import spacy, json 
-import pandas as pd
 from spacy.language import Language
-from components.Util import load_pipeline_for_language, read_json_file
 from decorators import run_once
+from components.Util import load_pipeline_for_language, read_json_file
+
  
 # takes an optional dict of config values to override defaults; 
 # output is configured spacy pipeline with custom IE components
@@ -97,7 +94,7 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
             "lemmatize": True,
             "min_lemm_length": 3,
             "min_term_length": 3,
-            "patt_list": read_json_file("./vocabularies/patterns_en_FISH_73.json"),
+            "patt_list": read_json_file("./vocabularies/patterns_FISH_73_20260513.json"),
             "supp_list": [], 
             "stop_list": []
         }
@@ -109,83 +106,23 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
     nlp.add_pipe("child_span_remover", last=True)
     
     # add ._.score attribute to spans for confidence scoring of matches
-    nlp.add_pipe("span_scorer", last=True) 
+    nlp.add_pipe(
+        "span_scorer", 
+        last=True, 
+        config = {
+            "sig_proximity": 3,
+            "sig_score": 1.0,
+            "sec_scores": {   
+                "title": 40.0,      # score for spans occurring in the title section of a document
+                "abstract": 2.0,    # score for spans occurring in the abstract section of a document
+                "body": 0.1,        # score for spans occurring in the body section of a document
+                "end_matter": 0.0   # score for spans occurring in the end matter section of a document               
+            },
+            "sections": []          # override for each doc e.g. [{"section": "title", "start": 0, "end": 12}]
+        }
+    ) 
 
     # return the configured pipeline
     return nlp
 
 
-# test the pipeline configuration and output results to files
-if __name__ == "__main__":
-    import os
-
-    # initiate the input arguments parser
-    parser = argparse.ArgumentParser(
-        prog=__file__, description="ATRIUM T4_1_2 information extraction pipeline")
-
-    # add long and short argument descriptions
-    parser.add_argument("--inputpath", "-i", required=False,
-        help="Input directory containing files to be processed")
-    
-    # add long and short argument descriptions
-    parser.add_argument("--outputpath", "-o", required=False,
-        help="Output directory for processed data files")
-    
-    # add long and short argument descriptions
-    parser.add_argument("--outputformat", "-f", required=False,
-        help="Output format for processed data files")
-
-
-    # parse command line arguments
-    args = parser.parse_args()
-
-    # timestamp for use in directory names
-    timestamp = DT.now().strftime('%Y%m%d')   
-
-    # clean required arguments
-    if args.inputpath:
-        input_directory = args.inputpath.strip()
-    else:
-        # temp harcoded test..
-        input_directory = "./data/ads/journals_july_2024"
-    if args.outputpath:
-        output_directory = args.outputpath.strip()
-    else:
-        output_directory = os.path.join(input_directory, f"ie-output-{timestamp}")
-    if args.outputformat:
-        output_format = args.outputformat.strip()
-    else:        
-        output_format = "json" # default to JSON format for output files
-
-    # create output file path if it does not already exist    
-    if not os.path.exists(output_directory):
-        os.makedirs(output_directory)
-
-    # creat a pre-configured information extraction pipeline
-    print("Creating configured pipeline...")
-    nlp = create_configured_pipeline() 
-    print(f"Pipeline created with components: {nlp.pipe_names}")
-
-    # process each eligible file in the input directory
-    print(f"Processing files in input directory '{input_directory}'")
-    for entry in os.scandir(input_directory):
-        if not entry.is_file(): # or not entry.name.lower().endswith(".pdf"):  
-            continue
-
-        input_file_name = entry.name
-        input_file_path = entry.path
-        
-        print(f"Processing file '{input_file_name}'...")
-        #input_file_content = read_json_file(entry.path)        
-        print(f"Done")
-
-        # set up metadata to include in output
-        metadata = {
-            "identifier": entry.name,
-            "title": "vocabulary-based IE results",
-            "description": f"vocabulary-based information extraction results for file {entry.name}",
-            "creator": "ATRIUM_T4_1_2_IE_pipeline.py",
-            "pipeline": nlp.pipe_names,
-            "input_file_name": entry.name,
-            "input_record_count": 1
-        }

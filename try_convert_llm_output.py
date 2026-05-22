@@ -144,12 +144,14 @@ if __name__ == "__main__":
         if not entry.is_file():
             print(f"Skipping non-file: {entry.name}")
             continue 
+        
         # skip if this entry is not a JSON file (based on MIME type or file extension)       
-        input_file_type = mimetypes.guess_type(entry.path)
+        input_file_type, encoding = mimetypes.guess_type(entry.path)
         input_file_ext =  os.path.splitext(entry.name.strip().lower())           
         if not input_file_type == "application/json" and not input_file_ext == "json":
             print(f"Skipping non-JSON file: {entry.name}")
             continue
+
         # process the file
         llm_file_name = entry.name
         llm_file_path = entry.path

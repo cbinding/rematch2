@@ -17,7 +17,7 @@ History :
 14/05/2026 CFB Updated to be more configurable, removed redundant code
 =============================================================================
 """
-import spacy, os, json
+import spacy, os, mimetypes, json
 from collections import Counter
 #from typing import Iterable, Any, cast
 
@@ -25,47 +25,47 @@ from spacy.tokens import Doc, Span
 from spacy.pipeline import Pipe
 from spacy.language import Language
 
-from .Util import DEFAULT_SPANS_KEY
 from .SpanRelationship import span_before, span_after, span_meets, span_met_by
 from .spacypatterns import patterns_en_SIGNIFICANCE, patterns_en_NEGATION
 from .DocSummary import DocSummary
 from .BaseMatcher import BaseMatcher   
 
-# default values for config parameters 
-# (can be overridden using the component)
-DEFAULT_MAX_PROXIMITY=3
-DEFAULT_SIG_SCORE=1.0
-DEFAULT_NEG_SCORE=1.0
-DEFAULT_TITLE_SCORE=40.0
-DEFAULT_ABSTRACT_SCORE=2.0
-DEFAULT_BODY_SCORE=0.1
-DEFAULT_END_MATTER_SCORE=0.0
+# default values for config parameters (can be overridden using the component)
+from .Util import DEFAULT_SPANS_KEY
+DEFAULT_SIG_PROXIMITY: int=3 # proximity in number of tokens between span and 'significant' term to count as 'nearby' for scoring purposes
+DEFAULT_NEG_PROXIMITY: int=3 # proximity in number of tokens between span and 'negation' term to count as 'nearby' for scoring purposes
+DEFAULT_SIG_SCORE: float=1.0 # score to assign to span if it is within specified token proximity of a 'significant' term or phrase 
+DEFAULT_NEG_SCORE: float=1.0 # score to assign to span if it is within specified token proximity of a 'negation' term or phrase
+DEFAULT_SEC_SCORES: dict[str, float|int]={
+    "title": 40.0, # high score for title as likely to contain key info about the content of the article
+    "abstract": 2.0, # moderate score for abstract as likely to contain key info about the content of the article
+    "body": 0.1, # low score for body as likely to contain a lot of less important info, but still some key info may be found here
+    "end_matter": 0.0 # no score for end matter as unlikely to contain key info about the content of the article
+}
 
 class SpanScorer(Pipe):    
         
     def __init__(self, 
         nlp: Language, 
         spans_key: str = DEFAULT_SPANS_KEY, 
-        max_proximity: int = DEFAULT_MAX_PROXIMITY,
+        sig_proximity: int = DEFAULT_SIG_PROXIMITY,
+        neg_proximity: int = DEFAULT_NEG_PROXIMITY,
         sig_score: float = DEFAULT_SIG_SCORE,
         neg_score: float = DEFAULT_NEG_SCORE,
-        title_score: float = DEFAULT_TITLE_SCORE,
-        abstract_score: float = DEFAULT_ABSTRACT_SCORE,
-        body_score: float = DEFAULT_BODY_SCORE,
-        end_matter_score: float = DEFAULT_END_MATTER_SCORE,
+        sec_scores: dict[str, float|int] = DEFAULT_SEC_SCORES.copy(),
         sections: list = [],        
         ) -> None:
 
         self.nlp: Language = nlp
         self.spans_key: str = spans_key.strip()
         self.sections: list = sections
-        self.max_proximity: int = max_proximity
+        self.sig_proximity: int = sig_proximity
+        self.neg_proximity: int = neg_proximity
         self.sig_score: float = sig_score
         self.neg_score: float = neg_score
-        self.title_score: float = title_score
-        self.abstract_score: float = abstract_score
-        self.body_score: float = body_score
-        self.end_matter_score: float = end_matter_score
+        # merge new scores with defaults, allowing overrides of default scores
+        self.sec_scores: dict[str, float|int] = DEFAULT_SEC_SCORES.copy()
+        self.sec_scores.update(sec_scores) 
 
     # run multiple metrics, add scores to individual spans
     def __call__(self, doc: Doc) -> Doc:
@@ -76,25 +76,7 @@ class SpanScorer(Pipe):
         #doc = self.set_sig_sentence_scores(doc)
         doc = self.set_overall_span_scores(doc)
         return doc 
-
-
-    def get_section_score_by_type(self, sec_type: str="") -> float:
-        sec_score = 0.0
-        
-        match sec_type.strip().lower():
-            case "title":
-                sec_score = self.title_score
-            case "abstract":
-                sec_score = self.abstract_score
-            case "body":
-                sec_score = self.body_score
-            case "end_matter":
-                sec_score = self.end_matter_score
-            case _:
-                sec_score = 0.0
-
-        return sec_score
-
+    
 
     # scoring for the section the span occurs within
     def set_section_scores(self, doc: Doc) -> Doc:
@@ -105,7 +87,7 @@ class SpanScorer(Pipe):
         if not Span.has_extension("sections"):
             Span.set_extension("sections", default="")
 
-        # get all the current spans
+        # get the current spans. If none, nothing to score so return the doc. 
         all_spans = list(doc.spans.get(self.spans_key, []))
         if len(all_spans) < 1: return doc
 
@@ -113,21 +95,28 @@ class SpanScorer(Pipe):
         if len(all_sections) < 1: return doc
 
         for span in all_spans:
-            # find any sections containing the span
-            containing_sections = [s for s in all_sections if s.get("start", span.end_char) <= span.start_char and s.get("end", span.start_char) >= span.end_char]
+            # identify any sections containing this span            
+            def span_is_within(section):
+                return section.get("start", span.end_char) <= span.start_char \
+                   and section.get("end", span.start_char) >= span.end_char    
+                        
+            containing_sections = [sec for sec in all_sections if span_is_within(sec)]
+
+            # if no sections contain this span, leave score as default and continue            
             if len(containing_sections) == 0:
                 continue
-            # list the sections this span is part of (e.g ['page', 'body'])
-            section_types: list[str] = list(set(map(lambda s: s.get("type", ""), containing_sections)))
-            # override - if section_types does not include any known type except page, then assume 'body'
-            if all(st not in ["title", "abstract", "body", "end_matter"] for st in section_types):
-                section_types.append("body")                     
+
+            # list the sections this span is part of (e.g ['page', 'abstract', 'body'])
+            containing_section_types: list[str] = list(set(map(lambda s: s.get("type", ""), containing_sections)))
+
+            # if section_types does not include ANY known type except 'page', then assume 'body'
+            if all(section_type not in list(self.sec_scores) for section_type in containing_section_types):
+                containing_section_types.append("body")                     
                         
-            # get the highest section score for these sections
-            section_scores: list[float] = list(map(lambda t: self.get_section_score_by_type(t), section_types))           
-            # assign the highest section score and list of sections to the span
-            span._.sec_score = max(section_scores)
-            span._.sections = ", ".join(section_types)
+            # assign to the span the highest section score for the containing sections
+            get_sec_score = lambda t: self.sec_scores.get(t.strip().lower(), 0.0)
+            span._.sec_score = max(map(get_sec_score, containing_section_types))
+            span._.sections = ", ".join(containing_section_types)            
         return doc
        
 
@@ -156,7 +145,7 @@ class SpanScorer(Pipe):
         ident_count = Counter(map(lambda s: s.text.lower() if not s.id else s.id, all_spans))
         label_count = Counter(map(lambda s: s.label, all_spans))
         
-        # set scores on each span
+        # set frequency scores on each span
         for span in all_spans:
             id: str = span.text.lower() if not span.id else span.id
             lbl: str = span.label
@@ -169,7 +158,8 @@ class SpanScorer(Pipe):
         return doc
     
 
-    # get textual context around a span - for display/reporting purposes
+    # get textual context around a span for display/reporting purposes
+    # window_size is no of tokens to include before and after the span 
     @staticmethod
     def get_span_context(span: Span, window_size: int=4) -> str:
         doc = span.doc
@@ -178,7 +168,9 @@ class SpanScorer(Pipe):
         context_span = doc[start:end]
         return context_span.text
 
-    # set span context for all spansm for display/reporting purposes 
+    # set 'context' for all spans (the textual context immediately surrounding the span) 
+    # for display/reporting purposes to show the span in textual context (e.g. in a report or UI) 
+    # note this is not used for scoring, just to provide additional info about the span in outputs 
     def set_span_contexts(self, doc: Doc, window_size: int=4) -> Doc:
         # ensure the custom property exists before use
         if not Span.has_extension("context"):
@@ -222,7 +214,7 @@ class SpanScorer(Pipe):
         matches = matcher(doc)      
         self.set_proximity_scores(doc, 
             proximity_to=list(matches), 
-            max_proximity=self.max_proximity, 
+            max_proximity=self.sig_proximity, 
             property_name="sig_proximity", 
             property_score=self.sig_score
         )
@@ -236,7 +228,7 @@ class SpanScorer(Pipe):
         matches = matcher(doc)
         self.set_proximity_scores(doc, 
             proximity_to=list(matches), 
-            max_proximity=self.max_proximity, 
+            max_proximity=self.neg_proximity, 
             property_name="neg_proximity", 
             property_score=self.neg_score
         )
@@ -247,7 +239,7 @@ class SpanScorer(Pipe):
         doc: Doc, 
         proximity_to: list[Span], 
         max_proximity: int=1, 
-        property_name: str="unknown", 
+        property_name: str="proximity_score", 
         property_score: float=0.0) -> Doc:
 
         # ensure the named custom property exists before use 
@@ -271,7 +263,7 @@ class SpanScorer(Pipe):
             )   
             if min_distance <= max_proximity:
                 setattr(span._, clean_property_name, property_score)
-                #span._[clean_property_name] = property_value # syntax doesnt work
+                #span._[clean_property_name] = property_value # this syntax doesnt work
 
         return doc 
     
@@ -291,7 +283,10 @@ class SpanScorer(Pipe):
         for span in all_spans:
             sec_score = getattr(span._, "sec_score", 0.0)
             sig_score = getattr(span._, "sig_proximity", 0.0)
-            score = sec_score + sig_score 
+            #neg_score = getattr(span._, "neg_proximity", 0.0)
+            score = sec_score + sig_score #- neg_score
+            # not currently using the neg_acore va;lue in overall scoring
+            #score_explain = f"({sec_score:.2f}) + ({sig_score:.2f}) - ({neg_score:.2f})"
             score_explain = f"({sec_score:.2f}) + ({sig_score:.2f})"
             setattr(span._, "score", score)
             setattr(span._, "score_explain", score_explain)
@@ -303,25 +298,31 @@ class SpanScorer(Pipe):
     name="span_scorer", 
     default_config={
         "spans_key": DEFAULT_SPANS_KEY, 
-        "max_proximity": DEFAULT_MAX_PROXIMITY,
+        "sig_proximity": DEFAULT_SIG_PROXIMITY,
+        "neg_proximity": DEFAULT_NEG_PROXIMITY,
         "sig_score": DEFAULT_SIG_SCORE,
         "neg_score": DEFAULT_NEG_SCORE,
+        "sec_scores": DEFAULT_SEC_SCORES.copy(),
         "sections": []
 }) 
 def create_span_scorer(
     nlp: Language, 
     name: str="span_scorer", 
     spans_key: str=DEFAULT_SPANS_KEY,
-    max_proximity: int=DEFAULT_MAX_PROXIMITY,
+    sig_proximity: int=DEFAULT_SIG_PROXIMITY,
+    neg_proximity: int=DEFAULT_NEG_PROXIMITY,
     sig_score: float=DEFAULT_SIG_SCORE,
     neg_score: float=DEFAULT_NEG_SCORE,
+    sec_scores: dict[str, float|int] = DEFAULT_SEC_SCORES.copy(),
     sections: list=[]
     ) -> Pipe:
     return SpanScorer(nlp, 
-        max_proximity=max_proximity,
+        sig_proximity=sig_proximity,
+        neg_proximity=neg_proximity,
         sig_score=sig_score,
         neg_score=neg_score,
         spans_key=spans_key, 
+        sec_scores=sec_scores, 
         sections=sections)
 
 
@@ -346,9 +347,10 @@ if __name__ == "__main__":
         }
     ) 
     nlp.add_pipe("child_span_remover", last=True) 
-    # nlp.add_pipe("span_scorer", last=True, config={"sig_score": 1.0, "neg_score": 1.0, "sections": []})
+
+    #nlp.add_pipe("span_scorer", last=True, config={"sig_score": 1.0, "sec_scores": {}, "sections": []})
     # note could also call it after main pipeline runs, like this:
-    # scorer = SpanScorer(nlp, sig_score=1.0, neg_score=1.0, sections=[]); doc = scorer(doc);
+    # scorer = SpanScorer(nlp, sig_score=1.0, sections=[]); doc = scorer(doc);
 
     file_names = [
         "text_extraction_2022_96_001_012_Cooper_Garton.pdf.json",
@@ -363,21 +365,30 @@ if __name__ == "__main__":
     ]
 
     for file_name in file_names:
-        file_path = os.path.join(BASE_PATH, file_name)        
-        print(f"reading \"{file_path}\"")
+        input_file_path = os.path.join(BASE_PATH, file_name)        
+        print(f"reading \"{input_file_path}\"")
         
-        with open(file_path, "r") as f:
-            if(file_name.lower().endswith(".json")):
+        with open(input_file_path, "r") as f:
+            input_file_type = mimetypes.guess_type(input_file_path)
+            input_file_ext =  os.path.splitext(file_name.strip().lower())  
+            input_file_content = {}
+
+            if input_file_type == "application/pdf" or input_file_ext == "pdf":     
+                print(f"PDF file detected, but PDF parsing not implemented in this test script. Skipping file: {file_name}")
+                continue
+            elif input_file_type == "application/json" or input_file_ext == "json":            
                 input_file_content = json.load(f)
-            else:     
-                input_text = f.read()           
-                input_file_content = {"text": input_text}
+            elif input_file_type == "text/plain" or input_file_ext == "txt":     
+                input_file_content = {"text": f.read()}
+            else:
+                print(f"Unsupported file type: {file_name}")
+                continue
 
         # run the pipeline on the text and get all identified spans
         print(f"processing text through pipeline")
         doc = nlp(input_file_content.get("text", ""))   
                        
-        # add scores
+        # add scores, use sections (if present) to enhance score
         sections = list(input_file_content.get("sections", []))
         scorer = SpanScorer(nlp, sections=sections)
         doc = scorer(doc)
