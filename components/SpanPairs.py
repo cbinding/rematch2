@@ -192,7 +192,7 @@ class SpanPairs:
     def __repr__(self):
         return self.__str__()
     
-# testing the component: python -m rematch2.SpanPairs
+# testing the component: python -m components.SpanPairs
 if __name__ == "__main__":
     from .DocSummary import DocSummary
 

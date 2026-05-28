@@ -30,7 +30,8 @@ def child_span_remover(doc: Doc, spans_key: str=DEFAULT_SPANS_KEY) -> Doc:
     doc.spans[spans_key] = spacy.util.filter_spans(spans)
     return doc
 
-# testing the component
+# to test this module independently, run from package root:
+# python -m components.ChildSpanRemover
 if __name__ == "__main__":
     nlp: Language = spacy.blank("en")    
     text = "the quick brown fox jumps over the lazy dog"

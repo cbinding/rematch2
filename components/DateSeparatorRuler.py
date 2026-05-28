@@ -108,7 +108,7 @@ def create_dateseparator_ruler_cs(nlp: Language, name: str = "dateseparator_rule
     return create_dateseparator_ruler(nlp, name, patterns_cs_DATESEPARATOR)
 
 # to test this module independently, run from package root:
-# python -m rematch2.DateSeparatorRuler
+# python -m components.DateSeparatorRuler
 if __name__ == "__main__":
 
     tests = [

@@ -5,7 +5,6 @@ from typing import Any
 from spacy.language import Language
 from decorators import run_once
 from components.Util import load_pipeline_for_language, read_json_file
-
  
 # takes an optional dict of config values to override defaults; 
 # output is configured spacy pipeline with custom IE components
@@ -27,8 +26,8 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
     
     # adding custom rules to override default POS tagging for specific cases
     # NOTE: adding rules to existing attribute_ruler component doesn't work:
-    # i.e. nlp.get_pipe("attribute_ruler").add_patterns(patterns_en_ATTRIBUTE_RULES)    
-    # so inserting another one directly after it and adding the rules to that one    
+    # (i.e. nlp.get_pipe("attribute_ruler").add_patterns(patterns_en_ATTRIBUTE_RULES))    
+    # so - inserting another one directly after it, and adding the rules to that one    
     component = nlp.add_pipe("attribute_ruler", name="custom_attribute_ruler", after="attribute_ruler")
     patterns = read_json_file("./vocabularies/patterns_FISH_MONUMENT_ATTRIBUTE_RULES.json")
     component.add_patterns(patterns)  # type: ignore

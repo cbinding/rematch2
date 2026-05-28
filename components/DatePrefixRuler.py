@@ -112,8 +112,8 @@ def create__dateprefix_ruler_cs(nlp: Language, name: str = "dateprefix_ruler") -
     return create_dateprefix_ruler(nlp, name, patterns_cs_DATEPREFIX)
 
 
-# to test this module, run from package root:
-# python -m rematch2.DatePrefixRuler
+# to test this module independently, run from package root:
+# python -m components.DatePrefixRuler
 if __name__ == "__main__":
     
     tests = [

@@ -18,24 +18,22 @@ License :   https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
 =============================================================================
 History :   
 15/10/2024 CFB Initially created script
+28/05/2026 CFB Subclass of VocabularyRuler instead of BaseRuler
 =============================================================================
 """
 from pathlib import Path
 import requests
-import zipfile
 import os
-import sys
-import spacy            # NLP library
 import pandas as pd
 from html import escape
 #from spacy.pipeline import SpanRuler
-from spacy.tokens import Doc
 from spacy.language import Language
 from pprint import pprint
 
 from .Util import *
 from .BaseRuler import BaseRuler
 from .DocSummary import DocSummary
+from .VocabularyRuler import create_vocabulary_ruler
 
 
 def download_file(remote_url: str, local_name: str, chunk_size: int=128, overwrite: bool=False):  
@@ -60,15 +58,7 @@ def get_geonames_admin1_data(country_codes: list=[]) -> list:
     LOCAL_PATH = (Path(__file__).parent / "vocabularies").resolve()
     LOCAL_NAME = os.path.join(LOCAL_PATH, Path(REMOTE_URL).name )     
     download_file(REMOTE_URL, LOCAL_NAME, overwrite=False)
-
-    # fields names in the input tab-delimited data file
-    field_names = [
-        "admin_code",
-        "name" ,
-        "ascii_name",
-        "geoname_id"
-    ]
-
+    
     # read and parse extracted CSV data file to pandas DataFrame
     df = pd.read_csv(
         LOCAL_NAME, 
@@ -77,7 +67,7 @@ def get_geonames_admin1_data(country_codes: list=[]) -> list:
         engine="python", 
         skip_blank_lines=True, 
         header=None,
-        names=field_names
+        names=["admin_code", "name", "ascii_name", "geoname_id"]
     )
 
     # filter records for specified country code(s) only
@@ -95,15 +85,7 @@ def get_geonames_admin2_data(country_codes: list=[]) -> list:
     LOCAL_NAME = os.path.join(LOCAL_PATH, Path(REMOTE_URL).name )    
     
     download_file(REMOTE_URL, LOCAL_NAME, overwrite=False)
-
-    # fields names in the input tab-delimited data file
-    field_names = [
-        "admin_code",
-        "name" ,
-        "ascii_name",
-        "geoname_id"
-    ]
-
+ 
     # read and parse extracted CSV data file to pandas DataFrame
     df = pd.read_csv(
         LOCAL_NAME, 
@@ -112,7 +94,7 @@ def get_geonames_admin2_data(country_codes: list=[]) -> list:
         engine="python", 
         skip_blank_lines=True, 
         header=None,
-        names=field_names
+        names=["admin_code", "name", "ascii_name", "geoname_id"]
     )
 
     # filter records for specified country code(s) only
@@ -121,7 +103,6 @@ def get_geonames_admin2_data(country_codes: list=[]) -> list:
     
     # return data as an array of dict items   
     return filtered.to_dict(orient="records")
-
 
 
 def get_geonames_city_data(country_codes: list=[]) -> list:
@@ -134,30 +115,7 @@ def get_geonames_city_data(country_codes: list=[]) -> list:
     # extract zipped data file contents to cache path
     #with zipfile.ZipFile(LOCAL_NAME, 'r') as zf:
         #zf.extractall(LOCAL_PATH)    
-
-    # anticipated fields names in the input delimited data
-    field_names = [
-        "geoname_id",
-        "name" ,
-        "ascii_name",
-        "alternate_names",
-        "latitude",
-        "longitude",
-        "feature_class",
-        "feature_code",
-        "country_code",
-        "cc2",
-        "admin1_code",
-        "admin2_code",
-        "admin3_code",
-        "admin4_code",
-        "population",
-        "elevation",
-        "dem",
-        "timezone",
-        "modification_date"
-    ]
-
+    
     # read and parse extracted CSV data file to pandas DataFrame
     df = pd.read_csv(
         LOCAL_NAME, 
@@ -166,7 +124,27 @@ def get_geonames_city_data(country_codes: list=[]) -> list:
         engine="python", 
         skip_blank_lines=True, 
         header=None,
-        names=field_names
+        names=[
+            "geoname_id",
+            "name" ,
+            "ascii_name",
+            "alternate_names",
+            "latitude",
+            "longitude",
+            "feature_class",
+            "feature_code",
+            "country_code",
+            "cc2",
+            "admin1_code",
+            "admin2_code",
+            "admin3_code",
+            "admin4_code",
+            "population",
+            "elevation",
+            "dem",
+            "timezone",
+            "modification_date"
+        ]
     )
 
     # filter down to records for specified country codes
@@ -176,8 +154,23 @@ def get_geonames_city_data(country_codes: list=[]) -> list:
     return filtered.to_dict(orient="records")
 
 
-@Language.factory(name="geonames_ruler", default_config={"country_codes": ["GB"]})
-def create_geonames_ruler(nlp: Language, name: str="geonames_ruler", country_codes=["GB"]) -> BaseRuler:
+@Language.factory(
+    name="geonames_ruler", 
+    default_config = {
+        "country_codes": ["GB"], 
+        "default_label": "PLACE", 
+        "supp_list": [], 
+        "stop_list": []
+    }
+)
+def create_geonames_ruler(
+    nlp: Language, 
+    name: str="geonames_ruler", 
+    default_label: str="PLACE", 
+    supp_list: list=[], 
+    stop_list: list=[],
+    country_codes=["GB"]
+    ) -> BaseRuler:
 
     # get records for selected GeoNames country codes
     geonames_admin1 = get_geonames_admin1_data(country_codes) 
@@ -189,32 +182,26 @@ def create_geonames_ruler(nlp: Language, name: str="geonames_ruler", country_cod
     # convert all geonames records to required 'patterns' format 
     patterns = list(map(lambda item: {
         "id": f"http://sws.geonames.org/{escape(str(item.get('geoname_id', '')))}/",
-        "label": "PLACE",
+        "label": default_label,
         "pattern": str(item.get("name", ""))
     }, geonames_data))    
 
-    ruler = BaseRuler(
+    ruler = create_vocabulary_ruler(
         nlp=nlp,        
         name=name,
+        default_label=default_label, 
         spans_key=DEFAULT_SPANS_KEY,
-        #phrase_matcher_attr="LOWER",
-        validate=False,
-        overwrite=False
-    ) 
-
-    normalized_patterns = BaseRuler.normalize_patterns(
-        nlp=nlp, 
-        patterns=patterns,
-        default_label="PLACE",
         lemmatize=False,
-        token_pos=["PROPN"]
-    ) 
+        token_pos=["PROPN"],
+        patt_list=patterns + supp_list,
+        stop_list=stop_list
+    )    
       
-    ruler.add_patterns(normalized_patterns)
     return ruler 
   
 
-# test the PeriodoRuler class
+# to test this module independently, run from package root:
+# python -m components.GeoNamesRuler
 if __name__ == "__main__":
 
     # example test

@@ -4,7 +4,7 @@ from spacy import language
 from spacy.language import Language
 from components.Util import load_pipeline_for_language
 
-# get periodo authority ID to use based on language code 
+# get a suitable periodo authority ID based on language code 
 def get_periodo_id_for_language(language: str="en") -> str:
     
     authorities = {

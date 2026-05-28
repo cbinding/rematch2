@@ -133,7 +133,8 @@ def create_negation_ruler_cs(nlp: Language, name: str = "negation_ruler") -> Neg
     return create_negation_ruler(nlp, name, patterns_cs_NEGATION)
 '''
 
-# test the NegationRuler class
+# to test this module independently, run from package root:
+# python -m components.NegationRuler
 if __name__ == "__main__":
     tests = []
     # load some local test texts from JSON file..    

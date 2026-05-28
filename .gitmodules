@@ -1,6 +1,3 @@
-[submodule "atrium-text_extraction"]
-	path = atrium-text_extraction
-	url = https://github.com/GateNLP/atrium-text_extraction
 [submodule "atrium_text_extraction"]
 	path = atrium_text_extraction
 	url = https://github.com/GateNLP/atrium-text_extraction

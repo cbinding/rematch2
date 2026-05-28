@@ -326,7 +326,8 @@ def create_span_scorer(
         sections=sections)
 
 
-# test the span_scorer pipeline component
+# to test this module independently, run from package root:
+# python -m components.SpanScorer
 if __name__ == "__main__":
     import spacy
 

@@ -21,4 +21,4 @@ spacy
 #jmespath>=1.0.1  # for JSON search
 jsonpath-ng>=1.5.3 # for JSON search (as used in PeriodoData.py)
 lxml>=4.9.1 # for parsing input XML abstracts
-
+weasyprint>=68.1 # for creating PDF reports from HTML

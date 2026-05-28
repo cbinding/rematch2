@@ -165,7 +165,8 @@ def create_yearspan_ruler_cs(nlp: Language, name: str = "yearspan_ruler") -> Yea
     return create_yearspan_ruler(nlp, name, patterns_cs_YEARSPAN)
 
     
-# test the YearSpanRuler class
+# to test this module independently, run from package root:
+# python -m components.YearSpanRuler
 if __name__ == "__main__":
 
     tests = [

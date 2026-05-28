@@ -99,7 +99,8 @@ def create_vocabulary_ruler(
     return ruler 
 
 
-# testing 
+# to test this module independently, run from package root:
+# python -m components.VocabularyRuler
 if __name__ == "__main__":
 
     # sys.path.insert(0, str(Path(__file__).resolve().parent.parent))

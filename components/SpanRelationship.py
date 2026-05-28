@@ -123,6 +123,8 @@ def span_equals(spanA: Span, spanB: Span) -> bool:
     return spanA.start_char == spanB.start_char and spanA.end_char == spanB.end_char
 
 
+# to test this module independently, run from package root:
+# python -m components.SpanRelationship
 if __name__ == "__main__":
     nlp = spacy.blank("en")
     text = "the quick brown fox jumps over the lazy dog"

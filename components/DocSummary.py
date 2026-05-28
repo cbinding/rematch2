@@ -847,7 +847,8 @@ class DocSummary:
         return(df.to_string(index=False)) if len(df) > 0 else "NO RECORDS" 
 
 
-# test the DocSummary class
+# to test this module independently, run from package root:
+# python -m components.DocSummary
 if __name__ == "__main__":
     
     # example test

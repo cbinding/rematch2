@@ -63,3 +63,19 @@ class BaseMatcher(Matcher):
         # remove duplicates and overlaps, keep longest
         matches = spacy.util.filter_spans(cast(Iterable[Span], matches))
         return matches
+    
+
+# to test this module independently, run from package root:
+# python -m components.BaseMatcher
+if __name__ == "__main__":
+    patterns = [
+        [{ "LOWER": { "REGEX": "^biostratigraph(ic|y)$" }, "POS": "ADJ"}],
+        [{ "LOWER": { "REGEX": "^calibrat(ed|ion)$" }}]
+    ]
+    nlp = spacy.load("en_core_web_sm", disable=['ner'])
+    matcher = BaseMatcher(nlp.vocab)   
+    matcher.add_patterns("significance", patterns) 
+    doc = nlp("The site yielded rich biostratigraphic evidence, and the calibrated dated corroborated the evidence.")
+    matches = matcher(doc)  
+    print(matches) # returned list of spans
+    # [biostratigraphic, calibrated]  

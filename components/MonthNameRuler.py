@@ -107,7 +107,8 @@ def create_monthname_ruler_cs(nlp: Language, name: str = "monthname_ruler") -> B
     return create_monthname_ruler(nlp, name, patterns_cs_MONTHNAME)
 
 
-# test the MonthNameRuler class
+# to test this module independently, run from package root:
+# python -m components.MonthNameRuler
 if __name__ == "__main__":
 
     tests = [

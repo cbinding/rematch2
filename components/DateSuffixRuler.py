@@ -42,8 +42,7 @@ from .DocSummary import DocSummary
 
 @Language.factory(name="datesuffix_ruler", default_config={"patterns": []})
 def create_datesuffix_ruler(nlp: Language, name: str="datesuffix_ruler", patterns: list=[]) -> BaseRuler:
-    
-    
+        
     ruler = BaseRuler(
         nlp=nlp,        
         name=name,
@@ -112,7 +111,8 @@ def create_datesuffix_ruler_cs(nlp: Language, name: str = "datesuffix_ruler") ->
     return create_datesuffix_ruler(nlp, name, patterns_cs_DATESUFFIX)
 
 
-# test the pipeline component
+# to test this module independently, run from package root:
+# python -m components.DateSuffixRuler
 if __name__ == "__main__":
 
     tests = [

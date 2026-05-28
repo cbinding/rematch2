@@ -4,6 +4,7 @@
   - [Supported languages](#languages)
   - [Patterns](#patterns)
 - [Components](#components)
+  - [base_ruler](#base_ruler)
   - [dayname_ruler](#dayname_ruler)
   - [monthname_ruler](#monthname_ruler)
   - [seasonname_ruler](#seasonname_ruler)
@@ -14,6 +15,7 @@
   - [periodo_ruler](#periodo_ruler)
   - [vocabulary_ruler](#vocabulary_ruler)
   - [geonames_ruler](#geonames_ruler)  
+  - [span_scorer](#span_scorer)
 - [Usage](#usage)
   - [temporal component usage](#temporal_usage)
   - [vocabulary component usage](#vocabulary_usage)
@@ -37,7 +39,7 @@ The languages currently supported by the `rematch2` pipeline temporal components
 - Norwegian (no)
 - Swedish (sv)
 
-For the vocabulary-driven pipeline component the supported language is the language of the given vocabulary. The examples we give are expressed in English.
+For the vocabulary-driven pipeline components the supported language is the language of the given vocabulary. The examples used are expressed in English.
 
 ### Patterns <a class="anchor" id="patterns"></a>
 
@@ -49,6 +51,7 @@ The pipeline components utilise predefined spaCy _patterns_ which are located in
 
 | Component Name                        | Entity Type | Description                                                            |                                             Examples |
 | ------------------------------------- | ----------- | ---------------------------------------------------------------------- | ---------------------------------------------------: |
+| [base_ruler](#base_ruler)             |             | Base component, not intended to be used directly                       |                                                      |
 | [dayname_ruler](#dayname_ruler)       | DAYNAME     | Day names and their common abbreviations                               |                              _Mon., TUES, Wednesday_ |
 | [monthname_ruler](#monthname_ruler)   | MONTHNAME   | Month names and their common abbreviations                             |                                   _Jan., FEB, March_ |
 | [seasonname_ruler](#seasonname_ruler) | SEASONNAME  | Season names                                                           |               _Spring, SUMMER, Autumn, WINTER, Fall_ |
@@ -57,8 +60,17 @@ The pipeline components utilise predefined spaCy _patterns_ which are located in
 | [datesuffix_ruler](#datesuffix_ruler) | DATESUFFIX  | Prefixes commonly associated with years, spans and centuries           |                       _A.D., AD, B.C., BC, B.P., BP_ |
 | [yearspan_ruler](#yearspan_ruler)     | YEARSPAN    | Spans of years or centuries (possibly with prefixes and/or suffixes)   |                         _early 1300 to late 1350 AD_ |
 | [periodo_ruler](#periodo_ruler)       | PERIOD      | Period label from specified [Perio.do](https://perio.do/en/) authority |              _Bronze Age, Early Medieval, Victorian_ |
-| [vocabulary_ruler](#vocabulary_ruler) | (user specified) | Labels from supplied controlled vocabulary of terms              |      _Brooch, Mineralogy, Leather, Cropmark, Hearth_ |
+| [vocabulary_ruler](#vocabulary_ruler) | (user specified) | Labels from supplied controlled vocabulary of terms               |      _Brooch, Mineralogy, Leather, Cropmark, Hearth_ |
 | [geonames_ruler](#geonames_ruler)     | PLACE       | Place names from the [GeoNames](https://www.geonames.org/) dataset     |              _Oxford, Sawbridgeworth, Hertfordshire_ |
+
+### base_ruler <a class="anchor" id="base_ruler"></a>
+Base component, not intended to be used directly. The other ruler components described here inherit configuration and functionality from this component.
+#### configuration
+* `default_label` (String, default="UNKNOWN") - Entity Type to be assigned to matching text spans. 
+* `lemmatize` (Boolean, default=True) - apply lemmatization for more flexible term matching. Note: In the case of multi-word phrases, only the last word is lemmatized.
+* `min_lemm_length` (Integer, default=4) - minimum character length of terms to be lemmatized
+* `min_term_length` (Integer, default=3) - minimum character length of terms to be matched
+* `token_pos` (Array of String, default=[]) - Part of Speech restriction for valid term matched e.g `["NOUN"]` - _well_ as a noun would match, but not as an adjective.
 
 ### dayname_ruler <a class="anchor" id="dayname_ruler"></a>
 
@@ -90,12 +102,19 @@ Identifies typical expressions of years or spans of years in text. Utilises othe
 
 ### periodo_ruler <a class="anchor" id="periodo_ruler"></a>
 
-The periodo ruler component utilises the [Perio.do](https://perio.do/) dataset. When configured with a valid Perio.do authority identifier e.g. `'p0xxt6t'` [Scottish Archaeological Periods & Ages (ScAPA)](http://n2t.net/ark:/99152/p0xxt6t), the component will match against the labels of periods contained within that specified authority. e.g. _Chalcolithic, Early Bronze Age, Antonine_
+The periodo ruler is a specialised [vocabulary_ruler](#vocabulary_ruler) component, utilising the [Perio.do](https://perio.do/) dataset. 
+#### configuration
+* periodo_authority_id - When configured with a valid Perio.do authority identifier the component will match against the labels of periods contained within that specified authority. e.g. `'p0xxt6t'` [Scottish Archaeological Periods & Ages (ScAPA)](http://n2t.net/ark:/99152/p0xxt6t) for matches on [_Chalcolithic_](http://n2t.net/ark:/99152/p0xxt6tcq9w), [_Early Bronze Age_](http://n2t.net/ark:/99152/p0xxt6tm9kq), [_Antonine_](http://n2t.net/ark:/99152/p0xxt6tkpj3) etc.
 
 ### vocabulary_ruler <a class="anchor" id="vocabulary_ruler"></a>
-Example vocabulary files are included for use with the vocabulary_ruler component to identify terms originating from extracts of controlled vocabularies as occurring in free text. The (suggested) 'Entity Type' given below can be overriden when configuring the pipeline. Sometimes a vocabulary may not quite fit the use case of terms to be located - controlled vocabularies do not always contain the exact terms as used in free-text. In this case there is the flexibility of directly editing the pattern file used, and/or including an additional supplementary file (e.g. to expand the entry vocabulary), and/or a 'stop file' containing identifiers that should NOT appear in the results. 
+Identifies terms or phrases from a supplied controlled vocabulary list of terms with associated identifiers.
+#### configuration
+The component is configured using the inherited configuration parameters of the [base_ruler](#base_ruler) component, plus the following:
+* patt_list - a list of spaCy patterns representing the vocabulary to match on. Note: you may alternatively supply a list of identifiers and labels.
+* supp_list - a list of supplementary terms. Sometimes an existing vocabulary may not quite fit the use case of terms to be located - controlled vocabularies do not always contain the exact terms as used in free-text, so the supplementary list can be used to expand on the supplied vocabulary list without altering it.
+* stop_list - a list of identifiers of concepts that should NOT appear in the results. This is useful to restrict matches to a subset of the supplied vocabulary list, or to exclude specific concepts.
 
-The example files described in the table below contain terms and Linked Open Data (LOD) identifiers extracted from the [Getty Art &amp; Architecture Thesaurus (AAT)](https://www.getty.edu/research/tools/vocabularies/aat/) SPARQL endpoint, and from the [FISH 'Heritage Standards'](https://heritage-standards.org.uk/fish-vocabularies/) site for bulk downloads of vocabulary data. Note the file naming convention indicates the date the data was extracted and the file created - so they are a snapshot and do not represent the latest version of the controlled vocabularies. The user is directed to the originating sites for the most up to date information.
+Example vocabulary files are included for use with the vocabulary_ruler component, to identify terms originating from extracts of controlled vocabularies as occurring in free text. The (suggested) 'Entity Type' in the table below may be overridden when configuring the pipeline. The example files described in the table contain terms and Linked Open Data (LOD) identifiers extracted from the [Getty Art &amp; Architecture Thesaurus (AAT)](https://www.getty.edu/research/tools/vocabularies/aat/) SPARQL endpoint, and from the [FISH 'Heritage Standards'](https://heritage-standards.org.uk/fish-vocabularies/) site for bulk downloads of vocabulary data. Note the file naming convention adopted here indicates the date this data was extracted and the files created - so they are only a snapshot and do not represent the latest version of the controlled vocabularies. The user is directed to the originating sites for the most up to date information on these vocabularies.
 
 | Vocabulary File                                | Source Description                                                                   | Examples                                                           |
 | ---------------------------------------------- | ------------------------------------------------------------------------------------ | -----------------------------------------------------------------: |
@@ -116,14 +135,34 @@ The example files described in the table below contain terms and Linked Open Dat
 | patterns_FISH_eh_tmt2_YYYYMMDD.json            | [FISH 'Monument Types' thesaurus](http://purl.org/heritagedata/schemes/eh_tmt2)      | [necropolis](http://purl.org/heritagedata/schemes/eh_tmt2/concepts/70053)         |
 | patterns_FISH_mda_obj_YYYYMMDD.json            | [FISH 'Archaeological Objects' thesaurus](http://purl.org/heritagedata/schemes/mda_obj) | [goblet](http://purl.org/heritagedata/schemes/mda_obj/concepts/96782)          |
 
-
 ### geonames_ruler <a class="anchor" id="geonames_ruler"></a>
-The geonames_ruler component performs a lookup on place names originating from the [GeoNames](https://www.geonames.org/) dataset. In order to enable sufficient performance and reduce the potential for ambiguities, the component configuration accepts one or more ISO country codes (e.g. "GB"). 
+The geonames_ruler component is a specialised [vocabulary_ruler](#vocabulary_ruler) component, performing a lookup on place names originating from the [GeoNames](https://www.geonames.org/) dataset. 
+#### configuration
+The component is configured using the inherited configuration parameters of the [base_ruler](#base_ruler) component, plus the following:
+* country_codes (Array of string; default=["GB"]) - The component configuration accepts an array of one or more ISO country codes. These are used to enable sufficient performance and reduce (but not necessarily eliminate) ambiguities.
+
+
+### span_scorer <a class="anchor" id="span_scorer"></a>
+The span_scorer components supplements existing located spans with scores, these can be used to rank results and assess significance and relevance.
+#### configuration
+The component is configured using the following parameters:
+* sig_proximity (Integer, default=3) -  proximity in number of tokens between span and 'significant' term to count as 'nearby' for scoring purposes
+* neg_proximity (Integer, default=3) - proximity in number of tokens between span and 'negation' term to count as 'nearby' for scoring purposes
+* sig_score (Float, default=1.0) - score to assign to span if it is within specified token proximity of a 'significant' term or phrase
+* neg_score (Float, default=1.0) - score to assign to span if it is within specified token proximity of a 'negation' term or phrase
+* sec_scores (default = {
+    "title": 40.0, # high score for title as likely to contain key info about the content of the article
+    "abstract": 2.0, # moderate score for abstract as likely to contain key info about the content of the article
+    "body": 0.1, # low score for body as likely to contain a lot of less important info, but still some key info may be found here
+    "end_matter": 0.0 # no score for end matter as unlikely to contain key info about the content of the article
+  }) - scores for named sections located within the document. spans are scored with the highest section score according to their location
+* sections (list = []) - locations of named sections within the document        
 
 ## Usage <a class="anchor" id="usage"></a>
 
 ### Temporal component usage <a class="anchor" id="temporal_usage"></a>
-Both the [yearspans_ruler](#yearspans_ruler) and the [periodo_ruler](#periodo_ruler) perform information extraction of temporal entities. Example Python script to perform information extraction on temporal entities using these components:
+Both the [yearspans_ruler](#yearspans_ruler) and the [periodo_ruler](#periodo_ruler) perform information extraction of temporal entities. 
+Example Python script to perform information extraction on temporal entities using these components:
 
 ```python
 import spacy
@@ -139,7 +178,13 @@ nlp.add_pipe("periodo_ruler", last=True, config={"periodo_authority_id": "p0kh9d
 nlp.add_pipe("child_span_remover", last=True)
 
 # process some example text using the configured pipeline
-test_text = """Although generally undated, the ditches were suggestive of a trackway and associated enclosure/field boundaries. Other ditches encountered on site correlated with post-medieval field boundaries depicted on 19th century mapping. Given the results of the 2018 evaluation, in conjunction with those of the 2018 investigations at nearby Chalk's Farm, which uncovered the remains of Late Bronze Age-early Iron Age and early Roman settlement and agricultural activity, it was deemed necessary to undertake a further phase of evaluation at the site."""
+test_text = """
+Although generally undated, the ditches were suggestive of a trackway and associated enclosure/field boundaries. 
+Other ditches encountered on site correlated with post-medieval field boundaries depicted on 19th century mapping. 
+Given the results of the 2018 evaluation, in conjunction with those of the 2018 investigations at nearby Chalk's Farm, 
+which uncovered the remains of Late Bronze Age-early Iron Age and early Roman settlement and agricultural activity, 
+it was deemed necessary to undertake a further phase of evaluation at the site.
+"""
 
 doc = nlp(test_text)
 spans = doc.spans.get("rematch", [])
@@ -157,7 +202,7 @@ df = pd.DataFrame([{
 print(df.to_string(index=False)) 
 
 """results:
-start  end    label                                    id            text
+start   end    label                                    id            text
    163  176   PERIOD http://n2t.net/ark:/99152/p0kh9dsctsj   post-medieval
    206  218 YEARSPAN                                          19th century
    378  393   PERIOD http://n2t.net/ark:/99152/p0kh9dsqkbq Late Bronze Age
@@ -167,7 +212,9 @@ start  end    label                                    id            text
 ```
 
 ### Vocabulary component usage <a class="anchor" id="vocabulary_usage"></a>
-The [vocabulary_ruler](#vocabulary_ruler) component is supplied with a user-defined vocabulary of concepts to be locadted in the text. Ypu can also perform lemmatization for more flexible matching, and part(s) of speech to improve precision. Example Python script to perform information extraction using this component:
+The [vocabulary_ruler](#vocabulary_ruler) component is supplied with a user-defined vocabulary of concepts to be located in the text. 
+You can also perform lemmatization for more flexible matching, and part(s) of speech to improve precision. 
+Example Python script to perform information extraction using this component:
 
 ```python
 # Using specialised VocabularyRuler pipeline component
@@ -235,7 +282,9 @@ start end label       id                                                        
 ```
 
 ### Geographical component usage <a class="anchor" id="geographical_usage"></a>
-The [geonames_ruler](#geonames_ruler) component is an experimental addition, configured with a country code both to improve performance and reduce ambiguity. Example Python script to perform information extraction using this component:
+The [geonames_ruler](#geonames_ruler) component is an experimental addition, 
+configured with a country code both to improve performance and reduce ambiguity. 
+Example Python script to perform information extraction using this component:
 
 ```python
 import spacy
@@ -245,7 +294,10 @@ from components import GeoNamesRuler
 nlp = spacy.load("en_core_web_sm", disable=["ner"])
 
 # example text
-test_text = """This collection comprises Roman site data(reports, images, spreadsheets, GIS data and site records) from two phases of archaeological evaluation undertaken by Oxford Archaeology in June 2018 (SAWR18) and February 2021 (SAWR21) at West Road, Sawbridgeworth, Hertfordshire. SAWR18 In June 2018, Oxford Archaeology were commissioned by Taylor Wimpey to undertake an archaeological evaluation on the site of a proposed housing development to the north of West Road, Sawbridgeworth (TL 47842 15448)."""
+test_text = """
+This collection comprises Roman site data(reports, images, spreadsheets, GIS data and site records) from two phases of archaeological evaluation undertaken by Oxford Archaeology in June 2018 (SAWR18) and February 2021 (SAWR21) at West Road, Sawbridgeworth, Hertfordshire. 
+SAWR18 In June 2018, Oxford Archaeology were commissioned by Taylor Wimpey to undertake an archaeological evaluation on the site of a proposed housing development to the north of West Road, Sawbridgeworth (TL 47842 15448).
+"""
 nlp.add_pipe("geonames_ruler", last=True, config={"country_codes": ["GB"]})
 
 doc = nlp(test_text)

@@ -111,7 +111,9 @@ def create_dayname_ruler_sv(nlp: Language, name: str = "dayname_ruler") -> BaseR
 def create_dayname_ruler_cs(nlp: Language, name: str = "dayname_ruler") -> BaseRuler:
     return create_dayname_ruler(nlp, name, patterns_cs_DAYNAME)
 
-# test the DayNameRuler class
+
+# to test this module independently, run from package root:
+# python -m components.DayNameRuler
 if __name__ == "__main__":
 
     tests = [

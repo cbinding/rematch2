@@ -199,7 +199,8 @@ def calculate_idf_for_spans(spans: list) -> list:
     return lst
 
 
-# testing the script
+# to test this module independently, run from package root:
+# python -m components.SpanStatistics
 if __name__ == "__main__":
     input_file_path = "../data/ie-output/ie-output-oasis-report-metadata-20250228/*.json"
     idf_index = get_spans_idf_for_path(input_file_path)

@@ -18,6 +18,7 @@ from .ChildSpanRemover import child_span_remover
 from .NegationRuler import NegationRuler
 from .SpanPair import SpanPair
 from .SpanPairs import SpanPairs
+from .SpanScorer import SpanScorer
 from .DocSummary import DocSummary
 from .Decorators import run_timed
 from .TextNormalizer import TextNormalizer, create_text_normalizer, create_text_normalizer_en
@@ -26,7 +27,7 @@ from .YearSpanRuler import create_yearspan_ruler
 
 
 # The following was previously a workaround for relative imports in Python 3.6
-# instead now use e.g. 'python -m rematch2.TextNormalizer' from package root
+# instead now use e.g. 'python -m components.TextNormalizer' from package root
 # to run modules directly for testing purposes.
 # import os
 # import sys

@@ -112,7 +112,8 @@ def create_ordinal_ruler_cs(nlp: Language, name: str = "ordinal_ruler") -> BaseR
     return create_ordinal_ruler(nlp, name, patterns_cs_ORDINAL)
 
 
-# test the pipeline component
+# to test this module independently, run from package root:
+# python -m components.OrdinalRuler
 if __name__ == "__main__":
 
     tests = [

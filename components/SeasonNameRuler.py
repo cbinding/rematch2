@@ -107,7 +107,8 @@ def create_seasonname_ruler_sv(nlp: Language, name: str = "seasonname_ruler") ->
 def create_seasonname_ruler_cs(nlp: Language, name: str = "seasonname_ruler") -> BaseRuler:
     return create_seasonname_ruler(nlp, name, patterns_cs_SEASONNAME)
 
-# test the SeasonNameRuler class
+# to test this module independently, run from package root:
+# python -m components.SeasonNameRuler
 if __name__ == "__main__":
 
     tests = [

@@ -204,8 +204,8 @@ def create_text_normalizer_en(
     return create_text_normalizer(nlp, name, decode_unicode=decode_unicode, substitutions=subs)
 
 
-# to run this script directly for testing, run with -m from package root to ensure
-# relative imports work i.e. /workspaces/rematch2 $ python -m rematch2.TextNormalizer
+# to test this module independently, run from package root:
+# python -m components.TextNormalizer
 if __name__ == "__main__":   
     import spacy
     
