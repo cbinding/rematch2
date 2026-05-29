@@ -4,139 +4,152 @@ from pathlib import Path
 from typing import Literal
 import argparse
 import srsly # for JSONL serialization/deserialization
+from spacy.tokens import Doc
 from spacy.language import Language
 from datetime import datetime as DT # for timestamps
 from slugify import slugify # for valid filenames from identifiers
 from weasyprint import HTML
 from components import DocSummary, SpanScorer
-
 from ATRIUM_T4_1_2_IE_pipeline import create_configured_pipeline
-# imported like this because there is a hyphen in the name
-from atrium_text_extraction import pdf_to_json # Sheffield script
+from atrium_text_extraction import pdf_to_json # Sheffield script in submodule
+
+# returns dict structure with "text" property
+def get_file_content(file_path: Path) -> dict:
+
+    if not file_path.is_file(): return {}
+           
+    file_name: str = file_path.name
+    file_type, encoding = mimetypes.guess_type(file_name)
+    file_ext: str = file_path.stem.lower()
+    file_content: dict = {}
+
+    # get the file content based on file type (e.g. PDF, JSON, TXT, etc.)
+    # note: think mimetypes.guess_type only uses file extension anyway,
+    # may be more accurate to use python-magic?        
+    if file_type == "application/json" or file_ext == "json": 
+        with file_path.open() as f:    
+            file_content = json.load(f)
+    elif file_type == "text/plain" or file_ext == "txt":     
+        with file_path.open() as f:          
+            file_content = {"text": f.read()}
+    elif file_type == "application/pdf" or file_ext == "pdf": 
+        file_content = pdf_to_json.convert(file_path)   
+    else:
+        print(f"Unsupported file type '{file_type}' (expected JSON, TXT or PDF)")
+        
+    return file_content
+
+
+def run_pipeline(nlp: Language, input_data: dict={}) -> Doc: 
+    # run the IE pipeline on the 'text' property of the input
+    doc = nlp(input_data.get("text",""))
+    # add calculated scores to spans
+    sections = list(input_data.get("sections", []))    
+    scorer = SpanScorer(nlp, sections=sections)
+    doc = scorer(doc)
+    # return the document
+    return doc
+
+valid_formats = Literal["pdf", "txt", "csv", "json"]
+def write_reports(
+    doc: Doc,
+    file_name: str="",
+    metadata: dict={},
+    sections: list = [], 
+    formats: list[valid_formats]=["json"]):
+    
+    print(f"Summarizing results...")
+    ts_sum = DT.now()         
+    summary = DocSummary(doc, metadata=metadata)
+    print(f"finished summarizing results in {DT.now() - ts_sum}")
+    
+    for format in formats:
+        file_name_with_suffix = f"{file_name.strip()}.{format.strip()}"
+        match format:
+            case "json": 
+                report = summary.report_to_json() 
+                # include sections in output for score diagnostics
+                report["sections"] = sections 
+                # write report to file    
+                with open(file_name_with_suffix, "w") as file:
+                    # converting to JSON string first, for pretty printing
+                    json_string = json.dumps(report, indent=4, default=str)
+                    file.write(json_string)
+            case "txt":
+                report = summary.report_to_text()
+                with open(file_name_with_suffix, "w") as file:
+                    file.write(report)
+            case "csv":
+                report = summary.spans_to_csv()
+                with open(file_name_with_suffix, "w") as file:
+                    file.write(report)
+            case "pdf":
+                report = summary.report_to_html()
+                HTML(None, string=report, encoding="utf-8").write_pdf(target=file_name_with_suffix)    
+            case _:
+                print(f"Format '{format}' not currently handled") 
+
 
 # run configured information extraction pipeline on specified set of input documents
-def run_IE(
-    nlp: Language,          # pre-configured spaCy pipeline to do the IE
+def run_information_extraction(
+    nlp: Language,          # pre-configured spaCy pipeline 
     input_path: Path,       # directory containing input files 
     output_path: Path,      # directory to write output files (will be created if it doesn't exist)    
     input_patt: str="*",    # file name pattern to restrict to particular input files (e.g. "*.pdf")
-    output_format: Literal["pdf", "txt", "csv", "json"]="json" # format to write output
+    output_formats: list[valid_formats]=["json"] #Literal["pdf", "txt", "csv", "json"]="json" # format to write output
     ): 
-    print(f"Running {__file__}")
     # if output folder structure does not already exist, build it
     if not Path.exists(output_path): Path.mkdir(output_path)
     
     # processing each file in the specified input path
     print(f"Processing files in input path '{input_path}'")
     file_names = input_path.rglob(input_patt) # file names filtered by pattern 
-    #file_names = Path().rglob(input_path) # get_file_names_for_path(input_directory)
     for entry in file_names:        
         
-        if not entry.is_file(): continue
-           
-        input_file_name: str = entry.name
-        #input_file_path = entry.absolute. entry..path
-        input_file_type, encoding = mimetypes.guess_type(input_file_name)
-        input_file_ext: str = entry.stem.lower()
-        input_file_content: dict = {}
-        
-        print(f"Processing file '{input_file_name}'...")
-
-        # get the file content based on file type (e.g. PDF, JSON, TXT, etc.)
-        # note: think mimetypes.guess_type only uses file extension anyway,
-        # may be more accurate to use python-magic?        
-        if input_file_type == "application/json" or input_file_ext == "json": 
-            print(f"Reading JSON file '{input_file_name}'...")      
-            with entry.open() as f:    
-                input_file_content = json.load(f)
-        elif input_file_type == "application/jsonl" or input_file_ext == "jsonl": 
-            # different case - need to cater for multiple records...
-            print(f"Reading JSONL file '{input_file_name}'...")  
-            data: list = list(srsly.read_jsonl(input_file_name))            
-            input_file_content = data[0] # very temp...
-        elif input_file_type == "text/plain" or input_file_ext == "txt":     
-            print(f"Reading TXT file '{input_file_name}'...")  
-            with entry.open() as f:          
-            #with open(input_file_path, 'r') as f:
-                input_file_content = {"text": f.read()}
-        elif input_file_type == "application/pdf" or input_file_ext == "pdf": 
-            print(f"Reading PDF file '{input_file_name}'...") 
-            input_file_content = pdf_to_json.convert(entry)            
-            #input_file_content = {"text": ""}
-        else:
-            print(f"Unsupported file type, skipping {input_file_name}")
-            continue
+        if not entry.is_file(): continue 
+        print(f"Reading file '{entry.name}'...")
+        file_content = get_file_content(entry)
         
         # get any existing metadata from the input file       
-        old_metadata: dict = input_file_content.get("meta", {})      
+        old_metadata: dict = file_content.get("meta", {})      
         # set up new metadata to include in the output
         new_metadata: dict = {
-            "identifier": input_file_name,
+            "identifier": entry.name,
             "title": "vocabulary-based IE results",
-            "description": f"vocabulary-based information extraction results for file '{input_file_name}'",
-            "creator": __file__, # "ATRIUM_T4_1_2_IE_OASIS_journal_reports.py",
+            "description": f"vocabulary-based information extraction results for file '{entry.name}'",
+            "creator": __file__, 
             "created": DT.now().isoformat(),
             "pipeline": nlp.pipe_names,
-            "input_file_name": input_file_name
+            "input_file_name": entry.name
         }
         # merge with existing metadata in input_file_content 
-        the_metadata: dict = {**old_metadata, **new_metadata}
-        input_file_content["meta"] = the_metadata
+        metadata: dict = {**old_metadata, **new_metadata}
+        file_content["meta"] = metadata
       
         # run the IE pipeline on the 'text' property of the input 
-        print(f"Running IE pipeline on file '{input_file_name}'...")
-        ts_nlp = DT.now()         
-        doc = nlp(input_file_content.get("text",""))
-        print(f"finished IE pipeline in {DT.now() - ts_nlp}")
-
-        # add calculated scores to spans
-        print(f"Adding calculated scores for file '{input_file_name}'...")
-        ts_add = DT.now() 
-        sections = list(input_file_content.get("sections", []))
-        scorer = SpanScorer(nlp, sections=sections)
-        doc = scorer(doc)
-        print(f"finished adding calculated scores in {DT.now() - ts_add}")
-        
-        print(f"Summarizing results for file '{input_file_name}'...")
-        ts_sum = DT.now()         
-        summary = DocSummary(doc, metadata=the_metadata)
-        print(f"finished summarizing results in {DT.now() - ts_sum}")
+        print(f"Running IE pipeline on '{entry.name}'...")        
+        doc = run_pipeline(nlp, file_content)
 
         # write results to output file
-        output_file_name =  Path(output_path).joinpath(f"ie-output-{slugify(entry.name)}.{output_format}")
+        output_file_name = Path(output_path).joinpath(f"ie-output-{slugify(entry.name)}")
         print(f"Creating report '{output_file_name}'...")  
         ts_out = DT.now()        
         
-        match output_format:
-            case "json": 
-                report = summary.report_to_json() 
-                # include sections in output for score diagnostics
-                report["sections"] = input_file_content.get("sections", [])  
-                    
-                with open(output_file_name, "w") as file:
-                    # converting to JSON string first for pretty printing
-                    json_string = json.dumps(report, indent=4, default=str)
-                    file.write(json_string)
-            case "txt":
-                with open(output_file_name, "w") as file:
-                    file.write(summary.report_to_text())
-            case "csv":
-                with open(output_file_name, "w") as file:
-                    file.write(summary.spans_to_csv())
-            case "pdf":
-                report = summary.report_to_html()
-                HTML(None, string=report, encoding="utf-8").write_pdf(target=output_file_name)    
-            case _:
-                print(f"Output format '{output_format}' not currently handled")      
-
+        write_reports(
+            doc=doc, 
+            file_name=str(output_file_name), 
+            metadata=file_content.get("meta",{}),
+            sections=file_content.get("sections", []),
+            formats=output_formats)
+        
         print(f"finished creating report in {DT.now() - ts_out}")
 
     print(f"Finished running {__file__}")
 
 
 # Input parameters for running from terminal/command line. Example:
-# python ./ATRIUM_T4_1_2_IE_OASIS_journal_reports.py -i './data/oasis/journals_july_2024' -p '*.pdf' -f "json"
-# python ./ATRIUM_T4_1_2_IE_OASIS_journal_reports.py -i './data/oasis/journals_july_2024' -p '120_215*.pdf' -f "json"
+# python ./ATRIUM_T4_1_2_IE_OASIS_journal_reports.py -i './data/oasis/journals_july_2024' -p '*.pdf' -f "json,csv"
+# python ./ATRIUM_T4_1_2_IE_OASIS_journal_reports.py -i './data/oasis/journals_july_2024' -p '120_001*.pdf' -f "json,csv"
 if __name__ == "__main__":
     
     # initiate the input arguments parser
@@ -149,26 +162,26 @@ if __name__ == "__main__":
         required=True,
         help="Input directory containing files to be processed")
     
-    # add long and short argument descriptions for input file pattern (file names pattern)
+    # add long and short argument descriptions for input file pattern (file names pattern e.g. "*.pdf")
     parser.add_argument(
         "--inputpatt", "-p", 
         default="*", 
+        const="*",
+        nargs="?",
         help="Pattern to specify file names to be processed")
 
     # add long and short argument descriptions for output file path (directory to write processed files to)
     parser.add_argument(
-        "--outputpath", "-o", 
+        "--outputpath", "-o",
         required=False,
         help="Output directory for processed data files")
     
     # add long and short argument descriptions for output format (e.g. json, csv, etc.) for processed data files
+    # note outputformat is a string but may be multiple comma-delimited values e.g. -f "json, csv"
     parser.add_argument(
         "--outputformat", "-f", 
         default="json", 
-        const="json",
-        nargs="?",
-        choices=("txt" "csv", "json", "pdf"),
-        help="Output format for processed data files"
+        help="Output format(s) for processed data files"
     )    
 
     # datestamp for use in directory names
@@ -176,23 +189,23 @@ if __name__ == "__main__":
 
     # parse and clean command line arguments
     args = parser.parse_args()
-    input_path = Path(args.inputpath.strip())
-    output_path = Path(args.outputpath.strip() if args.outputpath else Path(input_path).joinpath(f"ie-output-{datestamp}"))
-    input_patt = args.inputpatt.strip() if args.inputpatt else "*"
-    output_format = args.outputformat.strip().lower() if args.outputformat else "json"
+    input_path: Path = Path(args.inputpath.strip())
+    output_path: Path = Path(args.outputpath.strip() if args.outputpath else Path(input_path).joinpath(f"ie-output-{datestamp}"))
+    input_patt: str = args.inputpatt.strip() if args.inputpatt else "*"
+    output_formats: list = list(set(args.outputformat.strip().lower().split(","))) if args.outputformat else ["json"]
     
     # create the spaCy pipeline to use
-    print("Creating configured IE pipeline")
+    print("Creating configured pipeline")
     pipeline = create_configured_pipeline() 
-    print("Finished creating configured IE pipeline")
+    print("Created configured pipeline")
 
     # run the pipeline using cleaned input args
-    print("Running IE pipeline")
-    run_IE(
+    print("Running information extraction")
+    run_information_extraction(
         nlp = pipeline,
         input_path = input_path,
         input_patt = input_patt, 
         output_path = output_path, 
-        output_format = output_format
+        output_formats = output_formats
     )
-    print("Finished running IE pipeline")
+    print("Finished information extraction")
