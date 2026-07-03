@@ -231,12 +231,9 @@ class DocSummary:
             #"sig_sentence": getattr(span._, "sig_sentence", 0.0), # significance by sentence score
             "sig_proximity": getattr(span._, "sig_proximity", 0.0), # significance by proximity score
             #"llm_sig_score": span._.llm_sig_score if Span.has_extension("llm_sig_score") else 0.0, # llm significance score
-
-
-            "sig_llm_score": getattr(span._, "sig_llm_score", 0.0), # llm significance score
-            "sig_llm_explain": getattr(span._, "sig_llm_explain", ""), # llm significance score explanation (for testing/debugging)
-
-            "neg_proximity": getattr(span._, "neg_proximity", 0.0), # negation by proximity score
+            #"sig_llm_score": getattr(span._, "sig_llm_score", 0.0), # llm significance score
+            #"sig_llm_explain": getattr(span._, "sig_llm_explain", ""), # llm significance score explanation (for testing/debugging)
+            #"neg_proximity": getattr(span._, "neg_proximity", 0.0), # negation by proximity score
             "score": getattr(span._, "score", 0.0), # calculated overall score
             "score_explain": getattr(span._, "score_explain", ""), # calculated overall score explanation (for testing/debugging)
             "context": getattr(span._, "context", ""), # text context around the span

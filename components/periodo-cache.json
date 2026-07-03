@@ -389030,6 +389030,1563 @@
                }
             ]
          }
+      },
+      "p0345f6": {
+         "id": "p0345f6",
+         "type": "Authority",
+         "periods": {
+            "p0345f6p799": {
+               "id": "p0345f6p799",
+               "type": "Period",
+               "label": "okres plemienny",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "tribal period"
+                  ],
+                  "pl": [
+                     "okres plemienny"
+                  ]
+               },
+               "spatialCoverageDescription": "Central Poland",
+               "start": {
+                  "in": {
+                     "year": "0400"
+                  },
+                  "label": "400"
+               },
+               "stop": {
+                  "in": {
+                     "year": "0950"
+                  },
+                  "label": "950"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0345f69t6c": {
+               "id": "p0345f69t6c",
+               "type": "Period",
+               "label": "okres wczesnopa\u0144stwowy",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Early State Period"
+                  ],
+                  "pl": [
+                     "okres wczesnopa\u0144stwowy"
+                  ]
+               },
+               "spatialCoverageDescription": "Central Poland",
+               "start": {
+                  "in": {
+                     "year": "0950"
+                  },
+                  "label": "950"
+               },
+               "stop": {
+                  "in": {
+                     "year": "1250"
+                  },
+                  "label": "1250"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            }
+         },
+         "source": {
+            "citation": "W. Hensel, Studia i materia\u0142y do osadnictwa Wielkopolski wczesnohistorycznej, Pozna\u0144 1950",
+            "title": "Studia i materia\u0142y do osadnictwa Wielkopolski wczesnohistorycznej,",
+            "yearPublished": "1950",
+            "creators": [
+               {
+                  "name": "W. Hensel"
+               }
+            ]
+         }
+      },
+      "p0vsfpb": {
+         "id": "p0vsfpb",
+         "type": "Authority",
+         "periods": {
+            "p0vsfpbkw7t": {
+               "id": "p0vsfpbkw7t",
+               "type": "Period",
+               "label": "podokres przedpiastowski",
+               "language": "http://lexvo.org/id/iso639-1/en",
+               "languageTag": "en",
+               "localizedLabels": {
+                  "en": [
+                     "Pre-Piast Period",
+                     "podokres przedpiastowski"
+                  ]
+               },
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "0570"
+                  },
+                  "label": "570"
+               },
+               "stop": {
+                  "in": {
+                     "year": "0950"
+                  },
+                  "label": "950"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0vsfpbzztt": {
+               "id": "p0vsfpbzztt",
+               "type": "Period",
+               "label": "podokres wczesnopiastowski",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Piast Period"
+                  ],
+                  "pl": [
+                     "podokres wczesnopiastowski"
+                  ]
+               },
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "0950"
+                  },
+                  "label": "950"
+               },
+               "stop": {
+                  "in": {
+                     "year": "1250"
+                  },
+                  "label": "1250"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            }
+         },
+         "source": {
+            "citation": "J\u00f3zef Kostrzewski, Waldemar Chmielewski, Konrad Ja\u017cd\u017cewski, 1965, Pradzieje Polski, Wroc\u0142aw-Warszawa-Krak\u00f3w.",
+            "title": "Pradzieje Polski",
+            "yearPublished": "1965",
+            "creators": [
+               {
+                  "name": "J. Kostrzewski"
+               },
+               {
+                  "name": "W. Chmielewski"
+               },
+               {
+                  "name": "K. Ja\u017cd\u017cewski"
+               }
+            ]
+         }
+      },
+      "p0w38tw": {
+         "id": "p0w38tw",
+         "type": "Authority",
+         "periods": {
+            "p0w38twz3wh": {
+               "id": "p0w38twz3wh",
+               "type": "Period",
+               "label": "w\u0119dr\u00f3wka lud\u00f3w",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Migration Period"
+                  ],
+                  "pl": [
+                     "w\u0119dr\u00f3wka lud\u00f3w"
+                  ]
+               },
+               "spatialCoverageDescription": "Northern Poland",
+               "start": {
+                  "in": {
+                     "year": "0400"
+                  },
+                  "label": "400"
+               },
+               "stop": {
+                  "in": {
+                     "year": "0700"
+                  },
+                  "label": "700"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0w38twk65m": {
+               "id": "p0w38twk65m",
+               "type": "Period",
+               "label": "faza F",
+               "language": "http://lexvo.org/id/iso639-1/en",
+               "languageTag": "en",
+               "localizedLabels": {
+                  "en": [
+                     "phase F",
+                     "faza F"
+                  ]
+               },
+               "spatialCoverageDescription": "Northern Poland",
+               "start": {
+                  "in": {
+                     "year": "0700"
+                  },
+                  "label": "700"
+               },
+               "stop": {
+                  "in": {
+                     "year": "0900"
+                  },
+                  "label": "900"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0w38tww4gr": {
+               "id": "p0w38tww4gr",
+               "type": "Period",
+               "label": "faza G",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "phase G"
+                  ],
+                  "pl": [
+                     "faza G"
+                  ]
+               },
+               "spatialCoverageDescription": "Northern Poland",
+               "start": {
+                  "in": {
+                     "year": "0900"
+                  },
+                  "label": "900"
+               },
+               "stop": {
+                  "in": {
+                     "year": "1050"
+                  },
+                  "label": "1050"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0w38twwq9p": {
+               "id": "p0w38twwq9p",
+               "type": "Period",
+               "label": "faza H",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "phase H"
+                  ],
+                  "pl": [
+                     "faza H"
+                  ]
+               },
+               "spatialCoverageDescription": "Northern Poland",
+               "start": {
+                  "in": {
+                     "year": "1050"
+                  },
+                  "label": "1050"
+               },
+               "stop": {
+                  "in": {
+                     "year": "1200"
+                  },
+                  "label": "1200"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            }
+         },
+         "source": {
+            "citation": "\u0141\u0119ga W\u0142adys\u0142aw, 1930, Kultura Pomorza we wczesnem \u015bredniowieczu na podstawie wykopalisk, Toru\u0144.",
+            "title": "Kultura Pomorza we wczesnem \u015bredniowieczu na podstawie wykopalisk",
+            "yearPublished": "1930",
+            "creators": [
+               {
+                  "name": "W. \u0141\u0119ga"
+               }
+            ]
+         }
+      },
+      "p0s23c8": {
+         "id": "p0s23c8",
+         "type": "Authority",
+         "periods": {
+            "p0s23c83gzd": {
+               "id": "p0s23c83gzd",
+               "type": "Period",
+               "label": "p\u00f3\u017any okres w\u0119dr\u00f3wek lud\u00f3w",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Late phase of the Migration Period"
+                  ],
+                  "pl": [
+                     "faza E",
+                     "p\u00f3\u017any okres w\u0119dr\u00f3wek lud\u00f3w"
+                  ]
+               },
+               "spatialCoverageDescription": "North-Eastern Poland",
+               "start": {
+                  "in": {
+                     "year": "0525"
+                  },
+                  "label": "525"
+               },
+               "stop": {
+                  "in": {
+                     "year": "0700"
+                  },
+                  "label": "700"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0s23c8q72v": {
+               "id": "p0s23c8q72v",
+               "type": "Period",
+               "label": "okres przedwiki\u0144ski",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Pre-Viking Period"
+                  ],
+                  "pl": [
+                     "faza F",
+                     "okres przedwiki\u0144ski"
+                  ]
+               },
+               "spatialCoverageDescription": "North-Eastern Poland",
+               "start": {
+                  "in": {
+                     "year": "0700"
+                  },
+                  "label": "700"
+               },
+               "stop": {
+                  "in": {
+                     "year": "0900"
+                  },
+                  "label": "900"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0s23c89f78": {
+               "id": "p0s23c89f78",
+               "type": "Period",
+               "label": "okres wiki\u0144ski",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Viking Period",
+                     "faza G"
+                  ],
+                  "pl": [
+                     "okres wiki\u0144ski"
+                  ]
+               },
+               "spatialCoverageDescription": "North-Eastern Poland",
+               "start": {
+                  "in": {
+                     "year": "0700"
+                  },
+                  "label": "700"
+               },
+               "stop": {
+                  "in": {
+                     "year": "0900"
+                  },
+                  "label": "900"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0s23c8zfkf": {
+               "id": "p0s23c8zfkf",
+               "type": "Period",
+               "label": "okres poga\u0144ski",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Pagan Period",
+                     "faza H"
+                  ],
+                  "pl": [
+                     "okres poga\u0144ski"
+                  ]
+               },
+               "spatialCoverageDescription": "North-Eastern Poland",
+               "start": {
+                  "in": {
+                     "year": "0900"
+                  },
+                  "label": "900"
+               },
+               "stop": {
+                  "in": {
+                     "year": "1100"
+                  },
+                  "label": "1100"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0s23c868gc": {
+               "id": "p0s23c868gc",
+               "type": "Period",
+               "label": "horyzont post-olszty\u0144ski",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Post-Olsztyn Horizon"
+                  ],
+                  "pl": [
+                     "horyzont post-olszty\u0144ski"
+                  ]
+               },
+               "spatialCoverageDescription": "North-Eastern Poland",
+               "start": {
+                  "in": {
+                     "year": "0670"
+                  },
+                  "label": "670"
+               },
+               "stop": {
+                  "in": {
+                     "year": "0800"
+                  },
+                  "label": "800"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            }
+         },
+         "source": {
+            "citation": "Pawe\u0142 Szyma\u0144ski, 2013, Z bada\u0144 nad chronologi\u0105 i zr\u00f3\u017cnicowaniem kulturowym spo\u0142eczno\u015bci Mazur w p\u00f3\u017anej staro\u017cytno\u015bci i u progu wczesnego \u015bredniowiecza, Barbaricum 9, Warszawa.",
+            "title": "Z bada\u0144 nad chronologi\u0105 i zr\u00f3\u017cnicowaniem kulturowym spo\u0142eczno\u015bci Mazur w p\u00f3\u017anej staro\u017cytno\u015bci i u progu wczesnego \u015bredniowiecza",
+            "yearPublished": "2013",
+            "creators": [
+               {
+                  "name": "P. Szyma\u0144ski"
+               }
+            ]
+         }
+      },
+      "p09w6x7": {
+         "id": "p09w6x7",
+         "type": "Authority",
+         "periods": {
+            "p09w6x7w894": {
+               "id": "p09w6x7w894",
+               "type": "Period",
+               "label": "Okres w\u0119dr\u00f3wek lud\u00f3w",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Migration Period"
+                  ],
+                  "pl": [
+                     "Okres w\u0119dr\u00f3wek lud\u00f3w"
+                  ]
+               },
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "0375"
+                  },
+                  "label": "375"
+               },
+               "stop": {
+                  "in": {
+                     "earliestYear": "0650",
+                     "latestYear": "0675"
+                  },
+                  "label": "650/675"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p09w6x77zcn": {
+               "id": "p09w6x77zcn",
+               "type": "Period",
+               "label": "wczesna faza okresu w\u0119dr\u00f3wek lud\u00f3w",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Early Phase of the Migration Period"
+                  ],
+                  "pl": [
+                     "wczesna faza okresu w\u0119dr\u00f3wek lud\u00f3w"
+                  ]
+               },
+               "broader": "p09w6x7w894",
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "0375"
+                  },
+                  "label": "375"
+               },
+               "stop": {
+                  "in": {
+                     "year": "0450"
+                  },
+                  "label": "450"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p09w6x7j968": {
+               "id": "p09w6x7j968",
+               "type": "Period",
+               "label": "okres w\u0119dr\u00f3wek lud\u00f3w D1",
+               "language": "http://lexvo.org/id/iso639-1/en",
+               "languageTag": "en",
+               "localizedLabels": {
+                  "en": [
+                     "phase D1 of the Migration Period",
+                     "okres w\u0119dr\u00f3wek lud\u00f3w D1"
+                  ]
+               },
+               "broader": "p09w6x77zcn",
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "0375"
+                  },
+                  "label": "375"
+               },
+               "stop": {
+                  "in": {
+                     "year": "0410"
+                  },
+                  "label": "410"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p09w6x7z665": {
+               "id": "p09w6x7z665",
+               "type": "Period",
+               "label": "okres w\u0119dr\u00f3wek lud\u00f3w D2",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "phase D2 of the Migration Period"
+                  ],
+                  "pl": [
+                     "okres w\u0119dr\u00f3wek lud\u00f3w D2"
+                  ]
+               },
+               "broader": "p09w6x77zcn",
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "0410"
+                  },
+                  "label": "410"
+               },
+               "stop": {
+                  "in": {
+                     "year": "0450"
+                  },
+                  "label": "450"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            }
+         },
+         "source": {
+            "citation": "M. M\u0105czy\u0144ska, The Chronology. In: A. Bursche, J. Hines, A. Zapolska (red.), The Migration Period between the Oder and the Vistula, East Central and Eastern Europe in the Middle Ages, 450-1450, t. 59/1, Leiden 2020, 201\u2012224.",
+            "title": "The Chronology",
+            "yearPublished": "2020",
+            "creators": [
+               {
+                  "name": "M. M\u0105czy\u0144ska"
+               }
+            ]
+         }
+      },
+      "p0z98j8": {
+         "id": "p0z98j8",
+         "type": "Authority",
+         "periods": {
+            "p0z98j8hh2m": {
+               "id": "p0z98j8hh2m",
+               "type": "Period",
+               "label": "okres w\u0119dr\u00f3wek lud\u00f3w",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Migration Period"
+                  ],
+                  "pl": [
+                     "okres w\u0119dr\u00f3wek lud\u00f3w"
+                  ]
+               },
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "0375"
+                  },
+                  "label": "375"
+               },
+               "stop": {
+                  "in": {
+                     "earliestYear": "0650",
+                     "latestYear": "0675"
+                  },
+                  "label": "650/675"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0z98j8vrx3": {
+               "id": "p0z98j8vrx3",
+               "type": "Period",
+               "label": "wczesna faza okresu w\u0119dr\u00f3wek lud\u00f3w",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Early Phase of Migration Period"
+                  ],
+                  "pl": [
+                     "wczesna faza okresu w\u0119dr\u00f3wek lud\u00f3w"
+                  ]
+               },
+               "broader": "p0z98j8hh2m",
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "0375"
+                  },
+                  "label": "375"
+               },
+               "stop": {
+                  "in": {
+                     "year": "0450"
+                  },
+                  "label": "450"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0z98j8wkc8": {
+               "id": "p0z98j8wkc8",
+               "type": "Period",
+               "label": "p\u00f3\u017ana faza okresu w\u0119dr\u00f3wek lud\u00f3w",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Late Phase of the Migration Period"
+                  ],
+                  "pl": [
+                     "p\u00f3\u017ana faza okresu w\u0119dr\u00f3wek lud\u00f3w"
+                  ]
+               },
+               "broader": "p0z98j8hh2m",
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "0450"
+                  },
+                  "label": "450"
+               },
+               "stop": {
+                  "in": {
+                     "earliestYear": "0650",
+                     "latestYear": "0675"
+                  },
+                  "label": "650/675"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0z98j87q86": {
+               "id": "p0z98j87q86",
+               "type": "Period",
+               "label": "okres w\u0119dr\u00f3wek lud\u00f3w E1",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "phase E1 of the Migration Period"
+                  ],
+                  "pl": [
+                     "okres w\u0119dr\u00f3wek lud\u00f3w E1"
+                  ]
+               },
+               "broader": "p0z98j8wkc8",
+               "spatialCoverageDescription": "North-Eastern Poland",
+               "start": {
+                  "in": {
+                     "year": "0450"
+                  },
+                  "label": "450"
+               },
+               "stop": {
+                  "in": {
+                     "year": "0520"
+                  },
+                  "label": "520"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0z98j83tsh": {
+               "id": "p0z98j83tsh",
+               "type": "Period",
+               "label": "okres w\u0119dr\u00f3wek lud\u00f3w E2",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "phase E2 of the Migration Period"
+                  ],
+                  "pl": [
+                     "okres w\u0119dr\u00f3wek lud\u00f3w E2"
+                  ]
+               },
+               "broader": "p0z98j8wkc8",
+               "spatialCoverageDescription": "North-Eastern Poland",
+               "start": {
+                  "in": {
+                     "year": "0520"
+                  },
+                  "label": "520"
+               },
+               "stop": {
+                  "in": {
+                     "earliestYear": "0610",
+                     "latestYear": "0625"
+                  },
+                  "label": "610/625"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0z98j88b78": {
+               "id": "p0z98j88b78",
+               "type": "Period",
+               "label": "okres w\u0119dr\u00f3wek lud\u00f3w E3",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "phase E3 of the Migration Period"
+                  ],
+                  "pl": [
+                     "okres w\u0119dr\u00f3wek lud\u00f3w E3"
+                  ]
+               },
+               "broader": "p0z98j8wkc8",
+               "spatialCoverageDescription": "North-Eastern Poland",
+               "start": {
+                  "in": {
+                     "earliestYear": "0610",
+                     "latestYear": "0625"
+                  },
+                  "label": "610/625"
+               },
+               "stop": {
+                  "in": {
+                     "earliestYear": "0650",
+                     "latestYear": "0675"
+                  },
+                  "label": "650/675"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            }
+         },
+         "source": {
+            "citation": "J. Kowalski, Chronologia grupy elbl\u0105skiej i olszty\u0144skiej kr\u0119gu zachodnioba\u0142tyjskiego (V\u2013VII w.). Zarys problematyki, Barbaricum 6, Warszawa 2000, 203\u2013266.",
+            "title": "Chronologia grupy elbl\u0105skiej i olszty\u0144skiej kr\u0119gu zachodnioba\u0142tyjskiego (V\u2013VII w.). Zarys problematyki",
+            "yearPublished": "2000",
+            "creators": [
+               {
+                  "name": "J. Kowalski"
+               }
+            ]
+         }
+      },
+      "p0sbhxj": {
+         "id": "p0sbhxj",
+         "type": "Authority",
+         "periods": {
+            "p0sbhxj8p25": {
+               "id": "p0sbhxj8p25",
+               "type": "Period",
+               "source": {
+                  "locator": "89"
+               },
+               "label": "Dynastia Piast\u00f3w",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Piast dynasty"
+                  ],
+                  "pl": [
+                     "Dynastia Piast\u00f3w"
+                  ]
+               },
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "0963"
+                  },
+                  "label": "963"
+               },
+               "stop": {
+                  "in": {
+                     "year": "1370"
+                  },
+                  "label": "1370"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0sbhxjv995": {
+               "id": "p0sbhxjv995",
+               "type": "Period",
+               "label": "Dynastia Andegawen\u00f3w",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Angevin dynasty"
+                  ],
+                  "pl": [
+                     "Dynastia Andegawen\u00f3w"
+                  ]
+               },
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "1370"
+                  },
+                  "label": "1370"
+               },
+               "stop": {
+                  "in": {
+                     "year": "1386"
+                  },
+                  "label": "1386"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0sbhxj6ggp": {
+               "id": "p0sbhxj6ggp",
+               "type": "Period",
+               "label": "Dynastia Jagiellon\u00f3w",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Jagiellon dynasty"
+                  ],
+                  "pl": [
+                     "Dynastia Jagiellon\u00f3w"
+                  ]
+               },
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "1386"
+                  },
+                  "label": "1386"
+               },
+               "stop": {
+                  "in": {
+                     "year": "1572"
+                  },
+                  "label": "1572"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0sbhxj7629": {
+               "id": "p0sbhxj7629",
+               "type": "Period",
+               "label": "Monarchia elekcyjna",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Elective monarchy"
+                  ],
+                  "pl": [
+                     "Monarchia elekcyjna"
+                  ]
+               },
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "1573"
+                  },
+                  "label": "1573"
+               },
+               "stop": {
+                  "in": {
+                     "year": "1795"
+                  },
+                  "label": "1795"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0sbhxjk26n": {
+               "id": "p0sbhxjk26n",
+               "type": "Period",
+               "label": "Okres rozbior\u00f3w",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Partition"
+                  ],
+                  "pl": [
+                     "Okres rozbior\u00f3w"
+                  ]
+               },
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "1795"
+                  },
+                  "label": "1795"
+               },
+               "stop": {
+                  "in": {
+                     "year": "1914"
+                  },
+                  "label": "1914"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0sbhxjhmn7": {
+               "id": "p0sbhxjhmn7",
+               "type": "Period",
+               "label": "Pierwsza wojna \u015bwiatowa",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "First World War"
+                  ],
+                  "pl": [
+                     "Pierwsza wojna \u015bwiatowa"
+                  ]
+               },
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "1914"
+                  },
+                  "label": "1914"
+               },
+               "stop": {
+                  "in": {
+                     "year": "1918"
+                  },
+                  "label": "1918"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0sbhxjrx8t": {
+               "id": "p0sbhxjrx8t",
+               "type": "Period",
+               "label": "Dwudziestolecie mi\u0119dzywojenne",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Interwar period"
+                  ],
+                  "pl": [
+                     "Dwudziestolecie mi\u0119dzywojenne"
+                  ]
+               },
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "1918"
+                  },
+                  "label": "1918"
+               },
+               "stop": {
+                  "in": {
+                     "year": "1939"
+                  },
+                  "label": "1939"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0sbhxj7fkj": {
+               "id": "p0sbhxj7fkj",
+               "type": "Period",
+               "label": "Druga wojna \u015bwiatowa",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Second World War"
+                  ],
+                  "pl": [
+                     "Druga wojna \u015bwiatowa"
+                  ]
+               },
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "1939"
+                  },
+                  "label": "1939"
+               },
+               "stop": {
+                  "in": {
+                     "year": "1945"
+                  },
+                  "label": "1945"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0sbhxjnb8r": {
+               "id": "p0sbhxjnb8r",
+               "type": "Period",
+               "label": "Rzeczpospolita Ludowa",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "People's Republic"
+                  ],
+                  "pl": [
+                     "Rzeczpospolita Ludowa"
+                  ]
+               },
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "1945"
+                  },
+                  "label": "1945"
+               },
+               "stop": {
+                  "in": {
+                     "year": "1989"
+                  },
+                  "label": "1989"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            },
+            "p0sbhxjsmcm": {
+               "id": "p0sbhxjsmcm",
+               "type": "Period",
+               "label": "Trzecia Rzeczpospolita",
+               "language": "http://lexvo.org/id/iso639-1/pl",
+               "languageTag": "pl",
+               "localizedLabels": {
+                  "en": [
+                     "Third Republic"
+                  ],
+                  "pl": [
+                     "Trzecia Rzeczpospolita"
+                  ]
+               },
+               "spatialCoverageDescription": "Poland",
+               "start": {
+                  "in": {
+                     "year": "1989"
+                  },
+                  "label": "1989"
+               },
+               "stop": {
+                  "label": "present"
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q36",
+                     "label": "Poland"
+                  }
+               ]
+            }
+         },
+         "source": {
+            "citation": "Chwalba, Andrzej, Jakub Basista, and Wydawnictwo Literackie. 2000. Dzieje Polski : Kalendarium. Wyd. 2 popr. i poszerz. Krako\u0301w: Wydawnictwo Literackie.",
+            "title": "Dzieje Polski : Kalendarium",
+            "url": "https://search.worldcat.org/title/830375187",
+            "yearPublished": "2000"
+         }
+      },
+      "p0nmgxv": {
+         "id": "p0nmgxv",
+         "type": "Authority",
+         "periods": {
+            "p0nmgxvnf78": {
+               "id": "p0nmgxvnf78",
+               "type": "Period",
+               "url": "https://academic.oup.com/book/40301/chapter-abstract/346396058",
+               "source": {
+                  "locator": "xi-xii"
+               },
+               "label": "Palaeolithic",
+               "language": "http://lexvo.org/id/iso639-1/en",
+               "languageTag": "en",
+               "localizedLabels": {
+                  "en": [
+                     "Palaeolithic"
+                  ]
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q889",
+                     "label": "Afghanistan"
+                  }
+               ],
+               "spatialCoverageDescription": "Afghanistan",
+               "start": {
+                  "in": {
+                     "year": "-99999"
+                  },
+                  "label": "100000 BC"
+               },
+               "stop": {
+                  "in": {
+                     "year": "-7999"
+                  },
+                  "label": "8000 BC"
+               },
+               "note": "The date of the lower Palaeolithic is not given.",
+               "narrower": []
+            },
+            "p0nmgxvk377": {
+               "id": "p0nmgxvk377",
+               "type": "Period",
+               "url": "https://academic.oup.com/book/40301/chapter-abstract/346396058",
+               "source": {
+                  "locator": "xi"
+               },
+               "label": "Middle Palaeolithic 50,000\u201330,000 BC",
+               "language": "http://lexvo.org/id/iso639-1/en",
+               "languageTag": "en",
+               "localizedLabels": {
+                  "en": [
+                     "Middle Palaeolithic",
+                     "Middle Palaeolithic 50,000\u201330,000 BC"
+                  ]
+               },
+               "broader": "p0nmgxvnf78",
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q889",
+                     "label": "Afghanistan"
+                  }
+               ],
+               "spatialCoverageDescription": "Afghanistan",
+               "start": {
+                  "in": {
+                     "year": "-49999"
+                  },
+                  "label": "50,000 BC"
+               },
+               "stop": {
+                  "in": {
+                     "year": "-29999"
+                  },
+                  "label": "30,000 BC"
+               }
+            },
+            "p0nmgxvwm6s": {
+               "id": "p0nmgxvwm6s",
+               "type": "Period",
+               "url": "https://academic.oup.com/book/40301/chapter-abstract/346396058",
+               "source": {
+                  "locator": "xi"
+               },
+               "label": "Upper Palaeolithic 15,000\u201310,000 BC.",
+               "language": "http://lexvo.org/id/iso639-1/en",
+               "languageTag": "en",
+               "localizedLabels": {
+                  "en": [
+                     "Upper Palaeolithic",
+                     "Upper Palaeolithic 15,000\u201310,000 BC."
+                  ]
+               },
+               "broader": "p0nmgxvnf78",
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q889",
+                     "label": "Afghanistan"
+                  }
+               ],
+               "spatialCoverageDescription": "Afghanistan",
+               "start": {
+                  "in": {
+                     "year": "-14999"
+                  },
+                  "label": "15,000 BC."
+               },
+               "stop": {
+                  "in": {
+                     "year": "-9999"
+                  },
+                  "label": "10,000 BC"
+               }
+            },
+            "p0nmgxv6784": {
+               "id": "p0nmgxv6784",
+               "type": "Period",
+               "url": "https://academic.oup.com/book/40301/chapter-abstract/346396058",
+               "source": {
+                  "locator": "xi"
+               },
+               "label": "Epi-Palaeolithic 10,000\u20138000 BC.",
+               "language": "http://lexvo.org/id/iso639-1/en",
+               "languageTag": "en",
+               "localizedLabels": {
+                  "en": [
+                     "Epi-Palaeolithic",
+                     "Epi-Palaeolithic 10,000\u20138000 BC."
+                  ]
+               },
+               "broader": "p0nmgxvnf78",
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q889",
+                     "label": "Afghanistan"
+                  }
+               ],
+               "spatialCoverageDescription": "Afghanistan",
+               "start": {
+                  "in": {
+                     "year": "-9999"
+                  },
+                  "label": "10,000 BC"
+               },
+               "stop": {
+                  "in": {
+                     "year": "-7999"
+                  },
+                  "label": "8000 BC"
+               }
+            },
+            "p0nmgxv634v": {
+               "id": "p0nmgxv634v",
+               "type": "Period",
+               "url": "https://academic.oup.com/book/40301/chapter-abstract/346396058",
+               "source": {
+                  "locator": "xi"
+               },
+               "label": "Neolithic 8000\u20134000 BC.",
+               "language": "http://lexvo.org/id/iso639-1/en",
+               "languageTag": "en",
+               "localizedLabels": {
+                  "en": [
+                     "Neolithic",
+                     "Neolithic 8000\u20134000 BC."
+                  ]
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q889",
+                     "label": "Afghanistan"
+                  }
+               ],
+               "spatialCoverageDescription": "Afghanistan",
+               "start": {
+                  "in": {
+                     "year": "-7999"
+                  },
+                  "label": "8000 BC."
+               },
+               "stop": {
+                  "in": {
+                     "year": "-3999"
+                  },
+                  "label": "4000 BC"
+               }
+            },
+            "p0nmgxvhbhx": {
+               "id": "p0nmgxvhbhx",
+               "type": "Period",
+               "url": "https://academic.oup.com/book/40301/chapter-abstract/346396058",
+               "source": {
+                  "locator": "xi"
+               },
+               "label": "Bronze Age 4000\u20131500 BC",
+               "language": "http://lexvo.org/id/iso639-1/en",
+               "languageTag": "en",
+               "localizedLabels": {
+                  "en": [
+                     "Bronze Age",
+                     "Bronze Age 4000\u20131500 BC"
+                  ]
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q889",
+                     "label": "Afghanistan"
+                  }
+               ],
+               "spatialCoverageDescription": "Afghanistan",
+               "start": {
+                  "in": {
+                     "year": "-3999"
+                  },
+                  "label": "4000 BC"
+               },
+               "stop": {
+                  "in": {
+                     "year": "-1499"
+                  },
+                  "label": "1500 BC"
+               }
+            },
+            "p0nmgxv2k3b": {
+               "id": "p0nmgxv2k3b",
+               "type": "Period",
+               "url": "https://academic.oup.com/book/40301/chapter-abstract/346396058",
+               "source": {
+                  "locator": "xi"
+               },
+               "label": "Iron Age 1500\u2013700 BC",
+               "language": "http://lexvo.org/id/iso639-1/en",
+               "languageTag": "en",
+               "localizedLabels": {
+                  "en": [
+                     "Iron Age ",
+                     "Iron Age 1500\u2013700 BC"
+                  ]
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q889",
+                     "label": "Afghanistan"
+                  }
+               ],
+               "spatialCoverageDescription": "Afghanistan",
+               "start": {
+                  "in": {
+                     "year": "-1499"
+                  },
+                  "label": "1500 BC"
+               },
+               "stop": {
+                  "in": {
+                     "year": "-0699"
+                  },
+                  "label": "700 BC"
+               }
+            },
+            "p0nmgxvbj45": {
+               "id": "p0nmgxvbj45",
+               "type": "Period",
+               "url": "https://academic.oup.com/book/40301/chapter-abstract/346396058",
+               "source": {
+                  "locator": "xi"
+               },
+               "label": "Achaemenid c.530\u2013330 BC",
+               "language": "http://lexvo.org/id/iso639-1/en",
+               "languageTag": "en",
+               "localizedLabels": {
+                  "en": [
+                     "Achaemenid",
+                     "Achaemenid c.530\u2013330 BC"
+                  ]
+               },
+               "spatialCoverage": [
+                  {
+                     "id": "http://www.wikidata.org/entity/Q889",
+                     "label": "Afghanistan"
+                  }
+               ],
+               "spatialCoverageDescription": "Afghanistan",
+               "start": {
+                  "in": {
+                     "year": "-0549"
+                  },
+                  "label": "550 BC"
+               },
+               "stop": {
+                  "in": {
+                     "year": "-0329"
+                  },
+                  "label": "330 BC"
+               }
+            }
+         },
+         "source": {
+            "id": "http://dx.doi.org/10.1093/oso/9780199277582.001.0001",
+            "title": "Archaeological Gazetteer of Afghanistan",
+            "yearPublished": "2019-07-18",
+            "creators": [
+               {
+                  "id": "https://id.crossref.org/contributor/warwick-ball-1ue7i1quv6k88",
+                  "name": "Warwick Ball"
+               }
+            ]
+         }
       }
    },
    "primaryTopicOf": {
