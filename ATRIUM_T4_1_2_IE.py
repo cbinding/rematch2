@@ -1,31 +1,56 @@
-# this will be the main script for bulk processing of the OASIS journal reports
+"""
+=============================================================================
+Package   : any
+Module    : ATRIUM_T4_1_2_IE.py
+Project   : ATRIUM (Task 4.1.2)
+Creator   : Ceri Binding, University of South Wales / Prifysgol de Cymru
+Contact   : ceri.binding@southwales.ac.uk
+Summary   : Bulk information extraction process for archaeological reports
+Example   : 
+    python ./ATRIUM_T4_1_2_IE.py -i './my/input/folder' -p '*.pdf' -f "json,csv"
+License   : https://github.com/cbinding/rematch2/blob/main/LICENSE.txt
+=============================================================================
+History
+24/06/2026 CFB Initially created script
+=============================================================================
+"""
 import mimetypes, json
 from pathlib import Path
 from typing import Literal
 import argparse
-import srsly # for JSONL serialization/deserialization
+#import srsly # for JSONL serialization/deserialization
 from spacy.tokens import Doc
 from spacy.language import Language
 from datetime import datetime as DT # for timestamps
 from slugify import slugify # for valid filenames from identifiers
 from weasyprint import HTML
-from components import DocSummary, SpanScorer
+from components import DocSummary
 from ATRIUM_T4_1_2_IE_pipeline import create_configured_pipeline
-from atrium_text_extraction import pdf_to_json # Sheffield script in submodule
 
-# returns dict structure with "text" property
+# workaround for (external) hyphenated submodule name. 
+# This syntax won't work:
+# from atrium-text_extraction import pdf_to_json 
+# so do this instead (or could edit .gitmodules?):
+#from importlib import import_module
+#pdf_to_json = import_module("atrium-text_extraction.pdf_to_json")
+from atrium_text_extraction import pdf_to_json 
+
+
+# return file content as dict structure having "text" property
 def get_file_content(file_path: Path) -> dict:
 
     if not file_path.is_file(): return {}
            
     file_name: str = file_path.name
-    file_type, encoding = mimetypes.guess_type(file_name)
     file_ext: str = file_path.stem.lower()
     file_content: dict = {}
 
+    # note: mimetypes.guess_type relies on file extension(?),
+    # using python-magic may be more accurate? 
+    file_type, encoding = mimetypes.guess_type(file_name)
+    
     # get the file content based on file type (e.g. PDF, JSON, TXT, etc.)
-    # note: think mimetypes.guess_type only uses file extension anyway,
-    # may be more accurate to use python-magic?        
+    # and return as dict structure with "text" property       
     if file_type == "application/json" or file_ext == "json": 
         with file_path.open() as f:    
             file_content = json.load(f)
@@ -41,14 +66,17 @@ def get_file_content(file_path: Path) -> dict:
 
 
 def run_pipeline(nlp: Language, input_data: dict={}) -> Doc: 
+    # update the existing span_scorer 'sections' attribute before running
+    sections = input_data.get("sections", [])
+    if sections:
+        scorer = nlp.get_pipe("span_scorer")
+        if scorer is not None:
+            setattr(scorer, "sections", list(sections))
+
     # run the IE pipeline on the 'text' property of the input
     doc = nlp(input_data.get("text",""))
-    # add calculated scores to spans
-    sections = list(input_data.get("sections", []))    
-    scorer = SpanScorer(nlp, sections=sections)
-    doc = scorer(doc)
-    # return the document
     return doc
+
 
 valid_formats = Literal["pdf", "txt", "csv", "json"]
 def write_reports(
@@ -138,7 +166,7 @@ def run_information_extraction(
         write_reports(
             doc=doc, 
             file_name=str(output_file_name), 
-            metadata=file_content.get("meta",{}),
+            metadata=file_content.get("meta", {}),
             sections=file_content.get("sections", []),
             formats=output_formats)
         
@@ -148,13 +176,13 @@ def run_information_extraction(
 
 
 # Input parameters for running from terminal/command line. Example:
-# python ./ATRIUM_T4_1_2_IE_OASIS_journal_reports.py -i './data/oasis/journals_july_2024' -p '*.pdf' -f "json,csv"
-# python ./ATRIUM_T4_1_2_IE_OASIS_journal_reports.py -i './data/oasis/journals_july_2024' -p '120_001*.pdf' -f "json,csv"
+# python ./ATRIUM_T4_1_2_IE.py -i './data/oasis/journals_july_2024' -p '*.pdf' -f "json,csv"
+# python ./ATRIUM_T4_1_2_IE.py -i './data/oasis/journals_july_2024' -p '120_*.pdf' -f "json,csv,txt"
 if __name__ == "__main__":
     
     # initiate the input arguments parser
     parser = argparse.ArgumentParser(
-        prog=__file__, description="ATRIUM T4_1_2 IE for OASIS journal reports")
+        prog=__file__, description="ATRIUM T4_1_2 IE for archaeological reports")
 
     # add long and short argument descriptions for input file path (directory containing files to be processed)
     parser.add_argument(
@@ -174,7 +202,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--outputpath", "-o",
         required=False,
-        help="Output directory for processed data files")
+        help="Output directory to hold processed data files")
     
     # add long and short argument descriptions for output format (e.g. json, csv, etc.) for processed data files
     # note outputformat is a string but may be multiple comma-delimited values e.g. -f "json, csv"

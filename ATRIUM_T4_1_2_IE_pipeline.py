@@ -1,4 +1,4 @@
-# build configured pipeline for ATRIUM T-4-1-2
+# build configured pipeline for use by ATRIUM T4_1_2_IE.py
 #from dataclasses import dataclass, asdict, field
 from os import name
 from typing import Any
@@ -8,10 +8,25 @@ from components.Util import load_pipeline_for_language, read_json_file
  
 # takes an optional dict of config values to override defaults; 
 # output is configured spacy pipeline with custom IE components
+# pipeline is cached so that subsequent calls with same config return the same pipeline instance
+# the configured pipeline is: 
+# text_normalizer           - normalizes whitespace, puctuation and spelling to improve pattern matching 
+# attribute_ruler           - adds custom rules to override default POS tagging for specific cases
+# yearspan_ruler            - identifies year spans (e.g. "1450 - 1530 AD") 
+# periodo_ruler             - identifies named periods (e.g. "Medieval") from the Perio.do dataset
+# object_types_ruler        - identifies object types (e.g. "Vessel") from the FISH 'object types' vocabulary
+# monument_types_ruler      - identifies monument types (e.g. "Dolmen") from the FISH 'monument types' vocabulary
+# object_materials_ruler    - identifies object materials (e.g. "Bronze") from the FISH 'object materials' vocabulary
+# child_span_remover        - removes overlapping or nested spans (e.g. "BRONZE AGE" occurring within "LATE BRONZE AGE")
+# span_scorer               - scores identified spans based on their likelihood of being relevant
 @run_once
 def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
     # default config values
     defaults: dict = { "language": "en" }
+
+    # default vocabulary patterns defined here
+    # these may be overriden by local files 
+    vocab_folder = "./vocabularies"
 
     # merge passed values overriding defaults; 
     # create config object from merged values
@@ -29,7 +44,7 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
     # (i.e. nlp.get_pipe("attribute_ruler").add_patterns(patterns_en_ATTRIBUTE_RULES))    
     # so - inserting another one directly after it, and adding the rules to that one    
     component = nlp.add_pipe("attribute_ruler", name="custom_attribute_ruler", after="attribute_ruler")
-    patterns = read_json_file("./vocabularies/patterns_FISH_MONUMENT_ATTRIBUTE_RULES.json")
+    patterns = read_json_file(f"{vocab_folder}/patterns_FISH_MONUMENT_ATTRIBUTE_RULES.json")
     component.add_patterns(patterns)  # type: ignore
 
     # year spans (e.g. "1450 - 1530 AD") 
@@ -43,12 +58,12 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
         config = {
             "default_label": "PERIOD",
             "periodo_authority_id": "p0kh9ds", # Historic England periods authority ID in Periodo dataset
-            "supp_list": read_json_file("./vocabularies/supp_list_FISH_PERIODS.json"), 
+            "supp_list": read_json_file(f"{vocab_folder}/patterns_FISH_MONUMENT_ATTRIBUTE_RULES.json"), 
             "stop_list": []
         }
     ) 
 
-    # object types from FISH object types vocabulary 
+    # object types (from FISH object types vocabulary)
     nlp.add_pipe(
         "vocabulary_ruler", 
         name = "object_types_ruler",
@@ -59,13 +74,13 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
             "lemmatize": True,
             "min_lemm_length": 3,
             "min_term_length": 3,
-            "patt_list": read_json_file("./vocabularies/patterns_FISH_mda_obj_20260513.json"),
-            "supp_list": read_json_file("./vocabularies/supp_list_FISH_ARCHOBJECTS.json"), 
-            "stop_list": read_json_file("./vocabularies/stop_list_FISH_ARCHOBJECTS.json")
+            "patt_list": read_json_file(f"{vocab_folder}/patterns_FISH_mda_obj_20260513.json"),
+            "supp_list": read_json_file(f"{vocab_folder}/supp_list_FISH_ARCHOBJECTS.json"), 
+            "stop_list": read_json_file(f"{vocab_folder}/stop_list_FISH_ARCHOBJECTS.json")
         }
     ) 
 
-    # monument types from FISH monument types vocabulary
+    # monument types (from FISH monument types vocabulary)
     nlp.add_pipe(
         "vocabulary_ruler", 
         name = "monument_types_ruler",
@@ -76,13 +91,13 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
             "lemmatize": True,
             "min_lemm_length": 3,
             "min_term_length": 3,
-            "patt_list": read_json_file("./vocabularies/patterns_FISH_eh_tmt2_20260513.json"),
-            "supp_list": read_json_file("./vocabularies/supp_list_FISH_MONUMENTS.json"), 
-            "stop_list": read_json_file("./vocabularies/stop_list_FISH_MONUMENTS.json")
+            "patt_list": read_json_file(f"{vocab_folder}/patterns_FISH_eh_tmt2_20260513.json"),
+            "supp_list": read_json_file(f"{vocab_folder}/supp_list_FISH_MONUMENTS.json"), 
+            "stop_list": read_json_file(f"{vocab_folder}/stop_list_FISH_MONUMENTS.json")
         }
     ) 
 
-    # object materials from FISH object materials vocabulary
+    # object materials (from FISH object materials vocabulary)
     nlp.add_pipe(
         "vocabulary_ruler", 
         name = "object_materials_ruler",
@@ -93,7 +108,7 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
             "lemmatize": True,
             "min_lemm_length": 3,
             "min_term_length": 3,
-            "patt_list": read_json_file("./vocabularies/patterns_FISH_73_20260513.json"),
+            "patt_list": read_json_file(f"{vocab_folder}/patterns_FISH_73_20260513.json"),
             "supp_list": [], 
             "stop_list": []
         }
@@ -104,24 +119,22 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
     # this is optional but helps with precision of results
     nlp.add_pipe("child_span_remover", last=True)
     
-    # add ._.score attribute to spans for confidence scoring of matches
+    # adds ._.score attribute to spans for confidence scoring of identified entities
     nlp.add_pipe(
         "span_scorer", 
         last=True, 
         config = {
-            "sig_proximity": 3,
-            "sig_score": 1.0,
-            "sec_scores": {   
-                "title": 40.0,      # score for spans occurring in the title section of a document
-                "abstract": 2.0,    # score for spans occurring in the abstract section of a document
-                "body": 0.1,        # score for spans occurring in the body section of a document
-                "end_matter": 0.0   # score for spans occurring in the end matter section of a document               
+            "sig_proximity": 3,     # token window size - proximity for 'significance' terms
+            "sig_score": 1.0,       # score for spans within proximity to 'significance' indicator terms
+            "sec_scores": {         # score for spans according to location within document sections
+                "title": 40.0,      # score for spans occurring within the title section of a document
+                "abstract": 2.0,    # score for spans occurring within the abstract section of a document
+                "body": 0.1,        # score for spans occurring within the body section of a document
+                "end_matter": 0.0   # score for spans occurring within the end matter section of a document               
             },
-            "sections": []          # override for each doc e.g. [{"section": "title", "start": 0, "end": 12}]
+            "sections": []          # overridden for each doc e.g. [{"section": "title", "start": 0, "end": 12}]
         }
     ) 
 
     # return the configured pipeline
     return nlp
-
-

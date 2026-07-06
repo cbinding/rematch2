@@ -69,9 +69,10 @@ class SpanScorer(Pipe):
 
     # run multiple metrics, add scores to individual spans
     def __call__(self, doc: Doc) -> Doc:
+        doc = self.set_span_contexts(doc, window_size=4) # set context for each span (for display/reporting purposes)
         doc = self.set_section_scores(doc)
         doc = self.set_frequency_scores(doc)        
-        doc = self.set_neg_proximity_scores(doc)
+        #doc = self.set_neg_proximity_scores(doc)
         doc = self.set_sig_proximity_scores(doc)
         #doc = self.set_sig_sentence_scores(doc)
         doc = self.set_overall_span_scores(doc)

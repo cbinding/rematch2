@@ -24,11 +24,11 @@
 
 ## Introduction <a class="anchor" id="introduction"></a>
 
-`rematch2` is an open-source set of components for use with the [spaCy](https://spacy.io) library for performing multilingual rule-based information extraction on abstracts and texts relating to archaeological investigations. The components were originally created by [University of South Wales](https://www.southwales.ac.uk/research/research-and-innovation-groups/computing-cybersecurity-mathematics-and-informatics/) as part of the [ARIADNEplus project](https://ariadne-infrastructure.eu/), and subsequently significantly improved and extended as part of the [ATRIUM project](https://atrium-research.eu/).
+This repository contains an open-source set of components for use with the [spaCy](https://spacy.io) NER library for performing multilingual rule-based information extraction on abstracts and texts relating to archaeological investigations. The components were originally created by [University of South Wales](https://www.southwales.ac.uk/research/research-and-innovation-groups/computing-cybersecurity-mathematics-and-informatics/) as part of the [ARIADNEplus project](https://ariadne-infrastructure.eu/), and subsequently significantly improved and extended as part of the [ATRIUM project](https://atrium-research.eu/).
 
 ### Supported languages <a class="anchor" id="languages"></a>
 
-The languages currently supported by the `rematch2` pipeline temporal components are:
+The languages currently supported by the pipeline temporal components are:
 
 - German (de)
 - English (en)
@@ -47,7 +47,7 @@ The pipeline components utilise predefined spaCy _patterns_ which are located in
 
 ## Components <a class="anchor" id="components"></a>
 
-`rematch2` performs specialised information extraction on temporal, geographical and vocabulary entities, and implements specialised spaCy pipeline components to identify the following entity types in free text. Note the actual 'Entity Type' can be configured to suit when using the pipeline component:
+The components are used to perform specialised information extraction on temporal, geographical and vocabulary entities, They are specialised spaCy pipeline components to identify the following entity types in free text. Note the actual 'Entity Type' can be configured to suit when using a pipeline component:
 
 | Component Name                        | Entity Type | Description                                                            |                                             Examples |
 | ------------------------------------- | ----------- | ---------------------------------------------------------------------- | ---------------------------------------------------: |
@@ -231,7 +231,7 @@ The earliest features, which accounted for the majority of the remains on site, 
 # use a predefined spaCy pipeline, disabling the default NER component
 nlp = spacy.load("en_core_web_sm", disable=['ner'])
 
-# add configured custom pipeline component(s) to the pipeline
+# create and add a configured custom pipeline component(s) to the pipeline
 nlp.add_pipe(
   "vocabulary_ruler", 
   name = "object_types_ruler",          # unique name for pipeline component
@@ -325,4 +325,4 @@ start end label                               id           text
 """
 ```
 
-Other practical examples of spaCy pipeline component usage may be found in the accompanying Python notebooks.
+Other practical examples of spaCy pipeline component usage may be found in the accompanying `demonstrators` folder containing working Python scripts and Jupyter notebooks.
