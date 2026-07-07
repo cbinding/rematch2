@@ -9,3 +9,6 @@
 !data/gotriple/ner-output*
 !data/gotriple/ie-output*
 !data/athena/*
+
+# output from running planemo on the Galaxy tool wrappers
+**/tool_test_output.*
