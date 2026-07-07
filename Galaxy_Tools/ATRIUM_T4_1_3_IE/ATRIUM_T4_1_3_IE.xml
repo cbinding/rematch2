@@ -1,0 +1,40 @@
+<tool name="atrium_t4_1_2_ie" id="atrium_ie" version="1.0.0" profile="22.05">
+  <description>ATRIUM T4.1.3 IE Component</description>
+  <requirements>
+    <requirement version="3.14.6" type="package">python</requirement>
+    <requirement version="3.8.14" type="package">spacy</requirement>
+    <requirement version="8.4.1" type="package">click</requirement>
+    <requirement version="3.0.3" type="package">pandas</requirement>    
+    <requirement version="1.8.0" type="package">jsonpath-ng</requirement>
+    <requirement version="2026.5.9" type="package">regex</requirement>
+    <requirement version="1.4.0" type="package">unidecode</requirement>
+    <requirement version="3.8.0" type="package">spacy-model-en_core_web_sm</requirement>
+  </requirements>
+  <version_command><![CDATA[echo "1.0.0"]]></version_command>
+  <command><![CDATA[python
+'$__tool_directory__/ATRIUM_T4_1_3_IE.py'
+-i
+'$input'
+-o
+'$output']]></command>
+  <inputs>
+    <param name="input" type="data" optional="false" label="Input JSON file" help="" format="json" multiple="false"/>
+  </inputs>
+  <outputs>
+    <data name="output" format="json" label="json" hidden="false"/>
+  </outputs>
+  <tests>
+    <test>
+      <output name="output" value="sample_output.jsonl" compare="diff" lines_diff="0"/>
+      <param name="input" value="sample.jsonl"/>
+    </test>
+  </tests>
+  <help><![CDATA[
+ Vocabulary-Driven Information Extraction as defined in Task 4.1.3 of the ATRIUM project.
+  ]]></help>
+  <citations>
+    <!-- leave the ToolFactory citation for now so we pass the linter -->
+    <citation type="doi">10.1093/bioinformatics/bts573</citation>
+  </citations>
+</tool>
+
