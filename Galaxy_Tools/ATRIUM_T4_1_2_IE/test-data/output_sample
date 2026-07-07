@@ -1,0 +1,197 @@
+{
+    "metadata": {
+        "ocr": false,
+        "title": "vocabulary-based IE results",
+        "creator": "/home/mark/Work/rematch2/Galaxy_Tools/ATRIUM_T4_1_2_IE/ATRIUM_T4_1_2_IE.py",
+        "pipeline": [
+            "text_normalizer",
+            "tok2vec",
+            "tagger",
+            "parser",
+            "attribute_ruler",
+            "custom_attribute_ruler",
+            "lemmatizer",
+            "ordinal_ruler",
+            "dateprefix_ruler",
+            "datesuffix_ruler",
+            "dateseparator_ruler",
+            "monthname_ruler",
+            "seasonname_ruler",
+            "yearspan_ruler",
+            "periodo_ruler",
+            "object_types_ruler",
+            "monument_types_ruler",
+            "object_materials_ruler",
+            "child_span_remover",
+            "span_scorer"
+        ]
+    },
+    "text": "A test document to use when making a Galaxy Tool Wrapper for the ATRIUM PDF to Text component.",
+    "tokens": [
+        {
+            "index": 0,
+            "start": 1,
+            "end": 1,
+            "pos": "DET",
+            "text": "A",
+            "lemma": "a"
+        },
+        {
+            "index": 1,
+            "start": 3,
+            "end": 6,
+            "pos": "NOUN",
+            "text": "test",
+            "lemma": "test"
+        },
+        {
+            "index": 2,
+            "start": 8,
+            "end": 15,
+            "pos": "NOUN",
+            "text": "document",
+            "lemma": "document"
+        },
+        {
+            "index": 3,
+            "start": 17,
+            "end": 18,
+            "pos": "PART",
+            "text": "to",
+            "lemma": "to"
+        },
+        {
+            "index": 4,
+            "start": 20,
+            "end": 22,
+            "pos": "VERB",
+            "text": "use",
+            "lemma": "use"
+        },
+        {
+            "index": 5,
+            "start": 24,
+            "end": 27,
+            "pos": "SCONJ",
+            "text": "when",
+            "lemma": "when"
+        },
+        {
+            "index": 6,
+            "start": 29,
+            "end": 34,
+            "pos": "VERB",
+            "text": "making",
+            "lemma": "make"
+        },
+        {
+            "index": 7,
+            "start": 36,
+            "end": 36,
+            "pos": "DET",
+            "text": "a",
+            "lemma": "a"
+        },
+        {
+            "index": 8,
+            "start": 38,
+            "end": 43,
+            "pos": "PROPN",
+            "text": "Galaxy",
+            "lemma": "Galaxy"
+        },
+        {
+            "index": 9,
+            "start": 45,
+            "end": 48,
+            "pos": "PROPN",
+            "text": "Tool",
+            "lemma": "Tool"
+        },
+        {
+            "index": 10,
+            "start": 50,
+            "end": 56,
+            "pos": "PROPN",
+            "text": "Wrapper",
+            "lemma": "Wrapper"
+        },
+        {
+            "index": 11,
+            "start": 58,
+            "end": 60,
+            "pos": "ADP",
+            "text": "for",
+            "lemma": "for"
+        },
+        {
+            "index": 12,
+            "start": 62,
+            "end": 64,
+            "pos": "DET",
+            "text": "the",
+            "lemma": "the"
+        },
+        {
+            "index": 13,
+            "start": 66,
+            "end": 71,
+            "pos": "PROPN",
+            "text": "ATRIUM",
+            "lemma": "ATRIUM"
+        },
+        {
+            "index": 14,
+            "start": 73,
+            "end": 75,
+            "pos": "NOUN",
+            "text": "PDF",
+            "lemma": "pdf"
+        },
+        {
+            "index": 15,
+            "start": 77,
+            "end": 78,
+            "pos": "ADP",
+            "text": "to",
+            "lemma": "to"
+        },
+        {
+            "index": 16,
+            "start": 80,
+            "end": 83,
+            "pos": "PROPN",
+            "text": "Text",
+            "lemma": "Text"
+        },
+        {
+            "index": 17,
+            "start": 85,
+            "end": 93,
+            "pos": "NOUN",
+            "text": "component",
+            "lemma": "component"
+        },
+        {
+            "index": 18,
+            "start": 94,
+            "end": 94,
+            "pos": "PUNCT",
+            "text": ".",
+            "lemma": "."
+        }
+    ],
+    "label_counts": {},
+    "spans": [],
+    "span_scores": [],
+    "span_pairs": [],
+    "negated_pairs": [],
+    "sections": [
+        {
+            "start": 0,
+            "end": 94,
+            "type": "page",
+            "number": 1
+        }
+    ]
+}
