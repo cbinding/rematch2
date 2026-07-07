@@ -107,7 +107,7 @@ if __name__ == "__main__":
     # add long and short argument descriptions for output file path (directory to write processed files to)
     parser.add_argument(
         "--output", "-o",
-        required=False,
+        required=True,
         help="Output JSON file")
     
     # parse and clean command line arguments
