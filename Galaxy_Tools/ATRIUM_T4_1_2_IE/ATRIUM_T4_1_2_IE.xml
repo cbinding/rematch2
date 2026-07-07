@@ -30,7 +30,7 @@
     </test>
   </tests>
   <help><![CDATA[
- A script for extracting text from PDF files and storing it into a simple JSON structure which can also store metadata and section (or annotation) information.
+ Vocabulary-Driven Information Extraction as defined in Task 4.1.2 of the ATRIUM project.
   ]]></help>
   <citations>
     <!-- leave the ToolFactory citation for now so we pass the linter -->
