@@ -155,11 +155,11 @@ if __name__ == "__main__":
         # process the file
         llm_file_name = entry.name
         llm_file_path = entry.path
-        llm_file_content = read_json_file(entry.path)
+        llm_file_content: dict = dict(read_json_file(entry.path))
 
         json_file_name = llm_file_content.get("meta",{}).get("Document", "")
         json_file_path = os.path.join(json_files_folder, json_file_name)
-        json_file_content = read_json_file(json_file_path)  
+        json_file_content: dict = dict(read_json_file(json_file_path)) if os.path.exists(json_file_path) else {}
 
         print(f"\nProcessing LLM file: {llm_file_name} with JSON file: {json_file_name}")
                 
