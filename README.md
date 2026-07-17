@@ -66,11 +66,11 @@ The components are used to perform specialised information extraction on tempora
 ### base_ruler <a class="anchor" id="base_ruler"></a>
 Base component, not intended to be used directly. The other ruler components described here inherit configuration and functionality from this component.
 #### configuration
-* `default_label` (String, default="UNKNOWN") - Entity Type to be assigned to matching text spans. 
-* `lemmatize` (Boolean, default=True) - apply lemmatization for more flexible term matching. Note: In the case of multi-word phrases, only the last word is lemmatized.
-* `min_lemm_length` (Integer, default=4) - minimum character length of terms to be lemmatized
-* `min_term_length` (Integer, default=3) - minimum character length of terms to be matched
-* `token_pos` (Array of String, default=[]) - Part of Speech restriction for valid term matched e.g `["NOUN"]` - _well_ as a noun would match, but not as an adjective.
+* `default_label (string, default="UNKNOWN")` - Entity Type to be assigned to matching text spans. 
+* `lemmatize (boolean, default=True)` - apply lemmatization for more flexible term matching. Note: In the case of multi-word phrases, only the last word is lemmatized.
+* `min_lemm_length (integer, default=4)` - minimum character length of terms to be lemmatized
+* `min_term_length (integer, default=3)` - minimum character length of terms to be matched
+* `token_pos (list, default=[])` - Part of Speech restriction for valid term matched e.g `["NOUN"]` - _well_ as a noun would match, but not as an adjective.
 
 ### dayname_ruler <a class="anchor" id="dayname_ruler"></a>
 
@@ -104,15 +104,15 @@ Identifies typical expressions of years or spans of years in text. Utilises othe
 
 The periodo ruler is a specialised [vocabulary_ruler](#vocabulary_ruler) component, utilising the [Perio.do](https://perio.do/) dataset. 
 #### configuration
-* periodo_authority_id - When configured with a valid Perio.do authority identifier the component will match against the labels of periods contained within that specified authority. e.g. `'p0xxt6t'` [Scottish Archaeological Periods & Ages (ScAPA)](http://n2t.net/ark:/99152/p0xxt6t) for matches on [_Chalcolithic_](http://n2t.net/ark:/99152/p0xxt6tcq9w), [_Early Bronze Age_](http://n2t.net/ark:/99152/p0xxt6tm9kq), [_Antonine_](http://n2t.net/ark:/99152/p0xxt6tkpj3) etc.
+* `periodo_authority_id (string, default='')` - When configured with a valid Perio.do authority identifier the component will match against the labels of periods contained within that specified authority. e.g. `'p0xxt6t'` [Scottish Archaeological Periods & Ages (ScAPA)](http://n2t.net/ark:/99152/p0xxt6t) for matches on [_Chalcolithic_](http://n2t.net/ark:/99152/p0xxt6tcq9w), [_Early Bronze Age_](http://n2t.net/ark:/99152/p0xxt6tm9kq), [_Antonine_](http://n2t.net/ark:/99152/p0xxt6tkpj3) etc.
 
 ### vocabulary_ruler <a class="anchor" id="vocabulary_ruler"></a>
 Identifies terms or phrases from a supplied controlled vocabulary list of terms with associated identifiers.
 #### configuration
 The component is configured using the inherited configuration parameters of the [base_ruler](#base_ruler) component, plus the following:
-* patt_list - a list of spaCy patterns representing the vocabulary to match on. Note: you may alternatively supply a list of identifiers and labels.
-* supp_list - a list of supplementary terms. Sometimes an existing vocabulary may not quite fit the use case of terms to be located - controlled vocabularies do not always contain the exact terms as used in free-text, so the supplementary list can be used to expand on the supplied vocabulary list without altering it.
-* stop_list - a list of identifiers of concepts that should NOT appear in the results. This is useful to restrict matches to a subset of the supplied vocabulary list, or to exclude specific concepts.
+* `patt_list (list, default = [])`- a list of spaCy patterns representing the vocabulary to match on. Note: you may alternatively supply a list of identifiers and labels.
+* `supp_list (list, default = [])` - a list of supplementary terms. Sometimes an existing vocabulary may not quite fit the use case of terms to be located - controlled vocabularies do not always contain the exact terms as used in free-text, so the supplementary list can be used to expand on the supplied vocabulary list without altering it.
+* `stop_list (list, default = [])` - a list of identifiers for concepts that should NOT appear in the results. This is useful to restrict matches to a subset of the supplied vocabulary list, or to exclude specific concepts.
 
 Example vocabulary files are included for use with the vocabulary_ruler component, to identify terms originating from extracts of controlled vocabularies as occurring in free text. The (suggested) 'Entity Type' in the table below may be overridden when configuring the pipeline. The example files described in the table contain terms and Linked Open Data (LOD) identifiers extracted from the [Getty Art &amp; Architecture Thesaurus (AAT)](https://www.getty.edu/research/tools/vocabularies/aat/) SPARQL endpoint, and from the [FISH 'Heritage Standards'](https://heritage-standards.org.uk/fish-vocabularies/) site for bulk downloads of vocabulary data. Note the file naming convention adopted here indicates the date this data was extracted and the files created - so they are only a snapshot and do not represent the latest version of the controlled vocabularies. The user is directed to the originating sites for the most up to date information on these vocabularies.
 
@@ -139,24 +139,43 @@ Example vocabulary files are included for use with the vocabulary_ruler componen
 The geonames_ruler component is a specialised [vocabulary_ruler](#vocabulary_ruler) component, performing a lookup on place names originating from the [GeoNames](https://www.geonames.org/) dataset. 
 #### configuration
 The component is configured using the inherited configuration parameters of the [base_ruler](#base_ruler) component, plus the following:
-* country_codes (Array of string; default=["GB"]) - The component configuration accepts an array of one or more ISO country codes. These are used to enable sufficient performance and reduce (but not necessarily eliminate) ambiguities.
+* `country_codes (list, default=["GB"])` - The component configuration accepts a list of one or more ISO country codes. These are used to enable sufficient performance and reduce (but not necessarily eliminate) ambiguities.
 
 
 ### span_scorer <a class="anchor" id="span_scorer"></a>
 The span_scorer components supplements existing located spans with scores, these can be used to rank results and assess significance and relevance.
 #### configuration
 The component is configured using the following parameters:
-* sig_proximity (Integer, default=3) -  proximity in number of tokens between span and 'significant' term to count as 'nearby' for scoring purposes
-* neg_proximity (Integer, default=3) - proximity in number of tokens between span and 'negation' term to count as 'nearby' for scoring purposes
-* sig_score (Float, default=1.0) - score to assign to span if it is within specified token proximity of a 'significant' term or phrase
-* neg_score (Float, default=1.0) - score to assign to span if it is within specified token proximity of a 'negation' term or phrase
-* sec_scores (default = {
-    "title": 40.0, # high score for title as likely to contain key info about the content of the article
-    "abstract": 2.0, # moderate score for abstract as likely to contain key info about the content of the article
-    "body": 0.1, # low score for body as likely to contain a lot of less important info, but still some key info may be found here
-    "end_matter": 0.0 # no score for end matter as unlikely to contain key info about the content of the article
-  }) - scores for named sections located within the document. spans are scored with the highest section score according to their location
-* sections (list = []) - locations of named sections within the document        
+* `sig_proximity (Integer, default=3)` -  proximity in number of tokens between span and 'significant' term to count as 'nearby' for scoring purposes
+* `neg_proximity (Integer, default=3)` - proximity in number of tokens between span and 'negation' term to count as 'nearby' for scoring purposes
+* `sig_score (Float, default=1.0)` - score to assign to span if it is within specified token proximity of a 'significant' term or phrase
+* `neg_score (Float, default=1.0)` - score to assign to span if it is within specified token proximity of a 'negation' term or phrase
+* `sec_scores (dict)` - scores for named sections located within the document. Spans are scored with the highest section score according to their location (see `sections` below).
+   ```python
+  # default sec_scores
+  {
+      "title": 40.0, # high score for title as likely to contain key info about the content of the article
+      "abstract": 2.0, # moderate score for abstract as likely to contain key info about the content of the article
+      "body": 0.1, # low score for body as likely to contain a lot of less important info, but still some key info may be found here
+      "end_matter": 0.0 # no score for end matter as unlikely to contain key info about the content of the article
+    }
+  ```
+* `sections (list, default=[])` - locations of named sections within the document. Used in conjunction with `sec_scores` to boost span scores.
+  ```python
+  # example sections list
+  [
+    {
+      "start": 0,
+      "end": 1567,
+      "type": "abstract"
+    },
+    {
+      "start": 6510,
+      "end": 7266,
+      "type": "end_matter"
+    },
+  ]
+  ```
 
 ## Usage <a class="anchor" id="usage"></a>
 
@@ -167,7 +186,7 @@ Example Python script to perform information extraction on temporal entities usi
 ```python
 import spacy
 import pandas as pd
-from components import YearSpanRuler, ChildSpanRemover, PeriodoRuler
+from components import YearSpanRuler, PeriodoRuler, ChildSpanRemover
 
 # use a predefined pipeline, disabling the default NER component
 nlp = spacy.load("en_core_web_sm", disable=["ner"])
@@ -325,4 +344,4 @@ start end label                               id           text
 """
 ```
 
-Other practical examples of spaCy pipeline component usage may be found in the accompanying `demonstrators` folder containing working Python scripts and Jupyter notebooks.
+Other practical examples of spaCy pipeline component usage may be found in the accompanying Python scripts and Jupyter notebooks.
