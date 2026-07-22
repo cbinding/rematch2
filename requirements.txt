@@ -1,24 +1,24 @@
 # pip install -r requirements.txt
 
 # Base ----------------------------------------
-pandas>=1.1.4
-numpy>=1.18.5
-opencv-python>=4.1.2
-matplotlib>=3.2.2
-ipyleaflet>=0.14.0
-sympy>=1.10.1
-ipywidgets>=7.7.0
-xhtml2pdf
-regex
+pandas>=1.1.4 # used for data manipulation and analysis
+numpy>=1.18.5 # used for numerical computations
+opencv-python>=4.1.2 
+matplotlib>=3.2.2 # used for data visualization
+ipyleaflet>=0.14.0 # used for interactive maps in Jupyter notebooks
+sympy>=1.10.1 # used for symbolic mathematics
+ipywidgets>=7.7.0 # used in Python notebooks for interactive widgets
+xhtml2pdf # used for converting HTML to PDF
+regex # alt regex library - supports named entity groups e.g. {Dash_Punctuation}
 jsondiff
 
 brotli # for JSON Periodo import (returns brotli compressed data)
 python-slugify # for constructing valid filenames from record identifiers
 #spacy>=3.7.2  # for NER/IE
-spacy
+spacy # NLP library for NER/IE functionality
 #unidecode-1.4.0 # for normalizing text (e.g. in try_convert_llm_output.py)
 
 #jmespath>=1.0.1  # for JSON search
-jsonpath-ng>=1.5.3 # for JSON search (as used in PeriodoData.py)
+jsonpath-ng>=1.5.3 # for JSON search (used in PeriodoData.py)
 lxml>=4.9.1 # for parsing input XML abstracts
 weasyprint>=68.1 # for creating PDF reports from HTML

@@ -24,5 +24,5 @@ The results table is displayed in descending score order and the column values a
 * **label** - the 'type' of concept identified. This usually equates to the originating vocabulary of the concept e.g. FISH_OBJECT (concept from FISH Archaeological Objects thesaurus), FISH_MONUMENT (concept from FISH Thesaurus of Monument Types), PERIOD (concept from PeriodO gazetteer).
 * **count** - overall number of instances of the concept identified in the original document text.
 * **sec_score** - the overall sum of *section scores* for the concept. Concepts may occur with the title, abstract or body of the document. You can adjust the score contribution for each of these by changing the `title score`, `abstract score` or `body score` sliders respectively.
-* **sig_score** - the overall sum of *significance scores* (the concept being close to a 'significance' indicator in the text). You can adjust the score contribution using the `significance score` slider.
+* **sig_score** - the overall sum of *significance scores* (the concept being in close proximity to a 'significance' indicator in the text). You can adjust the score contribution using the `significance score` slider.
 * **score** - the overall score for the concept (calculated as **sec_score** + **sig_score**)
