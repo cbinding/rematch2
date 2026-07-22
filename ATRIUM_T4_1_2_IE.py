@@ -16,7 +16,7 @@ History
 """
 import mimetypes, json
 from pathlib import Path
-from typing import Literal
+from typing import Literal, Sequence
 import argparse
 #import srsly # for JSONL serialization/deserialization
 from spacy.tokens import Doc
@@ -84,7 +84,7 @@ def write_reports(
     file_name: str="",
     metadata: dict={},
     sections: list = [], 
-    formats: list[valid_formats]=["json"]):
+    formats: Sequence[valid_formats]=["json"]):
     
     print(f"Summarizing results...")
     ts_sum = DT.now()         
