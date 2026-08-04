@@ -56,7 +56,7 @@ def get_file_content(file_path: Path) -> dict:
             file_content = json.load(f)
     elif file_type == "text/plain" or file_ext == "txt":     
         with file_path.open() as f:          
-            file_content = {"text": f.read()}
+            file_content = { "text": f.read() }
     elif file_type == "application/pdf" or file_ext == "pdf": 
         file_content = pdf_to_json.convert(file_path)   
     else:
@@ -84,7 +84,7 @@ def write_reports(
     file_name: str="",
     metadata: dict={},
     sections: list = [], 
-    formats: Sequence[valid_formats]=["json"]):
+    formats: list[valid_formats]=["json"]):
     
     print(f"Summarizing results...")
     ts_sum = DT.now()         
@@ -121,11 +121,17 @@ def write_reports(
 # run configured information extraction pipeline on specified set of input documents
 def run_information_extraction(
     nlp: Language,          # pre-configured spaCy pipeline 
-    input_path: Path,       # directory containing input files 
-    output_path: Path,      # directory to write output files (will be created if it doesn't exist)    
+    input_path: Path | str,   # directory containing input files 
+    output_path: Path | str,      # directory to write output files (will be created if it doesn't exist)    
     input_patt: str="*",    # file name pattern to restrict to particular input files (e.g. "*.pdf")
     output_formats: list[valid_formats]=["json"] #Literal["pdf", "txt", "csv", "json"]="json" # format to write output
     ): 
+    if isinstance(input_path, str):
+        input_path = Path(input_path)
+
+    if isinstance(output_path, str):
+        output_path = Path(output_path)
+
     # if output folder structure does not already exist, build it
     if not Path.exists(output_path): Path.mkdir(output_path)
     
@@ -135,6 +141,7 @@ def run_information_extraction(
     for entry in file_names:        
         
         if not entry.is_file(): continue 
+
         print(f"Reading file '{entry.name}'...")
         file_content = get_file_content(entry)
         
@@ -177,7 +184,7 @@ def run_information_extraction(
 
 # Input parameters for running from terminal/command line. Example:
 # python ./ATRIUM_T4_1_2_IE.py -i './data/oasis/journals_july_2024' -p '*.pdf' -f "json,csv"
-# python ./ATRIUM_T4_1_2_IE.py -i './data/oasis/journals_july_2024' -p '120_*.pdf' -f "json,csv,txt"
+# python ./ATRIUM_T4_1_2_IE.py -i './data/oasis/journals_july_2024' -p '078_2*.pdf' -f "json,csv,txt,pdf"
 if __name__ == "__main__":
     
     # initiate the input arguments parser
@@ -225,8 +232,7 @@ if __name__ == "__main__":
     # create the spaCy pipeline to use
     print("Creating configured pipeline")
     pipeline = create_configured_pipeline() 
-    print("Created configured pipeline")
-
+    
     # run the pipeline using cleaned input args
     print("Running information extraction")
     run_information_extraction(

@@ -57,7 +57,7 @@ The components are used to perform specialised information extraction on tempora
 | [seasonname_ruler](#seasonname_ruler) | SEASONNAME  | Season names                                                           |               _Spring, SUMMER, Autumn, WINTER, Fall_ |
 | [ordinal_ruler](#ordinal_ruler)       | ORDINAL     | Expressions of ordinals (used in identifying centuries)                |                             _1st, first, THIRD, 3RD_ |
 | [dateprefix_ruler](#dateprefix_ruler) | DATEPREFIX  | Prefixes commonly associated with years, spans and centuries           |    _Circa, Early, earlier, mid, MIDDLE, Late, later_ |
-| [datesuffix_ruler](#datesuffix_ruler) | DATESUFFIX  | Prefixes commonly associated with years, spans and centuries           |                       _A.D., AD, B.C., BC, B.P., BP_ |
+| [datesuffix_ruler](#datesuffix_ruler) | DATESUFFIX  | Suffixes commonly associated with years, spans and centuries           |                       _A.D., AD, B.C., BC, B.P., BP_ |
 | [yearspan_ruler](#yearspan_ruler)     | YEARSPAN    | Spans of years or centuries (possibly with prefixes and/or suffixes)   |                         _early 1300 to late 1350 AD_ |
 | [periodo_ruler](#periodo_ruler)       | PERIOD      | Period label from specified [Perio.do](https://perio.do/en/) authority |              _Bronze Age, Early Medieval, Victorian_ |
 | [vocabulary_ruler](#vocabulary_ruler) | (user specified) | Labels from supplied controlled vocabulary of terms               |      _Brooch, Mineralogy, Leather, Cropmark, Hearth_ |

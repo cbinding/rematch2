@@ -1,7 +1,7 @@
 # ATRIUM T4.1.2 Information Extraction
 Script to perform Information Extraction on archaeological reports.
 
-### installation
+## Installation
 Required Python 3.12 or later.
 
 Clone the repository, install associated dependencies and download the appropriate spaCy language model:
@@ -11,12 +11,52 @@ pip install -r requirements.txt
 python -m spacy download en_core_web_sm
 ```
 
+## Configuration
+The Information Extraction processing pipeline is configured in the file `ATRIUM_T4_1_2_IE_pipeline.py`.
+The pipeline has been configured with appropriate parameters but any of these may be adjusted to suit. 
+The current pipeline consists of the following components:
+* `text_normalizer`                     - normalizes character encoding, whitespace, puctuation and spelling to improve pattern matching 
+* `attribute_ruler`                     - adds custom rules to override default POS tagging for specific cases
+* `yearspan_ruler`                      - identifies year spans (e.g. _"1450 - 1530 AD"_) 
+* `periodo_ruler`                       - identifies named periods (e.g. _"Medieval"_) from a specified Perio.do dataset
+* `vocabulary_ruler` (object types)     - identifies concept terms (e.g. _"Vessel"_) from the FISH 'object types' vocabulary
+* `vocabulary_ruler` (monument types)   - identifies concept terms (e.g. _"Dolmen"_) from the FISH 'monument types' vocabulary
+* `vocabulary_ruler` (object materials) - identifies concept terms (e.g. _"Bronze"_) from the FISH 'object materials' vocabulary
+* `child_span_remover`                  - removes overlapping or nested spans (e.g. _"BRONZE AGE"_ occurring within _"LATE BRONZE AGE"_)
+* `span_scorer`                         - scoring identified spans based on their relevance
+
+The `periodo_ruler` component is configured with a valid identifier of an authority in the [Perio.do](https://perio.do/) canonical dataset 
+e.g "p0kh9ds" - [Historic England periods authority](http://n2t.net/ark:/99152/p0kh9ds)
+
+The vocabulary_ruler components are configured using the following parameters:
+* `default_label` (string, default="UNKNOWN") - entity type to be assigned to matching text spans.
+* `lemmatize` (boolean, default=True)   - apply lemmatization for more flexible term matching. Note: In the case of multi-word phrases, only the last word in the phrase will be lemmatized.
+* `min_lemm_length` (integer, default=4) - minimum character length of terms to be lemmatized
+* `min_term_length` (integer, default=3) - minimum character length of terms to be matched
+* `token_pos` (list, default=[])        - Part of Speech (POS) restriction for valid term matching e.g ["NOUN"] - _"well"_ occurring as a noun would match, but not as an adjective.
+* `patt_list` (list, default=[])        - List of spaCy patterns to define the vocabulary terms to be matched
+* `supp_list` (list, default=[])        - List of additional spaCy patterns to supplement `patt_list` (if required)
+* `stop_list` (list, default=[])        - List of vocabulary identifiers to be filtered from results
+
+The `span_scorer` component affects the ranking of results. It is configured using the following parameters:
+* `sig_proximity` (integer, default=3)  - token window size - token proximity for 'significance' terms
+* `sig_score` (float, default=1.0)      - score for spans within proximity to 'significance' indicator terms
+* `sec_scores`                          - scores for spans according to location within document sections
+    * `title` (float, default=40.0)     - score for spans occurring within the `title` section of a document
+    * `abstract` (float, default=2.0)   - score for spans occurring within the `abstract` section of a document
+    * `body` (float, default=0.1)       - score for spans occurring within the `body` section of a document
+    * `end_matter` (float, default=0.0) - score for spans occurring within the `end_matter` section of a document
+* `sections`(list, default=[]) - character positions of sections within the document e.g. [{"section": "title", "start": 0, "end": 12}]
+
+The interactive `ATRIUM_T4_1_2_IE_results_viewer.ipynb` Python notebook visualises how the results ranking is affected by changing these parameters.
+
+
 ## Usage
-Run the main script on a number of data files:
+To run the main script on a specified set of data files. In this case files PDF file names starting with 'a', within the specified input directory. Producing both JSON and CSV outputs:
 ```sh
 $ python ./ATRIUM_T4_1_2_IE.py [-i] [-p] [-o] [-f]
 
-e.g. $ python ./ATRIUM_T4_1_2_IE.py -i './path/to/files' -p '*.pdf' -f "json,csv"
+e.g. $ python ./ATRIUM_T4_1_2_IE.py -i './path/to/files' -p 'a*.pdf' -f "json,csv"
 ```
 
 **options:**
@@ -25,7 +65,7 @@ e.g. $ python ./ATRIUM_T4_1_2_IE.py -i './path/to/files' -p '*.pdf' -f "json,csv
 Path of folder containing input files to be processed
 
 ```-p, --inputpatt```  
-Pattern to specify a subset of file names to be processed (e.g. "*.pdf"). The script will take as input PDF, TXT or JSON files. If not specified the default value is "*" (i.e. all files in the input folder)
+Pattern to specify a subset of file names to be processed (e.g. "*.pdf"). The script will take as input PDF, TXT or JSON files. If not specified the default value is "\*" (i.e. all files in the input folder)
 
 ```-o, --outputpath```  
 Path of folder to hold resultant processed data files. If the specified folder does not already exist it will be created. If not specified, a date-stamped folder will be created within the input folder instead (e.g. ie-output-yyyymmdd) ansd the result files will be saved there

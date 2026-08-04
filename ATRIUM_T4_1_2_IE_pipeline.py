@@ -9,23 +9,21 @@ from components.Util import load_pipeline_for_language, read_json_file
 # takes an optional dict of config values to override defaults; 
 # output is configured spacy pipeline with custom IE components
 # pipeline is cached so that subsequent calls with same config return the same pipeline instance
-# the configured pipeline is: 
-# text_normalizer           - normalizes whitespace, puctuation and spelling to improve pattern matching 
-# attribute_ruler           - adds custom rules to override default POS tagging for specific cases
-# yearspan_ruler            - identifies year spans (e.g. "1450 - 1530 AD") 
-# periodo_ruler             - identifies named periods (e.g. "Medieval") from the Perio.do dataset
-# object_types_ruler        - identifies object types (e.g. "Vessel") from the FISH 'object types' vocabulary
-# monument_types_ruler      - identifies monument types (e.g. "Dolmen") from the FISH 'monument types' vocabulary
-# object_materials_ruler    - identifies object materials (e.g. "Bronze") from the FISH 'object materials' vocabulary
-# child_span_remover        - removes overlapping or nested spans (e.g. "BRONZE AGE" occurring within "LATE BRONZE AGE")
-# span_scorer               - scores identified spans based on their likelihood of being relevant
+# the current configured pipeline is: 
+# text_normalizer               - normalizes whitespace, puctuation and spelling to improve pattern matching 
+# attribute_ruler               - adds custom rules to override default POS tagging for specific cases
+# yearspan_ruler                - identifies year spans (e.g. "1450 - 1530 AD") 
+# periodo_ruler                 - identifies named periods (e.g. "Medieval") from the Perio.do dataset
+# vocabulary_ruler (multiple)   - identifies object types, monument types and object materials from FISH vocabularies
+# child_span_remover            - removes child spans from matches to avoid nested entities (e.g. "BRONZE AGE" occurring within "LATE BRONZE AGE")
+# span_scorer                   - scores identified spans based on their likelihood of being relevant
 @run_once
 def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
     # default config values
     defaults: dict = { "language": "en" }
 
     # default vocabulary patterns defined here
-    # these may be overriden by local files 
+    # these may be overridden by local files 
     vocab_folder = "./vocabularies"
 
     # merge passed values overriding defaults; 
@@ -58,7 +56,7 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
         config = {
             "default_label": "PERIOD",
             "periodo_authority_id": "p0kh9ds", # Historic England periods authority ID in Periodo dataset
-            "supp_list": read_json_file(f"{vocab_folder}/patterns_FISH_MONUMENT_ATTRIBUTE_RULES.json"), 
+            "supp_list": read_json_file(f"{vocab_folder}/supp_list_FISH_PERIODS.json"), 
             "stop_list": []
         }
     ) 
@@ -114,9 +112,9 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
         }
     ) 
 
-    # remove child spans from matches to avoid nested entities 
+    # removes child spans from matches to avoid nested entities 
     # (e.g. "BRONZE AGE" occurring within "LATE BRONZE AGE")
-    # this is optional but helps with precision of results
+    # this is optional, but improves accuracy of results
     nlp.add_pipe("child_span_remover", last=True)
     
     # adds ._.score attribute to spans for confidence scoring of identified entities
