@@ -1,6 +1,6 @@
 # build configured pipeline for use by ATRIUM T4_1_2_IE.py
 #from dataclasses import dataclass, asdict, field
-from os import name
+from os import name, path
 from typing import Any
 from spacy.language import Language
 from decorators import run_once
@@ -23,8 +23,8 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
     defaults: dict = { "language": "en" }
 
     # default vocabulary patterns defined here
-    # these may be overridden by local files 
-    vocab_folder = "./vocabularies"
+    # these may be overriden by local files 
+    vocab_folder = path.join(path.dirname(__file__),"vocabularies")
 
     # merge passed values overriding defaults; 
     # create config object from merged values
