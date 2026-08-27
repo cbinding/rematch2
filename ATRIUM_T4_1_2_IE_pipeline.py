@@ -6,6 +6,21 @@ from spacy.language import Language
 from decorators import run_once
 from components.Util import load_pipeline_for_language, read_json_file
  
+default_config: dict = { 
+    "language": "en",
+    "span_scorer": {
+        "sig_proximity": 3,     # token window size - proximity for 'significance' terms
+        "sig_score": 1.0,       # score for spans within proximity to 'significance' indicator terms
+        "sec_scores": {         # score for spans according to location within document sections
+            "title": 40.0,      # score for spans occurring within the title section of a document
+            "abstract": 2.0,    # score for spans occurring within the abstract section of a document
+            "body": 0.1,        # score for spans occurring within the body section of a document
+            "end_matter": 0.0   # score for spans occurring within the end matter section of a document               
+        },
+        "sections": []          # overridden for each doc e.g. [{"section": "title", "start": 0, "end": 12}]
+    } 
+}
+
 # takes an optional dict of config values to override defaults; 
 # output is configured spacy pipeline with custom IE components
 # pipeline is cached so that subsequent calls with same config return the same pipeline instance
@@ -19,16 +34,14 @@ from components.Util import load_pipeline_for_language, read_json_file
 # span_scorer                   - scores identified spans based on their likelihood of being relevant
 @run_once
 def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
-    # default config values
-    defaults: dict = { "language": "en" }
-
+    
     # default vocabulary patterns defined here
     # these may be overriden by local files 
     vocab_folder = path.join(path.dirname(__file__),"vocabularies")
 
     # merge passed values overriding defaults; 
     # create config object from merged values
-    cfg: dict = { **defaults, **config }
+    cfg: dict = { **default_config, **config }
 
     # create pre-configured information extraction pipeline, then
     # add custom information extraction component(s) to the pipeline
@@ -118,19 +131,20 @@ def create_configured_pipeline(config: dict[str, Any]={}) -> Language:
     nlp.add_pipe("child_span_remover", last=True)
     
     # adds ._.score attribute to spans for confidence scoring of identified entities
+
     nlp.add_pipe(
         "span_scorer", 
         last=True, 
         config = {
-            "sig_proximity": 3,     # token window size - proximity for 'significance' terms
-            "sig_score": 1.0,       # score for spans within proximity to 'significance' indicator terms
-            "sec_scores": {         # score for spans according to location within document sections
-                "title": 40.0,      # score for spans occurring within the title section of a document
-                "abstract": 2.0,    # score for spans occurring within the abstract section of a document
-                "body": 0.1,        # score for spans occurring within the body section of a document
-                "end_matter": 0.0   # score for spans occurring within the end matter section of a document               
+            "sig_proximity": cfg["span_scorer"]["sig_proximity"],           # token window size - proximity for 'significance' terms
+            "sig_score": cfg["span_scorer"]["sig_score"],                   # score for spans within proximity to 'significance' indicator terms
+            "sec_scores": {                                                 # score for spans according to location within document sections
+                "title": cfg["span_scorer"]["sec_scores"]["title"],         # score for spans occurring within the title section of a document
+                "abstract": cfg["span_scorer"]["sec_scores"]["abstract"],   # score for spans occurring within the abstract section of a document
+                "body": cfg["span_scorer"]["sec_scores"]["body"],           # score for spans occurring within the body section of a document
+                "end_matter": cfg["span_scorer"]["sec_scores"]["end_matter"]   # score for spans occurring within the end matter section of a document               
             },
-            "sections": []          # overridden for each doc e.g. [{"section": "title", "start": 0, "end": 12}]
+            "sections": cfg["span_scorer"]["sections"]                      # overridden for each doc e.g. [{"section": "title", "start": 0, "end": 12}]
         }
     ) 
 

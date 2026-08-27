@@ -1,8 +1,14 @@
-# ATRIUM T4.1.2 Information Extraction
+# ATRIUM T4.1.2 Information Extraction <a class="anchor" id="top"></a>
 Script to perform Information Extraction on archaeological reports.
 
-## Installation
-Required Python 3.12 or later.
+## Contents
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Outputs](#outputs)
+
+## Installation <a class="anchor" id="installation"></a>
+Requires Python 3.12 or later.
 
 Clone the repository, install associated dependencies and download the appropriate spaCy language model:
 ```bash
@@ -10,8 +16,9 @@ git clone https://github.com/cbinding/rematch2.git
 pip install -r requirements.txt
 python -m spacy download en_core_web_sm
 ```
+[[back to top]](#top)
 
-## Configuration
+## Configuration <a class="anchor" id="configuration"></a>
 The Information Extraction processing pipeline is configured in the file `ATRIUM_T4_1_2_IE_pipeline.py`.
 The pipeline has been configured with appropriate parameters but any of these may be adjusted to suit. 
 The current pipeline consists of the following components:
@@ -28,7 +35,7 @@ The current pipeline consists of the following components:
 The `periodo_ruler` component is configured with a valid identifier of an authority in the [Perio.do](https://perio.do/) canonical dataset 
 e.g "p0kh9ds" - [Historic England periods authority](http://n2t.net/ark:/99152/p0kh9ds)
 
-The vocabulary_ruler components are configured using the following parameters:
+The vocabulary_ruler components are each configured using the following parameters:
 * `default_label` (string, default="UNKNOWN") - entity type to be assigned to matching text spans.
 * `lemmatize` (boolean, default=True)   - apply lemmatization for more flexible term matching. Note: In the case of multi-word phrases, only the last word in the phrase will be lemmatized.
 * `min_lemm_length` (integer, default=4) - minimum character length of terms to be lemmatized
@@ -48,13 +55,14 @@ The `span_scorer` component affects the ranking of results. It is configured usi
     * `end_matter` (float, default=0.0) - score for spans occurring within the `end_matter` section of a document
 * `sections`(list, default=[]) - character positions of sections within the document e.g. [{"section": "title", "start": 0, "end": 12}]
 
-The interactive `ATRIUM_T4_1_2_IE_results_viewer.ipynb` Python notebook visualises how the results ranking is affected by changing these parameters.
+The interactive `ATRIUM_T4_1_2_IE_results_viewer.ipynb` Python notebook visualises how the results ranking is affected by changing these parameters, and can also save the parameters as a JSON file for use with this main script.
 
+[[back to top]](#top)
 
-## Usage
+## Usage <a class="anchor" id="usage"></a>
 To run the main script on a specified set of data files. In this case files PDF file names starting with 'a', within the specified input directory. Producing both JSON and CSV outputs:
 ```sh
-$ python ./ATRIUM_T4_1_2_IE.py [-i] [-p] [-o] [-f]
+$ python ./ATRIUM_T4_1_2_IE.py [-i] [-p] [-o] [-f] [-c]
 
 e.g. $ python ./ATRIUM_T4_1_2_IE.py -i './path/to/files' -p 'a*.pdf' -f "json,csv"
 ```
@@ -73,7 +81,12 @@ Path of folder to hold resultant processed data files. If the specified folder d
 ```-f, --outputformat```  
 Output format(s) for processed data files ("pdf", "txt", "csv" or "json"). The script can produce PDF, plain text, CSV or JSON output files). If multiple output formats are required then use a comma delimited string here (e.g. -f "json,csv")
 
-## Outputs
+```-c, --configfile```
+Optional JSON file of configuration used for the `span_scorer` component (to affect the overall scoring and ranking of results). If not supplied the default values (as listed in [configuration](#configuration) above) will be used.
+
+[[back to top]](#top)
+
+## Outputs <a class="anchor" id="outputs"></a>
 The CSV output will be a table of identified spans representing subject terms and indicating their locations within the text, e.g.
 
 | start | end   | token_start | token_end | label         | id                                                           | text                         | sec_score | sections         | sig_proximity | score | score_explain   | context                                              |
@@ -114,3 +127,5 @@ The JSON, TXT and PDF format outputs are more detailed, containing the following
 * `span_scores`- aggregated summary of scores for each unique entity identified
 * `span_pairs` - pairs of entities located (e.g. "12th Century" - "Vessels", "Medieval" - "pottery", "Roman" - "settlement")
 * `sections` - a supplied list of section locations (for use in scoring)
+
+[[back to top]](#top)

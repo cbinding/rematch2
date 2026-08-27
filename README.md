@@ -1,4 +1,4 @@
-# Information Extraction Components
+# Information Extraction Components <a class="anchor" id="top"></a>
 
 - [Introduction](#introduction)
   - [Supported languages](#languages)
@@ -44,6 +44,8 @@ For the vocabulary-driven pipeline components the supported language is the lang
 ### Patterns <a class="anchor" id="patterns"></a>
 
 The pipeline components utilise predefined spaCy _patterns_ which are located in the _spacypatterns_ directory. These are python modules using the naming convention `patterns_{language}_{ENTITYTYPE}.py` e.g. `patterns_en_YEARSPAN.py`. For further details on the required syntax of patterns see [spaCy rule-based matching](https://spacy.io/usage/rule-based-matching).
+
+[[back to top]](#top)
 
 ## Components <a class="anchor" id="components"></a>
 
@@ -114,6 +116,7 @@ The component is configured using the inherited configuration parameters of the 
 * `supp_list (list, default = [])` - a list of supplementary terms. Sometimes an existing vocabulary may not quite fit the use case of terms to be located - controlled vocabularies do not always contain the exact terms as used in free-text, so the supplementary list can be used to expand on the supplied vocabulary list without altering it.
 * `stop_list (list, default = [])` - a list of identifiers for concepts that should NOT appear in the results. This is useful to restrict matches to a subset of the supplied vocabulary list, or to exclude specific concepts.
 
+#### vocabularies
 Example vocabulary files are included for use with the vocabulary_ruler component, to identify terms originating from extracts of controlled vocabularies as occurring in free text. The (suggested) 'Entity Type' in the table below may be overridden when configuring the pipeline. The example files described in the table contain terms and Linked Open Data (LOD) identifiers extracted from the [Getty Art &amp; Architecture Thesaurus (AAT)](https://www.getty.edu/research/tools/vocabularies/aat/) SPARQL endpoint, and from the [FISH 'Heritage Standards'](https://heritage-standards.org.uk/fish-vocabularies/) site for bulk downloads of vocabulary data. Note the file naming convention adopted here indicates the date this data was extracted and the files created - so they are only a snapshot and do not represent the latest version of the controlled vocabularies. The user is directed to the originating sites for the most up to date information on these vocabularies.
 
 | Vocabulary File                                | Source Description                                                                   | Examples                                                           |
@@ -177,11 +180,13 @@ The component is configured using the following parameters:
   ]
   ```
 
+[[back to top]](#top)
+
 ## Usage <a class="anchor" id="usage"></a>
 
 ### Temporal component usage <a class="anchor" id="temporal_usage"></a>
 Both the [yearspans_ruler](#yearspans_ruler) and the [periodo_ruler](#periodo_ruler) perform information extraction of temporal entities. 
-Example Python script to perform information extraction on temporal entities using these components:
+Example Python script to perform information extraction on temporal entities using these components, with example results listed:
 
 ```python
 import spacy
@@ -230,10 +235,12 @@ start   end    label                                    id            text
   """
 ```
 
+[[back to top]](#top)
+
 ### Vocabulary component usage <a class="anchor" id="vocabulary_usage"></a>
 The [vocabulary_ruler](#vocabulary_ruler) component is supplied with a user-defined vocabulary of concepts to be located in the text. 
 You can also perform lemmatization for more flexible matching, and part(s) of speech to improve precision. 
-Example Python script to perform information extraction using this component:
+Example Python script to perform information extraction using this component, with example results listed:
 
 ```python
 # Using specialised VocabularyRuler pipeline component
@@ -300,10 +307,12 @@ start end label       id                                                        
 """
 ```
 
+[[back to top]](#top)
+
 ### Geographical component usage <a class="anchor" id="geographical_usage"></a>
 The [geonames_ruler](#geonames_ruler) component is an experimental addition, 
 configured with a country code both to improve performance and reduce ambiguity. 
-Example Python script to perform information extraction using this component:
+Example Python script to perform information extraction using this component, with example results listed:
 
 ```python
 import spacy
@@ -345,3 +354,5 @@ start end label                               id           text
 ```
 
 Other practical examples of spaCy pipeline component usage may be found in the accompanying Python scripts and Jupyter notebooks.
+
+[[back to top]](#top)

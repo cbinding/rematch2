@@ -30,9 +30,10 @@ from ATRIUM_T4_1_2_IE_pipeline import create_configured_pipeline
 # workaround for (external) hyphenated submodule name. 
 # This syntax won't work:
 # from atrium-text_extraction import pdf_to_json 
-# so do this instead (or could edit .gitmodules?):
-#from importlib import import_module
-#pdf_to_json = import_module("atrium-text_extraction.pdf_to_json")
+# so do this instead: 
+# from importlib import import_module
+# pdf_to_json = import_module("atrium-text_extraction.pdf_to_json")
+# Note: now superseded - modify .gitmodules instead
 from atrium_text_extraction import pdf_to_json 
 
 
@@ -183,8 +184,9 @@ def run_information_extraction(
 
 
 # Input parameters for running from terminal/command line. Example:
-# python ./ATRIUM_T4_1_2_IE.py -i './data/oasis/journals_july_2024' -p '*.pdf' -f "json,csv"
+# python ./ATRIUM_T4_1_2_IE.py -i './data/oasis/journals_july_2024' -p '*.pdf' -f "json,csv,pdf"
 # python ./ATRIUM_T4_1_2_IE.py -i './data/oasis/journals_july_2024' -p '078_2*.pdf' -f "json,csv,txt,pdf"
+# python ./ATRIUM_T4_1_2_IE.py -i './data/oasis/journals_july_2024' -p "078_1*.pdf" -f "txt"
 if __name__ == "__main__":
     
     # initiate the input arguments parser
@@ -217,7 +219,13 @@ if __name__ == "__main__":
         "--outputformat", "-f", 
         default="json", 
         help="Output format(s) for processed data files"
-    )    
+    )   
+
+    parser.add_argument(
+        "--configfile", "-c", 
+        default=None, 
+        help="Path to configuration file"
+    )   
 
     # datestamp for use in directory names
     datestamp = DT.now().strftime('%Y%m%d') 
@@ -228,10 +236,16 @@ if __name__ == "__main__":
     output_path: Path = Path(args.outputpath.strip() if args.outputpath else Path(input_path).joinpath(f"ie-output-{datestamp}"))
     input_patt: str = args.inputpatt.strip() if args.inputpatt else "*"
     output_formats: list = list(set(args.outputformat.strip().lower().split(","))) if args.outputformat else ["json"]
-    
+    config_file: Path | None = Path(args.configfile.strip()) if args.configfile else None
+
+    # read the config file if specified, otherwise use an empty dict
+    # Note: could alternatively specify config values here if required
+    # #e.g. config = { "language": "en", "span_scorer": { "sig_proximity": 3, "sig_score": 1.0 } }
+    config = get_file_content(config_file) if config_file and config_file.is_file() else {}
+
     # create the spaCy pipeline to use
-    print("Creating configured pipeline")
-    pipeline = create_configured_pipeline() 
+    print("Creating configured pipeline") 
+    pipeline = create_configured_pipeline(config=config) 
     
     # run the pipeline using cleaned input args
     print("Running information extraction")

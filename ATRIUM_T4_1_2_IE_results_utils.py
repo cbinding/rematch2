@@ -3,13 +3,19 @@ import json
 from html import escape # to esscape values for HTML display
 
 # default initial values for sliders (used for reset button and as fallback if sliders are not set)
-DEFAULT_SCORES: dict[str, float] = {
-    "title": 40.0,              # score for terms apprearing in the title section
-    "abstract": 2.0,            # score for terms apprearing in the abstract section
-    "body": 0.1,                # score for terms apprearing in the body section
-    "sig_proximity": 2.0,       # score for terms with significance proximity to the target term
-    "mrs": 0.0,                 # Minimum Relevance Score
-    "mrc": 1.0                  # Minimum Relevance Count
+DEFAULT_CONFIG: dict = {
+    "span_scorer": {
+        "sig_proximity": 3,
+		"sig_score": 1.0,
+        "sec_scores": {
+            "title": 40.0,              # score for terms appearing in the title section
+            "abstract": 2.0,            # score for terms appearing in the abstract section
+            "body": 0.1,                # score for terms appearing in the body section
+            "end_matter": 0.0           # score for terms appearing in the end matter section
+        },        
+    },
+    "min_relevance_score": 1.0,
+    "min_relevance_count": 1.0
 }
 
 
